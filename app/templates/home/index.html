@@ -1,0 +1,123 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>API平台</title>
+    <link href="{{url_for('static',filename='css/amazeui.min.css')}}"  rel="stylesheet">
+    <link href="{{url_for('static',filename='css/admin.css')}}"  rel="stylesheet">
+    <link href="{{url_for('static',filename='css/app.css')}}"  rel="stylesheet">
+    <link href="{{url_for('static',filename='css/bootstrap/bootstrap.min.css')}}"  rel="stylesheet">
+    <link rel="icon" href="{{url_for('static',filename='img/logo.png')}}" type="image/x-icon">
+    <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/echarts.common.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/app.js')}}"></script>
+    <script src="{{url_for('static',filename='js/script/jquery.min.js')}}"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body style="background-color:ghostwhite" >
+<header class="am-topbar am-topbar-inverse admin-header">
+    <div class="am-topbar-brand" style="height: 65px;">
+        <a href="javascript:;" class="tpl-logo">
+            <img src="{{url_for('static',filename='img/logo.png')}}"  height="80px" alt="" >
+        </a>
+    </div>
+</header>
+<div class="tpl-page-container tpl-page-header-fixed" >
+    <div class="tpl-left-nav tpl-left-nav-hover"  >
+        <div class="tpl-left-nav-list">
+            <ul class="tpl-left-nav-menu ">
+
+
+                {% for modelInfo in modelNameLink %}
+                <li class="tpl-left-nav-item">
+                    <a href="{{modelInfo[1]}}" class="nav-link ">
+                        <i class="am-icon-home"></i>
+                        <span>{{modelInfo[0]}}</span>
+                    </a>
+                </li>
+                {% endfor %}
+
+            </ul>
+        </div>
+    </div>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li style="color:red">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <div class="tpl-content-wrapper" style="margin-top: -7px;">
+        <div class="row">
+            <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+                <div class="dashboard-stat blue">
+                    <div class="visual">
+                        <i class="am-icon-comments-o"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number"> {{ project_cout }} </div>
+                        <div class="desc"> 项目</div>
+                    </div>
+                    <a class="more" href="{{ url_for('views.project_select') }}"> 查看项目
+                        <i class="m-icon-swapright m-icon-white"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+                <div class="dashboard-stat green">
+                    <div class="visual">
+                        <i class="am-icon-apple"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+                            {{ jiekou }}
+                        </div>
+                        <div class="desc"> 接口</div>
+                    </div>
+                    <a class="more" href="{{ url_for('views.http_select') }}"> 查看更多
+                        <i class="m-icon-swapright m-icon-white"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+                <div class="dashboard-stat blue">
+                    <div class="visual">
+                        <i class="am-icon-comments-o"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number"> Report </div>
+                        <div class="desc"> 测试报告</div>
+                    </div>
+                    <a class="more" href="/Report"> 查看报告
+                        <i class="m-icon-swapright m-icon-white"></i>
+                    </a>
+                </div>
+            </div>
+    </div>
+        <div class="row">
+             <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+                <div class="dashboard-stat purple">
+                    <div class="visual">
+                        <i class="am-icon-comments-o"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number"> Tsutie </div>
+                        <div class="desc"> 测试集合</div>
+                    </div>
+                    <a class="more" href="/httpSuite"> 上传集合
+                        <i class="m-icon-swapright m-icon-white"></i>
+                    </a>
+                </div>
+            </div>
+    </div>
+ </div>
+</div>
+<div style='text-align: center;margin-bottom: auto;
+    min-height: 15px;
+    height: 30px;
+    margin-top: 10px;
+    padding-top: 30px;'>
+</div>
+</body>
+</html>

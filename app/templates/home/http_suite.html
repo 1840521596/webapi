@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>测试集上传页面</title>
+		<!-- 引用控制层插件样式 -->
+		<link rel="stylesheet" href="{{url_for('static',filename='css/zyUpload.css')}}" type="text/css">
+		<script type="text/javascript" src="{{url_for('static',filename='js/script/jquery-1.9.1.js')}}"></script>
+		<!-- 引用核心层插件 -->
+		<script type="text/javascript" src="{{url_for('static',filename='js/script/zyFile.js')}}"></script>
+		<!-- 引用控制层插件 -->
+		<script type="text/javascript" src="{{url_for('static',filename='js/script/zyUpload.js')}}"></script>
+		<!-- 引用初始化JS -->
+		<script type="text/javascript" src="{{url_for('static',filename='js/script/demo.js')}}"></script>
+
+	</head>
+
+	<body>
+	    <div id="demo" class="demo">
+			<form id="uploadForm" action="/UploadAction" method="post" enctype="multipart/form-data">
+			<div class="upload_box">
+				<label style="width:230px;position:relative;left:1%">测试业务项目</label>
+				<select id="project" class="form-control" style="width:230px;position:relative;left:2%" name="测试项目">
+					<option value="None" selected = "selected"> 请选择测试项目 </option>
+               		{% for project in projects %}
+               		<option value="{{ project[0] }}">{{ project[0] }}</option>
+               		{% endfor %}
+           		</select>
+				<label style="width:230px;position:relative;left:5%">测试环境</label>
+				<select id="test_env" class="form-control" style="width:230px;position:relative;left:6%" name="测试环境">
+					<option value="None" selected = "selected"> 请选择测试环境 </option>
+               		<option value="prod">线上</option>
+					<option value="stage">灰度</option>
+					<option value="beta">测试</option>
+           		</select>
+				<a href="/DownFileXls" style="position:relative;left:8%">点击我,下载接口用例模板</a>
+				<a type="button" onclick="DownPojectXls()" style="position:relative;left:16%">点击我,下载已存在项目用例</a>
+				</div>
+
+			</form>
+		</div>
+
+</div>
+			<script type="text/javascript">
+		function runSuiteApi(){
+		alert("测试集已启动...");
+		//alert($("#test_env").find("option:selected").val());
+		//alert($("#test_num").find("option:selected").val());
+        $.ajax({
+            url: "/runSuiteApi",
+            type: "get",
+            data: {
+                project: $("#project").find("option:selected").val() ,
+                env_flag :  $("#test_env").find("option:selected").val(),
+                env_num :  $("#test_num").find("option:selected").val()
+                           }
+        }).done(function (result) {
+            if (result.code==200){
+                alert(result.Msg);
+            }else{
+                alert(result.Msg);
+                alert(result.ErrorMsg);}
+        });
+    };
+    function DownPojectXls(){
+        $.ajax({
+            url: "/DownPojectXls",
+            type: "get",
+            contentType: "application/json",
+            datatype: 'json',
+            data: {
+                project: $("#project").find("option:selected").val()            }
+        }).done(function (result) {
+            if (result.code==200){
+            alert(result.project);
+                window.open("/Download/"+result.project);
+                console.log("/Download/"+result.project);
+            }else{
+                alert(result.Msg);
+                alert(result.ErrorMsg);}
+        });
+    };
+
+
+    $("#test_env").bind("change",function(){
+    		$("#test_num").remove();
+            var dataname = $(this).val();
+            if (dataname !="None"&&dataname !="prod"){
+            $.ajax({
+                url: "/searchEnvNum",
+                type: "get",
+                data: {env_flag:dataname}
+            }).done(function(result){
+            var text = ""
+            for (var i=0;i<result.msg.length;i++){
+            	text = text +"<option value=\""+result.msg[i]+"\">"+result.msg[i]+"</option>"
+            }
+             $("#test_env").after("<select id=\"test_num\" name=\"环境编号\" style=\"position:relative;left: 7%;\">"+text+"</select>");
+              });}
+            });
+
+		</script>
+</body>
+</html>
+
