@@ -29,7 +29,7 @@ class Ysx_Crm_CXSHDD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/admin/order/query/merchants/order"
         params = {"orderSn": "Y1760155867978891781"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
-        self.resp = self.session.post(url=url,params=params)
+        self.resp = self.session.post(url=url,data=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
