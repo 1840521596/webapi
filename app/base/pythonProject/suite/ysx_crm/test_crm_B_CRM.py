@@ -3,6 +3,7 @@
 import requests
 import unittest
 import json
+import time
 # import sys
 # sys.path.append("../../base")
 from log import TestLog,fengefu,lianjiefu
@@ -43,6 +44,7 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect.has_key("total"),
                                                                              Really=result.has_key("total"))
         classId = result["rows"][0]["classId"]
+        memberId = result["rows"][0]["teacherMember"]
         phone = result["rows"][0]["teacherPhone"]
         url = r"http://admin.crm.yunshuxie.com/v1/yearcard/statistics/classDetailsList.htm"
         params = {"classId": classId,"sort": "memberId","order": "asc","limit": "10","offset": "0"}
@@ -58,13 +60,14 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
                                                                                    Really=result.has_key("total"))
         if (self.env_flag == "beta") or (self.env_flag == "BETA"):
             url = r"http://admin.crm.yunshuxie.com/v1/teacher/statistics/save/follow_record.json"
-            params = {"phone": phone,"memberId": classId,"content": "自动化测试"}
+            date = time.time()
+            params = {"phone": phone,"memberId": memberId,"content": "自动化测试%d"%(date)}
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             self.resp = self.session.get(url=url, params=params)
             print self.resp.content
             result = json.loads(self.resp.content, encoding="utf8")
             logging.info(url + lianjiefu + self.resp.text + fengefu)
-            expect = {"returnMsg": "", "returnCode": "0"}
+            expect = {"returnMsg": "", "returnCode": 0}
             assert result.has_key("returnCode") == expect.has_key("returnCode"), self.msg.format(Except=expect.has_key("returnCode"),Really=result.has_key("returnCode"))
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Except=expect["returnCode"],Really=result["returnCode"])
             assert result.has_key("returnMsg") == expect.has_key("returnMsg"), self.msg.format(Except=expect.has_key("returnMsg"),
@@ -138,12 +141,9 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"returnCode": 0, "data": ""}
-        assert result.has_key("returnCode") == expect.has_key("returnCode"), self.msg.format(Except=expect.has_key("returnCode"),
-                                                                                 Really=result.has_key("returnCode"))
-        assert result["returnCode"] == expect.has_key["returnCode"], self.msg.format(Except=expect["returnCode"],
-                                                                                 Really=result["returnCode"])
-        assert result.has_key("data") == expect.has_key("data"), self.msg.format(Except=expect.has_key("data"),
-                                                                                   Really=result.has_key("data"))
+        assert result.has_key("returnCode") == expect.has_key("returnCode"), self.msg.format(Except=expect.has_key("returnCode"), Really=result.has_key("returnCode"))
+        assert result["returnCode"] == expect["returnCode"], self.msg.format(Except=expect["returnCode"],Really=result["returnCode"])
+        assert result.has_key("data") == expect.has_key("data"), self.msg.format(Except=expect.has_key("data"),Really=result.has_key("data"))
     def test_06_organ_query_channeler_list(self):
         """
         B端CRM->渠道商->每日一句->学校详情<br/>{"sort": "organId", "order": "asc", "limit": "10", "offset": "0"}
@@ -184,13 +184,9 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"returnCode": 0, "data": ""}
-        assert result.has_key("returnCode") == expect.has_key("returnCode"), self.msg.format(
-            Except=expect.has_key("returnCode"),
-            Really=result.has_key("returnCode"))
-        assert result["returnCode"] == expect.has_key["returnCode"], self.msg.format(Except=expect["returnCode"],
-                                                                                     Really=result["returnCode"])
-        assert result.has_key("data") == expect.has_key("data"), self.msg.format(Except=expect.has_key("data"),
-                                                                                 Really=result.has_key("data"))
+        assert result.has_key("returnCode") == expect.has_key("returnCode"), self.msg.format(Except=expect.has_key("returnCode"),Really=result.has_key("returnCode"))
+        assert result["returnCode"] == expect["returnCode"], self.msg.format(Except=expect["returnCode"],Really=result["returnCode"])
+        assert result.has_key("data") == expect.has_key("data"), self.msg.format(Except=expect.has_key("data"),Really=result.has_key("data"))
     def test_08_yearcard_query_channeler_list(self):
         """B端CRM->渠道商->名著导读课->学校详情<br/>{"sort": "organId", "order": "asc", "limit": "10", "offset": "0"}<br/>{"parentOrganId": organId,"sort": "organId","order": "asc","limit": "10","offset": "0"}
         :return: True
