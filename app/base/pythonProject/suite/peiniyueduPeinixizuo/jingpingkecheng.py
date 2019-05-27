@@ -132,6 +132,9 @@ class JingPinKeCheng_Test(unittest.TestCase):
                     logging.info(url + lianjiefu + self.resp.text + fengefu)
                     result =json.loads(self.resp.content,encoding="utf8")
                     assert result["returnCode"] == "0",self.msg.format(Except="0",Really=result["returnCode"])
+
+
+
     def test_2_MRYJ_meiriyiduanzuowensucai(self):
         """每日一句 - -《每日一段作文素材》课程信息-个人购买"""
         for project in self.productDict[u"每日一句"]:

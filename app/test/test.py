@@ -31,15 +31,16 @@
 # print resp.content
 
 
-from flask import Flask,request
-app = Flask(__name__)
-@app.route("/mock/<path:test>")
-def index(test):
-    wc = request.args.get("wc")
-    print wc
-    print request.headers
-    return test
+import unittest
+class wc(unittest.TestCase):
+    wc = ""
+    @classmethod
+    def setUpClass(self):
+        globals()["wc"]="rqewr"
+    def test_wc(self):
+        s = wc
+        print s
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
+    @classmethod
+    def tearDownClass(self):
+        print "tearDown"
