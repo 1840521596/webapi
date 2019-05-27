@@ -6,6 +6,7 @@ from . import test
 from ..base.pythonProject import run
 from .. import db
 from ..config.models import Project,Test_Env
+from ..config.sendMsg import sendMsg
 @test.route("/runSuiteApi",methods=["GET"])
 def runDatasApiTest():
 	"""测试集页面使用接口,用于上传测试用例后执行
@@ -47,6 +48,8 @@ def runDatasApiTest_yunwei():
 			result = run.run_yunwei_case(project_en[0],env_num,env_flag,project_en[1],project)
 			msg = {"code":200,"Msg":"执行成功","url":r"http://uwsgi.sys.bandubanxie.com/Report",
 				   "Error":result["Error"],"Failure":result["Failure"],"Success":result["Success"]}
+			if result["Error"] != "0" or result["Error"] != 0:
+				msg = """《{project_cn}》接口测试报告存在失败用例，请访问 http://uwsgi.sys.bandubanxie.com/Report 查看，错误数量：{error} 个""".format(project_cn=project,error=result["Error"])
 		else:
 			raise Exception("{project}不存在".format(project=project))
 	except Exception as e:
