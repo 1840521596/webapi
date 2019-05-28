@@ -114,29 +114,8 @@ class JingPinKeCheng_Test(unittest.TestCase):
                     assert self.resp.status_code == 200
                     assert productPosters_resp.status_code == 200
                     assert banerPosters_resp.status_code == 200
-                    url = r"https://pay.yunshuxie.com/v6/basicCourse/query/basic_course_id.htm"
-                    params = {"cType":"72","_":"1557217121011","callback":"Zepto1557217118071"}
-                    self.resp = requests.get(url=url, headers=self.headers, params=params, cookies=self.cookies)
-                    logging.info(url + lianjiefu + self.resp.text + fengefu)
-                    result = json.loads(re.findall("{.*}", self.resp.content)[0], encoding="utf8")
-                    productCourseHoursId = result["data"][0]["productCourseHoursId"]  # 选择课程，默认第一个
-                    productId = result["data"][0]["productId"]  # 选择课程，默认第一个
-                    assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-                    url = r"https://wap.yunshuxie.com/v1/common/api/date.htm"
-                    params = {"_":"1557217120957","callback":"Zepto1557217118069"}
-                    self.resp = requests.get(url=url, headers=self.headers, params=params, cookies=self.cookies)  # 进行时间比对
-                    logging.info(url + lianjiefu + self.resp.text + fengefu)
-                    result = json.loads(re.findall("{.*}", self.resp.content)[0], encoding="utf8")
-                    today = time.localtime(time.time())
-                    assert result["date"][:10] == time.strftime('%Y-%m-%d',
-                                                                today ) , self.msg.format(Except=today,
-                                                                                    Really=result["date"][:10])  #判断接口返回时间 == 系统时间(精确到day)
-                    url = r"https://pay.yunshuxie.com/v1/h5_share/query/signature_jsonp.htm"
-                    params = {"url":"https://pay.yunshuxie.com/H5Pay/sale_watchImgWriting/index.html","_":"1557209606715","callback":"Zepto1557209606557"}
-                    signature_jsonp_resp = requests.get(url=url, params=params, headers=self.headers, cookies=self.cookies)
-                    url = r"https://account.yunshuxie.com/v1/validate/wap/newplat_code_reset.htm?phone={phone}&type=2".format(phone=self.phoneNum)
-                    self.resp = requests.get(url=url,headers=self.headers,cookies=self.cookies)  # 获取验证码，自动完成{"msg":"验证码为123456"}
-                    logging.info(url + lianjiefu + self.resp.text + fengefu)
+
+
                     url = r"https://pay.yunshuxie.com/v6/order/create.htm"  # 生成支付订单
                     params = {"phone": "{}".format(self.phoneNum),"customizeGroupId": "-1",
                               "phId": productCourseHoursId,"gId": "-1","pId": productId,"pType": "1","productType": 72,

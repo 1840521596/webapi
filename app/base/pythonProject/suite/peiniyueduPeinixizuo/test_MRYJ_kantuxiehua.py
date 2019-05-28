@@ -10,7 +10,7 @@ from log import TestLog,fengefu,lianjiefu
 from getConfig import ReadConfig
 logging = TestLog().getlog()
 class KanTuXieHua_Test(unittest.TestCase):
-    """看图写话60讲->销售查询->系统时间->查询课程信息->查询优惠券-><br/>课程购买查询->发送验证码->校验验证码->个人购买全期课程"""
+    """<br/>看图写话60讲->销售查询->系统时间->查询课程信息->查询优惠券-><br/>课程购买查询->发送验证码->校验验证码->个人购买全期课程"""
     globals_values = ""
     @classmethod
     def setUpClass(self):
@@ -29,7 +29,7 @@ class KanTuXieHua_Test(unittest.TestCase):
         self.session.cookies = requests.utils.cookiejar_from_dict(cookies)
         self.pattern = "{\"global.*}"
         self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
-        globals()["resp_value"] = ""
+        globals()["globals_values"] = ""
     def test_01_query_saleman(self):
         """https://pay.yunshuxie.com/v6/order/query/saleman.htm<br/>"{"sk":"null","callback":"Zepto1558926534750"}"""
         url = r"https://pay.yunshuxie.com/v6/order/query/saleman.htm"
@@ -143,6 +143,6 @@ class KanTuXieHua_Test(unittest.TestCase):
             assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
     @classmethod
     def tearDownClass(self):
-        del globals()["resp_value"]
+        del globals()["globals_values"]
 if __name__ == "__main__":
     unittest.main()

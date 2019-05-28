@@ -11,7 +11,7 @@ from log import TestLog,fengefu,lianjiefu
 from getConfig import ReadConfig
 logging = TestLog().getlog()
 class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
-    """每日一段古诗文素材课->销售查询->查询课程信息-><br/>查询1-2年级课程->查询3-4年级课程->查询5-6年级课程-><br/>查询优惠券-><br/>课程购买查询->发送验证码->校验验证码->个人购买全期课程"""
+    """<br/>每日一段古诗文素材课->销售查询->查询课程信息-><br/>查询1-2年级课程->查询3-4年级课程->查询5-6年级课程-><br/>查询优惠券-><br/>课程购买查询->发送验证码->校验验证码->个人购买全期课程"""
     globals_values = ""
     @classmethod
     def setUpClass(self):
@@ -33,7 +33,7 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
         self.redis_host = s.get_env("beta").split(":") if self.env_flag == "beta" else s.get_env("prod_stage").split(":")
         r = redis.Redis(host=self.redis_host[0], port=int(self.redis_host[1]), password="yunshuxie1029Password")
         r.set("021ZaJtG17hM310SblvG1NZutG1ZaJtQ",'o38sIv_7FQInsBKJEUExn7wYxoHc&21_bk4dQIEFnYz5w8zJwDqan84UFmV_XVKEO5MJf7fv1pGR8tRH2MAtxpk0Pc1SqDwe5S90CE6TQo1wd346qEA5FQ')
-        globals()["resp_value"] = ""
+        globals()["globals_values"] = ""
     def test_01_query_saleman(self):
         """https://pay.yunshuxie.com/v6/order/query/saleman.htm<br/>"{"sk":"null","callback":"Zepto1558926534750"}"""
         url = r"https://pay.yunshuxie.com/v6/order/query/saleman.htm"
@@ -156,6 +156,6 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
 
     @classmethod
     def tearDownClass(self):
-        del globals()["resp_value"]
+        del globals()["globals_values"]
 if __name__ == "__main__":
     unittest.main()
