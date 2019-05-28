@@ -86,6 +86,6 @@ class XiaoXuegfzwbhcyk_Test(unittest.TestCase):
             assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
     @classmethod
     def tearDownClass(self):
-        del globals()["globals_values"]
+        globals().pop("globals_values")
 if __name__ == "__main__":
     unittest.main()

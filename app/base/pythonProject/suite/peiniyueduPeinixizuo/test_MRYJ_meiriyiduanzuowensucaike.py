@@ -156,6 +156,6 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
 
     @classmethod
     def tearDownClass(self):
-        del globals()["globals_values"]
+        globals().pop("globals_values")
 if __name__ == "__main__":
     unittest.main()

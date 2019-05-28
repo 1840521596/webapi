@@ -102,33 +102,33 @@ class KanTuXieHua_Test(unittest.TestCase):
         assert result.has_key("returnMsg")
         assert result["data"] != {}
         assert result.has_key("data")
-    def test_06_wap_getValidate(self):
-        """https://account.yunshuxie.com/v1/validate/wap/getValidate.htm<br/>{"phone":phonenum,"callback":"Zepto1558929540208"}"""
-        url = r"https://account.yunshuxie.com/v1/validate/wap/getValidate.htm"
-        params = {"phone":self.phonenum,"callback":"__jp10"}
-        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
-        resp = self.session.get(url=url,params=params)  #发送验证码
-        logging.info(url + lianjiefu + resp.text + fengefu)
-        print "发送验证码:"+resp.content +"<br/>"
-        expect = {"code":"0"}
-        result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
-        assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],Really=result["code"])
-    def test_07_wap_validateKey(self):
-        """https://account.yunshuxie.com/v1/validate/wap/validateKey.htm<br/>{"phone":phonenum,"validate":captcah,"callback":"Zepto1558929540208","activityId":""}"""
-        self.redis_host = self.s.get_env("beta").split(":") if self.env_flag == "beta" else self.s.get_env("prod_stage").split(":")
-        r = redis.Redis(host=self.redis_host[0], port=int(self.redis_host[1]), password="yunshuxie1029Password")
-        redis_shell = "code_5_"+self.phonenum
-        captcah = r.get(redis_shell)
-        url = r"https://account.yunshuxie.com/v1/validate/wap/validateKey.htm"
-        params = {"phone":self.phonenum,"validate":captcah,"callback":"Zepto1558929540208","activityId":""}
-        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
-        resp = self.session.get(url=url,params=params)  #发送验证码
-        logging.info(url + lianjiefu + resp.text + fengefu)
-        print "获取验证码{capth}:".format(capth=captcah) + resp.content +"<br/>"
-        expect = {"code":"0"}
-        result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
-        assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],Really=result["code"])
-    def test_08_order_create(self):
+    # def test_06_wap_getValidate(self):
+    #     """https://account.yunshuxie.com/v1/validate/wap/getValidate.htm<br/>{"phone":phonenum,"callback":"Zepto1558929540208"}"""
+    #     url = r"https://account.yunshuxie.com/v1/validate/wap/getValidate.htm"
+    #     params = {"phone":self.phonenum,"callback":"__jp10"}
+    #     logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+    #     resp = self.session.get(url=url,params=params)  #发送验证码
+    #     logging.info(url + lianjiefu + resp.text + fengefu)
+    #     print "发送验证码:"+resp.content +"<br/>"
+    #     expect = {"code":"0"}
+    #     result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
+    #     assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],Really=result["code"])
+    # def test_07_wap_validateKey(self):
+    #     """https://account.yunshuxie.com/v1/validate/wap/validateKey.htm<br/>{"phone":phonenum,"validate":captcah,"callback":"Zepto1558929540208","activityId":""}"""
+    #     self.redis_host = self.s.get_env("beta").split(":") if self.env_flag == "beta" else self.s.get_env("prod_stage").split(":")
+    #     r = redis.Redis(host=self.redis_host[0], port=int(self.redis_host[1]), password="yunshuxie1029Password")
+    #     redis_shell = "code_5_"+self.phonenum
+    #     captcah = r.get(redis_shell)
+    #     url = r"https://account.yunshuxie.com/v1/validate/wap/validateKey.htm"
+    #     params = {"phone":self.phonenum,"validate":captcah,"callback":"Zepto1558929540208","activityId":""}
+    #     logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+    #     resp = self.session.get(url=url,params=params)  #发送验证码
+    #     logging.info(url + lianjiefu + resp.text + fengefu)
+    #     print "获取验证码{capth}:".format(capth=captcah) + resp.content +"<br/>"
+    #     expect = {"code":"0"}
+    #     result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
+    #     assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],Really=result["code"])
+    def test_07_order_create(self):
         """https://pay.yunshuxie.com/v6/order/create.htm<br/>{"phone":"phoneNum,"customizeGroupId":"-1","phId":productCourseHoursId,<br/>"gId":"-1",pId": productId,"pType": "1","productType": "73","channelId": "AliPay",<br/>"cSn":"","sk":"","grade":"","addressId":"-1","activityId":"-1"}"""
         for productCourseHoursId,productId  in globals_values:
             url = r"https://pay.yunshuxie.com/v6/order/create.htm"  # 生成支付订单
@@ -143,6 +143,6 @@ class KanTuXieHua_Test(unittest.TestCase):
             assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
     @classmethod
     def tearDownClass(self):
-        del globals()["globals_values"]
+        globals().pop("globals_values")
 if __name__ == "__main__":
     unittest.main()

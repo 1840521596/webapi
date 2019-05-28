@@ -37,6 +37,7 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)
         logging.info(url + lianjiefu + resp.text + fengefu)
+        print "课程价格查询:" + resp.content + "<br/>"
         result = json.loads(re.findall("{.*}",resp.content)[0], encoding="utf8")
         assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
         values = [course["productId"] for course in result["data"]]
@@ -51,6 +52,7 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             resp = self.session.get(url=url,params=params)
             logging.info(url + lianjiefu + resp.text + fengefu)
+            print "课程年级查询:" + resp.content + "<br/>"
             result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
             assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
             productId_grade[productId] = result["data"]
@@ -65,6 +67,7 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
                 logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
                 resp = self.session.get(url=url, params=params)
                 logging.info(url + lianjiefu + resp.text + fengefu)
+                print "课程日期查询:" + resp.content + "<br/>"
                 result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
                 params["data"] = result["data"]
                 list_params.append(params)
@@ -78,6 +81,7 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             resp = self.session.get(url=url, params=params)
             logging.info(url + lianjiefu + resp.text + fengefu)
+            print "课程是否购买查询:" + resp.content + "<br/>"
             result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
             assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
 
@@ -96,6 +100,6 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
                     assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
     @classmethod
     def tearDownClass(self):
-        del globals()["globals_values"]
+        globals().pop("globals_values")
 if __name__ == "__main__":
     unittest.main()
