@@ -11,6 +11,7 @@ from log import TestLog,fengefu,lianjiefu
 from getConfig import ReadConfig
 logging = TestLog().getlog()
 class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
+    """每日一句古诗文->销售查询->查询课程信息-><br/>发送验证码->校验验证码->个人购买全期课程"""
     @classmethod
     def setUpClass(self):
         self.s = ReadConfig()
@@ -24,7 +25,7 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         header = {"Connection": "keep-alive","Content-Type": "application/x-www-form-urlencoded","Cache-Control": "no-cache",
                   "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 Safari/601.1 wechatdevtools/1.02.1904090 MicroMessenger/6.7.3 Language/zh_CN webview/15578306374265793 webdebugger port/22562"}
         self.session.headers = header
-        cookies = {"env_flag": "prod", "env_num": ""}
+        cookies = {"env_flag":self.env_flag , "env_num": self.env_num}
         self.session.cookies = requests.utils.cookiejar_from_dict(cookies)
         self.pattern = "{\"global.*}"
         self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码

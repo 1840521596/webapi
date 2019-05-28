@@ -30,17 +30,34 @@
 # resp = session.post(url,data=data)
 # print resp.content
 
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# auth : pangguoping
 
-import unittest
-class wc(unittest.TestCase):
-    wc = ""
-    @classmethod
-    def setUpClass(self):
-        globals()["wc"]="rqewr"
-    def test_wc(self):
-        s = wc
-        print s
+import pika
 
-    @classmethod
-    def tearDownClass(self):
-        print "tearDown"
+# ########################## 消费者 ##########################
+credentials = pika.PlainCredentials('admin', 'admin')
+# 连接到rabbitmq服务器
+connection = pika.BlockingConnection(pika.ConnectionParameters('172.17.1.194',5672,'/',credentials))
+channel = connection.channel()
+
+# 声明消息队列，消息将在这个队列中进行传递。如果队列不存在，则创建
+channel.queue_declare(queue='wzg')
+
+
+# 定义一个回调函数来处理，这边的回调函数就是将信息打印出来。
+def callback(ch, method, properties, body):
+    print(" [x] Received %r" % body)
+
+
+# 告诉rabbitmq使用callback来接收信息
+channel.basic_consume(callback,
+                      queue='hello',
+                      no_ack=True)
+ # no_ack=True表示在回调函数中不需要发送确认标识
+
+print(' [*] Waiting for messages. To exit press CTRL+C')
+
+# 开始接收信息，并进入阻塞状态，队列里有信息才会调用callback进行处理。按ctrl+c退出。
+channel.start_consuming()

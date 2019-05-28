@@ -11,6 +11,7 @@ from log import TestLog,fengefu,lianjiefu
 from getConfig import ReadConfig
 logging = TestLog().getlog()
 class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
+    """每日一段古诗文素材课->销售查询->查询课程信息-><br/>查询1-2年级课程->查询3-4年级课程->查询5-6年级课程-><br/>查询优惠券-><br/>课程购买查询->发送验证码->校验验证码->个人购买全期课程"""
     globals_values = ""
     @classmethod
     def setUpClass(self):
