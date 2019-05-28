@@ -49,7 +49,7 @@ def runDatasApiTest_yunwei():
 			msg = {"code":200,"Msg":"执行成功","url":r"http://uwsgi.sys.bandubanxie.com/Report",
 				   "Error":result["Error"],"Failure":result["Failure"],"Success":result["Success"]}
 			if result["Error"] != 0 or result["Failure"] !=0:
-				message = """《{project_cn}》接口测试报告存在失败用例，请访问 http://uwsgi.sys.bandubanxie.com/Report 查看，错误数量：{error} 个""".format(project_cn=project,error=result["Error"])
+				message = """《{project_cn}》接口测试报告存在失败用例，请访问 http://uwsgi.sys.bandubanxie.com/Report 查看，脚本错误数量：{error} 个;失败数量：{failure}""".format(project_cn=project,error=result["Error"],failure=result["Failure"])
 				sendMsg(message,["18519118952"])
 		else:
 			raise Exception("{project}不存在".format(project=project))

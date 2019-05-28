@@ -36,28 +36,20 @@
 
 import pika
 
-# ########################## 消费者 ##########################
-credentials = pika.PlainCredentials('admin', 'admin')
-# 连接到rabbitmq服务器
-connection = pika.BlockingConnection(pika.ConnectionParameters('172.17.1.194',5672,'/',credentials))
-channel = connection.channel()
+username = 'admin'#指定远程rabbitmq的用户名密码
+pwd = 'ysx@1ppt'
+user_pwd = pika.PlainCredentials(username, pwd)
+s_conn = pika.BlockingConnection(pika.ConnectionParameters(host='172.17.1.183', port=5672,credentials=user_pwd))#创建连接
+chan = s_conn.channel()#在连接上创建一个频道
 
-# 声明消息队列，消息将在这个队列中进行传递。如果队列不存在，则创建
-channel.queue_declare(queue='wzg')
-
-
-# 定义一个回调函数来处理，这边的回调函数就是将信息打印出来。
-def callback(ch, method, properties, body):
-    print(" [x] Received %r" % body)
+chan.queue_declare(queue='HA_wxOrderQueue')#声明一个队列，生产者和消费者都要声明一个相同的队列，用来防止万一某一方挂了，另一方能正常运行
 
 
-# 告诉rabbitmq使用callback来接收信息
-channel.basic_consume(callback,
-                      queue='hello',
-                      no_ack=True)
- # no_ack=True表示在回调函数中不需要发送确认标识
+def callback(ch,method,properties,body): #定义一个回调函数，用来接收生产者发送的消息
+    print("[消费者] recv %s" % body)
 
-print(' [*] Waiting for messages. To exit press CTRL+C')
-
-# 开始接收信息，并进入阻塞状态，队列里有信息才会调用callback进行处理。按ctrl+c退出。
-channel.start_consuming()
+chan.basic_consume(callback,  #调用回调函数，从队列里取消息
+                   queue='HA_wxOrderQueue',#指定取消息的队列名
+                   no_ack=True) #取完一条消息后，不给生产者发送确认消息，默认是False的，即  默认给rabbitmq发送一个收到消息的确认，一般默认即可
+print('[消费者] waiting for msg .')
+chan.start_consuming()#开始循环取消息

@@ -96,52 +96,9 @@ class JingPinKeCheng_Test(unittest.TestCase):
             #[{"saleUrl": url ,"productName": str ,"resp": html }]
         self.msg = """\n        Except:  {Except}-*-\n        Really:  {Really}"""  #校验HTTP返回代码
 
-
-
-    def test_4_MRYJ_xiaoxuegaofenzuowenbihuichengyuku(self):
-        """每日一句 - -《小学高分作文必会成语课》课程信息-个人购买"""
-        for project in self.productDict[u"每日一句"]:
-            for course_info in project:
-                if course_info["productName"] == u"小学高分作文必会成语课":
-                    self.resp = requests.get(course_info["saleUrl"], headers=self.headers, cookies=self.cookies)
-                    logging.info(course_info["saleUrl"] + lianjiefu + self.resp.text + fengefu)
-                    productPosters_resp = requests.get(course_info["productPosters"], headers=self.headers,
-                                                       cookies=self.cookies)
-                    logging.info(course_info["productPosters"] + lianjiefu + productPosters_resp.text + fengefu)
-                    banerPosters_resp = requests.get(course_info["banerPosters"], headers=self.headers,
-                                                     cookies=self.cookies)
-                    logging.info(course_info["banerPosters"] + lianjiefu + banerPosters_resp.text + fengefu)
-                    assert self.resp.status_code == 200
-                    assert productPosters_resp.status_code == 200
-                    assert banerPosters_resp.status_code == 200
-
-
-                    url = r"https://pay.yunshuxie.com/v6/order/create.htm"  # 生成支付订单
-                    params = {"phone": "{}".format(self.phoneNum),"customizeGroupId": "-1",
-                              "phId": productCourseHoursId,"gId": "-1","pId": productId,"pType": "1","productType": 72,
-                              "channelId": "AliPay","cSn": "","sk": "","grade": "4","addressId": "-1","activityId": "-1"}
-                    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
-                    self.resp = requests.get(url=url,headers=headers,params=params,cookies=self.cookies)
-                    print self.resp.content
-                    logging.info(url + lianjiefu + self.resp.text + fengefu)
-                    result = json.loads(self.resp.content, encoding="utf8")
-                    assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
     def test_5_MZDXXSK_ywhxsysjzbk(self):
         """名著读写线上课 - -《语文核心素养暑期直播课》课程信息-个人购买"""
-        for project in self.productDict[u"名著读写线上课"]:
-            for course_info in project:
-                if course_info["productName"] == u"语文核心素养暑期直播课":
-                    self.resp = requests.get(course_info["saleUrl"], headers=self.headers, cookies=self.cookies)
-                    logging.info(course_info["saleUrl"] + lianjiefu + self.resp.text + fengefu)
-                    productPosters_resp = requests.get(course_info["productPosters"], headers=self.headers,
-                                                       cookies=self.cookies)
-                    logging.info(course_info["productPosters"] + lianjiefu + productPosters_resp.text + fengefu)
-                    banerPosters_resp = requests.get(course_info["banerPosters"], headers=self.headers,
-                                                     cookies=self.cookies)
-                    logging.info(course_info["banerPosters"] + lianjiefu + banerPosters_resp.text + fengefu)
-                    assert self.resp.status_code == 200
-                    assert productPosters_resp.status_code == 200
-                    assert banerPosters_resp.status_code == 200
+
                     url = r"https://pay.yunshuxie.com/v6/springReadMethod/query/summerPrice.htm"
                     params = {"pt":"-1","_":"1557217121011","callback":"Zepto1557307951251"}
                     self.resp = requests.get(url=url, headers=self.headers, params=params, cookies=self.cookies)
