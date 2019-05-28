@@ -31,7 +31,7 @@ def get_crm_cookie(env_flag,env_num):
     with open("captcha.jpg","rb") as f:  # 打开图片
         base64_img = base64.b64encode(f.read())  # 转换成base64格式图片
         data = {"image_base64":base64_img,
-            "app_id":"491861472"}
+            "app_id":"491861472@NDkxODYxNDcy"}
         url = r"https://nmd-ai.juxinli.com/ocr_captcha"
         captcha_header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
                               "Content-Type":"application/json"}
