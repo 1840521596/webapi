@@ -1,6 +1,5 @@
 #-*-coding:utf-8 -*-
 from .. import db
-from datetime import datetime
 class Project(db.Model):
     __tablename__ = "project_api"  # 表名
     id = db.Column(db.Integer,primary_key=True)#序号ID
@@ -120,12 +119,15 @@ class Test_Env(db.Model):
 
 
 class Test_User_Reg(db.Model):
-    __tablename__ = "test_reg_user"
+    __tablename__ = "telephone"
     id = db.Column(db.Integer,primary_key=True) #序号ID
-    regType = db.Column(db.String(100)) #注册类型
     phone = db.Column(db.String(11)) #手机号
-    pwd = db.Column(db.String(6),default="123456") #密码
-    memberType = db.Column(db.String(2)) #用户身份
-    email = db.Column(db.String(100),default="automation@yunshuxie.com") #邮箱
-    remark = db.Column(db.Text) #备注
-    nickName = db.Column(db.String(100)) #昵称（第三方或自动生成）
+    type = db.Column(db.Integer,default=0) #注册类型
+    env = db.Column(db.String(10)) #环境
+    description = db.Column(db.Text) #备注
+    def __init__(self,phone,type,env):
+        self.phone = phone
+        self.type = type
+        self.env = env
+    def __repr__(self):
+        return '<Case %r>'%(self.telephone)

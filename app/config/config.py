@@ -4,13 +4,13 @@
 @author: guohongjie
 """
 import os
-
 max_connec_redis=10
 test_fail_try_num=3
 PageShow=25#这里配置的就是每个页显示多少条数据
 OneAdminCount=10 #设置项目管理员的数量
 Config_daoru_xianzhi=50#配置可以导入限制
 TEST_FOLDER = './app/base/pythonProject'
+
 
 class TestingConfig(object):#研发环境配置
 	SECRET_KEY = 'guohongjie'
@@ -21,6 +21,9 @@ class TestingConfig(object):#研发环境配置
 	DEBUG = True
 	SQLALCHEMY_TRACK_MODIFICATIONS = True
 	JSON_AS_ASCII = False
+	REDIS_HOST = "localhost"
+	REDIS_PORT = 6379
+	REDIS_DB = 0
 	@staticmethod
 	def init_app(app):
 		pass
@@ -35,6 +38,8 @@ class Project(object):
 	UPLOAD_FOLDER = '/upload'
 	SQLALCHEMY_TRACK_MODIFICATIONS = True
 	JSON_AS_ASCII = False
+	REDIS_HOST = "localhost"
+	REDIS_PORT = 6379
 	@staticmethod
 	def init_app(app):
 		pass

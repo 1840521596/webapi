@@ -49,7 +49,7 @@ class KanTuXieHua_Test(unittest.TestCase):
         url = r"https://wap.yunshuxie.com/v1/common/api/date.htm"
         params = {"callback":"Zepto1559011256179"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-        resp = self.session.get(url=url, params=params)
+        1resp = self.session.get(url=url, params=params)
         print "查询系统时间:" + resp.content + "<br/>"
         logging.info(url + lianjiefu + resp.text + fengefu)
         result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")

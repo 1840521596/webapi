@@ -54,11 +54,13 @@ def run_yunwei_case(project_en,env_num,env_flag,description,project_cn):
     """
     # 运行测试用例
     filepath = TEST_FOLDER + "/suite/{project}".format(project=project_en)
-    #year = datetime.datetime.now().year
     month = datetime.datetime.now().month
     day = datetime.datetime.now().day
     filePath = TEST_FOLDER + "/ReportHtml/{month}/{day}".format(month=month,day=day)
-    fileName = "{project}.html".format(project=project_cn)
+    if env_num:
+        fileName = "{project}_{env_flag}_{env_num}.html".format(project=project_cn,env_flag=env_flag,env_num=env_num)
+    else:
+        fileName = "{project}_{env_flag}.html".format(project=project_cn, env_flag=env_flag)
     if not os.path.exists(filePath):
         os.makedirs(filePath)
     fp = filePath+"/"+fileName

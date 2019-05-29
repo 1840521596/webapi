@@ -3,10 +3,8 @@
 import requests
 import unittest
 import json
-import urllib
+import redis
 from requests_toolbelt import MultipartEncoder
-#sys.path.append("/app/base/pythonProject/base")
-#sys.path.append("../../base")
 from log import TestLog,fengefu,lianjiefu
 from getConfig import ReadConfig
 from getCrmCookies import get_crm_cookie
@@ -18,13 +16,14 @@ class Ysx_Make_User(unittest.TestCase):
         """起始方法
         #:return:  cookies """
         s = ReadConfig()
-        self.env_flag = s.get_env("env_flag")
-        self.env_num = s.get_env("env_num")
-        self.phoneNumList =  s.get_params("phonenumlist")
-        self.employeeTypes = s.get_params("employeetypes")
-        self.userNames = ",".join(["测试_"+userName for userName in self.phoneNumList.split(",")])
         self.admin_pwd = s.get_admin("pwd")
         self.admin_usernmae = s.get_admin("username")
+        self.redis = redis.Redis(host="localhost",port=6379)
+        self.env_flag = self.redis.get("make_user_env_flag")
+        self.env_num = self.redis.get("make_user_env_num")
+        self.phoneNumList = self.redis.get("make_user_phones")
+        self.employeeTypes = self.redis.get("make_user_employeetypes")
+        self.userNames = ",".join(["测试_"+userName for userName in self.phoneNumList.split(",")])
         self.session = requests.Session()
         request_retry = requests.adapters.HTTPAdapter(max_retries=3)
         self.session.mount("https://", request_retry)
@@ -82,6 +81,6 @@ class Ysx_Make_User(unittest.TestCase):
     def tearDownClass(self):
         """测试结束后执行,断言Req==Resp
         :return:  True OR False"""
-        pass
+        del self.redis
 if __name__ == "__main__":
     unittest.main()

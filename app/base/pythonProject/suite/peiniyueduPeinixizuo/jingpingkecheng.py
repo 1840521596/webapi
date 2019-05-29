@@ -96,48 +96,6 @@ class JingPinKeCheng_Test(unittest.TestCase):
             #[{"saleUrl": url ,"productName": str ,"resp": html }]
         self.msg = """\n        Except:  {Except}-*-\n        Really:  {Really}"""  #校验HTTP返回代码
 
-    def test_5_MZDXXSK_ywhxsysjzbk(self):
-        """名著读写线上课 - -《语文核心素养暑期直播课》课程信息-个人购买"""
-
-                    url = r"https://pay.yunshuxie.com/v6/springReadMethod/query/summerPrice.htm"
-                    params = {"pt":"-1","_":"1557217121011","callback":"Zepto1557307951251"}
-                    self.resp = requests.get(url=url, headers=self.headers, params=params, cookies=self.cookies)
-                    logging.info(url + lianjiefu + self.resp.text + fengefu)
-                    result = json.loads(re.findall("{.*}", self.resp.content)[0], encoding="utf8")
-                    productId = result["data"][0]["productId"]  # 选择课程，默认第一个  7652
-                    assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-                    url = r"https://pay.yunshuxie.com/v6/springReadMethod/query/summerGrade.htm"
-                    params = {"productId":productId,"_":"1557217120957","callback":"Zepto1557308333255"}
-                    self.resp = requests.get(url=url, headers=self.headers, params=params, cookies=self.cookies)
-                    logging.info(url + lianjiefu + self.resp.text + fengefu)
-                    result = json.loads(re.findall("{.*}", self.resp.content)[0], encoding="utf8")
-                    assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-                    grade = result["data"][0]["grade"]   # 选择年级，默认第一个  ,3,
-                    url = r"https://pay.yunshuxie.com/v6/springReadMethod/query/summerCourse.htm"
-                    params = {"productId": productId,"grade":grade, "_": "1557217120957", "callback": "Zepto1557308333258"}
-                    self.resp = requests.get(url=url, headers=self.headers, params=params, cookies=self.cookies)
-                    logging.info(url + lianjiefu + self.resp.text + fengefu)
-                    result = json.loads(re.findall("{.*}", self.resp.content)[0], encoding="utf8")
-                    assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-                    productCourseHoursId = result["data"][0][0]["productCourseHoursId"]
-                    url= r"https://pay.yunshuxie.com/v6/springReadMethod/query/summerPay.htm"
-                    params = {"phone":self.phoneNum,"productId":productId,"grade":grade,"callback":"__jp1"}
-                    self.resp = requests.get(url=url, headers=self.headers, params=params, cookies=self.cookies)
-                    logging.info(url + lianjiefu + self.resp.text + fengefu)
-                    assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-                    url = r"https://account.yunshuxie.com/v1/validate/wap/newplat_code_reset.htm?phone={phone}&type=2".format(phone=self.phoneNum)
-                    self.resp = requests.get(url=url,headers=self.headers,cookies=self.cookies)  # 获取验证码，自动完成{"msg":"验证码为123456"}
-                    logging.info(url + lianjiefu + self.resp.text + fengefu)
-                    url = r"https://pay.yunshuxie.com/v6/order/create.htm"  # 生成支付订单
-                    params = {"phone":self.phoneNum,"phId":productCourseHoursId,"gId":"-1","productId":productId,
-                              "pType":"1","productType":"76","channelId":"AliPay","cSn":"","sk":"",
-                              "grade":grade,"customizeGroupId":"","addressId":"-1","activityId":"-1"}
-                    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
-                    self.resp = requests.get(url=url,headers=headers,params=params,cookies=self.cookies)
-                    print self.resp.content
-                    logging.info(url + lianjiefu + json.dumps(params) + lianjiefu + self.resp.text + fengefu)
-                    result = json.loads(self.resp.content, encoding="utf8")
-                    assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
     def test_6_MZDXXSK_mzjdk(self):
         """名著读写线上课 - -《名著精读课》课程信息-个人购买"""
         for project in self.productDict[u"名著读写线上课"]:
