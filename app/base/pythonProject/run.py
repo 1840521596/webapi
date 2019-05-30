@@ -45,7 +45,7 @@ def run_test_case(project_en,env_num,env_flag,description,project_cn):
     runner.run(get_allcase(project_en))
 
 
-def run_yunwei_case(project_en,env_num,env_flag,description,project_cn):
+def run_yunwei_case(project_en,env_num,env_flag,description,project_cn,**kwargs):
     """
     :param project:  传入{project},创建 suite路径/test_setting路径下{project}文件夹
     :param env_num:  测试环境号
