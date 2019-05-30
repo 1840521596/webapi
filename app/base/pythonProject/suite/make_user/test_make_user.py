@@ -5,9 +5,9 @@ import unittest
 import json
 import redis
 from requests_toolbelt import MultipartEncoder
-from log import TestLog,fengefu,lianjiefu
-from getConfig import ReadConfig
-from getCrmCookies import get_crm_cookie
+from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
+from app.base.pythonProject.base.getConfig import ReadConfig
+from app.base.pythonProject.base.getCrmCookies import get_crm_cookie
 logging = TestLog().getlog()
 class Ysx_Make_User(unittest.TestCase):
     """短信服务"""

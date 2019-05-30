@@ -4,21 +4,18 @@ import requests
 import unittest
 import re
 import json
-import redis
-# sys.path.append("./app/base/pythonProject/base")
-# sys.path.append("../../base")
-from log import TestLog,fengefu,lianjiefu
-from getConfig import ReadConfig
+from app.base.pythonProject.base.log import fengefu,lianjiefu,TestLog
+from app.base.pythonProject.base.py_redis import MyRedis
 logging = TestLog().getlog()
 class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
     """<br/>每日一句古诗文->销售查询->查询课程信息-><br/>发送验证码->校验验证码->个人购买全期课程"""
     globals_values = ""
     @classmethod
     def setUpClass(self):
-        self.s = ReadConfig()
-        self.env_flag = self.s.get_env("env_flag")
-        self.env_num = self.s.get_env("env_num")
-        self.phonenum = self.s.get_params("phonenum")
+        redis = MyRedis()
+        self.env_flag = redis.str_get("peiniyueduPeinixizuo_env_flag")
+        self.env_num = redis.str_get("peiniyueduPeinixizuo_env_num")
+        self.phonenum = redis.str_get("make_user_phones")
         self.session = requests.Session()
         request_retry = requests.adapters.HTTPAdapter(max_retries=3)
         self.session.mount("https://", request_retry)

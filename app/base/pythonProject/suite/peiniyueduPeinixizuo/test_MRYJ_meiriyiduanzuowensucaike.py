@@ -4,11 +4,10 @@ import requests
 import unittest
 import re
 import json
-import redis
-# sys.path.append("./app/base/pythonProject/base")
-# sys.path.append("../../base")
-from log import TestLog,fengefu,lianjiefu
-from getConfig import ReadConfig
+import redis as red
+from app.base.pythonProject.base.log import fengefu,lianjiefu,TestLog
+from app.base.pythonProject.base.py_redis import MyRedis
+from app.base.pythonProject.base.getConfig import ReadConfig
 logging = TestLog().getlog()
 class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
     """<br/>每日一段古诗文素材课->销售查询->查询课程信息-><br/>查询1-2年级课程->查询3-4年级课程->查询5-6年级课程-><br/>查询优惠券-><br/>课程购买查询->发送验证码->校验验证码->个人购买全期课程"""
@@ -16,9 +15,10 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         s = ReadConfig()
-        self.env_flag = s.get_env("env_flag")
-        self.env_num = s.get_env("env_num")
-        self.phonenum = s.get_params("phonenum")
+        redis = MyRedis()
+        self.env_flag = redis.str_get("peiniyueduPeinixizuo_env_flag")
+        self.env_num = redis.str_get("peiniyueduPeinixizuo_env_num")
+        self.phonenum = redis.str_get("make_user_phones")
         self.session = requests.Session()
         request_retry = requests.adapters.HTTPAdapter(max_retries=3)
         self.session.mount("https://", request_retry)
@@ -31,7 +31,7 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
         self.pattern = "{\"global.*}"
         self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
         self.redis_host = s.get_env("beta").split(":") if self.env_flag == "beta" else s.get_env("prod_stage").split(":")
-        r = redis.Redis(host=self.redis_host[0], port=int(self.redis_host[1]), password="yunshuxie1029Password")
+        r = red.Redis(host=self.redis_host[0], port=int(self.redis_host[1]), password="yunshuxie1029Password")
         r.set("021ZaJtG17hM310SblvG1NZutG1ZaJtQ",'o38sIv_7FQInsBKJEUExn7wYxoHc&21_bk4dQIEFnYz5w8zJwDqan84UFmV_XVKEO5MJf7fv1pGR8tRH2MAtxpk0Pc1SqDwe5S90CE6TQo1wd346qEA5FQ')
         globals()["globals_values"] = ""
     def test_01_query_saleman(self):

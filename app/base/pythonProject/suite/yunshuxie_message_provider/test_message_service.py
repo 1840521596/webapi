@@ -6,10 +6,9 @@ import json
 import hashlib
 import redis
 import urllib
-#sys.path.append("./app/base/pythonProject/base")
-#sys.path.append("../../base")
-from log import TestLog,fengefu,lianjiefu
-from getConfig import ReadConfig
+from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
+from app.base.pythonProject.base.getConfig import ReadConfig
+from app.base.pythonProject.base.py_redis import MyRedis
 logging = TestLog().getlog()
 class Ysx_Message_Service(unittest.TestCase):
     """短信服务"""
@@ -18,8 +17,9 @@ class Ysx_Message_Service(unittest.TestCase):
         """起始方法
         #:return:  cookies """
         s = ReadConfig()
-        env_flag = s.get_env("env_flag")
-        env_num = s.get_env("env_num")
+        redis = MyRedis()
+        env_flag = redis.str_get("yunshuxie_message_provider_env_flag")
+        env_num = redis.str_get("yunshuxie_message_provider_env_num")
         self.redis_host = s.get_env("beta").split(":") if env_flag == "beta" else s.get_env("prod_stage").split(":")
         logging.info("self.redis_host :"+self.redis_host[0]+self.redis_host[1])
         self.session = requests.Session()

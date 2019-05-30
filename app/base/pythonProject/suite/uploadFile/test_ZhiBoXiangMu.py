@@ -5,8 +5,8 @@ import unittest
 import re
 import json
 from requests_toolbelt import MultipartEncoder
-from log import TestLog,fengefu,lianjiefu
-from py_redis import MyRedis
+from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
+from app.base.pythonProject.base.py_redis import MyRedis
 logging = TestLog().getlog()
 class zhiBoXiangMu_Test(unittest.TestCase):
     """直播项目/添加/查询/删除"""
