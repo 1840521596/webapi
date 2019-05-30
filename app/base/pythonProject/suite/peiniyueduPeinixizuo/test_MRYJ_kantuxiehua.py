@@ -6,19 +6,23 @@ import re
 import json
 import redis
 # sys.path.append("../../base")
-from log import TestLog,fengefu,lianjiefu
-from getConfig import ReadConfig
-logging = TestLog().getlog()
+from app.base.pythonProject.base.log import fengefu,lianjiefu,logging
+# from getConfig import ReadConfig
+
 class KanTuXieHua_Test(unittest.TestCase):
     """<br/>看图写话60讲->销售查询->系统时间->查询课程信息->查询优惠券-><br/>课程购买查询->发送验证码->校验验证码->个人购买全期课程"""
     globals_values = ""
     @classmethod
     def setUpClass(self):
-        self.s = ReadConfig()
-        self.env_flag = self.s.get_env("env_flag")
-        self.env_num = self.s.get_env("env_num")
-        self.phonenum = self.s.get_params("phonenum")
-        self.session = requests.Session()
+        # self.s = ReadConfig()
+        # self.env_flag = self.s.get_env("env_flag")
+        # self.env_num = self.s.get_env("env_num")
+        # self.phonenum = self.s.get_params("phonenum")
+        r = redis.Redis(host="localhost",port=6379)
+        self.env_flag = r.get("peiniyueduPeinixizuo_env_flag")
+        self.env_num = r.get("peiniyueduPeinixizuo_env_num")
+        self.env_num = r.get("make_user_phones")
+        self.phonenum = requests.Session()
         request_retry = requests.adapters.HTTPAdapter(max_retries=3)
         self.session.mount("https://", request_retry)
         self.session.mount("http://", request_retry)

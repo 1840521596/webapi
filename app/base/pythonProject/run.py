@@ -66,7 +66,8 @@ def run_yunwei_case(project_en,env_num,env_flag,description,project_cn,**kwargs)
         os.makedirs(filePath)
     fp = filePath+"/"+fileName
     fp = file(fp,"wb")
-    runner = HTMLTestRunnerCN.HTMLTestRunner(stream=fp, title="《"+project_cn+"》--接口测试报告", description=description,env_num=env_num,env_flag=env_flag)
+    new_phone = kwargs["new_phone"] if kwargs.has_key("new_phone") else None
+    runner = HTMLTestRunnerCN.HTMLTestRunner(stream=fp, title="《"+project_cn+"》--接口测试报告", description=description,env_num=env_num,env_flag=env_flag,new_phone=new_phone)
     test_result = runner.run(get_allcase(project_en))
     error_count,failure_count,success_count =test_result.error_count,test_result.failure_count,test_result.success_count
     return {"Error":error_count,"Failure":failure_count,"Success":success_count}

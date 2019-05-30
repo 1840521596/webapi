@@ -5,8 +5,8 @@ import unittest
 import re
 import json
 from requests_toolbelt import MultipartEncoder
-from getConfig import ReadConfig
 from log import TestLog,fengefu,lianjiefu
+from py_redis import MyRedis
 logging = TestLog().getlog()
 class zhiBoKeCheng_Test(unittest.TestCase):
     #"course_schema"
@@ -14,12 +14,11 @@ class zhiBoKeCheng_Test(unittest.TestCase):
     def setUpClass(self):
         """起始方法
         #:return:  cookies """
-        s = ReadConfig()
-        env_flag = s.get_env("env_flag")
-        env_num = s.get_env("env_num")
-        phoneNum = s.get_params("phoneNum")
-        userName = s.get_admin("userName")
-        pwd = s.get_admin("pwd")
+        redis = MyRedis()
+        env_flag = redis.str_get("uploadFile_env_flag")
+        env_num = redis.str_get("uploadFile_env_num")
+        userName = redis.str_get("username")
+        pwd = redis.str_get("pwd")
         self.cookies = requests.cookies.RequestsCookieJar()
         self.cookies.set('env_flag', env_flag)  #设置测试环境
         self.cookies.set("env_num",env_num)  #设置环境号
@@ -28,7 +27,7 @@ class zhiBoKeCheng_Test(unittest.TestCase):
         caseHeaders = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9","Connection": "keep-alive","Host": "www.yunshuxie.com","Upgrade-Insecure-Requests": "1"}
         self.resp = requests.post(self.url, data=data, headers=caseHeaders ,cookies=self.cookies)  #登录admin测试环境,记录cookies
         print self.resp.content
-        logging.info(self.url + lianjiefu + self.resp.text + fengefu)
+        #logging.info(self.url + lianjiefu + self.resp.text + fengefu)
         self.cookies.update(self.resp.cookies)
     def test_1_TianJiaZhiBKeCheng(self):
         """添加直播课程"""
@@ -51,7 +50,7 @@ class zhiBoKeCheng_Test(unittest.TestCase):
         caseHeaders["Content-Type"] = data.content_type
         self.resp = requests.post(self.url, data=data, headers=caseHeaders,cookies=self.cookies)
         print self.resp.content
-        logging.info(self.url + lianjiefu + self.resp.text + fengefu)
+        #logging.info(self.url + lianjiefu + self.resp.text + fengefu)
         msg = """
         Except:  {Except}-*-
         Really:  {Really}"""  #校验HTTP返回代码
@@ -88,14 +87,14 @@ class zhiBoKeCheng_Test(unittest.TestCase):
         caseHeaders = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","X-Requested-With": "XMLHttpRequest"}
         self.resp = requests.get(url=self.url,params=params,headers=caseHeaders,cookies=self.cookies)
         print self.resp.content
-        logging.info(self.url + lianjiefu + self.resp.text + fengefu)
+        #logging.info(self.url + lianjiefu + self.resp.text + fengefu)
         dict_resp = json.loads(self.resp.content)
         self.url = r"https://admin.yunshuxie.com/v1/admin/big_live/delete_bigliveCourse.htm"
         self.caseExpectDatas = {u"returnCode":u"0","returnMsg":u"操作成功",u"data":{}}
         for bigliveCourseId in  [query_msg["bigliveCourseId"] for query_msg in dict_resp["rows"]]:
             self.resp = requests.post(url=self.url,data={"bigliveCourseId":bigliveCourseId},headers=caseHeaders,cookies=self.cookies)
             print self.resp.content
-            logging.info(self.url + lianjiefu + self.resp.text + fengefu)
+            #logging.info(self.url + lianjiefu + self.resp.text + fengefu)
             respMsg = self.resp.content  # 返回值
             caseExpectDatas = self.caseExpectDatas  # xls 校验值
             msg = """\n        Except:  {Except}-*-\n        Really:  {Really}"""  #校验HTTP返回代码

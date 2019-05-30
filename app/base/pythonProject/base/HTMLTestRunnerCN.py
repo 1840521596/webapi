@@ -515,11 +515,12 @@ class _TestResult(TestResult):
 class HTMLTestRunner(Template_mixin):
     """
     """
-    def __init__(self, stream=sys.stdout, verbosity=1,title=None,description=None,tester=None,env_num=None,env_flag=None):
+    def __init__(self, stream=sys.stdout, verbosity=1,title=None,description=None,tester=None,env_num=None,env_flag=None,**kwargs):
         self.stream = stream
         self.verbosity = verbosity
         self.env_num = env_num
         self.env_flag = env_flag
+        self.phone = kwargs["new_phone"]
         if title is None:
             self.title = self.DEFAULT_TITLE
         else:
@@ -578,14 +579,25 @@ class HTMLTestRunner(Template_mixin):
             self.passrate = str("%.2f%%" % (float(result.success_count) / float(result.success_count + result.failure_count + result.error_count) * 100))
         else:
             status = 'none'
-        return [
+        if self.phone:
+            return [
             (u'测试人员', self.tester),
             (u'开始时间',startTime),
             (u'合计耗时',duration),
             (u'测试结果',status + "，通过率= "+self.passrate),
             (u'测试环境', self.env_flag),
-            (u'环境编号', self.env_num)
-        ]
+            (u'环境编号', self.env_num),
+            (u'测试号码', self.phone)
+            ]
+        else:
+            return [
+                (u'测试人员', self.tester),
+                (u'开始时间', startTime),
+                (u'合计耗时', duration),
+                (u'测试结果', status + "，通过率= " + self.passrate),
+                (u'测试环境', self.env_flag),
+                (u'环境编号', self.env_num),
+            ]
 
 
     def generateReport(self, test, result):

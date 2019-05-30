@@ -5,8 +5,8 @@ import unittest
 import re
 import json
 from requests_toolbelt import MultipartEncoder
-from getConfig import ReadConfig
 from log import TestLog,fengefu,lianjiefu
+from py_redis import MyRedis
 logging = TestLog().getlog()
 class zhiBoXiangMu_Test(unittest.TestCase):
     """直播项目/添加/查询/删除"""
@@ -14,12 +14,11 @@ class zhiBoXiangMu_Test(unittest.TestCase):
     def setUpClass(self):
         """起始方法
         #:return:  cookies """
-        s = ReadConfig()
-        env_flag = s.get_env("env_flag")
-        env_num = s.get_env("env_num")
-        phoneNum = s.get_params("phoneNum")
-        userName = s.get_admin("userName")
-        pwd = s.get_admin("pwd")
+        redis = MyRedis()
+        env_flag = redis.str_get("uploadFile_env_flag")
+        env_num = redis.str_get("uploadFile_env_num")
+        userName = redis.str_get("username")
+        pwd = redis.str_get("pwd")
         self.cookies = requests.cookies.RequestsCookieJar()
         self.cookies.set('env_flag', env_flag)  # 设置测试环境
         self.cookies.set("env_num", env_num)  # 设置环境号
