@@ -99,7 +99,7 @@ jQuery(document).ready(function ($) {
         $('.theme-popover').slideUp(200, function () {
             var _td = $("#tbdata").find("td");
         });
-        location.reload();
+        //location.reload();
     });
 //    $("body").delegate(".run", "click", function () {
 //        var _this = $(this);
