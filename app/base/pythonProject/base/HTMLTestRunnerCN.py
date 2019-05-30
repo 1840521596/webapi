@@ -520,7 +520,10 @@ class HTMLTestRunner(Template_mixin):
         self.verbosity = verbosity
         self.env_num = env_num
         self.env_flag = env_flag
-        self.phone = kwargs["new_phone"]
+        if kwargs.has_key("new_phone"):
+            self.phone = kwargs["new_phone"]
+        else:
+            self.phone = None
         if title is None:
             self.title = self.DEFAULT_TITLE
         else:

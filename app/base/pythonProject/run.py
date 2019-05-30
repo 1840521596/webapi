@@ -38,7 +38,7 @@ def run_test_case(project_en,env_num,env_flag,description,project_cn):
     filePath = TEST_FOLDER + "/ReportHtml/{month}/{day}".format(month=month,day=day)
     if not os.path.exists(filePath):
         os.makedirs(filePath)
-    fileName = "{project}.html".format(project=project_cn)
+    fileName = "{project}_{env_flag}.html".format(project=project_cn,env_flag=env_flag)
     fp = filePath+"/"+fileName
     fp = file(fp,"wb")
     runner = HTMLTestRunnerCN.HTMLTestRunner(stream=fp, title="《"+project_cn+"》--接口测试报告", description=description,env_num=env_num,env_flag=env_flag)
