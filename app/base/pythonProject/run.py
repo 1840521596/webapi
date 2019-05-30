@@ -57,10 +57,11 @@ def run_yunwei_case(project_en,env_num,env_flag,description,project_cn):
     month = datetime.datetime.now().month
     day = datetime.datetime.now().day
     filePath = TEST_FOLDER + "/ReportHtml/{month}/{day}".format(month=month,day=day)
-    if env_num:
-        fileName = "{project}_{env_flag}_{env_num}.html".format(project=project_cn,env_flag=env_flag,env_num=env_num)
-    else:
-        fileName = "{project}_{env_flag}.html".format(project=project_cn, env_flag=env_flag)
+    fileName = "{project}_{env_flag}.html".format(project=project_cn, env_flag=env_flag)
+    # if env_num:
+    #     fileName = "{project}_{env_flag}_{env_num}.html".format(project=project_cn,env_flag=env_flag,env_num=env_num)
+    # else:
+    #     fileName = "{project}_{env_flag}.html".format(project=project_cn, env_flag=env_flag)
     if not os.path.exists(filePath):
         os.makedirs(filePath)
     fp = filePath+"/"+fileName
