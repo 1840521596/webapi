@@ -31,7 +31,7 @@ def test_query():
         env = eval(env)
     try:
         if query_phone and env == None:
-            test_phones = db.session.query(Test_User_Reg.id,Test_User_Reg.phone,Test_User_Reg.env,
+            test_phones = db.session.query(Test_User_Reg.id,Test_User_Reg.phone,Test_User_Reg.type,
                                        Test_User_Reg.env,Test_User_Reg.description).filter(
                 Test_User_Reg.phone.like(query_phone+"%")).all()
         elif query_phone and env:
