@@ -158,7 +158,7 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
         url = r"https://pay.yunshuxie.com/v6/order/create.htm"
         for productHoursId,productId in globals_values:
             params = {"phone": "{}".format(self.phonenum), "customizeGroupId": "-1",
-                  "ysxOpenId": "osxBJ6MQ69yOMyhCejqj55SdKzyI", "phId": productHoursId,
+                  "ysxOpenId": "osxBJ6MQ69yOMyhCejqj55SdKzyI", "phId": productHoursId,"code":"021ZaJtG17hM310SblvG1NZutG1ZaJtQ",
                   "gId": "-1", "pId": productId, "pType": "1", "productType": "17", "channelId": "WxPay", "cSn": "",
                   "sk": "", "grade": "", "addressId": "-1", "activityId": "-1"}
             #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)

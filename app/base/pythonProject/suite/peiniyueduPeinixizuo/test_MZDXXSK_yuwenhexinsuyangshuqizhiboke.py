@@ -103,7 +103,7 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
         for course in globals_values:
             for course_data in course["data"]:
                 for course_phId in course_data:
-                    params = {"phone": self.phonenum, "phId": course_phId["productCourseHoursId"], "gId": "-1", "productId": course["productId"],"pType": "1", "productType": "76", "channelId": "WxPay", "cSn": "", "sk": "","grade":  course["grade"], "customizeGroupId": "", "addressId": "-1", "activityId": "-1"}
+                    params = {"phone": self.phonenum, "phId": course_phId["productCourseHoursId"], "gId": "-1", "productId": course["productId"],"pType": "1", "productType": "76", "channelId": "WxPay", "cSn": "", "sk": "","grade":  course["grade"], "customizeGroupId": "", "addressId": "-1", "activityId": "-1","code":"021ZaJtG17hM310SblvG1NZutG1ZaJtQ"}
                     logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
                     resp = self.session.get(url=url,params=params)
                     print "课程购买【phId】：{phId}--【pId】：{pId}:".format(phId=course_phId["productCourseHoursId"],pId=course["productId"]) + resp.content + "<br/>"

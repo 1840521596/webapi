@@ -93,8 +93,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "《一年级及学前》购买:"+resp.content +"<br/>"
         result = json.loads(resp.content, encoding="utf8")
-        assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-        assert result["data"] != {}, self.msg.format(Except=resp.content, Really=result["returnCode"])
+        assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
+        assert result["data"] != {}, self.msg.format(Expect=resp.content, Really=result["returnCode"])
     def test_04_get_create_order(self):
         """get_create_order<br/>二年级:<br/>{"phone":self.phonenum, "productId": "2846", "phId": "2855",<br/>"code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",<br/>"activityId": "-1", "cSn": ""}"""
         url = r"https://pay.yunshuxie.com/v4/order/h5_pay/DS/post/get_create_order.htm"
@@ -106,8 +106,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "《二年级》购买:"+resp.content +"<br/>"
         result = json.loads(resp.content, encoding="utf8")
-        assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-        assert result["data"] != {}, self.msg.format(Except=resp.content, Really=result["returnCode"])
+        assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
+        assert result["data"] != {}, self.msg.format(Expect=resp.content, Really=result["returnCode"])
     def test_05_get_create_order(self):
         """get_create_order<br/>三年级:<br/>{"phone":self.phonenum, "productId": "2847", "phId": "2856",<br/>"code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",<br/>"activityId": "-1", "cSn": ""}"""
         url = r"https://pay.yunshuxie.com/v4/order/h5_pay/DS/post/get_create_order.htm"
@@ -119,8 +119,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "《三年级》购买:"+resp.content +"<br/>"
         result = json.loads(resp.content, encoding="utf8")
-        assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-        assert result["data"] != {}, self.msg.format(Except=resp.content, Really=result["returnCode"])
+        assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
+        assert result["data"] != {}, self.msg.format(Expect=resp.content, Really=result["returnCode"])
     def test_06_get_create_order(self):
         """get_create_order<br/>四年级:<br/>{"phone":self.phonenum, "productId": "3021", "phId": "2998",<br/>"code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",<br/>"activityId": "-1", "cSn": ""}"""
         url = r"https://pay.yunshuxie.com/v4/order/h5_pay/DS/post/get_create_order.htm"
@@ -132,8 +132,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "《四年级》购买:"+resp.content +"<br/>"
         result = json.loads(resp.content, encoding="utf8")
-        assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-        assert result["data"] != {}, self.msg.format(Except=resp.content, Really=result["returnCode"])
+        assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
+        assert result["data"] != {}, self.msg.format(Expect=resp.content, Really=result["returnCode"])
     def test_07_get_create_order(self):
         """get_create_order<br/>五年级:<br/>{"phone":self.phonenum, "productId": "3022", "phId": "2999",<br/>"code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",<br/>"activityId": "-1", "cSn": ""}"""
         url = r"https://pay.yunshuxie.com/v4/order/h5_pay/DS/post/get_create_order.htm"
@@ -145,8 +145,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "《五年级》购买:"+resp.content +"<br/>"
         result = json.loads(resp.content, encoding="utf8")
-        assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-        assert result["data"] != {}, self.msg.format(Except=resp.content, Really=result["returnCode"])
+        assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
+        assert result["data"] != {}, self.msg.format(Expect=resp.content, Really=result["returnCode"])
     def test_08_get_create_order(self):
         """get_create_order<br/>六年级:<br/>{"phone":self.phonenum, "productId": "3023", "phId": "3000",<br/>"code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",<br/>"activityId": "-1", "cSn": ""}"""
         url = r"https://pay.yunshuxie.com/v4/order/h5_pay/DS/post/get_create_order.htm"
@@ -158,8 +158,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "《六年级》购买:"+resp.content +"<br/>"
         result = json.loads(resp.content, encoding="utf8")
-        assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-        assert result["data"] != {}, self.msg.format(Except=resp.content, Really=result["returnCode"])
+        assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
+        assert result["data"] != {}, self.msg.format(Expect=resp.content, Really=result["returnCode"])
     def test_09_get_create_order(self):
         """get_create_order<br/>七年级:<br/>{"phone":self.phonenum, "productId": "3024", "phId": "3001",<br/>"code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",<br/>"activityId": "-1", "cSn": ""}"""
         url = r"https://pay.yunshuxie.com/v4/order/h5_pay/DS/post/get_create_order.htm"
@@ -171,34 +171,34 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "《七年级》购买:"+resp.content +"<br/>"
         result = json.loads(resp.content, encoding="utf8")
-        assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-        assert result["data"] != {}, self.msg.format(Except=resp.content, Really=result["returnCode"])
+        assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
+        assert result["data"] != {}, self.msg.format(Expect=resp.content, Really=result["returnCode"])
     def test_10_get_create_order(self):
         """get_create_order<br/>八九年级:<br/>{"phone":self.phonenum, "productId": "3025", "phId": "3002",<br/>"code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",<br/>"activityId": "-1", "cSn": ""}"""
         url = r"https://pay.yunshuxie.com/v4/order/h5_pay/DS/post/get_create_order.htm"
         params = {"phone":self.phonenum, "productId": "3025", "phId": "3002",
-                  "code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",
+                  "code":"021ZaJtG17hM310SblvG1NZutG1ZaJtQ", "sk": "null", "agentId": "", "customizeGroupId": "-1",
                   "activityId": "-1", "cSn": ""}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)  # 生成支付订单
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "《八九年级》购买:"+resp.content +"<br/>"
         result = json.loads(resp.content, encoding="utf8")
-        assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-        assert result["data"] != {}, self.msg.format(Except=resp.content, Really=result["returnCode"])
+        assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
+        assert result["data"] != {}, self.msg.format(Expect=resp.content, Really=result["returnCode"])
     def test_11_get_create_order(self):
         """get_create_order<br/>高中:<br/>{"phone":self.phonenum, "productId": "3026", "phId": "3003",<br/>"code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",<br/>"activityId": "-1", "cSn": ""}"""
         url = r"https://pay.yunshuxie.com/v4/order/h5_pay/DS/post/get_create_order.htm"
         params = {"phone": self.phonenum, "productId": "3026", "phId": "3003",
-                  "code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",
+                  "code":"021ZaJtG17hM310SblvG1NZutG1ZaJtQ", "sk": "null", "agentId": "", "customizeGroupId": "-1",
                   "activityId": "-1", "cSn": ""}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url, params=params)  # 生成支付订单
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "《高中》购买:"+resp.content +"<br/>"
         result = json.loads(resp.content, encoding="utf8")
-        assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-        assert result["data"] != {}, self.msg.format(Except=resp.content, Really=result["returnCode"])
+        assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
+        assert result["data"] != {}, self.msg.format(Expect=resp.content, Really=result["returnCode"])
     @classmethod
     def tearDownClass(self):
         globals().pop("globals_values")

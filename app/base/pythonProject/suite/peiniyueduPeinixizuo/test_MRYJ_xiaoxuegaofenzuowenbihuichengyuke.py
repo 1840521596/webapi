@@ -86,7 +86,7 @@ class XiaoXuegfzwbhcyk_Test(unittest.TestCase):
         """https://pay.yunshuxie.com/v6/order/create.htm<br/>{"phone":"phoneNum,"customizeGroupId":"-1","phId":productCourseHoursId,<br/>"gId":"-1",pId": productId,"pType": "1","productType": "72","channelId": "WxPay",<br/>"cSn":"","sk":"","grade":"","addressId":"-1","activityId":"-1"}"""
         url = r"https://pay.yunshuxie.com/v6/order/create.htm"  # 生成支付订单
         for productCourseHoursId,productId  in globals_values:
-            params = {"phone": self.phonenum, "customizeGroupId": "-1",
+            params = {"phone": self.phonenum, "customizeGroupId": "-1","code":"021ZaJtG17hM310SblvG1NZutG1ZaJtQ",
                       "phId": productCourseHoursId, "gId": "-1", "pId": productId, "pType": "1", "productType": 72,
                       "channelId": "WxPay", "cSn": "", "sk": "", "grade": "4", "addressId": "-1", "activityId": "-1"}
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
