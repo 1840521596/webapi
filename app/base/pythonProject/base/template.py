@@ -40,14 +40,12 @@ getSetUpText = """        params = {{caseRequestDatas}}
         self.url = "{{apiHost}}"+"{{apiUrl}}"
         caseHeaders = {{caseHeaders}}
         self.resp = requests.get(self.url, params=params, headers=caseHeaders ,cookies=self.cookies)
-        print self.resp.content.encode("utf8")
         logging.info(self.url + lianjiefu + self.resp.text +fengefu )
         self.cookies.update(self.resp.cookies)"""
 postSetUpText = """        data = {{caseRequestDatas}}
         self.url = "{{apiHost}}"+"{{apiUrl}}"
         caseHeaders = {{caseHeaders}}
         self.resp = requests.post(self.url, data=data, headers=caseHeaders ,cookies=self.cookies)
-        print self.resp.content.encode("utf8")
         logging.info(self.url + lianjiefu + self.resp.text +fengefu )
         self.cookies.update(self.resp.cookies)"""
 postFunctionText="""    def test_{{apiNameEN}}(self):
@@ -59,7 +57,6 @@ postFunctionText="""    def test_{{apiNameEN}}(self):
         method = "{{method}}"
         caseHeaders = {{caseHeaders}}
         self.resp = requests.post(self.url, data=data, headers=caseHeaders,cookies=self.cookies)
-        print self.resp.content.encode("utf8")
         logging.info(self.url + lianjiefu + self.resp.text +fengefu )
         msg = \"\"\"\n        Except:  {Except}-*-\n        Really:  {Really}\"\"\"  #校验HTTP返回代码
         assert self.caseStatusCode==self.resp.status_code,msg.format(Except=self.caseStatusCode,Really=self.resp.status_code)
@@ -73,7 +70,6 @@ getFunctionText="""    def test_{{order}}_{{apiNameEN}}(self):
         method = "{{method}}"
         caseHeaders = {{caseHeaders}}
         self.resp = requests.get(self.url, params=params, headers=caseHeaders,cookies=self.cookies)
-        print self.resp.content.encode("utf8")
         logging.info(self.url + lianjiefu + self.resp.text +fengefu )
         msg = \"\"\"\n        Except:  {Except}-*-\n        Really:  {Really}\"\"\"  #校验HTTP返回代码
         assert self.caseStatusCode==self.resp.status_code,msg.format(Except=self.caseStatusCode,Really=self.resp.status_code)
