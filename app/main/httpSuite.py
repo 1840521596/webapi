@@ -8,6 +8,8 @@ from .. import db,redis
 from ..config.models import Project,Test_Env,Test_User_Reg
 from ..config.sendMsg import sendMsg
 from sqlalchemy import func
+from app.base.pythonProject.base.getConfig import s
+
 @test.route("/runSuiteApi",methods=["GET"])
 def runDatasApiTest():
 	"""测试集页面使用接口,用于上传测试用例后执行
@@ -19,6 +21,7 @@ def runDatasApiTest():
 	project = request.args.get("project")
 	env_num = request.args.get("env_num")
 	env_flag = request.args.get("env_flag")
+	s.add_set("ENV",env_num=env_num,env_flag=env_flag)
 	try:
 		project_en = db.session.query(Project.project_en,Project.description).filter_by(project=project).first()
 		redis_env_flag_shell = "{project_en}_env_flag".format(project_en=project_en[0])
@@ -44,8 +47,7 @@ def runDatasApiTest_yunwei():
 	project = request.args.get("project")
 	env_num = request.args.get("env_num")
 	env_flag = request.args.get("env_flag")
-	# from getConfig import s
-	# s.add_set("ENV",env_num=env_num,env_flag=env_flag)
+	s.add_set("ENV", env_num=env_num, env_flag=env_flag) #云舒写首页&admin 会使用config.ini配置文件
 	try:
 		project_en = db.session.query(Project.project_en, Project.description).filter_by(project=project).first()
 		if project_en:
