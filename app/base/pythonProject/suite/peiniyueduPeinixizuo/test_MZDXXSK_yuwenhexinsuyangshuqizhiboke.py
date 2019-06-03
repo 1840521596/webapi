@@ -38,7 +38,7 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "课程价格查询:" + resp.content + "<br/>"
         result = json.loads(re.findall("{.*}",resp.content)[0], encoding="utf8")
-        assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
+        assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
         values = [course["productId"] for course in result["data"]]
         globals()["globals_values"] = values
 
@@ -53,7 +53,7 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
             logging.info(url + lianjiefu + resp.text + fengefu)
             print "课程年级查询:" + resp.content + "<br/>"
             result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
-            assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
+            assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
             productId_grade[productId] = result["data"]
         globals()["globals_values"] = productId_grade
     def test_03_query_summerCourse(self):
@@ -70,7 +70,7 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
                 result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
                 params["data"] = result["data"]
                 list_params.append(params)
-                assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
+                assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
         globals()["globals_values"] = list_params
     def test_04_query_repeat_purchase(self):
         """https://pay.yunshuxie.com/v6/springReadMethod/query/summerPay.htm<br/> {"phone":phonenum,"pId":"7486","callback":"__jp2"}"""
@@ -82,7 +82,7 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
             logging.info(url + lianjiefu + resp.text + fengefu)
             print "课程是否购买查询:" + resp.content + "<br/>"
             result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
-            assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
+            assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
 
     def test_05_order_create(self):
         """https://pay.yunshuxie.com/v6/order/create.htm<br/>{"phone":"phoneNum,"customizeGroupId":"-1","phId":productCourseHoursId,<br/>"gId":"-1",pId": productId,"pType": "1","productType": "76","channelId": "AliPay",<br/>"cSn":"","sk":"","grade":"","addressId":"-1","activityId":"-1"}"""
@@ -96,7 +96,7 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
                     print "课程购买【phId】：{phId}--【pId】：{pId}:".format(phId=course_phId["productCourseHoursId"],pId=course["productId"]) + resp.content + "<br/>"
                     logging.info(url + lianjiefu + resp.text + fengefu)
                     result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
-                    assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
+                    assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
     def test_06_order_create(self):
         """https://pay.yunshuxie.com/v6/order/create.htm<br/>{"phone":"phoneNum,"customizeGroupId":"-1","phId":productCourseHoursId,<br/>"gId":"-1",pId": productId,"pType": "1","productType": "76","channelId": "WxPay",<br/>"cSn":"","sk":"","grade":"","addressId":"-1","activityId":"-1"}"""
         url = r"https://pay.yunshuxie.com/v6/order/create.htm"  # 生成支付订单
@@ -109,7 +109,7 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
                     print "课程购买【phId】：{phId}--【pId】：{pId}:".format(phId=course_phId["productCourseHoursId"],pId=course["productId"]) + resp.content + "<br/>"
                     logging.info(url + lianjiefu + resp.text + fengefu)
                     result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
-                    assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
+                    assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
     @classmethod
     def tearDownClass(self):
         globals().pop("globals_values")

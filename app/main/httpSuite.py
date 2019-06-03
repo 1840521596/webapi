@@ -9,6 +9,7 @@ from ..config.models import Project,Test_Env,Test_User_Reg
 from ..config.sendMsg import sendMsg
 from sqlalchemy import func
 from app.base.pythonProject.base.getConfig import s
+import redis as red
 
 @test.route("/runSuiteApi",methods=["GET"])
 def runDatasApiTest():
@@ -48,6 +49,10 @@ def runDatasApiTest_yunwei():
 	env_num = request.args.get("env_num")
 	env_flag = request.args.get("env_flag")
 	s.add_set("ENV", env_num=env_num, env_flag=env_flag) #云舒写首页&admin 会使用config.ini配置文件
+	redis_host = s.get_env("beta").split(":") if env_flag == "beta" else s.get_env("prod_stage").split(":")
+	r = red.Redis(host=redis_host[0], port=int(redis_host[1]), password="yunshuxie1029Password")
+	r.set("021ZaJtG17hM310SblvG1NZutG1ZaJtQ",'o38sIv_7FQInsBKJEUExn7wYxoHc&21_bk4dQIEFnYz5w8zJwDqan84UFmV_XVKEO5MJf7fv1pGR8tRH2MAtxpk0Pc1SqDwe5S90CE6TQo1wd346qEA5FQ')
+
 	try:
 		project_en = db.session.query(Project.project_en, Project.description).filter_by(project=project).first()
 		if project_en:

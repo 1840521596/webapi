@@ -20,7 +20,7 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         self.session = requests.Session()
         cookies = get_crm_cookie(env_flag,env_num)
         header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9","Connection": "keep-alive","Upgrade-Insecure-Requests": "1"}
-        self.msg = """\n        Except:  {Except}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
+        self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
         self.session.headers = header
         self.session.cookies = cookies
     def test_01_day_sales(self):
@@ -35,10 +35,10 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         result = json.loads(self.resp.content ,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total" :3 ,"rows" :""}
-        assert result.has_key("total" )==expect.has_key("total") ,self.msg.format(Except=expect["total"]
+        assert result.has_key("total" )==expect.has_key("total") ,self.msg.format(Expect=expect["total"]
                                                                                    ,Really=result["total"])
         assert isinstance(result["total"] ,int )==True
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"]
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"]
                                                                                  ,Really=result["rows"])
     def test_02_week_sales(self):
         """销售统计-销售周报 <br/> http://admin.crm.yunshuxie.com/v1/crm/week/sales<br/> {"limit": "10","sort": "prductName","order":"asc","offset": "0"}
@@ -52,10 +52,10 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         result = json.loads(self.resp.content ,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total" :3 ,"rows" :""}
-        assert result.has_key("total" )==expect.has_key("total") ,self.msg.format(Except=expect["total"]
+        assert result.has_key("total" )==expect.has_key("total") ,self.msg.format(Expect=expect["total"]
                                                                                    ,Really=result["total"])
         assert isinstance(result["total"] ,int )==True
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"]
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"]
                                                                                  ,Really=result["rows"])
     def test_03_month_sales(self):
         """销售统计-销售月报-用户销售数据 <br/>http://admin.crm.yunshuxie.com/v1/crm/month/sales.json<br/> {"limit": "10","sort": "nowDate","order":"asc","offset": "0"}
@@ -69,10 +69,10 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         result = json.loads(self.resp.content ,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total" :3 ,"rows" :""}
-        assert result.has_key("total" )==expect.has_key("total") ,self.msg.format(Except=expect["total"]
+        assert result.has_key("total" )==expect.has_key("total") ,self.msg.format(Expect=expect["total"]
                                                                                    ,Really=result["total"])
         assert isinstance(result["total"] ,int )==True
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"]
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"]
                                                                                  ,Really=result["rows"])
     def test_04_mounth_statistics_list(self):
         """销售统计-销售月报-产品销售数据 <br/>http://admin.crm.yunshuxie.com/v1/crm/sales/mounth_statistics_list.json<br/> {"limit": "10","sort": "month","order":"asc","offset": "0"}
@@ -86,10 +86,10 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         result = json.loads(self.resp.content ,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total" :3 ,"rows" :""}
-        assert result.has_key("total" )==expect.has_key("total") ,self.msg.format(Except=expect["total"]
+        assert result.has_key("total" )==expect.has_key("total") ,self.msg.format(Expect=expect["total"]
                                                                                    ,Really=result["total"])
         assert isinstance(result["total"] ,int )==True
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"]
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"]
                                                                                  ,Really=result["rows"])
     def test_05_mounth_sales_detail(self):
         """销售统计-销售月报-新老用户销售数据 <br/> http://admin.crm.yunshuxie.com/v1/crm/month/sales_detail<br/>{"limit": "10","sort": "nowDate","order":"asc","offset": "0"}
@@ -103,10 +103,10 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         result = json.loads(self.resp.content ,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total" :3 ,"rows" :""}
-        assert result.has_key("total" )==expect.has_key("total") ,self.msg.format(Except=expect["total"]
+        assert result.has_key("total" )==expect.has_key("total") ,self.msg.format(Expect=expect["total"]
                                                                                    ,Really=result["total"])
         assert isinstance(result["total"] ,int )==True
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"]
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"]
                                                                                  ,Really=result["rows"])
     def test_06_year_sales(self):
         """销售统计-销售年报 <br/>http://admin.crm.yunshuxie.com/v1/crm/year/sales.json<br/> {"limit": "10", "sort": "nowDate", "order": "asc", "offset": "0"}
@@ -120,10 +120,10 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total": 3, "rows": ""}
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect["total"],
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect["total"],
                                                                                    Really=result["total"])
         assert isinstance(result["total"], int) == True
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"],
                                                                                  Really=result["rows"])
     def test_07_platinum_day_study(self):
         """销售统计-年卡销售数据 <br/>http://admin.crm.yunshuxie.com/v1/platinum/day_study<br/> {"limit": "10", "sort": "payDate", "order": "DESC", "offset": "0"}
@@ -137,10 +137,10 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total": 3, "rows": ""}
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect["total"],
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect["total"],
                                                                                    Really=result["total"])
         assert isinstance(result["total"], int) == True
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"],
                                                                                  Really=result["rows"])
     def test_08_online_offline(self):
         """销售统计-热门课程销售排行榜-当天 <br/> http://admin.crm.yunshuxie.com/ysxserviceuser/get/sales/ranking/online/offline.html<br/>{"startDate": date,"endDate": date,"order":"desc"}
@@ -155,10 +155,10 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total": 3, "rows": ""}
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect["total"],
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect["total"],
                                                                                    Really=result["total"])
         assert isinstance(result["total"], int) == True
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"],
                                                                                  Really=result["rows"])
     def test_09_ranking_list(self):
         """销售统计-热门课程销售排行榜-当天-查看《每日一句》明细 <br/> http://admin.crm.yunshuxie.com/v1/sale/performance/sales/ranking/list<br/>{"productName": "每日一句","startDate": "2019-05-23","endDate": "2019-05-23",<br/>"deptId": "-1","sort": "userId","order": "DESC","limit": "10","offset": "0"}
@@ -174,10 +174,10 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total": 3, "rows": ""}
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect["total"],
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect["total"],
                                                                                    Really=result["total"])
         assert isinstance(result["total"], int) == True
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"],
                                                                                  Really=result["rows"])
     def test_10_get_echarts(self):
         """销售统计-热门课程销售排行榜-当天-查看图表 <br/>http://admin.crm.yunshuxie.com/ysxserviceuser/get/echarts<br/>{"startDate":date,"endDate":date}
@@ -192,9 +192,9 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"fourNovelsNum": "", "oneToOneNum": ""}
-        assert result.has_key("fourNovelsNum") == expect.has_key("fourNovelsNum"), self.msg.format(Except=expect["fourNovelsNum"],
+        assert result.has_key("fourNovelsNum") == expect.has_key("fourNovelsNum"), self.msg.format(Expect=expect["fourNovelsNum"],
                                                                                                    Really=result["fourNovelsNum"])
-        assert result.has_key("oneToOneNum") == expect.has_key("oneToOneNum"), self.msg.format(Except=expect["oneToOneNum"],
+        assert result.has_key("oneToOneNum") == expect.has_key("oneToOneNum"), self.msg.format(Expect=expect["oneToOneNum"],
                                                                                                Really=result["oneToOneNum"])
     @classmethod
     def tearDownClass(self):

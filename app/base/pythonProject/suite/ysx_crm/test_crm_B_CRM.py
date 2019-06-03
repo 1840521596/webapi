@@ -20,7 +20,7 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         self.session = requests.Session()
         cookies = get_crm_cookie(self.env_flag,self.env_num)
         header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9","Connection": "keep-alive","Upgrade-Insecure-Requests": "1"}
-        self.msg = """\n        Except:  {Except}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
+        self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
         self.session.headers = header
         self.session.cookies = cookies
     def test_01_statistics_yearCardList(self):
@@ -39,8 +39,8 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         result = json.loads(self.resp.content,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"rows":"","total":""}
-        assert result.has_key("rows")==expect.has_key("rows"),self.msg.format(Except=expect.has_key("rows"),Really=result.has_key("rows"))
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect.has_key("total"),
+        assert result.has_key("rows")==expect.has_key("rows"),self.msg.format(Expect=expect.has_key("rows"),Really=result.has_key("rows"))
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect.has_key("total"),
                                                                              Really=result.has_key("total"))
         classId = result["rows"][0]["classId"]
         memberId = result["rows"][0]["teacherMember"]
@@ -53,9 +53,9 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"rows": "", "total": ""}
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect.has_key("rows"),
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect.has_key("rows"),
                                                                                  Really=result.has_key("rows"))
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect.has_key("total"),
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect.has_key("total"),
                                                                                    Really=result.has_key("total"))
         if (self.env_flag == "beta") or (self.env_flag == "BETA"):
             url = r"http://admin.crm.yunshuxie.com/v1/teacher/statistics/save/follow_record.json"
@@ -67,9 +67,9 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
             result = json.loads(self.resp.content, encoding="utf8")
             logging.info(url + lianjiefu + self.resp.text + fengefu)
             expect = {"returnMsg": "", "returnCode": 0}
-            assert result.has_key("returnCode") == expect.has_key("returnCode"), self.msg.format(Except=expect.has_key("returnCode"),Really=result.has_key("returnCode"))
-            assert result["returnCode"] == expect["returnCode"], self.msg.format(Except=expect["returnCode"],Really=result["returnCode"])
-            assert result.has_key("returnMsg") == expect.has_key("returnMsg"), self.msg.format(Except=expect.has_key("returnMsg"),
+            assert result.has_key("returnCode") == expect.has_key("returnCode"), self.msg.format(Expect=expect.has_key("returnCode"),Really=result.has_key("returnCode"))
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],Really=result["returnCode"])
+            assert result.has_key("returnMsg") == expect.has_key("returnMsg"), self.msg.format(Expect=expect.has_key("returnMsg"),
                                                                                        Really=result.has_key("returnMsg"))
     def test_02_statistics_saleList(self):
         """
@@ -85,15 +85,15 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"rows": "", "total": ""}
         userId = result["rows"][0]["userId"]
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect.has_key("rows"),
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect.has_key("rows"),
                                                                                  Really=result.has_key("rows"))
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect.has_key("total"),
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect.has_key("total"),
                                                                                    Really=result.has_key("total"))
         url = r"http://admin.crm.yunshuxie.com/v1/teacher/statistics/query/delete_Detail.htm"
         params = {"userId": userId,"sort": "classId","order": "asc","limit": "10","offset": "0"}
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect.has_key("rows"),
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect.has_key("rows"),
                                                                                  Really=result.has_key("rows"))
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect.has_key("total"),
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect.has_key("total"),
                                                                                    Really=result.has_key("total"))
     def test_03_statistics_grade_list(self):
         """
@@ -108,9 +108,9 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"rows": "", "total": ""}
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect.has_key("rows"),
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect.has_key("rows"),
                                                                                  Really=result.has_key("rows"))
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect.has_key("total"),
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect.has_key("total"),
                                                                                    Really=result.has_key("total"))
     def test_04_statistics_daily_reports_list(self):
         """
@@ -125,9 +125,9 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"rows": "", "total": ""}
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect.has_key("rows"),
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect.has_key("rows"),
                                                                                  Really=result.has_key("rows"))
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect.has_key("total"),
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect.has_key("total"),
                                                                                    Really=result.has_key("total"))
     def test_05_statistics_daily_reports_Sum(self):
         """
@@ -140,9 +140,9 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"returnCode": 0, "data": ""}
-        assert result.has_key("returnCode") == expect.has_key("returnCode"), self.msg.format(Except=expect.has_key("returnCode"), Really=result.has_key("returnCode"))
-        assert result["returnCode"] == expect["returnCode"], self.msg.format(Except=expect["returnCode"],Really=result["returnCode"])
-        assert result.has_key("data") == expect.has_key("data"), self.msg.format(Except=expect.has_key("data"),Really=result.has_key("data"))
+        assert result.has_key("returnCode") == expect.has_key("returnCode"), self.msg.format(Expect=expect.has_key("returnCode"), Really=result.has_key("returnCode"))
+        assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],Really=result["returnCode"])
+        assert result.has_key("data") == expect.has_key("data"), self.msg.format(Expect=expect.has_key("data"),Really=result.has_key("data"))
     def test_06_organ_query_channeler_list(self):
         """
         B端CRM->渠道商->每日一句->学校详情<br/>http://admin.crm.yunshuxie.com/v1/bcrm/organ/query/channeler_list<br/>http://admin.crm.yunshuxie.com/v1/bcrm/organ/query/school_list<br/>{"sort": "organId", "order": "asc", "limit": "10", "offset": "0"}
@@ -156,9 +156,9 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"rows": "", "total": ""}
         organId = result["rows"][0]["organId"]
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect.has_key("rows"),
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect.has_key("rows"),
                                                                                  Really=result.has_key("rows"))
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect.has_key("total"),
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect.has_key("total"),
                                                                                    Really=result.has_key("total"))
         url = r"http://admin.crm.yunshuxie.com/v1/bcrm/organ/query/school_list"
         params = {"parentOrganId": organId,"sort": "organId","order": "asc","limit": "10","offset": "0"}
@@ -168,9 +168,9 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"rows": "", "total": ""}
         organId = result["rows"][0]["organId"]
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect.has_key("rows"),
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect.has_key("rows"),
                                                                                  Really=result.has_key("rows"))
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect.has_key("total"),
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect.has_key("total"),
                                                                                    Really=result.has_key("total"))
     def test_07_organ_query_channeler_Sum(self):
         """
@@ -183,9 +183,9 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"returnCode": 0, "data": ""}
-        assert result.has_key("returnCode") == expect.has_key("returnCode"), self.msg.format(Except=expect.has_key("returnCode"),Really=result.has_key("returnCode"))
-        assert result["returnCode"] == expect["returnCode"], self.msg.format(Except=expect["returnCode"],Really=result["returnCode"])
-        assert result.has_key("data") == expect.has_key("data"), self.msg.format(Except=expect.has_key("data"),Really=result.has_key("data"))
+        assert result.has_key("returnCode") == expect.has_key("returnCode"), self.msg.format(Expect=expect.has_key("returnCode"),Really=result.has_key("returnCode"))
+        assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],Really=result["returnCode"])
+        assert result.has_key("data") == expect.has_key("data"), self.msg.format(Expect=expect.has_key("data"),Really=result.has_key("data"))
     def test_08_yearcard_query_channeler_list(self):
         """B端CRM->渠道商->名著导读课->学校详情<br/>http://admin.crm.yunshuxie.com/v1/agent/yearcard/query/channeler_list<br/>{"sort": "organId", "order": "asc", "limit": "10", "offset": "0"}<br/>{"parentOrganId": organId,"sort": "organId","order": "asc","limit": "10","offset": "0"}
         :return: True
@@ -199,9 +199,9 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         expect = {"rows": 0, "total": ""}
         organId = result["rows"][0]["organId"]
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(
-            Except=expect.has_key("rows"),
+            Expect=expect.has_key("rows"),
             Really=result.has_key("rows"))
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect.has_key("total"),
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect.has_key("total"),
                                                                                  Really=result.has_key("total"))
         url = r"http://admin.crm.yunshuxie.com/v1/agent/yearcard/query/school_list"
         params = {"parentOrganId": organId,"sort": "organId","order": "asc","limit": "10","offset": "0"}
@@ -211,9 +211,9 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"rows": 0, "total": ""}
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(
-            Except=expect.has_key("rows"),
+            Expect=expect.has_key("rows"),
             Really=result.has_key("rows"))
-        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Except=expect.has_key("total"),
+        assert result.has_key("total") == expect.has_key("total"), self.msg.format(Expect=expect.has_key("total"),
                                                                                    Really=result.has_key("total"))
 
 

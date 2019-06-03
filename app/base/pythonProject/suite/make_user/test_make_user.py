@@ -35,7 +35,7 @@ class Ysx_Make_User(unittest.TestCase):
         self.header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9","Connection": "keep-alive","Host": "www.yunshuxie.com","Upgrade-Insecure-Requests": "1"}
         self.session.headers = self.header
         self.salt = "mengmengda"
-        self.msg = """\n        Except:  {Except}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
+        self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
     def test_01_make_user(self):
         """make_user_admin平台创建测试用户
         """
@@ -60,7 +60,7 @@ class Ysx_Make_User(unittest.TestCase):
             print self.resp.content
             logging.info(url + lianjiefu + self.resp.text + fengefu)
             result = json.loads(self.resp.content)
-            assert result["returnCode"] == "0",self.msg.format(Except="0",Really=result["returnCode"])
+            assert result["returnCode"] == "0",self.msg.format(Expect="0",Really=result["returnCode"])
     def test_02_add_TestUser(self):
         """make_user_CRM平台备注测试用户
         """
@@ -76,7 +76,7 @@ class Ysx_Make_User(unittest.TestCase):
             print self.resp.content
             logging.info(url + lianjiefu + self.resp.text + fengefu)
             result = json.loads(self.resp.content)
-            assert result["returnCode"] == 0,self.msg.format(Except="0",Really=result["returnCode"])
+            assert result["returnCode"] == 0,self.msg.format(Expect="0",Really=result["returnCode"])
     @classmethod
     def tearDownClass(self):
         """测试结束后执行,断言Req==Resp

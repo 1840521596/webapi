@@ -19,7 +19,7 @@ class Ysx_Crm_CXSHDD(unittest.TestCase):
         self.session = requests.Session()
         cookies = get_crm_cookie(env_flag,env_num)
         header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9","Connection": "keep-alive","Upgrade-Insecure-Requests": "1"}
-        self.msg = """\n        Except:  {Except}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
+        self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
         self.session.headers = header
         self.session.cookies = cookies
     def test_01_merchants_order(self):
@@ -33,7 +33,7 @@ class Ysx_Crm_CXSHDD(unittest.TestCase):
         result = json.loads(self.resp.content,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"tradeStatus":"SUCCESS"}
-        assert result["tradeStatus"]==expect["tradeStatus"],self.msg.format(Except=expect["tradeStatus"],Really=result["tradeStatus"])
+        assert result["tradeStatus"]==expect["tradeStatus"],self.msg.format(Expect=expect["tradeStatus"],Really=result["tradeStatus"])
     @classmethod
     def tearDownClass(self):
         pass

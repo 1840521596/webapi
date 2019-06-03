@@ -52,9 +52,9 @@ class zhiBoKeCheng_Test(unittest.TestCase):
         print self.resp.content
         #logging.info(self.url + lianjiefu + self.resp.text + fengefu)
         msg = """
-        Except:  {Except}-*-
+        Expect:  {Expect}-*-
         Really:  {Really}"""  #校验HTTP返回代码
-        assert self.caseStatusCode==self.resp.status_code,msg.format(Except=self.caseStatusCode,Really=self.resp.status_code)
+        assert self.caseStatusCode==self.resp.status_code,msg.format(Expect=self.caseStatusCode,Really=self.resp.status_code)
         respMsg = self.resp.content  #返回值
         caseExpectDatas = self.caseExpectDatas  #xls 校验值
         def assertKey(value1,value2):
@@ -68,7 +68,7 @@ class zhiBoKeCheng_Test(unittest.TestCase):
                         elif type(value).__name__ == "list":
                             assertKey(dictvalue1[key],dictvalue2[key])
                     else:
-                        msg = """\n        Except:  {Except}-*-\n        Really:  {Really}"""
+                        msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""
                         return key
             elif type(dictvalue2).__name__ == "list":
                 for list_index in range(len(dictvalue2)):
@@ -77,7 +77,7 @@ class zhiBoKeCheng_Test(unittest.TestCase):
         value2 = json.loads(re.match(".*?({.*}).*", self.resp.content, re.S).group(1))
         keyValue = assertKey(value1,value2)
         if keyValue:
-            assert keyValue=="Error",msg.format(Except=keyValue,Really="Error")
+            assert keyValue=="Error",msg.format(Expect=keyValue,Really="Error")
         #print self.resp.content
     def test_2_ShanChuZhiBoKeCheng(self):
         """查询直播课程,并删除直播课程<br/>https://admin.yunshuxie.com/v1/admin/big_live/delete_bigliveCourse.htm<br/>"""
@@ -97,11 +97,11 @@ class zhiBoKeCheng_Test(unittest.TestCase):
             #logging.info(self.url + lianjiefu + self.resp.text + fengefu)
             respMsg = self.resp.content  # 返回值
             caseExpectDatas = self.caseExpectDatas  # xls 校验值
-            msg = """\n        Except:  {Except}-*-\n        Really:  {Really}"""  #校验HTTP返回代码
-            assert self.caseStatusCode == self.resp.status_code, msg.format(Except=self.caseStatusCode,
+            msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  #校验HTTP返回代码
+            assert self.caseStatusCode == self.resp.status_code, msg.format(Expect=self.caseStatusCode,
                                                                        Really=self.resp.status_code)
 
-            assert caseExpectDatas == json.loads(self.resp.content,encoding="utf8"),msg.format(Except=caseExpectDatas,
+            assert caseExpectDatas == json.loads(self.resp.content,encoding="utf8"),msg.format(Expect=caseExpectDatas,
                                                                        Really=self.resp.content)
     @classmethod
     def tearDownClass(self):

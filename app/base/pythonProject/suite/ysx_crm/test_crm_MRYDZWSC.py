@@ -19,7 +19,7 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         self.session = requests.Session()
         cookies = get_crm_cookie(env_flag,env_num)
         header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9","Connection": "keep-alive","Upgrade-Insecure-Requests": "1"}
-        self.msg = """\n        Except:  {Except}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
+        self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
         self.session.headers = header
         self.session.cookies = cookies
     def test_01_writing_material_order(self):
@@ -38,8 +38,8 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         result = json.loads(self.resp.content,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total":3,"rows":""}
-        assert result["total"]==expect["total"],self.msg.format(Except=expect["total"],Really=result["total"])
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
+        assert result["total"]==expect["total"],self.msg.format(Expect=expect["total"],Really=result["total"])
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"],Really=result["rows"])
     def test_02_writing_material_order(self):
         """素材课日报查询 <br/> http://admin.crm.yunshuxie.com/admin/writing_material/query/writing_material_order.json<br/>{"sort": "nowDate","order": "asc",<br/>"limit": "0","offset": "0","_": "1558510544182"}
         :param: sort == nowDate
@@ -56,8 +56,8 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         result = json.loads(self.resp.content,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total":0,"rows":""}
-        assert result["total"]==expect["total"],self.msg.format(Except=expect["total"],Really=result["total"])
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
+        assert result["total"]==expect["total"],self.msg.format(Expect=expect["total"],Really=result["total"])
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"],Really=result["rows"])
     def test_03_writing_equipment_distribution(self):
         """素材课设备分配表 <br/> http://admin.crm.yunshuxie.com/admin/writing_material/query/writing_equipment_distribution.json<br/>{"sort": "nowDate","order": "asc",<br/> "limit": "1","offset": "0","_": "1558510544182"}
         :param: sort == nowDate
@@ -74,8 +74,8 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         result = json.loads(self.resp.content,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total":0,"rows":""}
-        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Except=expect["total"],Really=result["total"])
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
+        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Expect=expect["total"],Really=result["total"])
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"],Really=result["rows"])
     def test_04_writing_student_detail(self):
         """素材课学员明细 <br/>http://admin.crm.yunshuxie.com/admin/writing_material/student_detail<br/>{"type": "-1","phone":"", "saleName":"", "moocClassName":"",<br/> "courseHoursTitle":"","wecahtNum": "bjhyysx2","friend": "1",<br/> "sort": "nowDate","order": "asc","limit": "1",<br/> "offset": "0","_": "1558516779198"}
         :return limit==0:
@@ -88,8 +88,8 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         result = json.loads(self.resp.content,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total":0,"rows":""}
-        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Except=expect["total"],Really=result["total"])
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
+        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Expect=expect["total"],Really=result["total"])
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"],Really=result["rows"])
     def test_05_writing_student_detail(self):
         """素材课学员明细 <br/>http://admin.crm.yunshuxie.com/admin/writing_material/student_detail<br/>{"type": "1","phone":"", "saleName":"", "moocClassName":"",<br/> "courseHoursTitle":"","wecahtNum": "bjhyysx2","friend": "0",<br/> "sort": "nowDate","order": "asc","limit": "1","offset": "0","_": "1558516779198"}
         :return limit==0:
@@ -102,8 +102,8 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         result = json.loads(self.resp.content,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total":0,"rows":""}
-        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Except=expect["total"],Really=result["total"])
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
+        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Expect=expect["total"],Really=result["total"])
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"],Really=result["rows"])
     def test_06_writing_class_detail(self):
         """素材课学员明细 <br/>http://admin.crm.yunshuxie.com/admin/writing_material/class_detail<br/>{"className":"","saleName":"","sort":"nowDate",<br/>"order":"asc","limit": "1","offset": "0","_": "1558517996751"}
         :return limit==0:
@@ -116,15 +116,15 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         result = json.loads(self.resp.content,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total":0,"rows":""}
-        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Except=expect["total"],Really=result["total"])
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
+        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Expect=expect["total"],Really=result["total"])
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"],Really=result["rows"])
         # moocClassId = result["rows"][0]["moocClassId"]
         # url = r"https://admin.crm.yunshuxie.com/admin/writing_material/create_posters.htm"
         # params = {"moocClassId":moocClassId,"type":"1"}
         # self.resp = self.session.get(url=url, params=params)
         # result_moocClassId = len(eval(self.resp.content))
         # print self.resp.content
-        # assert result_moocClassId > 0, self.msg.format(Except=moocClassId, Really=result_moocClassId)
+        # assert result_moocClassId > 0, self.msg.format(Expect=moocClassId, Really=result_moocClassId)
     def test_07_serviceteacher(self):
         """素材课分配老师 <br/>http://admin.crm.yunshuxie.com/admin/writing_material/query/serviceteacher.json<br/>{"sort": "userId","order": "asc",<br/> "limit": "10","offset":"0"}
         :return limit==0:
@@ -137,8 +137,8 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         result = json.loads(self.resp.content,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total":0,"rows":""}
-        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Except=expect["total"],Really=result["total"])
-        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
+        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Expect=expect["total"],Really=result["total"])
+        assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Expect=expect["rows"],Really=result["rows"])
     def test_08_new_member_activity(self):
         """素材课每周新增用户活跃度<br/>http://admin.crm.yunshuxie.com/admin/writing_material/new_member_activity<br/>{"startDate": "","endDate": "","sort": "dates",<br/>"order": "DESC","limit": "10","offset": "0"}
         :return rows&total:
@@ -151,8 +151,8 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         result = json.loads(self.resp.content,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total":0,"rows":""}
-        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Except=expect["total"],Really=result["total"])
-        assert result.has_key("rows")==expect.has_key("rows"),self.msg.format(Except=expect["rows"],Really=result["rows"])
+        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Expect=expect["total"],Really=result["total"])
+        assert result.has_key("rows")==expect.has_key("rows"),self.msg.format(Expect=expect["rows"],Really=result["rows"])
     def test_09_sales(self):
         """素材课分年级销售情况<br/>http://admin.crm.yunshuxie.com/admin/writing_material/sales<br/>{"sort": "dates","order": "DESC",<br/>"limit": "1","offset": "0"}
         :return rows&total:
@@ -165,8 +165,8 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         result = json.loads(self.resp.content,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"total":0,"rows":""}
-        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Except=expect["total"],Really=result["total"])
-        assert result.has_key("rows")==expect.has_key("rows"),self.msg.format(Except=expect["rows"],Really=result["rows"])
+        assert result.has_key("total")==expect.has_key("total"),self.msg.format(Expect=expect["total"],Really=result["total"])
+        assert result.has_key("rows")==expect.has_key("rows"),self.msg.format(Expect=expect["rows"],Really=result["rows"])
 
     @classmethod
     def tearDownClass(self):

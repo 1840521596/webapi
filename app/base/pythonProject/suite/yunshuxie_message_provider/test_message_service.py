@@ -36,7 +36,7 @@ class Ysx_Message_Service(unittest.TestCase):
           "User-Agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 Safari/601.1 wechatdevtools/1.02.1904090 MicroMessenger/6.7.3 Language/zh_CN webview/15578306374265793 webdebugger port/22562"}
         self.session.headers = self.header
         self.salt = "mengmengda"
-        self.msg = """\n        Except:  {Except}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
+        self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
     def test_01_get_phone_code(self):
         """sms/get_phone_code_蓝创加入黑名单_阿里云平台发送短信<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param phone==18515850273
@@ -59,8 +59,8 @@ class Ysx_Message_Service(unittest.TestCase):
         logging.info(url + lianjiefu + self.resp.text +fengefu )
         dict_resp = json.loads(self.resp.content,encoding="utf8")
         expect = {u"message":u"操作成功",u"ts":u"1557918661013",u"data":{},u"code":u"0"}
-        assert dict_resp[u"code"]==expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
-        assert dict_resp[u"message"]==expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
+        assert dict_resp[u"code"]==expect[u"code"],self.msg.format(Expect=expect[u"code"],Really=dict_resp[u"code"])
+        assert dict_resp[u"message"]==expect[u"message"],self.msg.format(Expect=expect[u"message"],Really=dict_resp[u"message"])
     def test_01_get_phone_code(self):
         """sms / get_phone_code_注册<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param phone==13260062372
@@ -83,8 +83,8 @@ class Ysx_Message_Service(unittest.TestCase):
         logging.info(url + lianjiefu + self.resp.text +fengefu )
         dict_resp = json.loads(self.resp.content, encoding="utf8")
         expect = {u"message": u"操作成功", u"ts": u"1557918661013", u"data": {}, u"code": u"0"}
-        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
-        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
+        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Expect=expect[u"code"],Really=dict_resp[u"code"])
+        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Expect=expect[u"message"],Really=dict_resp[u"message"])
     def test_02_get_phone_code(self):
         """sms / get_phone_code_登录<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param phone==13260062372
@@ -107,8 +107,8 @@ class Ysx_Message_Service(unittest.TestCase):
         logging.info(url + lianjiefu + self.resp.text +fengefu )
         dict_resp = json.loads(self.resp.content, encoding="utf8")
         expect = {u"message": u"操作成功", u"ts": u"1557918661013", u"data": {}, u"code": u"0"}
-        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
-        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
+        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Expect=expect[u"code"],Really=dict_resp[u"code"])
+        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Expect=expect[u"message"],Really=dict_resp[u"message"])
     def test_03_get_phone_code(self):
         """sms / get_phone_code_订单<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param phone==13260062372
@@ -131,8 +131,8 @@ class Ysx_Message_Service(unittest.TestCase):
         logging.info(url + lianjiefu + self.resp.text +fengefu )
         dict_resp = json.loads(self.resp.content, encoding="utf8")
         expect = {u"message": u"操作成功", u"ts": u"1557918661013", u"data": {}, u"code": u"0"}
-        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
-        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
+        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Expect=expect[u"code"],Really=dict_resp[u"code"])
+        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Expect=expect[u"message"],Really=dict_resp[u"message"])
     def test_04_get_phone_code(self):
         """sms / get_phone_code_手机号格式错误<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param phone==132600623721123
@@ -155,8 +155,8 @@ class Ysx_Message_Service(unittest.TestCase):
         logging.info(url + lianjiefu + self.resp.text +fengefu )
         dict_resp = json.loads(self.resp.content, encoding="utf8")
         expect = {u"message":u"手机号码格式错误",u"ts":u"1557972149616",u"data":{},u"code":u"102001"}
-        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
-        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
+        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Expect=expect[u"code"],Really=dict_resp[u"code"])
+        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Expect=expect[u"message"],Really=dict_resp[u"message"])
     def test_05_get_phone_code(self):
         """sms / get_phone_code_系统异常<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param  platform==5
@@ -178,8 +178,8 @@ class Ysx_Message_Service(unittest.TestCase):
         logging.info(url + lianjiefu + self.resp.text +fengefu )
         dict_resp = json.loads(self.resp.content, encoding="utf8")
         expect = {u"message":u"系统异常",u"ts":u"1557973747744",u"data":{},u"code":u"-1"}
-        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
-        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
+        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Expect=expect[u"code"],Really=dict_resp[u"code"])
+        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Expect=expect[u"message"],Really=dict_resp[u"message"])
     def test_06_send_batch_message(self):
         """sms / send_batch_message_批量发送短信<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/send_batch_message<br/>
         :param phones=="13260062372,18515850273,178"
@@ -205,8 +205,8 @@ class Ysx_Message_Service(unittest.TestCase):
         logging.info(url + lianjiefu + self.resp.text +fengefu )
         dict_resp = json.loads(self.resp.content, encoding="utf8")
         expect = {u"message":u"操作成功",u"ts":u"1557991054584",u"data":{},u"code":u"0"}
-        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
-        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
+        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Expect=expect[u"code"],Really=dict_resp[u"code"])
+        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Expect=expect[u"message"],Really=dict_resp[u"message"])
     def test_07_send_message(self):
         """sms / send_message_发送单条短信<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/send_message<br/>
         :param phone==13260062372
@@ -230,8 +230,8 @@ class Ysx_Message_Service(unittest.TestCase):
         logging.info(url + lianjiefu + self.resp.text +fengefu )
         dict_resp = json.loads(self.resp.content, encoding="utf8")
         expect = {u"message": u"操作成功", u"ts": u"1557918661013", u"data": {}, u"code": u"0"}
-        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
-        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
+        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Expect=expect[u"code"],Really=dict_resp[u"code"])
+        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Expect=expect[u"message"],Really=dict_resp[u"message"])
     def test_08_vercode_check(self):
         """sms / vercode_check_验证码错误<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/vercode_check<br/>
         :param phone==13260062372
@@ -254,8 +254,8 @@ class Ysx_Message_Service(unittest.TestCase):
         logging.info(url + lianjiefu + self.resp.text +fengefu )
         dict_resp = json.loads(self.resp.content, encoding="utf8")
         expect = {u"message":u"验证码错误",u"ts":u"1557992688917",u"data":{},u"code":u"101001"}
-        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
-        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
+        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Expect=expect[u"code"],Really=dict_resp[u"code"])
+        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Expect=expect[u"message"],Really=dict_resp[u"message"])
     def test_09_vercode_check(self):
         """sms / vercode_check_校验验证码<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param phone==13260062372
@@ -277,8 +277,8 @@ class Ysx_Message_Service(unittest.TestCase):
         print self.resp.content
         dict_resp = json.loads(self.resp.content, encoding="utf8")
         expect = {u"message": u"操作成功", u"ts": u"1557918661013", u"data": {}, u"code": u"0"}
-        assert dict_resp[u"code"] == expect[u"code"], self.msg.format(Except=expect[u"code"], Really=dict_resp[u"code"])
-        assert dict_resp[u"message"] == expect[u"message"], self.msg.format(Except=expect[u"message"],
+        assert dict_resp[u"code"] == expect[u"code"], self.msg.format(Expect=expect[u"code"], Really=dict_resp[u"code"])
+        assert dict_resp[u"message"] == expect[u"message"], self.msg.format(Expect=expect[u"message"],
                                                                             Really=dict_resp[u"message"])
         logging.info(url + lianjiefu + self.resp.text +fengefu )
         r = redis.Redis(host=self.redis_host[0], port=int(self.redis_host[1]), password="yunshuxie1029Password")
@@ -303,8 +303,8 @@ class Ysx_Message_Service(unittest.TestCase):
         #print capth
         #print self.resp.content
         expect = {u"message": u"操作成功", u"ts": u"1557918661013", u"data": {}, u"code": u"0"}
-        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
-        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
+        assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Expect=expect[u"code"],Really=dict_resp[u"code"])
+        assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Expect=expect[u"message"],Really=dict_resp[u"message"])
     @classmethod
     def tearDownClass(self):
         """测试结束后执行,断言Req==Resp
