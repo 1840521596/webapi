@@ -5,7 +5,7 @@ import codecs
 import configparser
 
 configPath = os.path.join("./app/base/pythonProject/config", "config.ini")
-#configPath = os.path.join("./../config", "config.ini")
+#configPath = os.path.join("./../../config", "config.ini")
 
 class ReadConfig:
     def __init__(self):

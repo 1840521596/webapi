@@ -1,4 +1,4 @@
-#!/usr/bin/python
+https://pay.yunshuxie.com/v6/order/create.htm#!/usr/bin/python
 #-*-coding:utf-8 -*-
 import requests
 import unittest
@@ -8,7 +8,7 @@ import redis as red
 from app.base.pythonProject.base.log import fengefu,lianjiefu,TestLog
 from app.base.pythonProject.base.py_redis import MyRedis
 from app.base.pythonProject.base.getConfig import ReadConfig
-logging = TestLog().getlog()
+#logging = TestLog().getlog()
 class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
     """<br/>每日一段古诗文素材课->销售查询->查询课程信息-><br/>查询1-2年级课程->查询3-4年级课程->查询5-6年级课程-><br/>查询优惠券-><br/>课程购买查询->发送验证码->校验验证码->个人购买全期课程"""
     globals_values = ""
@@ -38,9 +38,9 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
         """https://pay.yunshuxie.com/v6/order/query/saleman.htm<br/>"{"sk":"null","callback":"Zepto1558926534750"}"""
         url = r"https://pay.yunshuxie.com/v6/order/query/saleman.htm"
         params = {"sk":"null","callback":"Zepto1558926534750"}
-        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        #logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)
-        logging.info(url + lianjiefu + resp.text + fengefu)
+        #logging.info(url + lianjiefu + resp.text + fengefu)
         print "查询销售人员:"+resp.content +"<br/>"
         result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
         expect = {"returnCode": "15", "returnMsg": "操作成功", "data": ""}
@@ -52,9 +52,9 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
         """https://wap.yunshuxie.com/v3/WM/pay/hours.htm<br/>{"callback": "Zepto1557217444367"}"""
         url = r"https://wap.yunshuxie.com/v3/WM/pay/hours.htm"
         params = {"callback": "Zepto1557217444367"}
-        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url, params=params)
-        logging.info(url + lianjiefu + resp.text + fengefu)
+        #logging.info(url + lianjiefu + resp.text + fengefu)
         print "获取课程信息:"+resp.content +"<br/>"
         result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
         values = [[result["data"]["hours"][m]["productHoursId"],result["data"]["hours"][m]["productId"]] for m in range(len(result["data"]["hours"]))]
@@ -65,9 +65,9 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
         """https://pay.yunshuxie.com/v6/order/query/wm_course.htm<br/>1-2年级<br/>{"code":"071qgt2Y18js711PIG0Y1vrK2Y1qgt2j","memberId":"",<br/>"phone":"","grade":",1,2,","callback":"Zepto1558946587441"}"""
         url = r"https://pay.yunshuxie.com/v6/order/query/wm_course.htm"
         params = {"code":"021ZaJtG17hM310SblvG1NZutG1ZaJtQ","memberId":"","phone":"","grade":",1,2,","callback":"Zepto1558946587441"}
-        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        #logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)
-        logging.info(url + lianjiefu + resp.text + fengefu)
+        #logging.info(url + lianjiefu + resp.text + fengefu)
         print "查询1-2年级:"+resp.content +"<br/>"
         result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
         assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
@@ -76,9 +76,9 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
         """https://pay.yunshuxie.com/v6/order/query/wm_course.htm<br/> 3-4年级<br/>{"code":"071qgt2Y18js711PIG0Y1vrK2Y1qgt2j","memberId":"",<br/>"phone":"","grade":",3,4,","callback":"Zepto1558946587441"}"""
         url = r"https://pay.yunshuxie.com/v6/order/query/wm_course.htm"
         params = {"code":"021ZaJtG17hM310SblvG1NZutG1ZaJtQ","memberId":"","phone":"","grade":",3,4,","callback":"Zepto1558946587441"}
-        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        #logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)
-        logging.info(url + lianjiefu + resp.text + fengefu)
+        #logging.info(url + lianjiefu + resp.text + fengefu)
         print "查询3-4年级:"+resp.content +"<br/>"
         result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
         assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
@@ -87,9 +87,9 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
         """https://pay.yunshuxie.com/v6/order/query/wm_course.htm<br/> 5-6年级<br/>{"code":"071qgt2Y18js711PIG0Y1vrK2Y1qgt2j","memberId":"",<br/>"phone":"","grade":",5,6,","callback":"Zepto1558946587441"}"""
         url = r"https://pay.yunshuxie.com/v6/order/query/wm_course.htm"
         params = {"code":"021ZaJtG17hM310SblvG1NZutG1ZaJtQ","memberId":"","phone":"","grade":",5,6,","callback":"Zepto1558946587441"}
-        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        #logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)
-        logging.info(url + lianjiefu + resp.text + fengefu)
+        #logging.info(url + lianjiefu + resp.text + fengefu)
         print "查询5-6年级:"+resp.content +"<br/>"
         result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
         assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
@@ -99,9 +99,9 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
         url = r"https://pay.yunshuxie.com/v1/coupon/query/use_list.htm"
         for product in globals_values:
             params = {"phone":self.phonenum,"productId":product[1],"activityType":"1","callback":"__jp1"}
-            logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+            #logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
             resp = self.session.get(url=url,params=params)
-            logging.info(url + lianjiefu + resp.text + fengefu)
+            #logging.info(url + lianjiefu + resp.text + fengefu)
             print "查询优惠券:" + resp.content + "<br/>"
             result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
             assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
@@ -111,9 +111,9 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
         url = r"https://pay.yunshuxie.com/v6/order/query/wm_is_pay.htm"
         for product in globals_values:
             params = {"phone": self.phonenum, "productCourseHourId": product[0], "callback": "__jp6"}
-            logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+            #logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
             resp = self.session.get(url=url,params=params)
-            logging.info(url + lianjiefu + resp.text + fengefu)
+            #logging.info(url + lianjiefu + resp.text + fengefu)
             print "查询是否已购买:" + resp.content + "<br/>"
             result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
             assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
@@ -122,7 +122,7 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
         url = r"https://account.yunshuxie.com/v1/address/default.htm"
         params = {"phone": self.phonenum, "callback": "__jp7"}
         resp = self.session.get(url=url,params=params)
-        logging.info(url + lianjiefu + resp.text + fengefu)
+        #logging.info(url + lianjiefu + resp.text + fengefu)
         print "加载地址:" + resp.content + "<br/>"
         result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
         assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
@@ -131,9 +131,9 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
         """https://account.yunshuxie.com/v1/address/default.htm<br/>{"phone":phoneNum, "callback": "__jp7"}"""
         url = r"https://account.yunshuxie.com/v1/address/default.htm"
         params = {"phone": self.phonenum, "callback": "__jp7"}
-        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)
-        logging.info(url + lianjiefu + resp.text + fengefu)
+        #logging.info(url + lianjiefu + resp.text + fengefu)
         print "加载地址:" + resp.content + "<br/>"
         result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
         assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
@@ -146,9 +146,9 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
                   "ysxOpenId": "osxBJ6MQ69yOMyhCejqj55SdKzyI", "phId": productHoursId,
                   "gId": "-1", "pId": productId, "pType": "1", "productType": "17", "channelId": "AliPay", "cSn": "",
                   "sk": "", "grade": "", "addressId": "-1", "activityId": "-1"}
-            logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             resp = self.session.get(url=url,params=params)  # 生成支付订单
-            logging.info(url + lianjiefu + resp.text + fengefu)
+            #logging.info(url + lianjiefu + resp.text + fengefu)
             print "购买phId={phId}:pId={pId} 课程".format(phId=productHoursId,pId=productId) + resp.content + "<br/>"
             result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
             assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])

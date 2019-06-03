@@ -78,7 +78,7 @@ class XiaoXuegfzwbhcyk_Test(unittest.TestCase):
                       "channelId": "AliPay", "cSn": "", "sk": "", "grade": "4", "addressId": "-1", "activityId": "-1"}
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             resp = self.session.get(url=url,params=params)
-            print "课程购买【phId】：{phId}--【pId】：{pId}:".format(phId=productCourseHoursId,pId=productId) + resp.content + "<br/>"
+            print "{phId}--{pId}--{resp}<br/>".format(phId=productCourseHoursId,pId=productId,resp= resp.content)
             logging.info(url + lianjiefu + resp.text + fengefu)
             result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
             assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
