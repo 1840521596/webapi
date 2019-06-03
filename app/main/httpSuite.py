@@ -52,7 +52,6 @@ def runDatasApiTest_yunwei():
 	redis_host = s.get_env("beta").split(":") if env_flag == "beta" else s.get_env("prod_stage").split(":")
 	r = red.Redis(host=redis_host[0], port=int(redis_host[1]), password="yunshuxie1029Password")
 	r.set("021ZaJtG17hM310SblvG1NZutG1ZaJtQ",'o38sIv_7FQInsBKJEUExn7wYxoHc&21_bk4dQIEFnYz5w8zJwDqan84UFmV_XVKEO5MJf7fv1pGR8tRH2MAtxpk0Pc1SqDwe5S90CE6TQo1wd346qEA5FQ')
-
 	try:
 		project_en = db.session.query(Project.project_en, Project.description).filter_by(project=project).first()
 		if project_en:

@@ -177,7 +177,7 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         """get_create_order<br/>八九年级:<br/>{"phone":self.phonenum, "productId": "3025", "phId": "3002",<br/>"code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",<br/>"activityId": "-1", "cSn": ""}"""
         url = r"https://pay.yunshuxie.com/v4/order/h5_pay/DS/post/get_create_order.htm"
         params = {"phone":self.phonenum, "productId": "3025", "phId": "3002",
-                  "code":"021ZaJtG17hM310SblvG1NZutG1ZaJtQ", "sk": "null", "agentId": "", "customizeGroupId": "-1",
+                  "code":"o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",
                   "activityId": "-1", "cSn": ""}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)  # 生成支付订单
@@ -190,7 +190,7 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         """get_create_order<br/>高中:<br/>{"phone":self.phonenum, "productId": "3026", "phId": "3003",<br/>"code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",<br/>"activityId": "-1", "cSn": ""}"""
         url = r"https://pay.yunshuxie.com/v4/order/h5_pay/DS/post/get_create_order.htm"
         params = {"phone": self.phonenum, "productId": "3026", "phId": "3003",
-                  "code":"021ZaJtG17hM310SblvG1NZutG1ZaJtQ", "sk": "null", "agentId": "", "customizeGroupId": "-1",
+                  "code":"o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",
                   "activityId": "-1", "cSn": ""}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url, params=params)  # 生成支付订单
