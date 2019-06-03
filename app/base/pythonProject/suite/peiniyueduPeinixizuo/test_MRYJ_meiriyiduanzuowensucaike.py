@@ -153,7 +153,21 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
             result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
             assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
             assert result["data"] != {}, self.msg.format(Expect=resp.content, Really=result["returnCode"])
-
+    def test_11_get_create_order(self):
+        """https://pay.yunshuxie.com/v6/order/create.htm<br/><br/>{"phone":phonenum,"customizeGroupId":"-1",<br/>"ysxOpenId":"osxBJ6MQ69yOMyhCejqj55SdKzyI","phId":productHoursId,<br/>Id":"-1","pId":productId,"pType":"1","productType":"17","channelId":"WxPay","cSn":"",<br/>"sk":"","grade":"","addressId":"-1","activityId":"-1"}"""
+        url = r"https://pay.yunshuxie.com/v6/order/create.htm"
+        for productHoursId,productId in globals_values:
+            params = {"phone": "{}".format(self.phonenum), "customizeGroupId": "-1",
+                  "ysxOpenId": "osxBJ6MQ69yOMyhCejqj55SdKzyI", "phId": productHoursId,
+                  "gId": "-1", "pId": productId, "pType": "1", "productType": "17", "channelId": "WxPay", "cSn": "",
+                  "sk": "", "grade": "", "addressId": "-1", "activityId": "-1"}
+            #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            resp = self.session.get(url=url,params=params)  # 生成支付订单
+            #logging.info(url + lianjiefu + resp.text + fengefu)
+            print "购买phId={phId}:pId={pId} 课程{resp}<br/>".format(phId=productHoursId,pId=productId,resp=resp.content)
+            result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
+            assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
+            assert result["data"] != {}, self.msg.format(Expect=resp.content, Really=result["returnCode"])
     @classmethod
     def tearDownClass(self):
         globals().pop("globals_values")

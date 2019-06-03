@@ -21,7 +21,7 @@ class KanTuXieHua_Test(unittest.TestCase):
         self.session.mount("https://", request_retry)
         self.session.mount("http://", request_retry)
         header = {"Connection": "keep-alive","Content-Type": "application/x-www-form-urlencoded","Cache-Control": "no-cache",
-                  "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 Safari/601.1 wechatdevtools/1.02.1904090 MicroMessenger/6.7.3 Language/zh_CN webview/15578306374265793 webdebugger port/22562"}
+z"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 Safari/601.1 wechatdevtools/1.02.1904090 MicroMessenger/6.7.3 Language/zh_CN webview/15578306374265793 webdebugger port/22562"}
         self.session.headers = header
         cookies = {"env_flag": self.env_flag, "env_num": self.env_num}
         self.session.cookies = requests.utils.cookiejar_from_dict(cookies)
@@ -136,6 +136,22 @@ class KanTuXieHua_Test(unittest.TestCase):
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             resp = self.session.get(url=url,params=params)
             print "课程购买【phId】：{phId}--【pId】：{pId}:".format(phId=productCourseHoursId,pId=productId) + resp.content + "<br/>"
+            logging.info(url + lianjiefu + resp.text + fengefu)
+            result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
+            assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
+
+    def test_08_order_create(self):
+        """https://pay.yunshuxie.com/v6/order/create.htm<br/>{"phone":"phoneNum,"customizeGroupId":"-1","phId":productCourseHoursId,<br/>"gId":"-1",pId": productId,"pType": "1","productType": "73","channelId": "WxPay",<br/>"cSn":"","sk":"","grade":"","addressId":"-1","activityId":"-1"}"""
+        for productCourseHoursId, productId in globals_values:
+            url = r"https://pay.yunshuxie.com/v6/order/create.htm"  # 生成支付订单
+            params = {"phone": "{}".format(self.phonenum), "customizeGroupId": "-1", "phId": productCourseHoursId,
+                      "gId": "-1",
+                      "pId": productId, "pType": "1", "productType": "73", "channelId": "WxPay",
+                      "cSn": "", "sk": "", "grade": "", "addressId": "-1", "activityId": "-1"}
+            logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            resp = self.session.get(url=url, params=params)
+            print "课程购买【phId】：{phId}--【pId】：{pId}:".format(phId=productCourseHoursId,
+                                                           pId=productId) + resp.content + "<br/>"
             logging.info(url + lianjiefu + resp.text + fengefu)
             result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
             assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])

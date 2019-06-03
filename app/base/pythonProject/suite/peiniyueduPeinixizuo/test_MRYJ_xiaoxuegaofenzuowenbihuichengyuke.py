@@ -82,6 +82,19 @@ class XiaoXuegfzwbhcyk_Test(unittest.TestCase):
             logging.info(url + lianjiefu + resp.text + fengefu)
             result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
             assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
+    def test_05_order_create(self):
+        """https://pay.yunshuxie.com/v6/order/create.htm<br/>{"phone":"phoneNum,"customizeGroupId":"-1","phId":productCourseHoursId,<br/>"gId":"-1",pId": productId,"pType": "1","productType": "72","channelId": "WxPay",<br/>"cSn":"","sk":"","grade":"","addressId":"-1","activityId":"-1"}"""
+        url = r"https://pay.yunshuxie.com/v6/order/create.htm"  # 生成支付订单
+        for productCourseHoursId,productId  in globals_values:
+            params = {"phone": self.phonenum, "customizeGroupId": "-1",
+                      "phId": productCourseHoursId, "gId": "-1", "pId": productId, "pType": "1", "productType": 72,
+                      "channelId": "WxPay", "cSn": "", "sk": "", "grade": "4", "addressId": "-1", "activityId": "-1"}
+            logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            resp = self.session.get(url=url,params=params)
+            print "课程购买【phId】：{phId}--【pId】：{pId}:".format(phId=productCourseHoursId,pId=productId) + resp.content + "<br/>"
+            logging.info(url + lianjiefu + resp.text + fengefu)
+            result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
+            assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
     @classmethod
     def tearDownClass(self):
         globals().pop("globals_values")
