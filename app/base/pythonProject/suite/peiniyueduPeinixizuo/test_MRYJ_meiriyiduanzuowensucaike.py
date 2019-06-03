@@ -1,4 +1,4 @@
-https://pay.yunshuxie.com/v6/order/create.htm#!/usr/bin/python
+#!/usr/bin/python
 #-*-coding:utf-8 -*-
 import requests
 import unittest
@@ -149,7 +149,7 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
             #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             resp = self.session.get(url=url,params=params)  # 生成支付订单
             #logging.info(url + lianjiefu + resp.text + fengefu)
-            print "购买phId={phId}:pId={pId} 课程".format(phId=productHoursId,pId=productId) + resp.content + "<br/>"
+            print "购买phId={phId}:pId={pId} 课程{resp}<br/>".format(phId=productHoursId,pId=productId,resp=resp.content)
             result = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
             assert result["returnCode"] == "0", self.msg.format(Expect="0", Really=result["returnCode"])
             assert result["data"] != {}, self.msg.format(Expect=resp.content, Really=result["returnCode"])
