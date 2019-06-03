@@ -24,7 +24,7 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         self.session.headers = header
         self.session.cookies = cookies
     def test_01_statistics_yearCardList(self):
-        """B端CRM->名著导读课程管理->统计报表->班级详情->跟踪记录(写跟踪beta测试)<br/> {"startDate": "2018-01-01 00%3A00%3A00","endDate": "2019-12-31 00%3A00%3A00",<br/>"schoolName":"","teacherPhone":"", "teacherName": "","teacherStartDate": "2018-01-01 00%3A00%3A00",<br/>"teacherEndDate": "2019-12-31 00%3A00%3A00","userName":"" ,"province": "北京",<br/>"city": "北京市","district":"","sort": "classId",<br/>"order": "asc","limit": "10","offset": "0"}
+        """B端CRM->名著导读课程管理->统计报表->班级详情->跟踪记录(写跟踪beta测试)<br/>http://admin.crm.yunshuxie.com/v1/yearcard/statistics/yearCardList.htm<br/>{"startDate": "2018-01-01 00%3A00%3A00","endDate": "2019-12-31 00%3A00%3A00",<br/>"schoolName":"","teacherPhone":"", "teacherName": "","teacherStartDate": "2018-01-01 00%3A00%3A00",<br/>"teacherEndDate": "2019-12-31 00%3A00%3A00","userName":"" ,"province": "北京",<br/>"city": "北京市","district":"","sort": "classId",<br/>"order": "asc","limit": "10","offset": "0"}
         :return: True
         """
         url = r"http://admin.crm.yunshuxie.com/v1/yearcard/statistics/yearCardList.htm"
@@ -73,7 +73,7 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
                                                                                        Really=result.has_key("returnMsg"))
     def test_02_statistics_saleList(self):
         """
-        B端CRM->名著导读课程管理->流量绩效->累计移除学生数<br/>{"sort": "classId","order": "asc","limit": "10","offset": "0"}<br/>{"userId": userId,"sort": "classId","order": "asc","limit": "10","offset": "0"}
+        B端CRM->名著导读课程管理->流量绩效->累计移除学生数<br/>http://admin.crm.yunshuxie.com/v1/yearcard/statistics/saleList.htm<br/>{"sort": "classId","order": "asc","limit": "10","offset": "0"}<br/>{"userId": userId,"sort": "classId","order": "asc","limit": "10","offset": "0"}
         :return: True
         """
         url = r"http://admin.crm.yunshuxie.com/v1/yearcard/statistics/saleList.htm"
@@ -97,7 +97,7 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
                                                                                    Really=result.has_key("total"))
     def test_03_statistics_grade_list(self):
         """
-        B端CRM->名著导读课程管理->年级汇总报表<br/>{"sort": "classId","order": "asc","limit": "50","offset": "0"}
+        B端CRM->名著导读课程管理->年级汇总报表<br/>http://admin.crm.yunshuxie.com/v1/yearcard/statistics/grade_list.htm<br/>{"sort": "classId","order": "asc","limit": "50","offset": "0"}
         :return: True
         """
         url = r"http://admin.crm.yunshuxie.com/v1/yearcard/statistics/grade_list.htm"
@@ -114,7 +114,7 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
                                                                                    Really=result.has_key("total"))
     def test_04_statistics_daily_reports_list(self):
         """
-        B端CRM->名著导读课程管理->日报<br/>{"sort": "classId","order": "asc","limit": "50","offset": "0"}
+        B端CRM->名著导读课程管理->日报<br/>http://admin.crm.yunshuxie.com/v1/yearcard/statistics/daily_reports_list.htm<br/>{"sort": "classId","order": "asc","limit": "50","offset": "0"}
         :return: True
         """
         url = r"http://admin.crm.yunshuxie.com/v1/yearcard/statistics/daily_reports_list.htm"
@@ -131,7 +131,7 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
                                                                                    Really=result.has_key("total"))
     def test_05_statistics_daily_reports_Sum(self):
         """
-        B端CRM->名著导读课程管理->日报<br/>
+        B端CRM->名著导读课程管理->日报<br/>http://admin.crm.yunshuxie.com/v1/yearcard/statistics/daily_reports_Sum.json<br/>
         :return: True
         """
         url = r"http://admin.crm.yunshuxie.com/v1/yearcard/statistics/daily_reports_Sum.json"
@@ -145,7 +145,7 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         assert result.has_key("data") == expect.has_key("data"), self.msg.format(Except=expect.has_key("data"),Really=result.has_key("data"))
     def test_06_organ_query_channeler_list(self):
         """
-        B端CRM->渠道商->每日一句->学校详情<br/>{"sort": "organId", "order": "asc", "limit": "10", "offset": "0"}
+        B端CRM->渠道商->每日一句->学校详情<br/>http://admin.crm.yunshuxie.com/v1/bcrm/organ/query/channeler_list<br/>http://admin.crm.yunshuxie.com/v1/bcrm/organ/query/school_list<br/>{"sort": "organId", "order": "asc", "limit": "10", "offset": "0"}
         :return: True
         """
         url = r"http://admin.crm.yunshuxie.com/v1/bcrm/organ/query/channeler_list"
@@ -174,7 +174,7 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
                                                                                    Really=result.has_key("total"))
     def test_07_organ_query_channeler_Sum(self):
         """
-        B端CRM->渠道商->每日一句<br/>
+        B端CRM->渠道商->每日一句<br/>http://admin.crm.yunshuxie.com/v1/bcrm/organ/query/channeler_Sum.json<br/>
         :return: True
         """
         url = r"http://admin.crm.yunshuxie.com/v1/bcrm/organ/query/channeler_Sum.json"
@@ -187,7 +187,7 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         assert result["returnCode"] == expect["returnCode"], self.msg.format(Except=expect["returnCode"],Really=result["returnCode"])
         assert result.has_key("data") == expect.has_key("data"), self.msg.format(Except=expect.has_key("data"),Really=result.has_key("data"))
     def test_08_yearcard_query_channeler_list(self):
-        """B端CRM->渠道商->名著导读课->学校详情<br/>{"sort": "organId", "order": "asc", "limit": "10", "offset": "0"}<br/>{"parentOrganId": organId,"sort": "organId","order": "asc","limit": "10","offset": "0"}
+        """B端CRM->渠道商->名著导读课->学校详情<br/>http://admin.crm.yunshuxie.com/v1/agent/yearcard/query/channeler_list<br/>{"sort": "organId", "order": "asc", "limit": "10", "offset": "0"}<br/>{"parentOrganId": organId,"sort": "organId","order": "asc","limit": "10","offset": "0"}
         :return: True
         """
         url = r"http://admin.crm.yunshuxie.com/v1/agent/yearcard/query/channeler_list"

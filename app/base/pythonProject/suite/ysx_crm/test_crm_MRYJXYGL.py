@@ -23,7 +23,7 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         self.session.headers = header
         self.session.cookies = cookies
     def test_01_serviceteacher(self):
-        """每日一句分配老师 <br/> {"teacherType": "1","limit": "3",<br/>"order": "asc","offset": "0"}
+        """每日一句分配老师 <br/> http://admin.crm.yunshuxie.com/admin/writing_material/query/serviceteacher.htm<br/>{"teacherType": "1","limit": "3",<br/>"order": "asc","offset": "0"}
         :param: order == asc
         :param: limit == 3
         :param: offset == 0
@@ -41,7 +41,7 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         assert isinstance(result["total"],int)==True
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_02_manage_list(self):
-        """活跃度统计报表 <br/> {"sort": "wechatTeacherId","order": "asc",<br/>"limit": "10","offset": "0"}
+        """活跃度统计报表 <br/>http://admin.crm.yunshuxie.com/v1/crm/daily/manage_list<br/> {"sort": "wechatTeacherId","order": "asc",<br/>"limit": "10","offset": "0"}
         :param: order == asc
         :param: limit == 10
         :param: offset == 0
@@ -59,7 +59,7 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         assert isinstance(result["total"],int)==True
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_03_single_manage_list(self):
-        """个人活跃度统计 <br/> {"sort": "wechatTeacherId","order": "asc",<br/>"limit": "10","offset": "0"}
+        """个人活跃度统计 <br/> http://admin.crm.yunshuxie.com/v1/crm/daily/single_manage_list<br/>{"sort": "wechatTeacherId","order": "asc",<br/>"limit": "10","offset": "0"}
         :param: sort == wechatTeacherId
         :param: order == asc
         :param: limit == 10
@@ -78,7 +78,7 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         assert isinstance(result["total"],int)==True
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_04_daily_list(self):
-        """学员学习明细表 <br/> {"sort": "payDate","order": "DESC",<br/>"limit": "10","offset": "0"}
+        """学员学习明细表 <br/>http://admin.crm.yunshuxie.com/v1/crm/daily/list<br/> {"sort": "payDate","order": "DESC",<br/>"limit": "10","offset": "0"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/v1/crm/daily/list"
@@ -93,7 +93,7 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         assert isinstance(result["total"],int)==True
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_05_daily_list(self):
-        """学员学习明细表 <br/>{"type": "-1","phone":"", "isWechat": "-1",<br/>"isReading": "1","isWriting": "1","isWritingMaterial": "1","isClock": "1","lastLogin": "-1","lastClock": "2",<br/>"communicateNum":"", "sort": "payDate",<br/>"order": "DESC","limit": "10","offset": "0"}
+        """学员学习明细表 <br/>http://admin.crm.yunshuxie.com/v1/crm/daily/list<br/>{"type": "-1","phone":"", "isWechat": "-1",<br/>"isReading": "1","isWriting": "1","isWritingMaterial": "1","isClock": "1","lastLogin": "-1","lastClock": "2",<br/>"communicateNum":"", "sort": "payDate",<br/>"order": "DESC","limit": "10","offset": "0"}
         :return limit==0:
         """
         url = r"http://admin.crm.yunshuxie.com/v1/crm/daily/list"
@@ -107,7 +107,7 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         assert result.has_key("total")==expect.has_key("total"),self.msg.format(Except=expect["total"],Really=result["total"])
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_06_ysxwechatserviceteacher_list(self):
-        """设备分配表 <br/> {"_search":"false","nd":"1558581314505","limit":"10",<br/>"page":"1","sidx":"","order":"asc"}
+        """设备分配表 <br/> http://admin.crm.yunshuxie.com/ysxwechatserviceteacher/list<br/>{"_search":"false","nd":"1558581314505","limit":"10",<br/>"page":"1","sidx":"","order":"asc"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/ysxwechatserviceteacher/list"
@@ -128,7 +128,7 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         # print self.resp.content
         # assert result_moocClassId > 0, self.msg.format(Except=moocClassId, Really=result_moocClassId)
     def test_07_serviceteacher(self):
-        """学员学习明细表 <br/> {"isManage":"1","sort": "payDate",<br/>"order": "ASC","limit": "10","offset":"0"}
+        """学员学习明细表 <br/> http://admin.crm.yunshuxie.com/v1/crm/daily/list<br/>{"isManage":"1","sort": "payDate",<br/>"order": "ASC","limit": "10","offset":"0"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/v1/crm/daily/list"

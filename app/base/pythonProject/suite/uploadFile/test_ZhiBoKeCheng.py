@@ -30,7 +30,7 @@ class zhiBoKeCheng_Test(unittest.TestCase):
         #logging.info(self.url + lianjiefu + self.resp.text + fengefu)
         self.cookies.update(self.resp.cookies)
     def test_1_TianJiaZhiBKeCheng(self):
-        """添加直播课程"""
+        """添加直播课程<br/>https://admin.yunshuxie.com/v1/admin/big_live/save_biglive_course.json<br/>"""
         self.caseStatusCode = 200
         self.caseExpectDatas ={"returnCode":"0","returnMsg":"操作成功","data":{"bigliveCourseNameLike":"","bigliveRemarks":"","orderBy":"","beginDateChar":"2019-04-23","endDate":"2019-04-23 00:00:00","endDateBegin":"","endDateCharAll":"2019-04-23 00:00:00","beginDate":"2019-04-23 00:00:00","creadeDate":"2019-04-25 16:40:00","teacherName":"","updateDateEnd":"","teacherNameLike":"","endDateChar":"2019-04-23","bigliveDescribe":"自动化测试","bigliveCourseName":"自动化测试","imgUrlLike":"","coureseUrlLike":"","createUserId":"1203933","creadeDateBegin":"","updateDateCharAll":"","creadeDateChar":"2019-04-25","updateDate":"","imgUrl":"https://oss-ysx-pic.yunshuxie.com/pdf/2019/04/25/15/1556178195842fsavyl.png","bigliveDescribeLike":"","updateDateBegin":"","endDateEnd":"","bigliveCourseId":"51","beginDateCharAll":"2019-04-23 00:00:00","beginDateEnd":"","coureseUrl":"自动化测试","updateDateChar":"","bigliveType":"-1","beginDateBegin":"","bigliveRemarksLike":"","creadeDateCharAll":"2019-04-25 16:40:00","creadeDateEnd":""}}
         params = {"bigliveCourseId":"-1","file": "","imgUrl":r"https://oss-ysx-pic.yunshuxie.com/pdf/2019/04/25/15/1556178195842fsavyl.png",
@@ -80,7 +80,7 @@ class zhiBoKeCheng_Test(unittest.TestCase):
             assert keyValue=="Error",msg.format(Except=keyValue,Really="Error")
         #print self.resp.content
     def test_2_ShanChuZhiBoKeCheng(self):
-        """查询直播课程,并删除直播课程"""
+        """查询直播课程,并删除直播课程<br/>https://admin.yunshuxie.com/v1/admin/big_live/delete_bigliveCourse.htm<br/>"""
         self.caseStatusCode = 200
         self.url = r"https://admin.yunshuxie.com/v1/admin/big_live/query_biglive_course_list.json"
         params = {"bigliveCourseId": "-1","bigliveCourseName": "%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95","order": "asc","limit": "10","offset": "0","_": "1556182101548"}

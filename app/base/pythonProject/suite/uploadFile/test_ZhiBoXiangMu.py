@@ -36,7 +36,7 @@ class zhiBoXiangMu_Test(unittest.TestCase):
         self.cookies.update(self.resp.cookies)
 
     def test_1_TianJiaZhiBoXiangMu(self):
-        """添加直播项目"""
+        """添加直播项目<br/>https://admin.yunshuxie.com/v1/admin/big_live/save_biglive_project.json"""
         self.caseStatusCode = 200
         self.caseExpectDatas = {"returnCode":"0","returnMsg":"操作成功",
                                 "data":{"beginDateChar":"2019-04-02","orderBy":"",

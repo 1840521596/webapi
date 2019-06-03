@@ -24,7 +24,7 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         self.session.headers = header
         self.session.cookies = cookies
     def test_01_day_sales(self):
-        """销售统计-销售日报 <br/> {"limit": "10","sort": "nowDate","order":"asc","offset": "0"}
+        """销售统计-销售日报 <br/>http://admin.crm.yunshuxie.com/v1/crm/day/sales.json<br/> {"limit": "10","sort": "nowDate","order":"asc","offset": "0"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/v1/crm/day/sales.json"
@@ -41,7 +41,7 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"]
                                                                                  ,Really=result["rows"])
     def test_02_week_sales(self):
-        """销售统计-销售周报 <br/>  {"limit": "10","sort": "prductName","order":"asc","offset": "0"}
+        """销售统计-销售周报 <br/> http://admin.crm.yunshuxie.com/v1/crm/week/sales<br/> {"limit": "10","sort": "prductName","order":"asc","offset": "0"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/v1/crm/week/sales"
@@ -58,7 +58,7 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"]
                                                                                  ,Really=result["rows"])
     def test_03_month_sales(self):
-        """销售统计-销售月报-用户销售数据 <br/> {"limit": "10","sort": "nowDate","order":"asc","offset": "0"}
+        """销售统计-销售月报-用户销售数据 <br/>http://admin.crm.yunshuxie.com/v1/crm/month/sales.json<br/> {"limit": "10","sort": "nowDate","order":"asc","offset": "0"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/v1/crm/month/sales.json"
@@ -75,7 +75,7 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"]
                                                                                  ,Really=result["rows"])
     def test_04_mounth_statistics_list(self):
-        """销售统计-销售月报-产品销售数据 <br/> {"limit": "10","sort": "month","order":"asc","offset": "0"}
+        """销售统计-销售月报-产品销售数据 <br/>http://admin.crm.yunshuxie.com/v1/crm/sales/mounth_statistics_list.json<br/> {"limit": "10","sort": "month","order":"asc","offset": "0"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/v1/crm/sales/mounth_statistics_list.json"
@@ -92,7 +92,7 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"]
                                                                                  ,Really=result["rows"])
     def test_05_mounth_sales_detail(self):
-        """销售统计-销售月报-新老用户销售数据 <br/> {"limit": "10","sort": "nowDate","order":"asc","offset": "0"}
+        """销售统计-销售月报-新老用户销售数据 <br/> http://admin.crm.yunshuxie.com/v1/crm/month/sales_detail<br/>{"limit": "10","sort": "nowDate","order":"asc","offset": "0"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/v1/crm/month/sales_detail"
@@ -109,7 +109,7 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"]
                                                                                  ,Really=result["rows"])
     def test_06_year_sales(self):
-        """销售统计-销售年报 <br/> {"limit": "10", "sort": "nowDate", "order": "asc", "offset": "0"}
+        """销售统计-销售年报 <br/>http://admin.crm.yunshuxie.com/v1/crm/year/sales.json<br/> {"limit": "10", "sort": "nowDate", "order": "asc", "offset": "0"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/v1/crm/year/sales.json"
@@ -126,7 +126,7 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],
                                                                                  Really=result["rows"])
     def test_07_platinum_day_study(self):
-        """销售统计-年卡销售数据 <br/> {"limit": "10", "sort": "payDate", "order": "DESC", "offset": "0"}
+        """销售统计-年卡销售数据 <br/>http://admin.crm.yunshuxie.com/v1/platinum/day_study<br/> {"limit": "10", "sort": "payDate", "order": "DESC", "offset": "0"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/v1/platinum/day_study"
@@ -143,7 +143,7 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],
                                                                                  Really=result["rows"])
     def test_08_online_offline(self):
-        """销售统计-热门课程销售排行榜-当天 <br/> {"startDate": date,"endDate": date,"order":"desc"}
+        """销售统计-热门课程销售排行榜-当天 <br/> http://admin.crm.yunshuxie.com/ysxserviceuser/get/sales/ranking/online/offline.html<br/>{"startDate": date,"endDate": date,"order":"desc"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/ysxserviceuser/get/sales/ranking/online/offline.html"
@@ -161,7 +161,7 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],
                                                                                  Really=result["rows"])
     def test_09_ranking_list(self):
-        """销售统计-热门课程销售排行榜-当天-查看《每日一句》明细 <br/> {"productName": "每日一句","startDate": "2019-05-23","endDate": "2019-05-23",<br/>"deptId": "-1","sort": "userId","order": "DESC","limit": "10","offset": "0"}
+        """销售统计-热门课程销售排行榜-当天-查看《每日一句》明细 <br/> http://admin.crm.yunshuxie.com/v1/sale/performance/sales/ranking/list<br/>{"productName": "每日一句","startDate": "2019-05-23","endDate": "2019-05-23",<br/>"deptId": "-1","sort": "userId","order": "DESC","limit": "10","offset": "0"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/v1/sale/performance/sales/ranking/list"
@@ -180,7 +180,7 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],
                                                                                  Really=result["rows"])
     def test_10_get_echarts(self):
-        """销售统计-热门课程销售排行榜-当天-查看图表 <br/>{"startDate":date,"endDate":date}
+        """销售统计-热门课程销售排行榜-当天-查看图表 <br/>http://admin.crm.yunshuxie.com/ysxserviceuser/get/echarts<br/>{"startDate":date,"endDate":date}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/ysxserviceuser/get/echarts"

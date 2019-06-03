@@ -23,7 +23,7 @@ class Ysx_Crm_ChengYuGuShiXueYuanGuanLi(unittest.TestCase):
         self.session.headers = header
         self.session.cookies = cookies
     def test_01_daily_list(self):
-        """成语故事日报 <br/> {"teacherType": "11","limit": "10",<br/>"order": "asc","offset": "0"}
+        """成语故事日报 <br/> http://admin.crm.yunshuxie.com/v1/elementary_course/query/daily_list.json<br/>{"teacherType": "11","limit": "10",<br/>"order": "asc","offset": "0"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/v1/elementary_course/query/daily_list.json"
@@ -38,7 +38,7 @@ class Ysx_Crm_ChengYuGuShiXueYuanGuanLi(unittest.TestCase):
         assert isinstance(result["total"],int)==True
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_02_picture_basic_distribution(self):
-        """看图写话日报 <br/> {"teacherType":"10","sort":"nowDate",<br/>"order":"asc","limit":"10","offset":"0"}
+        """看图写话日报 <br/> http://admin.crm.yunshuxie.com/admin/writing_material/query/picture_basic_distribution.json<br/>{"teacherType":"10","sort":"nowDate",<br/>"order":"asc","limit":"10","offset":"0"}
         :param: order == asc
         :param: limit == 10
         :param: offset == 0
@@ -56,7 +56,7 @@ class Ysx_Crm_ChengYuGuShiXueYuanGuanLi(unittest.TestCase):
         assert isinstance(result["total"],int)==True
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_03_idiomServiceteacher(self):
-        """成语故事分配老师 <br/> {"teacherType":"10","order":"asc",<br/>"limit":"10","offset":"0"}
+        """成语故事分配老师 <br/> http://admin.crm.yunshuxie.com/admin/writing_material/query/idiomServiceteacher.htm</br>{"teacherType":"10","order":"asc",<br/>"limit":"10","offset":"0"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/query/idiomServiceteacher.htm"
@@ -71,7 +71,7 @@ class Ysx_Crm_ChengYuGuShiXueYuanGuanLi(unittest.TestCase):
         assert isinstance(result["total"],int)==True
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_04_idiom_classdetail(self):
-        """成语故事班级统计数据 <br/> {"sort": "nowDate","order": "asc","limit": "10","offset": "0","teacherType":"10"}
+        """成语故事班级统计数据 <br/>http://admin.crm.yunshuxie.com/admin/writing_material/idiom_classdetail.json<br/> {"sort": "nowDate","order": "asc","limit": "10","offset": "0","teacherType":"10"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/idiom_classdetail.json"
@@ -86,7 +86,7 @@ class Ysx_Crm_ChengYuGuShiXueYuanGuanLi(unittest.TestCase):
         assert isinstance(result["total"],int)==True
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_05_idiomStudent_detail(self):
-        """成语故事学员学习明细 <br/> {"sort": "nowDate","order": "asc","limit": "10","offset": "0"}
+        """成语故事学员学习明细 <br/>http://admin.crm.yunshuxie.com/admin/writing_material/idiomStudent_detail.json<br/>{"sort": "nowDate","order": "asc","limit": "10","offset": "0"}
         :return True:
         """
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/idiomStudent_detail.json"

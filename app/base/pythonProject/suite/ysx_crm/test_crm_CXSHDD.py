@@ -23,7 +23,7 @@ class Ysx_Crm_CXSHDD(unittest.TestCase):
         self.session.headers = header
         self.session.cookies = cookies
     def test_01_merchants_order(self):
-        """查询商户订单<br/> {"sort": "nowDate","order": "asc","limit": "3",<br/>"offset": "0","_": "1558510544182"}
+        """查询商户订单<br/>http://admin.crm.yunshuxie.com/v1/admin/order/query/merchants/order<br/>{"orderSn": "Y1760155867978891781"}
         """
         url = r"http://admin.crm.yunshuxie.com/v1/admin/order/query/merchants/order"
         params = {"orderSn": "Y1760155867978891781"}

@@ -23,7 +23,7 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         self.session.headers = header
         self.session.cookies = cookies
     def test_01_writing_material_order(self):
-        """素材课日报查询 <br/> {"sort": "nowDate","order": "asc","limit": "3",<br/>"offset": "0","_": "1558510544182"}
+        """素材课日报查询 <br/> http://admin.crm.yunshuxie.com/admin/writing_material/query/writing_material_order.json<br/>{"sort": "nowDate","order": "asc","limit": "3",<br/>"offset": "0","_": "1558510544182"}
         :param: sort == nowDate
         :param: order == asc
         :param: limit == 3
@@ -41,7 +41,7 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         assert result["total"]==expect["total"],self.msg.format(Except=expect["total"],Really=result["total"])
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_02_writing_material_order(self):
-        """素材课日报查询 <br/> {"sort": "nowDate","order": "asc",<br/>"limit": "0","offset": "0","_": "1558510544182"}
+        """素材课日报查询 <br/> http://admin.crm.yunshuxie.com/admin/writing_material/query/writing_material_order.json<br/>{"sort": "nowDate","order": "asc",<br/>"limit": "0","offset": "0","_": "1558510544182"}
         :param: sort == nowDate
         :param: order == asc
         :param: limit == 3
@@ -59,7 +59,7 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         assert result["total"]==expect["total"],self.msg.format(Except=expect["total"],Really=result["total"])
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_03_writing_equipment_distribution(self):
-        """素材课设备分配表 <br/> {"sort": "nowDate","order": "asc",<br/> "limit": "1","offset": "0","_": "1558510544182"}
+        """素材课设备分配表 <br/> http://admin.crm.yunshuxie.com/admin/writing_material/query/writing_equipment_distribution.json<br/>{"sort": "nowDate","order": "asc",<br/> "limit": "1","offset": "0","_": "1558510544182"}
         :param: sort == nowDate
         :param: order == asc
         :param: limit == 3
@@ -77,7 +77,7 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         assert result.has_key("total")==expect.has_key("total"),self.msg.format(Except=expect["total"],Really=result["total"])
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_04_writing_student_detail(self):
-        """素材课学员明细 <br/> {"type": "-1","phone":"", "saleName":"", "moocClassName":"",<br/> "courseHoursTitle":"","wecahtNum": "bjhyysx2","friend": "1",<br/> "sort": "nowDate","order": "asc","limit": "1",<br/> "offset": "0","_": "1558516779198"}
+        """素材课学员明细 <br/>http://admin.crm.yunshuxie.com/admin/writing_material/student_detail<br/>{"type": "-1","phone":"", "saleName":"", "moocClassName":"",<br/> "courseHoursTitle":"","wecahtNum": "bjhyysx2","friend": "1",<br/> "sort": "nowDate","order": "asc","limit": "1",<br/> "offset": "0","_": "1558516779198"}
         :return limit==0:
         """
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/student_detail"
@@ -91,7 +91,7 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         assert result.has_key("total")==expect.has_key("total"),self.msg.format(Except=expect["total"],Really=result["total"])
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_05_writing_student_detail(self):
-        """素材课学员明细 <br/> {"type": "1","phone":"", "saleName":"", "moocClassName":"",<br/> "courseHoursTitle":"","wecahtNum": "bjhyysx2","friend": "0",<br/> "sort": "nowDate","order": "asc","limit": "1","offset": "0","_": "1558516779198"}
+        """素材课学员明细 <br/>http://admin.crm.yunshuxie.com/admin/writing_material/student_detail<br/>{"type": "1","phone":"", "saleName":"", "moocClassName":"",<br/> "courseHoursTitle":"","wecahtNum": "bjhyysx2","friend": "0",<br/> "sort": "nowDate","order": "asc","limit": "1","offset": "0","_": "1558516779198"}
         :return limit==0:
         """
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/student_detail"
@@ -105,7 +105,7 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         assert result.has_key("total")==expect.has_key("total"),self.msg.format(Except=expect["total"],Really=result["total"])
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_06_writing_class_detail(self):
-        """素材课学员明细 <br/> {"className":"","saleName":"","sort":"nowDate",<br/>"order":"asc","limit": "1","offset": "0","_": "1558517996751"}
+        """素材课学员明细 <br/>http://admin.crm.yunshuxie.com/admin/writing_material/class_detail<br/>{"className":"","saleName":"","sort":"nowDate",<br/>"order":"asc","limit": "1","offset": "0","_": "1558517996751"}
         :return limit==0:
         """
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/class_detail"
@@ -126,7 +126,7 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         # print self.resp.content
         # assert result_moocClassId > 0, self.msg.format(Except=moocClassId, Really=result_moocClassId)
     def test_07_serviceteacher(self):
-        """素材课分配老师 <br/> {"sort": "userId","order": "asc",<br/> "limit": "10","offset":"0"}
+        """素材课分配老师 <br/>http://admin.crm.yunshuxie.com/admin/writing_material/query/serviceteacher.json<br/>{"sort": "userId","order": "asc",<br/> "limit": "10","offset":"0"}
         :return limit==0:
         """
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/query/serviceteacher.json"
@@ -140,7 +140,7 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         assert result.has_key("total")==expect.has_key("total"),self.msg.format(Except=expect["total"],Really=result["total"])
         assert result.has_key("rows") == expect.has_key("rows"), self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_08_new_member_activity(self):
-        """素材课每周新增用户活跃度<br/>{"startDate": "","endDate": "","sort": "dates",<br/>"order": "DESC","limit": "10","offset": "0"}
+        """素材课每周新增用户活跃度<br/>http://admin.crm.yunshuxie.com/admin/writing_material/new_member_activity<br/>{"startDate": "","endDate": "","sort": "dates",<br/>"order": "DESC","limit": "10","offset": "0"}
         :return rows&total:
         """
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/new_member_activity"
@@ -154,7 +154,7 @@ class Ysx_Crm_MeiRiYiDuanZuoWenSuCaiKe(unittest.TestCase):
         assert result.has_key("total")==expect.has_key("total"),self.msg.format(Except=expect["total"],Really=result["total"])
         assert result.has_key("rows")==expect.has_key("rows"),self.msg.format(Except=expect["rows"],Really=result["rows"])
     def test_09_sales(self):
-        """素材课分年级销售情况<br/>{"sort": "dates","order": "DESC",<br/>"limit": "1","offset": "0"}
+        """素材课分年级销售情况<br/>http://admin.crm.yunshuxie.com/admin/writing_material/sales<br/>{"sort": "dates","order": "DESC",<br/>"limit": "1","offset": "0"}
         :return rows&total:
         """
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/sales"

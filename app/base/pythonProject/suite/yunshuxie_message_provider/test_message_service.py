@@ -38,7 +38,7 @@ class Ysx_Message_Service(unittest.TestCase):
         self.salt = "mengmengda"
         self.msg = """\n        Except:  {Except}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
     def test_01_get_phone_code(self):
-        """sms/get_phone_code_蓝创加入黑名单_阿里云平台发送短信
+        """sms/get_phone_code_蓝创加入黑名单_阿里云平台发送短信<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param phone==18515850273
         :param verType==4
         :param platform==0
@@ -62,7 +62,7 @@ class Ysx_Message_Service(unittest.TestCase):
         assert dict_resp[u"code"]==expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
         assert dict_resp[u"message"]==expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
     def test_01_get_phone_code(self):
-        """sms / get_phone_code_注册
+        """sms / get_phone_code_注册<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param phone==13260062372
         :param platform==0
         :param verType==0
@@ -86,7 +86,7 @@ class Ysx_Message_Service(unittest.TestCase):
         assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
         assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
     def test_02_get_phone_code(self):
-        """sms / get_phone_code_登录
+        """sms / get_phone_code_登录<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param phone==13260062372
         :param platform==0
         :param verType==1
@@ -110,7 +110,7 @@ class Ysx_Message_Service(unittest.TestCase):
         assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
         assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
     def test_03_get_phone_code(self):
-        """sms / get_phone_code_订单
+        """sms / get_phone_code_订单<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param phone==13260062372
         :param platform==0
         :param verType==4
@@ -134,7 +134,7 @@ class Ysx_Message_Service(unittest.TestCase):
         assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
         assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
     def test_04_get_phone_code(self):
-        """sms / get_phone_code_手机号格式错误
+        """sms / get_phone_code_手机号格式错误<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param phone==132600623721123
         :param platform==0
         :param verType==4
@@ -158,7 +158,7 @@ class Ysx_Message_Service(unittest.TestCase):
         assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
         assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
     def test_05_get_phone_code(self):
-        """sms / get_phone_code_系统异常
+        """sms / get_phone_code_系统异常<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param  platform==5
         :param  verType==8
         :return code==-1
@@ -181,7 +181,7 @@ class Ysx_Message_Service(unittest.TestCase):
         assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
         assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
     def test_06_send_batch_message(self):
-        """sms / send_batch_message_批量发送短信
+        """sms / send_batch_message_批量发送短信<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/send_batch_message<br/>
         :param phones=="13260062372,18515850273,178"
         :param contentType==1
         :param platform==0
@@ -208,7 +208,7 @@ class Ysx_Message_Service(unittest.TestCase):
         assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
         assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
     def test_07_send_message(self):
-        """sms / send_message_发送单条短信
+        """sms / send_message_发送单条短信<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/send_message<br/>
         :param phone==13260062372
         :param platform==0
         :param idiograph==云舒写
@@ -233,7 +233,7 @@ class Ysx_Message_Service(unittest.TestCase):
         assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
         assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
     def test_08_vercode_check(self):
-        """sms / vercode_check_验证码错误
+        """sms / vercode_check_验证码错误<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/vercode_check<br/>
         :param phone==13260062372
         :param verType==0
         :param code=="1234"
@@ -257,7 +257,7 @@ class Ysx_Message_Service(unittest.TestCase):
         assert dict_resp[u"code"] == expect[u"code"],self.msg.format(Except=expect[u"code"],Really=dict_resp[u"code"])
         assert dict_resp[u"message"] == expect[u"message"],self.msg.format(Except=expect[u"message"],Really=dict_resp[u"message"])
     def test_09_vercode_check(self):
-        """sms / vercode_check_校验验证码
+        """sms / vercode_check_校验验证码<br/>https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code<br/>
         :param phone==13260062372
         :param code==redis获取
         :param verType==0
