@@ -49,7 +49,7 @@ postSetUpText = """        data = {{caseRequestDatas}}
         logging.info(self.url + lianjiefu + self.resp.text +fengefu )
         self.cookies.update(self.resp.cookies)"""
 postFunctionText="""    def test_{{apiNameEN}}(self):
-        \"\"\"{{caseDesc}}<br/>{{apiHost}}{{apiUrl}}<br/>{{caseRequestDatas}}<br/>\"\"\"
+        \"\"\"{{caseDesc}}<br/>{{apiHost}}{{apiUrl}}<br/>\"\"\"
         self.caseStatusCode = {{caseStatusCode}}
         self.caseExpectDatas ={{caseExpectDatas}}
         data = {{caseRequestDatas}}
@@ -62,7 +62,7 @@ postFunctionText="""    def test_{{apiNameEN}}(self):
         assert self.caseStatusCode==self.resp.status_code,msg.format(Except=self.caseStatusCode,Really=self.resp.status_code)
         {{assertValue}}"""
 getFunctionText="""    def test_{{order}}_{{apiNameEN}}(self):
-        \"\"\"{{caseDesc}}<br/>{{apiHost}}{{apiUrl}}<br/>{{caseRequestDatas}}<br/>\"\"\"
+        \"\"\"{{caseDesc}}<br/>{{apiHost}}{{apiUrl}}<br/>\"\"\"
         self.caseStatusCode = {{caseStatusCode}}
         self.caseExpectDatas ={{caseExpectDatas}}
         params = {{caseRequestDatas}}

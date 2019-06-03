@@ -36,6 +36,23 @@
 
 import pika
 
-pwd = "pwd"
-def wc():
-    print "wc"
+s= {"rows": [
+    {"commemtId": 210189, "timeLineId": 1953109, "phone": "18811063258", "gagType": 1, "timeLineStatus": 1,
+     "title": "[2年级-18.12]查理和巧克力工厂:导读任务四", "createDate": "2019-01-06 11:52:37",
+     "tcontent": "老师好，今天上传《查理和巧克力工厂》最后一次作业，请老师点评第一人称写的《坏了的核桃》，谢谢老师。", "memberId": 1014682,
+     "commentupdateDate": "2019-04-24 11:51:09", "content": "哈哈", "nickName": "外婆高"},
+    {"commemtId": 196722, "timeLineId": 1805593, "phone": "18811063258", "gagType": 1, "timeLineStatus": 0,
+     "title": "【名著精读】鲁滨逊漂流记", "createDate": "2018-12-17 12:34:33", "tcontent": "不会", "memberId": 1014682,
+     "content": "加油", "nickName": "外婆高"}], "total": 2, "limit": 20}
+b ={"rows": [
+    {"content": "哈哈", "title": "[2年级-18.12]查理和巧克力工厂:导读任务四", "phone": "18811063258", "nickName": "外婆高",
+     "tcontent": "老师好，今天上传《查理和巧克力工厂》最后一次作业，请老师点评第一人称写的《坏了的核桃》，谢谢老师。", "commemtId": 210189,
+     "commentupdateDate": "2019-06-03 14:31:54", "timeLineStatus": 1, "gagType": 1, "memberId": 1014682,
+     "timeLineId": 1953109, "createDate": "2019-01-06 11:52:37"},
+    {"content": "加油", "title": "【名著精读】鲁滨逊漂流记", "phone": "18811063258", "nickName": "外婆高", "tcontent": "不会",
+     "commemtId": 196722, "timeLineStatus": 0, "gagType": 1, "memberId": 1014682, "timeLineId": 1805593,
+     "createDate": "2018-12-17 12:34:33"}], "total": 2, "limit": 20}
+print s["rows"]==b["rows"]
+
+print s["rows"][0]
+print b["rows"][0]
