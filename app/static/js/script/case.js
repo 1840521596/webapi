@@ -444,6 +444,58 @@ $("#btn4").click(function () {
             else{alert(result.code,result.datas);}
         });}
 });
+
+$("#btn5").click(function () {
+    var case_host=$("#case_host").val();
+    var case_url=$("#case_url").val();
+    var method=$("#method").find("option:selected").val();
+    var pid=$("#targetId").val();
+    //alert(pid);
+    var api_data=$("#get_params").val();
+    var api_headers=$("#get_headers").val();
+    var api_cookies=$("#get_cookies").val();
+    var except_result=$("#except_result").val();
+    if (pid==""){
+        //alert("/mock"+case_url);
+        $.ajax({
+            url: "/mock"+case_url,
+            type: "post",
+            data: {
+                method: method,
+                params: api_data,
+                headers: api_headers,
+                cookies: api_cookies,
+            }
+        }).done(function (result) {
+                  alert(except_result);
+               // $("#RS").html("");
+                $("#RS").html(except_result);
+                })
+                }
+    else{
+        //alert(api_redirects)
+        $.ajax({
+            url: "/mock"+case_url,
+            type: "post",
+            data: {
+                method: method,
+                params: api_data,
+                headers: api_headers,
+                cookies: api_cookies,
+                id: pid,
+            }
+        }).done(function (result) {
+                alert(result);
+               // $("#RS").html("");
+                $("#RS").html(result);
+                }
+       );}
+});
+
+
+
+
+
 $(document).ready(changeAPIparams ());
 function changeAPIparams(){
   $("#method").bind("change",function(){
