@@ -27,25 +27,25 @@ class TestLog(object):
         fh.setLevel(logging.INFO)
 
         # 再创建一个handler，用于输出到控制台
-        ch = logging.StreamHandler()
-        ch.setLevel(logging.INFO)
+        #ch = logging.StreamHandler()
+        #ch.setLevel(logging.INFO)
 
         # 定义handler的输出格式
         formatter = logging.Formatter(
             '[%(asctime)s] %(filename)s->%(funcName)s line:%(lineno)d [%(levelname)s]%(message)s')
         fh.setFormatter(formatter)
-        ch.setFormatter(formatter)
+        #ch.setFormatter(formatter)
 
         # 给logger添加handler
         self.logger.addHandler(fh)
-        self.logger.addHandler(ch)
+        #self.logger.addHandler(ch)
 
         #  添加下面一句，在记录日志之后移除句柄
         # self.logger.removeHandler(ch)
         # self.logger.removeHandler(fh)
         # 关闭打开的文件
         fh.close()
-        ch.close()
+       # ch.close()
 
     def getlog(self):
         return self.logger
