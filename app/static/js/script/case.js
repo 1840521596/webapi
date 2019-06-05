@@ -51,9 +51,9 @@ $("#btn2").click(function () {
                 var j = i + 1;
                 //alert(_temo[i]);
                 if (_temo[i][8]==false){
-                tableHTML = tableHTML + '<tr><td id="pid" style="display:none">' + _temo[i][0] + '</td><td >' + _temo[i][1] + '</td><td>' + _temo[i][2] + '</td><td>' + _temo[i][3] + '</td><td>' + _temo[i][4] + '</td><td>' + _temo[i][5] + '</td><td style="display:none">' + _temo[i][6] + '</td><td style="display:none">' + _temo[i][7] + '</td><td style="display:none">'+ _temo[i][8] + '</td><td style="text-align: center;"><a data-pid="' + _temo[i][0] + '"class="btn btn-primary btn-large theme-login update">修改</a>&nbsp&nbsp&nbsp&nbsp<a data-pid="0"class="btn btn-primary btn-large theme-login delet">激活</a></td></tr>'}
+                tableHTML = tableHTML + '<tr><td id="pid" style="display:none">' + _temo[i][0] + '</td><td >' + _temo[i][1] + '</td><td>' + _temo[i][2] + '</td><td>' + _temo[i][3] + '</td><td>' + _temo[i][4] + '</td><td>' + _temo[i][5] + '</td><td style="display:none">' + _temo[i][6] + '</td><td style="display:none">' + _temo[i][7] + '</td><td style="display:none">'+ _temo[i][8] + '</td><td style="text-align: center;"><a data-pid="' + _temo[i][0] + '"class="btn btn-primary btn-large update">修改</a>&nbsp&nbsp&nbsp&nbsp<a data-pid="0"class="btn btn-primary btn-large  delet">激活</a></td></tr>'}
                 else{
-                    tableHTML = tableHTML + '<tr><td id="pid" style="display:none">' + _temo[i][0] + '</td><td >' + _temo[i][1] + '</td><td>' + _temo[i][2] + '</td><td>' + _temo[i][3] + '</td><td>' + _temo[i][4] + '</td><td>' + _temo[i][5] + '</td><td style="display:none">' + _temo[i][6] + '</td><td style="display:none">' + _temo[i][7] + '</td><td style="display:none">'+ _temo[i][8] + '</td><td style="text-align: center;"><a data-pid="' + _temo[i][0] + '"class="btn btn-primary btn-large theme-login update">修改</a>&nbsp&nbsp&nbsp&nbsp<a data-pid="1"class="btn btn-primary btn-large theme-login delet">冻结</a></td></tr>'
+                    tableHTML = tableHTML + '<tr><td id="pid" style="display:none">' + _temo[i][0] + '</td><td >' + _temo[i][1] + '</td><td>' + _temo[i][2] + '</td><td>' + _temo[i][3] + '</td><td>' + _temo[i][4] + '</td><td>' + _temo[i][5] + '</td><td style="display:none">' + _temo[i][6] + '</td><td style="display:none">' + _temo[i][7] + '</td><td style="display:none">'+ _temo[i][8] + '</td><td style="text-align: center;"><a data-pid="' + _temo[i][0] + '"class="btn btn-primary btn-large update">修改</a>&nbsp&nbsp&nbsp&nbsp<a data-pid="1"class="btn btn-primary btn-large  delet">冻结</a></td></tr>'
                 }}//case_name+description+case_url+method+parameter+assert
             $("#casetb").html(tableHTML);
         })
@@ -82,6 +82,7 @@ jQuery(document).ready(function ($) {
         $("#RS").html("");
         $("#RC").html("");
         $("#project_choice").val("");
+        $("#targetId").val(999999999)
         $("#case_api").val("");
         $("#case_desc").val("");
         $("#case_url").val("");
@@ -99,6 +100,8 @@ jQuery(document).ready(function ($) {
         $('.theme-popover').slideUp(200, function () {
             var _td = $("#tbdata").find("td");
         });
+       // $("#targetId").val("");
+        //alert("关闭");
         //location.reload();
     });
 //    $("body").delegate(".run", "click", function () {
@@ -281,8 +284,9 @@ jQuery(document).ready(function ($) {
                 except_result: $("#except_result").val(),
             });
         });
-        //alert($("#targetId").val());
-        if ($("#targetId").val() && $("#targetId").val() !== 0) {
+       // alert($("#targetId").val());
+        //alert(typeof($("#targetId").val()));
+        if ($("#targetId").val()!= "999999999" ) {
             //数据更新
             //alert(_case[0].method);
             if (_case[0].method=="GET"){
@@ -343,7 +347,7 @@ jQuery(document).ready(function ($) {
                 url: "/httpInsert",
                 type: "post",
                 data: {
-                    pid: $(this).data("targetId"),
+                    pid: $("#targetId").val(),
                     project: _case[0].project,
                     case_api: _case[0].case_api,
                     description: _case[0].case_desc,
@@ -368,7 +372,7 @@ jQuery(document).ready(function ($) {
                 url: "/httpInsert",
                 type: "post",
                 data: {
-                    pid: $(this).data("targetId"),
+                    pid: $("#targetId").val(),
                     project: _case[0].project,
                     case_api: _case[0].case_api,
                     description: _case[0].case_desc,
