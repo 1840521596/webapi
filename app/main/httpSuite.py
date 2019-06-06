@@ -116,8 +116,16 @@ def make_user():
 	env_flag = request.args.get("env_flag")
 	phones = request.args.get("phones").split(",")
 	user_role = request.args.get("user_role").split(",")
+	if phones[0]=="":
+		raise Exception("用户手机号不能为空！")
+	else:
+		for phone in phones:
+			if len(phone) != 11:
+				raise Exception("用户手机号需等于11位！")
+	if env_flag=="":
+		raise Exception("使用环境不能为空！")
 	if len(user_role) != len(phones):
-		raise Exception("用户手机号和用户角色数量不等")
+		raise Exception("用户手机号和用户角色数量不等！")
 	try:
 		redis.set("make_user_env_flag",env_flag)
 		redis.set("make_user_env_num", env_num)
