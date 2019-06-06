@@ -459,7 +459,7 @@ $("#btn5").click(function () {
     var api_headers=$("#get_headers").val();
     var api_cookies=$("#get_cookies").val();
     var except_result=$("#except_result").val();
-    if (pid==""){
+    if (pid==""||pid=="999999999"){
         //alert("/mock"+case_url);
         $.ajax({
             url: "/mock"+case_url,
