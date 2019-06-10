@@ -185,7 +185,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         """
         url = r"http://admin.crm.yunshuxie.com/ysxserviceuser/get/echarts"
         date = time.strftime("%Y-%m-%d" ,time.localtime(time.time()))
-        params = {"startDate" :date ,"endDate" :date}
+        params = {"startDate" :"2019-01-01" ,"endDate" :"2019-12-31"}
+        #params = {"startDate" :date ,"endDate" :date}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         self.resp = self.session.get(url=url, params=params)
         print self.resp.content
