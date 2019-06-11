@@ -56,6 +56,8 @@ class Ysx_Make_User(unittest.TestCase):
             headers["Content-Type"] = data.content_type
             self.session.headers = headers
             logging.info(url + lianjiefu + json.dumps(datas,ensure_ascii=False) + fengefu)
+            str_params = json.dumps(datas,ensure_ascii=False,encoding="utf8")
+            print str_params
             self.resp = self.session.post(url, data=data)
             print self.resp.content
             logging.info(url + lianjiefu + self.resp.text + fengefu)
@@ -71,6 +73,8 @@ class Ysx_Make_User(unittest.TestCase):
         self.session.cookies = cookies
         for phone in self.phoneNumList.split(","):
             data = {"phones": phone ,"userNames": "测试_{phone}".format(phone=phone),"employeeTypes": 0}
+            str_params = json.dumps(data, ensure_ascii=False, encoding="utf8")
+            print str_params
             logging.info(url + lianjiefu + json.dumps(data,ensure_ascii=False) + fengefu)
             self.resp = self.session.post(url, data=data)
             print self.resp.content

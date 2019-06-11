@@ -34,6 +34,8 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
         url = r"https://pay.yunshuxie.com/v6/springReadMethod/query/summerPrice.htm"
         params = {"pt": "-1","callback": "Zepto1557307951251"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "课程价格查询:" + resp.content + "<br/>"
@@ -49,6 +51,8 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
         for productId in globals_values:
             params = {"productId":productId,"callback":"Zepto1559024340760"}
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
             resp = self.session.get(url=url,params=params)
             logging.info(url + lianjiefu + resp.text + fengefu)
             print "课程年级查询:" + resp.content + "<br/>"
@@ -64,6 +68,8 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
             for course in globals_values[productId]:
                 params = {"grade":course["grade"],"productId":productId,"callback":"Zepto1559024340763"}
                 logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+                str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+                print str_params
                 resp = self.session.get(url=url, params=params)
                 logging.info(url + lianjiefu + resp.text + fengefu)
                 print "课程日期查询:" + resp.content + "<br/>"
@@ -78,6 +84,8 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
         for datas in globals_values:
             params = {"phone": self.phonenum,"productId": datas["productId"],"grade":datas["grade"],"callback": "__jp2"}
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
             resp = self.session.get(url=url, params=params)
             logging.info(url + lianjiefu + resp.text + fengefu)
             print "课程是否购买查询:" + resp.content + "<br/>"
@@ -92,6 +100,8 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
                 for course_phId in course_data:
                     params = {"phone": self.phonenum, "phId": course_phId["productCourseHoursId"], "gId": "-1", "productId": course["productId"],"pType": "1", "productType": "76", "channelId": "AliPay", "cSn": "", "sk": "","grade":  course["grade"], "customizeGroupId": "", "addressId": "-1", "activityId": "-1"}
                     logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+                    str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+                    print str_params
                     resp = self.session.get(url=url,params=params)
                     print "课程购买【phId】：{phId}--【pId】：{pId}:".format(phId=course_phId["productCourseHoursId"],pId=course["productId"]) + resp.content + "<br/>"
                     logging.info(url + lianjiefu + resp.text + fengefu)
@@ -105,6 +115,8 @@ class YuWenHeXinSuYangShuQiZhiBoKe_Test(unittest.TestCase):
                 for course_phId in course_data:
                     params = {"phone": self.phonenum, "phId": course_phId["productCourseHoursId"], "gId": "-1", "productId": course["productId"],"pType": "1", "productType": "76", "channelId": "WxPay", "cSn": "", "sk": "","grade":  course["grade"], "customizeGroupId": "", "addressId": "-1", "activityId": "-1","code":"021ZaJtG17hM310SblvG1NZutG1ZaJtQ"}
                     logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+                    str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+                    print str_params
                     resp = self.session.get(url=url,params=params)
                     print "课程购买【phId】：{phId}--【pId】：{pId}:".format(phId=course_phId["productCourseHoursId"],pId=course["productId"]) + resp.content + "<br/>"
                     logging.info(url + lianjiefu + resp.text + fengefu)

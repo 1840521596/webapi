@@ -32,6 +32,8 @@ class KanTuXieHua_Test(unittest.TestCase):
         url = r"https://pay.yunshuxie.com/v6/order/query/saleman.htm"
         params = {"sk":"null","callback":"Zepto1559011256180"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         print "查询销售人员:"+resp.content +"<br/>"
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -46,6 +48,8 @@ class KanTuXieHua_Test(unittest.TestCase):
         url = r"https://wap.yunshuxie.com/v1/common/api/date.htm"
         params = {"callback":"Zepto1559011256179"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url, params=params)
         print "查询系统时间:" + resp.content + "<br/>"
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -58,6 +62,8 @@ class KanTuXieHua_Test(unittest.TestCase):
         url = r"https://pay.yunshuxie.com/v6/basicCourse/query/basic_course_id.htm"
         params = {"cType":"73","callback":"Zepto1559011256181"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         print "课程信息查询:" + resp.content + "<br/>"
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -74,6 +80,8 @@ class KanTuXieHua_Test(unittest.TestCase):
         url = r"https://pay.yunshuxie.com/v1/coupon/query/use_list.htm"
         params = {"phone":self.phonenum,"productId":"7485","activityType":"-1","callback":"__jp1"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         print "优惠券查询:" + resp.content + "<br/>"
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -88,6 +96,8 @@ class KanTuXieHua_Test(unittest.TestCase):
         url = r"https://pay.yunshuxie.com/v6/order/query/repeat_purchase.htm"
         params = {"phone":self.phonenum,"pId":"7485","callback":"__jp8"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url, params=params)
         print "课程是否购买查询:" + resp.content + "<br/>"
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -133,6 +143,8 @@ class KanTuXieHua_Test(unittest.TestCase):
                   "pId": productId,"pType": "1","productType": "73","channelId": "AliPay",
                   "cSn": "","sk": "","grade": "","addressId": "-1","activityId": "-1"}
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
             resp = self.session.get(url=url,params=params)
             print "课程购买【phId】：{phId}--【pId】：{pId}:".format(phId=productCourseHoursId,pId=productId) + resp.content + "<br/>"
             logging.info(url + lianjiefu + resp.text + fengefu)
@@ -148,6 +160,8 @@ class KanTuXieHua_Test(unittest.TestCase):
                       "pId": productId, "pType": "1", "productType": "73", "channelId": "WxPay",
                       "cSn": "", "sk": "", "grade": "", "addressId": "-1", "activityId": "-1"}
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
             resp = self.session.get(url=url, params=params)
             print "课程购买【phId】：{phId}--【pId】：{pId}:".format(phId=productCourseHoursId,
                                                            pId=productId) + resp.content + "<br/>"

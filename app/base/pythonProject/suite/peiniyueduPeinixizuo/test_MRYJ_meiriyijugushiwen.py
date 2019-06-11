@@ -33,6 +33,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         url = r"https://pay.yunshuxie.com/v6/order/query/saleman.htm"
         params = {"sk":"null","callback":"Zepto1558926534750"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         print "查询销售人员:"+resp.content +"<br/>"
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -47,6 +49,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         url = r"https://pay.yunshuxie.com/v2/coupon/query/use_list.htm"
         params = {"phone":self.phonenum,"productId":"2845","couponType":"1","activityId":"118","activityType":"1","memberType":"0","callback":"Zepto1558942898195"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         print "优惠券查询:" + resp.content + "<br/>"
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -88,6 +92,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         params = {"phone":self.phonenum, "productId": "2845", "phId": "2854",
                   "code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",
                   "activityId": "-1", "cSn": ""}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)  # 生成支付订单
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -101,6 +107,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         params = {"phone":self.phonenum, "productId": "2846", "phId": "2855",
                   "code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",
                   "activityId": "-1", "cSn": ""}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)  # 生成支付订单
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -114,6 +122,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         params = {"phone":self.phonenum, "productId": "2847", "phId": "2856",
                   "code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",
                   "activityId": "-1", "cSn": ""}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)  # 生成支付订单
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -127,6 +137,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         params = {"phone":self.phonenum, "productId": "3021", "phId": "2998",
                   "code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",
                   "activityId": "-1", "cSn": ""}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)  # 生成支付订单
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -140,6 +152,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         params = {"phone":self.phonenum, "productId": "3022", "phId": "2999",
                   "code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",
                   "activityId": "-1", "cSn": ""}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)  # 生成支付订单
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -153,6 +167,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         params = {"phone":self.phonenum, "productId": "3023", "phId": "3000",
                   "code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",
                   "activityId": "-1", "cSn": ""}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)  # 生成支付订单
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -166,6 +182,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         params = {"phone":self.phonenum, "productId": "3024", "phId": "3001",
                   "code": "o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",
                   "activityId": "-1", "cSn": ""}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)  # 生成支付订单
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -179,6 +197,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         params = {"phone":self.phonenum, "productId": "3025", "phId": "3002",
                   "code":"o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",
                   "activityId": "-1", "cSn": ""}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url,params=params)  # 生成支付订单
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -192,6 +212,8 @@ class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
         params = {"phone": self.phonenum, "productId": "3026", "phId": "3003",
                   "code":"o38sIv_7FQInsBKJEUExn7wYxoHc", "sk": "null", "agentId": "", "customizeGroupId": "-1",
                   "activityId": "-1", "cSn": ""}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         resp = self.session.get(url=url, params=params)  # 生成支付订单
         logging.info(url + lianjiefu + resp.text + fengefu)

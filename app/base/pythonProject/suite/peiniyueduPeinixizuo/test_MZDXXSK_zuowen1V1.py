@@ -33,6 +33,8 @@ class ZuoWenJingPiXiGai_Test(unittest.TestCase):
         """https://pay.yunshuxie.com/v6/order/special/experience/activity.htm<br/>{"activityId":"3024","memberCourseType":"2","callback":"Zepto1560236625603"}"""
         url = r"https://pay.yunshuxie.com/v6/order/special/experience/activity.htm"
         params = {"activityId":"3024","memberCourseType":"2","callback":"Zepto1560236625603"}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "月课程查询:" + resp.content + "<br/>"
@@ -44,6 +46,8 @@ class ZuoWenJingPiXiGai_Test(unittest.TestCase):
         grade_phlId_pcId_proId = {}
         for grade in range(3,10):
             params = {"grade":grade,"callback":"Zepto1560245513360"}
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
             resp = self.session.get(url=url,params=params)
             logging.info(url + lianjiefu + resp.text + fengefu)
             print "活动查询:" + resp.content + "<br/>"
@@ -57,6 +61,8 @@ class ZuoWenJingPiXiGai_Test(unittest.TestCase):
         for product in globals_values.values():
             for couser in product:
                 params = {"callback":"__jp2","phone":self.phonenum,"pId":couser["productId"]}
+                str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+                print str_params
                 resp = self.session.get(url=url,params=params)
                 logging.info(url + lianjiefu + resp.text + fengefu)
                 print "查看pid={}课程价格:".format(couser["productId"]) + resp.content + "<br/>"
@@ -73,7 +79,8 @@ class ZuoWenJingPiXiGai_Test(unittest.TestCase):
                           "pId": courser["productId"],
                           "pType": "1", "productType": "66", "channelId": "AliPay", "cSn": "", "sk": "",
                           "grade": grade[grade_num], "addressId": "-1"}
-                print params
+                str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+                print str_params
                 resp = self.session.get(url=url, params=params)
                 print "生成订单:" + resp.content + "<br/>"
                 logging.info(url + lianjiefu + resp.text + fengefu)
@@ -89,7 +96,8 @@ class ZuoWenJingPiXiGai_Test(unittest.TestCase):
                           "gId":-1,"pId":courser["productId"] ,"pType":1,"productType":66,
                           "channelId":"WxPay","cSn":"","code":"021ZaJtG17hM310SblvG1NZutG1ZaJtQ",
                           "sk":"","grade":"","addressId":"-1"}
-
+                str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+                print str_params
                 resp = self.session.get(url=url, params=params)
                 print "生成订单:" + resp.content + "<br/>"
                 logging.info(url + lianjiefu + resp.text + fengefu)

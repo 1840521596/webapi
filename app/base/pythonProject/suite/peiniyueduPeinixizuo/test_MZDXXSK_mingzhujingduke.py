@@ -33,6 +33,8 @@ class MingZhuJingDuKe_test(unittest.TestCase):
         """https://pay.yunshuxie.com/v6/order/special/experience/activity.htm<br/>{"activityId":"3024","memberCourseType":"1","callback":"Zepto1560236625603"}"""
         url = r"https://pay.yunshuxie.com/v6/order/special/experience/activity.htm"
         params = {"activityId":"3024","memberCourseType":"1","callback":"Zepto1560236625603"}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "月课程查询:" + resp.content + "<br/>"
@@ -42,6 +44,8 @@ class MingZhuJingDuKe_test(unittest.TestCase):
         """https://pay.yunshuxie.com/v5/h5_christmas/query/activity.htm<br/>{"productType":"2"}"""
         url = r"https://pay.yunshuxie.com/v5/h5_christmas/query/activity.htm"
         params = {"productType":"2"}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "半年课程查询:" + resp.content + "<br/>"
@@ -51,6 +55,8 @@ class MingZhuJingDuKe_test(unittest.TestCase):
         """https://pay.yunshuxie.com/v6/order/check/course/valid.htm<br/>{"memberCourseType":"1","sk":"null","callback":"Zepto1560239495394"}"""
         url = r"https://pay.yunshuxie.com/v6/order/check/course/valid.htm"
         params = {"memberCourseType":"1","sk":"null","callback":"Zepto1560239495394"}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "活动查询:" + resp.content + "<br/>"
@@ -63,6 +69,8 @@ class MingZhuJingDuKe_test(unittest.TestCase):
         """https://pay.yunshuxie.com/v6/order/check/newStu.htm<br/>{"callback":"jQuery22409106770349628588_1560240210128","phone":self.phonenum,<br/>"memberCourseType":"1"}"""
         url = r"https://pay.yunshuxie.com/v6/order/check/newStu.htm"
         params = {"callback":"jQuery22409106770349628588_1560240210128","phone":self.phonenum,"memberCourseType":"1"}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "查看用户是否购买课程:" + resp.content + "<br/>"
@@ -72,6 +80,8 @@ class MingZhuJingDuKe_test(unittest.TestCase):
         """https://wap.yunshuxie.com/v1/member_standard_product/get_member_standard_detailv2.json<br/>{"memberCourseType":"1","type":"1","memberGrade":"1","week":"7",<br/>"phone":"18519118952","callback":"__jp0"}"""
         url = r"https://wap.yunshuxie.com/v1/member_standard_product/get_member_standard_detailv2.json"
         params = {"memberCourseType":"1","type":"1","memberGrade":"1","week":"7","phone":self.phonenum,"callback":"__jp0"}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "半年课程查询:" + resp.content + "<br/>"
@@ -84,6 +94,8 @@ class MingZhuJingDuKe_test(unittest.TestCase):
         url = r"https://pay.yunshuxie.com/v6/order/order_param.htm"
         for productHoursId,productId in globals_values:
             params = {"memberCourseType":"1","type":"1","phIds":productHoursId,"memberGrade":"1","phone":self.phonenum,"callback":"__jp0"}
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
             resp = self.session.get(url=url, params=params)
             logging.info(url + lianjiefu + resp.text + fengefu)
             print "订单参数:" + resp.content + "<br/>"
@@ -96,6 +108,8 @@ class MingZhuJingDuKe_test(unittest.TestCase):
             params = {"phone": self.phonenum, "pIds": productId, "phIds": productHoursId, "pType": "1", "productType": "1",
                       "memberCourseType": "1","type": "1", "memberGrade": "1", "sk": "", "cSn": "", "addressId": "-1", "activityId": "-1",
                       "customizeGroupId": "-1", "channelId": "AliPay"}
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
             resp = self.session.get(url=url, params=params)
             print "生成订单:" + resp.content + "<br/>"
             logging.info(url + lianjiefu + resp.text + fengefu)
@@ -109,6 +123,8 @@ class MingZhuJingDuKe_test(unittest.TestCase):
                       "productType":"1","memberCourseType":"1","type":"1",
                       "memberGrade":"1","code":"021ZaJtG17hM310SblvG1NZutG1ZaJtQ",
                       "sk":"","cSn":"","addressId":"-1","activityId":"3024","customizeGroupId":"-1","channelId":"WxPay"}
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
             resp = self.session.get(url=url, params=params)
             print "生成订单:" + resp.content + "<br/>"
             logging.info(url + lianjiefu + resp.text + fengefu)

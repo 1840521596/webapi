@@ -32,6 +32,8 @@ class XiaoXuegfzwbhcyk_Test(unittest.TestCase):
         """https://pay.yunshuxie.com/v6/basicCourse/query/basic_course_id.htm<br/>{"cType": "72","callback":"Zepto1557217118071"}"""
         url = r"https://pay.yunshuxie.com/v6/basicCourse/query/basic_course_id.htm"
         params = {"cType": "72","callback":"Zepto1557217118071"}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         logging.info(url + lianjiefu + resp.text + fengefu)
         print "课程查询:" + resp.content + "<br/>"
@@ -44,6 +46,8 @@ class XiaoXuegfzwbhcyk_Test(unittest.TestCase):
         url = r"https://pay.yunshuxie.com/v1/coupon/query/use_list.htm"
         params = {"phone":self.phonenum,"productId":"7486","activityType":"-1","callback":"__jp0"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url,params=params)
         print "优惠券查询:" + resp.content + "<br/>"
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -58,6 +62,8 @@ class XiaoXuegfzwbhcyk_Test(unittest.TestCase):
         url = r"https://pay.yunshuxie.com/v6/order/query/repeat_purchase.htm"
         params = {"phone":self.phonenum,"pId":"7486","callback":"__jp2"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         resp = self.session.get(url=url, params=params)
         print "课程是否购买查询:" + resp.content + "<br/>"
         logging.info(url + lianjiefu + resp.text + fengefu)
@@ -77,6 +83,8 @@ class XiaoXuegfzwbhcyk_Test(unittest.TestCase):
                       "phId": productCourseHoursId, "gId": "-1", "pId": productId, "pType": "1", "productType": 72,
                       "channelId": "AliPay", "cSn": "", "sk": "", "grade": "4", "addressId": "-1", "activityId": "-1"}
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
             resp = self.session.get(url=url,params=params)
             print "课程购买【phId】：{phId}--【pId】：{pId}:".format(phId=productCourseHoursId,pId=productId) + resp.content + "<br/>"
             logging.info(url + lianjiefu + resp.text + fengefu)
@@ -90,6 +98,8 @@ class XiaoXuegfzwbhcyk_Test(unittest.TestCase):
                       "phId": productCourseHoursId, "gId": "-1", "pId": productId, "pType": "1", "productType": 72,
                       "channelId": "WxPay", "cSn": "", "sk": "", "grade": "4", "addressId": "-1", "activityId": "-1"}
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
             resp = self.session.get(url=url,params=params)
             print "课程购买【phId】：{phId}--【pId】：{pId}:".format(phId=productCourseHoursId,pId=productId) + resp.content + "<br/>"
             logging.info(url + lianjiefu + resp.text + fengefu)
