@@ -101,21 +101,14 @@ class JingPinKeCheng_Test(unittest.TestCase):
         for project in self.productDict[u"名著读写线上课"]:
             for course_info in project:
                 if course_info["productName"] == u"名著精读课":
-                    saleUrl_resp = requests.get(url=course_info["saleUrl"],headers=self.headers,cookies=self.cookies)
-                    logging.info(course_info["saleUrl"] + lianjiefu + saleUrl_resp.text + fengefu)
-                    productPosters_resp = requests.get(course_info["productPosters"],headers=self.headers,cookies=self.cookies)
-                    logging.info(course_info["productPosters"] + lianjiefu + productPosters_resp.text + fengefu)
-                    banerPosters_resp = requests.get(course_info["banerPosters"],headers=self.headers,cookies=self.cookies)
-                    logging.info(course_info["banerPosters"] + lianjiefu + banerPosters_resp.text + fengefu)
-                    assert saleUrl_resp.status_code == 200
-                    assert productPosters_resp.status_code == 200
-                    assert banerPosters_resp.status_code == 200
 
-                    url = r"https://pay.yunshuxie.com/v5/h5_christmas/query/activity.htm"
+                    url = r"https://pay.yunshuxie.com/v6/order/special/experience/activity.htm"
                     params = {"productType":"2"}
                     self.resp = requests.get(url=url, headers=self.headers, params=params, cookies=self.cookies)
                     result = json.loads(re.findall("{.*}", self.resp.content)[0], encoding="utf8")
                     assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
+
+
                     url = r"https://wap.yunshuxie.com/v1/member_standard_product/get_member_standard_detailv2.json"
                     params = {"memberCourseType":"1","type":"1","memberGrade":"1","week":"7","phone":self.phoneNum,"callback":"__jp0"}
                     self.resp = requests.get(url=url, headers=self.headers, params=params, cookies=self.cookies)

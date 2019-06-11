@@ -7,9 +7,9 @@ import json
 from app.base.pythonProject.base.log import fengefu,lianjiefu,TestLog
 from app.base.pythonProject.base.py_redis import MyRedis
 logging = TestLog().getlog()
+globals_values = ""
 class MeiRiYiJuGuShiWen_Test(unittest.TestCase):
     """<br/>每日一句古诗文->销售查询->查询课程信息-><br/>发送验证码->校验验证码->个人购买全期课程"""
-    globals_values = ""
     @classmethod
     def setUpClass(self):
         redis = MyRedis()
