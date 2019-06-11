@@ -9,8 +9,8 @@ import time
 import sys
 #sys.path.append("./app/base/pythonProject/base")
 #sys.path.append("../../base")
-from log import TestLog,fengefu,lianjiefu
-from getConfig import ReadConfig
+from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
+from app.base.pythonProject.base.getConfig import ReadConfig
 logging = TestLog().getlog()
 class JingPinKeCheng_Test(unittest.TestCase):
 
@@ -96,42 +96,6 @@ class JingPinKeCheng_Test(unittest.TestCase):
             #[{"saleUrl": url ,"productName": str ,"resp": html }]
         self.msg = """\n        Except:  {Except}-*-\n        Really:  {Really}"""  #校验HTTP返回代码
 
-    def test_6_MZDXXSK_mzjdk(self):
-        """名著读写线上课 - -《名著精读课》课程信息-个人购买"""
-        for project in self.productDict[u"名著读写线上课"]:
-            for course_info in project:
-                if course_info["productName"] == u"名著精读课":
-
-                    url = r"https://pay.yunshuxie.com/v6/order/special/experience/activity.htm"
-                    params = {"productType":"2"}
-                    self.resp = requests.get(url=url, headers=self.headers, params=params, cookies=self.cookies)
-                    result = json.loads(re.findall("{.*}", self.resp.content)[0], encoding="utf8")
-                    assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-
-
-                    url = r"https://wap.yunshuxie.com/v1/member_standard_product/get_member_standard_detailv2.json"
-                    params = {"memberCourseType":"1","type":"1","memberGrade":"1","week":"7","phone":self.phoneNum,"callback":"__jp0"}
-                    self.resp = requests.get(url=url, headers=self.headers, params=params, cookies=self.cookies)
-                    result = json.loads(re.findall("{.*}", self.resp.content)[0], encoding="utf8")
-                    assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-                    phIds = result["data"]["courseList"][0]["productHoursId"]  #  获取课程productHoursId
-                    productId = result["data"]["courseList"][0]["productId"]  #  获取课程productId
-                    url = r"https://pay.yunshuxie.com/v6/order/order_param.htm"
-                    params = {"memberCourseType": "1","type":"1", "memberGrade": "1", "callback": "__jp0","phone":self.phoneNum,"phIds":phIds}
-                    self.resp = requests.get(url=url, headers=self.headers, params=params, cookies=self.cookies)
-                    result = json.loads(re.findall("{.*}", self.resp.content)[0], encoding="utf8")
-                    assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
-                    url = r"https://account.yunshuxie.com/v1/validate/wap/newplat_code_reset.htm?phone=18900000017&type=2"
-                    account_resp = requests.get(url=url,headers=self.headers,cookies=self.cookies)  # 获取验证码，自动完成{"msg":"验证码为123456"
-                    url= r"https://pay.yunshuxie.com/v6/order/create2.htm"
-                    params = {"phone":self.phoneNum,"pIds":productId,"phIds":phIds,"pType":"1","productType":"1","memberCourseType":"1",
-                              "type":"1","memberGrade":"1","sk":"","cSn":"","addressId":"-1","activityId":"-1",
-                              "customizeGroupId":"-1","channelId":"AliPay"}
-                    headers = {
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
-                    self.resp = requests.get(url=url, headers=headers, params=params, cookies=self.cookies)
-                    print self.resp.content
-                    assert result["returnCode"] == "0", self.msg.format(Except="0", Really=result["returnCode"])
     def test_7_MZDXXSK_xzxtk(self):
         """名著读写线上课 - -《写作系统课》课程信息-个人购买"""
         for project in self.productDict[u"名著读写线上课"]:
