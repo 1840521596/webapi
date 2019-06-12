@@ -45,7 +45,7 @@ def run_test_case(project_en,env_num,env_flag,description,project_cn):
     runner.run(get_allcase(project_en))
 
 
-def run_yunwei_case(project_en,env_num,env_flag,description,project_cn,**kwargs):
+def run_yunwei_case(project_en,env_num,env_flag,description,project_cn,new_phone=None):
     """
     :param project:  传入{project},创建 suite路径/test_setting路径下{project}文件夹
     :param env_num:  测试环境号
@@ -66,7 +66,7 @@ def run_yunwei_case(project_en,env_num,env_flag,description,project_cn,**kwargs)
         os.makedirs(filePath)
     fp = filePath+"/"+fileName
     fp = file(fp,"wb")
-    new_phone = kwargs["new_phone"] if kwargs.has_key("new_phone") else None
+    new_phone = new_phone
     runner = HTMLTestRunnerCN.HTMLTestRunner(stream=fp, title="《"+project_cn+"》--接口测试报告", description=description,env_num=env_num,env_flag=env_flag,new_phone=new_phone)
     test_result = runner.run(get_allcase(project_en))
     error_count,failure_count,success_count =test_result.error_count,test_result.failure_count,test_result.success_count
