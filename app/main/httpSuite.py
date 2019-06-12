@@ -9,7 +9,7 @@ from ..config.models import Project,Test_Env,Test_User_Reg
 from sqlalchemy import func
 from app.base.pythonProject.base.getConfig import s
 import redis as red
-from multiprocessing import Process
+from threading import Thread
 @test.route("/runSuiteApi",methods=["GET"])
 def runDatasApiTest():
 	"""测试集页面使用接口,用于上传测试用例后执行
@@ -146,12 +146,12 @@ def runDatasApiTest_yunwei():
 					raise Exception("ErrorMsg: 用户手机号创建失败{phone}".format(phone=new_phone))
 				else:
 					if chose_run.has_key("new_phone"):  #字典内存在新用户号码，传入新手机号
-						process = Process(target=run.run_yunwei_case,name="",
+						process = Thread(target=run.run_yunwei_case,name="",
 										  args=(project_en[0],env_num,env_flag,project_en[1],project,chose_run["new_phone"]))
 						process.start()
 						msg = {"code": 200, "Msg": "执行成功", "url": r"http://uwsgi.sys.bandubanxie.com/Report"}
 			else:
-					process = Process(target=run.run_yunwei_case,args=(project_en[0],env_num,env_flag,project_en[1],project))
+					process = Thread(target=run.run_yunwei_case,args=(project_en[0],env_num,env_flag,project_en[1],project))
 					process.start()
 					msg = {"code": 200, "Msg": "执行成功", "url": r"http://uwsgi.sys.bandubanxie.com/Report"}
 			# if result["Error"] != 0 or result["Failure"] !=0:  #执行反馈存在错误和失败，短信通知
