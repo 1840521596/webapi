@@ -124,7 +124,7 @@ def runDatasApiTest_yunwei():
 			redis_host = s.get_env("beta").split(":") if env_flag == "beta" else s.get_env("prod_stage").split(":")
 			r = red.Redis(host=redis_host[0], port=int(redis_host[1]), password="yunshuxie1029Password")
 			r.set("021ZaJtG17hM310SblvG1NZutG1ZaJtQ",'o38sIv_7FQInsBKJEUExn7wYxoHc&21_bk4dQIEFnYz5w8zJwDqan84UFmV_XVKEO5MJf7fv1pGR8tRH2MAtxpk0Pc1SqDwe5S90CE6TQo1wd346qEA5FQ')
-			if "admin".upper() not in project_en[0].upper() and "crm".upper() not in project_en[0].upper():  #判断项目不等于admin&&crm，新增测试用户
+			if "admin".upper() not in project_en[0].upper() and "crm".upper() not in project_en[0].upper():  # 判断项目不等于admin&&crm，新增测试用户
 				try:
 					if env_flag in ["stage", "prod"]:
 						new_env_flag = ",".join(["stage", "prod"])
@@ -149,9 +149,10 @@ def runDatasApiTest_yunwei():
 						process = Process(target=run.run_yunwei_case,name="",
 										  args=(project_en[0],env_num,env_flag,project_en[1],project,chose_run["new_phone"]))
 						process.start()
-					else:
-						process = Process(target=run.run_yunwei_case,args=(project_en[0],env_num,env_flag,project_en[1],project))
-						process.start()
+						msg = {"code": 200, "Msg": "执行成功", "url": r"http://uwsgi.sys.bandubanxie.com/Report"}
+			else:
+					process = Process(target=run.run_yunwei_case,args=(project_en[0],env_num,env_flag,project_en[1],project))
+					process.start()
 					msg = {"code": 200, "Msg": "执行成功", "url": r"http://uwsgi.sys.bandubanxie.com/Report"}
 			# if result["Error"] != 0 or result["Failure"] !=0:  #执行反馈存在错误和失败，短信通知
 			# 	message = """《{project_cn}》接口测试报告存在失败用例，请访问 http://uwsgi.sys.bandubanxie.com/Report 查看，脚本错误数量：{error} 个;失败数量：{failure}""".format(project_cn=project,error=result["Error"],failure=result["Failure"])
