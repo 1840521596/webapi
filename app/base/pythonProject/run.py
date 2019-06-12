@@ -82,6 +82,7 @@ def run_yunwei_case(project_en,env_num,env_flag,description,project_cn,new_phone
                                                                                                             env_num=env_num,success_count=success_count,
                                                                                                             error_count=error_count,failure_count=failure_count,
                                                                                                             month=month,day=day)
-    params = {"tos":"guohongjie","content":content,"app":"qa","sed":"guohongjie"}
+    params = {"tos":"guohongjie,renhuihui,zhaohongling,pengjunxia,wangmengxiao,hongchen,tianningxue,liushuang,xuhongying",
+              "content":content,"app":"qa","sed":"guohongjie"}
     requests.post(url=qiye_wechat_url,data=params)
     return {"Error":error_count,"Failure":failure_count,"Success":success_count}
