@@ -113,6 +113,9 @@ def runDatasApiTest_yunwei():
 	project = request.args.get("project")
 	env_num = request.args.get("env_num")
 	env_flag = request.args.get("env_flag")
+	developer = request.args.get("developer")
+	developer_project = request.args.get("developer_project")
+	branch = request.args.get("branch")
 	try:
 		project_en = db.session.query(Project.project_en, Project.description).filter_by(project=project).first()  #查询项目
 		if project_en:  #判断项目存在
@@ -147,13 +150,16 @@ def runDatasApiTest_yunwei():
 				else:
 					if chose_run.has_key("new_phone"):  #字典内存在新用户号码，传入新手机号
 						process = Thread(target=run.run_yunwei_case,name="",
-										  args=(project_en[0],env_num,env_flag,project_en[1],project,chose_run["new_phone"]))
+										  args=(project_en[0],env_num,env_flag,project_en[1],project,chose_run["new_phone"],
+												developer,developer_project,branch))
 						process.start()
 						msg = {"code": 200, "Msg": "执行成功", "url": r"http://uwsgi.sys.bandubanxie.com/Report"}
 			else:
-					process = Thread(target=run.run_yunwei_case,args=(project_en[0],env_num,env_flag,project_en[1],project))
-					process.start()
-					msg = {"code": 200, "Msg": "执行成功", "url": r"http://uwsgi.sys.bandubanxie.com/Report"}
+				chose_run["new_phone"] = None
+				process = Thread(target=run.run_yunwei_case,args=(project_en[0],env_num,env_flag,project_en[1],project,
+																  chose_run["new_phone"],developer,developer_project,branch))
+				process.start()
+				msg = {"code": 200, "Msg": "执行成功", "url": r"http://uwsgi.sys.bandubanxie.com/Report"}
 			# if result["Error"] != 0 or result["Failure"] !=0:  #执行反馈存在错误和失败，短信通知
 			# 	message = """《{project_cn}》接口测试报告存在失败用例，请访问 http://uwsgi.sys.bandubanxie.com/Report 查看，脚本错误数量：{error} 个;失败数量：{failure}""".format(project_cn=project,error=result["Error"],failure=result["Failure"])
 			# 	sendMsg(message,["18519118952"]) # 郭宏杰  王梦晓  洪琛  张红铃
@@ -168,15 +174,6 @@ def runDatasApiTest_yunwei():
 	except Exception as e:
 		msg = {"code":400,"Msg":"执行失败","ErrorMsg":str(e)}
 	return make_response(jsonify(msg))
-
-
-
-
-
-
-
-
-
 
 
 @test.route("/make_user",methods=["GET"])
