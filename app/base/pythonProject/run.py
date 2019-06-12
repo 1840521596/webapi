@@ -5,6 +5,7 @@ from base import HTMLTestRunnerCN
 from base.makeSuite import MakeTestSuite
 import datetime
 import os
+import requests
 # 测试用例存放路径
 # 获取所有测试用例
 TEST_FOLDER = "./app/base/pythonProject"
@@ -57,7 +58,7 @@ def run_yunwei_case(project_en,env_num,env_flag,description,project_cn,new_phone
     month = datetime.datetime.now().month
     day = datetime.datetime.now().day
     filePath = TEST_FOLDER + "/ReportHtml/{month}/{day}".format(month=month,day=day)
-    fileName = "{project}_{env_flag}.html".format(project=project_cn, env_flag=env_flag)
+    fileName = "{project}_{env_flag}_{env_num}.html".format(project=project_cn, env_flag=env_flag,env_num=env_num)
     # if env_num:
     #     fileName = "{project}_{env_flag}_{env_num}.html".format(project=project_cn,env_flag=env_flag,env_num=env_num)
     # else:
@@ -70,4 +71,17 @@ def run_yunwei_case(project_en,env_num,env_flag,description,project_cn,new_phone
     runner = HTMLTestRunnerCN.HTMLTestRunner(stream=fp, title="《"+project_cn+"》--接口测试报告", description=description,env_num=env_num,env_flag=env_flag,new_phone=new_phone)
     test_result = runner.run(get_allcase(project_en))
     error_count,failure_count,success_count =test_result.error_count,test_result.failure_count,test_result.success_count
+    qiye_wechat_url = r"http://msg.inf.bandubanxie.com/api/v0.2/msg/qiye_weixin"
+    content = """后端发布自动化测试结果:
+测试项目: {project_cn}
+发布环境: {env_flag}-{env_num}
+通过接口数: {success_count}
+未通过接口数: {error_count}
+失败接口数: {failure_count}
+结果查看地址: http://uwsgi.sys.bandubanxie.com/Report/{month}/{day}/{project_cn}_{env_flag}_{env_num}.html""".format(project_cn=project_cn,env_flag=env_flag,
+                                                                                                            env_num=env_num,success_count=success_count,
+                                                                                                            error_count=error_count,failure_count=failure_count,
+                                                                                                            month=month,day=day)
+    params = {"tos":"guohongjie","content":content,"app":"qa","sed":"guohongjie"}
+    requests.post(url=qiye_wechat_url,data=params)
     return {"Error":error_count,"Failure":failure_count,"Success":success_count}

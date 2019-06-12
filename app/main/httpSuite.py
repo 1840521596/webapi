@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #-*-coding:utf-8 -*-
 __author__ = "guohongjie"
-from flask import make_response,request,flash,jsonify
+from flask import make_response,request,jsonify
 from . import test
 from ..base.pythonProject import run
 from .. import db,redis
