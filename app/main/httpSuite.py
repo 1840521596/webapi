@@ -204,7 +204,7 @@ def make_user():
 		redis.set("make_user_phones",",".join(phones))
 		redis.set("make_user_employeetypes",",".join(user_role))
 		result = run.run_yunwei_case("make_user", env_num, env_flag, "Admin 创建用户：{phones}".format(phones=",".join(phones)), "创建测试用户",
-									 developer="测试人员")
+									 new_phone=phones)
 		if result["Error"] == 0 and result["Failure"] == 0:  #成功创建用户后，数据库记录
 			msg = {"code": 200, "Msg": "执行成功", "url": result["report_url"],
 			   "Error": result["Error"], "Failure": result["Failure"], "Success": result["Success"]}
