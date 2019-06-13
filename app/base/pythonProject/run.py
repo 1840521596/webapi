@@ -72,6 +72,8 @@ def run_yunwei_case(project_en,env_num,env_flag,description,project_cn,new_phone
     test_result = runner.run(get_allcase(project_en))
     error_count,failure_count,success_count =test_result.error_count,test_result.failure_count,test_result.success_count
     qiye_wechat_url = r"http://msg.inf.bandubanxie.com/api/v0.2/msg/qiye_weixin"
+    report_url = r"http://uwsgi.sys.bandubanxie.com/Report/{month}/{day}/{project_cn}_{env_flag}_{env_num}.html".format(month=month,day=day,project_cn=project_cn,
+                                                                                                                        env_flag=env_flag,env_num=env_num)
     content = """后端发布自动化测试结果:
 发布人: {developer}
 发布项目: {developer_project}
@@ -81,13 +83,10 @@ def run_yunwei_case(project_en,env_num,env_flag,description,project_cn,new_phone
 通过接口数: {success_count}
 未通过接口数: {error_count}
 失败接口数: {failure_count}
-结果查看地址: http://uwsgi.sys.bandubanxie.com/Report/{month}/{day}/{project_cn}_{env_flag}_{env_num}.html""".format(project_cn=project_cn,env_flag=env_flag,
-                                                                                                            env_num=env_num,success_count=success_count,
-                                                                                                            error_count=error_count,failure_count=failure_count,
-                                                                                                            month=month,day=day,developer=developer,
-                                                                                                               developer_project=developer_project,
-                                                                                                               branch=branch)
+结果查看地址: {report_url}""".format(project_cn=project_cn,env_flag=env_flag,env_num=env_num,success_count=success_count,
+                                            error_count=error_count,failure_count=failure_count,developer=developer,
+                                            developer_project=developer_project,branch=branch,report_url=report_url)
     params = {"tos":"guohongjie,renhuihui,zhaohongling,pengjunxia,wangmengxiao,hongchen,tianningxue,liushuang,xuhongying",
               "content":content,"app":"qa","sed":"guohongjie"}
     requests.post(url=qiye_wechat_url,data=params)
-    return {"Error":error_count,"Failure":failure_count,"Success":success_count}
+    return {"Error":error_count,"Failure":failure_count,"Success":success_count,"report_url":report_url}

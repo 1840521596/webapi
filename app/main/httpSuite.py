@@ -175,8 +175,6 @@ def runDatasApiTest_yunwei():
 	except Exception as e:
 		msg = {"code":400,"Msg":"执行失败","ErrorMsg":str(e)}
 	return make_response(jsonify(msg))
-
-
 @test.route("/make_user",methods=["GET"])
 def make_user():
 	"""测试页面使用接口,用于创建测试账号执行
@@ -208,7 +206,7 @@ def make_user():
 		result = run.run_yunwei_case("make_user", env_num, env_flag, "Admin 创建用户：{phones}".format(phones=",".join(phones)), "创建测试用户",
 									 developer="测试人员")
 		if result["Error"] == 0 and result["Failure"] == 0:  #成功创建用户后，数据库记录
-			msg = {"code": 200, "Msg": "执行成功", "url": r"http://uwsgi.sys.bandubanxie.com/Report",
+			msg = {"code": 200, "Msg": "执行成功", "url": result["report_url"],
 			   "Error": result["Error"], "Failure": result["Failure"], "Success": result["Success"]}
 			for num in range(len(phones)):
 				try:
@@ -221,9 +219,8 @@ def make_user():
 					db.session.rollback()
 					msg = {"code": 204, "datas": str(e)}
 		else:
-			msg = {"code": 400, "Msg": "执行失败", "url": r"http://uwsgi.sys.bandubanxie.com/Report",
+			msg = {"code": 400, "Msg": "执行失败", "url": result["report_url"],
 				   "Error": result["Error"], "Failure": result["Failure"], "Success": result["Success"]}
-
 	except Exception as e:
 		msg = {"code": 400, "Msg": "执行失败", "ErrorMsg": str(e)}
 	return make_response(jsonify(msg))
