@@ -190,22 +190,23 @@ def make_user():
 	env_flag = request.args.get("env_flag")
 	phones = request.args.get("phones").split(",")
 	user_role = request.args.get("user_role").split(",")
-	if phones[0]=="":
-		raise Exception("用户手机号不能为空！")
-	else:
-		for phone in phones:
-			if len(phone) != 11:
-				raise Exception("用户手机号需等于11位！")
-	if env_flag=="":
-		raise Exception("使用环境不能为空！")
-	if len(user_role) != len(phones):
-		raise Exception("用户手机号和用户角色数量不等！")
 	try:
+		if phones[0]=="":
+			raise Exception("用户手机号不能为空！")
+		else:
+			for phone in phones:
+				if len(phone) != 11:
+					raise Exception("用户手机号需等于11位！")
+		if env_flag=="":
+			raise Exception("使用环境不能为空！")
+		if len(user_role) != len(phones):
+			raise Exception("用户手机号和用户角色数量不等！")
 		redis.set("make_user_env_flag",env_flag)
 		redis.set("make_user_env_num", env_num)
 		redis.set("make_user_phones",",".join(phones))
 		redis.set("make_user_employeetypes",",".join(user_role))
-		result = run.run_yunwei_case("make_user", env_num, env_flag, "Admin 创建用户：{phones}".format(phones=",".join(phones)), "创建测试用户")
+		result = run.run_yunwei_case("make_user", env_num, env_flag, "Admin 创建用户：{phones}".format(phones=",".join(phones)), "创建测试用户",
+									 developer="测试人员")
 		if result["Error"] == 0 and result["Failure"] == 0:  #成功创建用户后，数据库记录
 			msg = {"code": 200, "Msg": "执行成功", "url": r"http://uwsgi.sys.bandubanxie.com/Report",
 			   "Error": result["Error"], "Failure": result["Failure"], "Success": result["Success"]}
@@ -224,7 +225,7 @@ def make_user():
 				   "Error": result["Error"], "Failure": result["Failure"], "Success": result["Success"]}
 
 	except Exception as e:
-		msg = {"code": 4004, "Msg": "执行失败", "ErrorMsg": str(e)}
+		msg = {"code": 400, "Msg": "执行失败", "ErrorMsg": str(e)}
 	return make_response(jsonify(msg))
 
 
