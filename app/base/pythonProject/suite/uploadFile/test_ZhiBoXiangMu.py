@@ -70,6 +70,8 @@ class zhiBoXiangMu_Test(unittest.TestCase):
                        "Referer": "https://admin.yunshuxie.com//v1/admin/big_live/goto/edit_biglive_course.htm?initialWidth=1007&childId=example-538&parentTitle=%E4%BA%91%E8%88%92%E5%86%99%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F&parentUrl=https%3A%2F%2Fadmin.yunshuxie.com%2Fcommon_index%2Findex.htm"}
         data = MultipartEncoder(params)
         caseHeaders["Content-Type"] = data.content_type
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = requests.post(self.url, data=data, headers=caseHeaders, cookies=self.cookies)
         print self.resp.content
         logging.info(self.url + lianjiefu + self.resp.text + fengefu)

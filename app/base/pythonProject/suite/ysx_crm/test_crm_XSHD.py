@@ -6,9 +6,9 @@ import json
 import time
 # import sys
 # sys.path.append("../../base")
-from log import TestLog,fengefu,lianjiefu
-from py_redis import MyRedis
-from getCrmCookies import get_crm_cookie
+from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
+from app.base.pythonProject.base.py_redis import MyRedis
+from app.base.pythonProject.base.getCrmCookies import get_crm_cookie
 logging = TestLog().getlog()
 class Ysx_Crm_XSHD(unittest.TestCase):
     """CRM 销售活动"""
@@ -30,6 +30,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/custom_group/get/custom_group_list.htm"
         params = {"limit": "10","sort": "createDate","order":"DESC","offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -45,6 +47,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/custom_group/get/custom_group_toaudit_list.htm"
         params = {"customStatus":"2","sort":"createDate","order":"DESC","limit":"20","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -60,6 +64,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/custom_group/get/custom_group_toaudit_list.htm"
         params = {"customStatus": "3", "sort": "createDate", "order": "DESC", "limit": "20", "offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url, params=params)
         print self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")
@@ -77,6 +83,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/ysxlogistics/list"
         params = {"_search": "false","nd": "1558593868835","limit": "10","page":"1","sidx":"","order":"asc"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -91,6 +99,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/ysxprize/list"
         params = {"_search": "false","nd": "1558594133641","limit": "10","page":"1","sidx":"","order":"asc"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -106,6 +116,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/syssalesmaterial/query_product_info"
         params = {"order": "asc","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -121,6 +133,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/syssalesmaterial/sales_tag_list"
         params = {"sort":"orderId","order": "asc","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -136,6 +150,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/syssalesmaterial/sales_product_list"
         params = {"sort":"postersId","order": "asc","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -151,6 +167,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/recharge/list"
         params = {"sort":"orderId","order": "DESC","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -166,6 +184,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/recharge/phone_already_list"
         params = {"sort":"orderId","order": "DESC","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -181,6 +201,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/recharge/invate_list"
         params = {"sort":"orderId","order": "DESC","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -196,6 +218,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/recharge/invate_already_list"
         params = {"sort":"orderId","order": "DESC","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -211,6 +235,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/recharge/cashback_list"
         params = {"sort":"orderId","order": "DESC","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -226,6 +252,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/recharge/cashback_already_list"
         params = {"sort":"orderId","order": "DESC","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -241,6 +269,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/recharge/sale_invate_already_list"
         params = {"sort":"orderId","order": "DESC","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -256,6 +286,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/recharge/original_cashback_list"
         params = {"sort":"orderId","order": "DESC","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -271,6 +303,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/recharge/sale_cashback_already_list"
         params = {"sort":"orderId","order": "DESC","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -286,6 +320,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/recharge/sale_phone_already_list"
         params = {"sort":"orderId","order": "DESC","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -301,6 +337,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/recharge/new_year_scholarships/cashback_list"
         params = {"sort":"orderId","order": "DESC","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -316,6 +354,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/recharge/new_year_scholarships_already_list"
         params = {"sort":"orderId","order": "DESC","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -331,6 +371,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/ysx_sales_product/list.json"
         params = {"page":"1","limit":"30"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.post(url=url,data=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -346,6 +388,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/shopping_card/query_shopping_card"
         params = {"sort":"orderSn","order":"DESC","limit":"10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.post(url=url,data=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -361,6 +405,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/shopping_card/query_shopping_card"
         params = {"sort":"orderSn","order":"DESC","limit":"10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.post(url=url,data=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -376,6 +422,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/list"
         params = {"limit": "10","sort": "couponActivityId","order":"DESC","offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -400,6 +448,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
                   "validatyStartDate": "","courseApplyType": "1","courseApply": "-1",
                   "sendMode": "2","activityStatus": "","couponActivityId":""}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.post(url=url,data=params)
         print "创建代金券:",self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -411,6 +461,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/test_list" # 查询代金券 couponActivityId
         params = {"couponActivityName":name,"couponActivityNumber":"","activityStatus":"1","sort":"couponActivityId","order":"DESC","limit":"10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url, data=params)
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
@@ -418,6 +470,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/edit"  #审核代金券
         params = {"couponActivityId": couponActivityId,"activityStatus": "3"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.post(url=url, data=params)
         print "审核代金券:",self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")
@@ -430,6 +484,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/edit"  # 失效代金券
         params = {"couponActivityId": couponActivityId,"activityStatus": "4"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.post(url=url, data=params)
         print "失效代金券:",self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")
@@ -454,6 +510,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
                   "validatyStartDate": "","courseApplyType": "1","courseApply": "-1",
                   "sendMode": "2","activityStatus": "","couponActivityId":""}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.post(url=url,data=params)
         print "创建代金券:",self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -465,6 +523,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/test_list" # 查询代金券 couponActivityId
         params = {"couponActivityName":name,"couponActivityNumber":"","activityStatus":"1","sort":"couponActivityId","order":"DESC","limit":"10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url, data=params)
         print "查询代金券:", self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")
@@ -473,6 +533,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/edit"  #审核代金券
         params = {"couponActivityId": couponActivityId,"activityStatus": "4"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.post(url=url, data=params)
         print "审核代金券:",self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")
@@ -498,6 +560,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
                   "validatyStartDate": "","courseApplyType": "1","courseApply": "-1",
                   "sendMode": "2","activityStatus": "","couponActivityId":""}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.post(url=url,data=params)
         print "发布代金券:",self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -509,6 +573,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/test_list" # 查询代金券 couponActivityId
         params = {"couponActivityName":name,"couponActivityNumber":"","activityStatus":"1","sort":"couponActivityId","order":"DESC","limit":"10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url, data=params)
         result = json.loads(self.resp.content, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
@@ -516,6 +582,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/edit"  #审核代金券
         params = {"couponActivityId": couponActivityId,"activityStatus": "3"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.post(url=url, data=params)
         print "审核代金券:",self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")
@@ -528,6 +596,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/edit"  # 失效代金券
         params = {"couponActivityId": couponActivityId,"activityStatus": "4"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.post(url=url, data=params)
         print "失效代金券:",self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")
@@ -539,6 +609,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/edit"  # 恢复代金券
         params = {"couponActivityId": couponActivityId, "activityStatus": "5"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.post(url=url, data=params)
         print "恢复代金券:",self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")
@@ -554,6 +626,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/coupon/list"
         params = {"limit": "10","sort": "createDate","order":"DESC","offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")

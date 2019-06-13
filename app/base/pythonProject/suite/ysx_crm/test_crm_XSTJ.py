@@ -6,9 +6,9 @@ import json
 import time
 # import sys
 # sys.path.append("../../base")
-from log import TestLog,fengefu,lianjiefu
-from py_redis import MyRedis
-from getCrmCookies import get_crm_cookie
+from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
+from app.base.pythonProject.base.py_redis import MyRedis
+from app.base.pythonProject.base.getCrmCookies import get_crm_cookie
 logging = TestLog().getlog()
 class Ysx_Crm_XSHD(unittest.TestCase):
     """CRM 销售统计"""
@@ -30,6 +30,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/day/sales.json"
         params = {"limit": "10" ,"sort": "nowDate" ,"order" :"asc" ,"offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params ,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url ,params=params)
         print self.resp.content
         result = json.loads(self.resp.content ,encoding="utf8")
@@ -47,6 +49,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/week/sales"
         params = {"limit": "10" ,"sort": "prductName" ,"order" :"asc" ,"offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params ,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url ,params=params)
         print self.resp.content
         result = json.loads(self.resp.content ,encoding="utf8")
@@ -64,6 +68,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/month/sales.json"
         params = {"limit": "10" ,"sort": "nowDate" ,"order" :"asc" ,"offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params ,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url ,params=params)
         print self.resp.content
         result = json.loads(self.resp.content ,encoding="utf8")
@@ -81,6 +87,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/sales/mounth_statistics_list.json"
         params = {"limit": "10" ,"sort": "month" ,"order" :"asc" ,"offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params ,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url ,params=params)
         print self.resp.content
         result = json.loads(self.resp.content ,encoding="utf8")
@@ -98,6 +106,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/month/sales_detail"
         params = {"limit": "10" ,"sort": "nowDate" ,"order" :"asc" ,"offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params ,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url ,params=params)
         print self.resp.content
         result = json.loads(self.resp.content ,encoding="utf8")
@@ -115,6 +125,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/year/sales.json"
         params = {"limit": "10", "sort": "nowDate", "order": "asc", "offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url, params=params)
         print self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")
@@ -132,6 +144,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/platinum/day_study"
         params = {"limit": "10", "sort": "payDate", "order": "DESC", "offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url, params=params)
         print self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")
@@ -150,6 +164,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         date = time.strftime("%Y-%m-%d" ,time.localtime(time.time()))
         params = {"startDate": date ,"endDate": date ,"order" :"desc"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url, params=params)
         print self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")
@@ -169,6 +185,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         params = {"productName": "每日一句" ,"startDate": date ,"endDate": date ,"deptId": "-1" ,"sort": "userId"
                   ,"order": "DESC" ,"limit": "10" ,"offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url, params=params)
         print self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")
@@ -188,6 +206,8 @@ class Ysx_Crm_XSHD(unittest.TestCase):
         params = {"startDate" :"2019-01-01" ,"endDate" :"2019-12-31"}
         #params = {"startDate" :date ,"endDate" :date}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url, params=params)
         print self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")

@@ -48,6 +48,8 @@ class zhiBoKeCheng_Test(unittest.TestCase):
           "Referer":"https://admin.yunshuxie.com//v1/admin/big_live/goto/edit_biglive_course.htm?initialWidth=1007&childId=example-538&parentTitle=%E4%BA%91%E8%88%92%E5%86%99%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F&parentUrl=https%3A%2F%2Fadmin.yunshuxie.com%2Fcommon_index%2Findex.htm"}
         data = MultipartEncoder(params)
         caseHeaders["Content-Type"] = data.content_type
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = requests.post(self.url, data=data, headers=caseHeaders,cookies=self.cookies)
         print self.resp.content
         #logging.info(self.url + lianjiefu + self.resp.text + fengefu)
@@ -85,6 +87,8 @@ class zhiBoKeCheng_Test(unittest.TestCase):
         self.url = r"https://admin.yunshuxie.com/v1/admin/big_live/query_biglive_course_list.json"
         params = {"bigliveCourseId": "-1","bigliveCourseName": "%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95","order": "asc","limit": "10","offset": "0","_": "1556182101548"}
         caseHeaders = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","X-Requested-With": "XMLHttpRequest"}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = requests.get(url=self.url,params=params,headers=caseHeaders,cookies=self.cookies)
         print self.resp.content
         #logging.info(self.url + lianjiefu + self.resp.text + fengefu)

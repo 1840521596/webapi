@@ -5,9 +5,9 @@ import unittest
 import json
 # import sys
 # sys.path.append("../../base")
-from log import TestLog,fengefu,lianjiefu
-from py_redis import MyRedis
-from getCrmCookies import get_crm_cookie
+from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
+from app.base.pythonProject.base.py_redis import MyRedis
+from app.base.pythonProject.base.getCrmCookies import get_crm_cookie
 logging = TestLog().getlog()
 class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
     """CRM 每日一句学员管理"""
@@ -32,6 +32,8 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/query/serviceteacher.htm"
         params = {"teacherType": "1","limit": "3","order": "asc","offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -50,6 +52,8 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/daily/manage_list"
         params = {"sort": "wechatTeacherId","order": "asc","limit": "10","offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -69,6 +73,8 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/daily/single_manage_list"
         params = {"sort": "wechatTeacherId","order": "asc","limit": "10","offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -84,6 +90,8 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/daily/list"
         params = {"sort": "payDate","order": "DESC","limit": "10","offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -99,6 +107,8 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/daily/list"
         params = {"type": "-1","phone":"", "isWechat": "-1","isReading": "1","isWriting": "1","isWritingMaterial": "1","isClock": "1","lastLogin": "-1","lastClock": "2","communicateNum":"", "sort": "payDate","order": "DESC","limit": "10","offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -113,6 +123,8 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/ysxwechatserviceteacher/list"
         params = {"_search": "false","nd": "1558581314505","limit": "10","page": "1","sidx": "","order": "asc"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -134,6 +146,8 @@ class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/crm/daily/list"
         params = {"isManage":"1","sort": "payDate","order": "ASC","limit": "10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")

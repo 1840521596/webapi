@@ -56,7 +56,10 @@ postFunctionText="""    def test_{{apiNameEN}}(self):
         self.url = "{{apiHost}}"+"{{apiUrl}}"
         method = "{{method}}"
         caseHeaders = {{caseHeaders}}
+        str_params = json.dumps(data, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = requests.post(self.url, data=data, headers=caseHeaders,cookies=self.cookies)
+        print self.resp.content
         logging.info(self.url + lianjiefu + self.resp.text +fengefu )
         msg = \"\"\"\n        Except:  {Except}-*-\n        Really:  {Really}\"\"\"  #校验HTTP返回代码
         assert self.caseStatusCode==self.resp.status_code,msg.format(Except=self.caseStatusCode,Really=self.resp.status_code)
@@ -69,7 +72,10 @@ getFunctionText="""    def test_{{order}}_{{apiNameEN}}(self):
         self.url = "{{apiHost}}"+"{{apiUrl}}"
         method = "{{method}}"
         caseHeaders = {{caseHeaders}}
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = requests.get(self.url, params=params, headers=caseHeaders,cookies=self.cookies)
+        print self.resp.content
         logging.info(self.url + lianjiefu + self.resp.text +fengefu )
         msg = \"\"\"\n        Except:  {Except}-*-\n        Really:  {Really}\"\"\"  #校验HTTP返回代码
         assert self.caseStatusCode==self.resp.status_code,msg.format(Except=self.caseStatusCode,Really=self.resp.status_code)

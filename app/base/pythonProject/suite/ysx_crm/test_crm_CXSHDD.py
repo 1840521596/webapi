@@ -5,9 +5,9 @@ import unittest
 import json
 # import sys
 # sys.path.append("../../base")
-from log import TestLog,fengefu,lianjiefu
-from py_redis import MyRedis
-from getCrmCookies import get_crm_cookie
+from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
+from app.base.pythonProject.base.py_redis import MyRedis
+from app.base.pythonProject.base.getCrmCookies import get_crm_cookie
 logging = TestLog().getlog()
 class Ysx_Crm_CXSHDD(unittest.TestCase):
     """CRM 查询商户订单"""
@@ -28,6 +28,8 @@ class Ysx_Crm_CXSHDD(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/admin/order/query/merchants/order"
         params = {"orderSn": "Y1760155867978891781"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.post(url=url,data=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")

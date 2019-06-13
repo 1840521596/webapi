@@ -54,6 +54,7 @@ class Ysx_Message_Service(unittest.TestCase):
         md5 = md.hexdigest()
         data = string + "&sign=" + md5
         logging.info(url + lianjiefu + data + fengefu)
+        print data
         self.resp = self.session.post(url, data=data)
         print self.resp.content
         logging.info(url + lianjiefu + self.resp.text +fengefu )
@@ -78,6 +79,7 @@ class Ysx_Message_Service(unittest.TestCase):
         md5 = md.hexdigest()
         data = string + "&sign=" + md5
         logging.info(url + lianjiefu + data + fengefu)
+        print data
         self.resp = self.session.post(url, data=data)
         print self.resp.content
         logging.info(url + lianjiefu + self.resp.text +fengefu )
@@ -102,6 +104,7 @@ class Ysx_Message_Service(unittest.TestCase):
         md5 = md.hexdigest()
         data = string + "&sign=" + md5
         logging.info(url + lianjiefu + data + fengefu)
+        print data
         self.resp = self.session.post(url, data=data)
         print self.resp.content
         logging.info(url + lianjiefu + self.resp.text +fengefu )
@@ -126,6 +129,7 @@ class Ysx_Message_Service(unittest.TestCase):
         md5 = md.hexdigest()
         data = string + "&sign=" + md5
         logging.info(url + lianjiefu + data + fengefu)
+        print data
         self.resp = self.session.post(url, data=data)
         print self.resp.content
         logging.info(url + lianjiefu + self.resp.text +fengefu )
@@ -150,6 +154,7 @@ class Ysx_Message_Service(unittest.TestCase):
         md5 = md.hexdigest()
         data = string + "&sign=" + md5
         logging.info(url + lianjiefu + data + fengefu)
+        print data
         self.resp = self.session.post(url, data=data)
         print self.resp.content
         logging.info(url + lianjiefu + self.resp.text +fengefu )
@@ -173,6 +178,7 @@ class Ysx_Message_Service(unittest.TestCase):
         md5 = md.hexdigest()
         data = string + "&sign=" + md5
         logging.info(url + lianjiefu + data + fengefu)
+        print data
         self.resp = self.session.post(url, data=data)
         print self.resp.content
         logging.info(url + lianjiefu + self.resp.text +fengefu )
@@ -200,6 +206,7 @@ class Ysx_Message_Service(unittest.TestCase):
         md5 = md.hexdigest()
         data = string+"&sign="+md5
         logging.info(url + lianjiefu + data + fengefu)
+        print data
         self.resp = self.session.post(url,data=data)
         print self.resp.content
         logging.info(url + lianjiefu + self.resp.text +fengefu )
@@ -225,6 +232,7 @@ class Ysx_Message_Service(unittest.TestCase):
         md5 = md.hexdigest()
         data = string+"&sign="+md5
         logging.info(url + lianjiefu + data + fengefu)
+        print data
         self.resp = self.session.post(url,data=data)
         print self.resp.content
         logging.info(url + lianjiefu + self.resp.text +fengefu )
@@ -249,6 +257,7 @@ class Ysx_Message_Service(unittest.TestCase):
         md5 = md.hexdigest()
         data = string + "&sign=" + md5
         logging.info(url + lianjiefu + data + fengefu)
+        print data
         self.resp = self.session.post(url, data=data)
         print self.resp.content
         logging.info(url + lianjiefu + self.resp.text +fengefu )
@@ -273,6 +282,7 @@ class Ysx_Message_Service(unittest.TestCase):
         md5 = md.hexdigest()
         data = string + "&sign=" + md5
         logging.info(url + lianjiefu + data + fengefu)
+        print data
         self.resp = self.session.post(url, data=data)
         print self.resp.content
         dict_resp = json.loads(self.resp.content, encoding="utf8")

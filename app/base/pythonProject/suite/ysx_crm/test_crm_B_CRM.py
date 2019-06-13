@@ -34,6 +34,8 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
                   "userName":"" ,"province": "北京","city": "北京市","district":"","sort": "classId",
                   "order": "asc","limit": "10","offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params,ensure_ascii=False,encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -48,6 +50,8 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/yearcard/statistics/classDetailsList.htm"
         params = {"classId": classId,"sort": "memberId","order": "asc","limit": "10","offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url, params=params)
         print self.resp.content
         result = json.loads(self.resp.content, encoding="utf8")
@@ -62,6 +66,8 @@ class Ysx_Crm_B_CRM(unittest.TestCase):
             date = time.time()
             params = {"phone": phone,"memberId": memberId,"content": "自动化测试%d"%(date)}
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
             self.resp = self.session.get(url=url, params=params)
             print self.resp.content
             result = json.loads(self.resp.content, encoding="utf8")

@@ -5,9 +5,9 @@ import unittest
 import json
 # import sys
 # sys.path.append("../../base")
-from log import TestLog,fengefu,lianjiefu
-from py_redis import MyRedis
-from getCrmCookies import get_crm_cookie
+from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
+from app.base.pythonProject.base.py_redis import MyRedis
+from app.base.pythonProject.base.getCrmCookies import get_crm_cookie
 logging = TestLog().getlog()
 class Ysx_Crm_KanTuXieHuaXueYuanGuanLi(unittest.TestCase):
     """CRM 看图写话学员管理"""
@@ -29,6 +29,8 @@ class Ysx_Crm_KanTuXieHuaXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/query/idiomServiceteacher.htm"
         params = {"teacherType": "11","limit": "10","order": "asc","offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -47,6 +49,8 @@ class Ysx_Crm_KanTuXieHuaXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/elementary_course/query/daily_list.json"
         params = {"type":"73","sort":"nowDate","order":"asc","limit":"32","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -65,6 +69,8 @@ class Ysx_Crm_KanTuXieHuaXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/v1/elementary_course/query/daily_list.json"
         params = {"type":"78","sort":"nowDate","order":"asc","limit":"32","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -80,6 +86,8 @@ class Ysx_Crm_KanTuXieHuaXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/idiom_classdetail.json"
         params = {"teacherType":"11","sort":"nowDate","order":"asc","limit":"20","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -95,6 +103,8 @@ class Ysx_Crm_KanTuXieHuaXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/query/picture_basic_distribution.json"
         params = {"teacherType":"11","sort":"nowDate","order":"asc","limit":"20","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -110,6 +120,8 @@ class Ysx_Crm_KanTuXieHuaXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/pictureStudent_detail.json"
         params = {"sort": "nowDate","order": "asc","limit": "10","offset": "0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
@@ -125,6 +137,8 @@ class Ysx_Crm_KanTuXieHuaXueYuanGuanLi(unittest.TestCase):
         url = r"http://admin.crm.yunshuxie.com/admin/writing_material/picAuditionStudent_detail.json"
         params = {"sort":"nowDate","order":"asc","limit":"10","offset":"0","_":"1558603211137"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
         self.resp = self.session.get(url=url,params=params)
         print self.resp.content
         result = json.loads(self.resp.content,encoding="utf8")
