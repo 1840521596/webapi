@@ -139,7 +139,8 @@ def runDatasApiTest_yunwei():
 					redis.set("make_user_phones", new_phone)
 					redis.set("make_user_employeetypes", "0")
 					result = run.run_yunwei_case("make_user", env_num, env_flag,
-											 "Admin 创建用户：{phones}".format(phones=new_phone), "创建测试用户")
+											 "Admin 创建用户：{phones}".format(phones=new_phone), "创建测试用户",
+												 new_phone=new_phone,developer=developer,developer_project=developer_project,branch=branch)
 					datas = Test_User_Reg(phone=new_phone, type="0", env=new_env_flag)  #新建手机号码存储至数据库
 					db.session.add(datas)
 					db.session.commit()
