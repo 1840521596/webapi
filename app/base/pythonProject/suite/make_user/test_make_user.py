@@ -7,7 +7,7 @@ import redis
 from requests_toolbelt import MultipartEncoder
 from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
 from app.base.pythonProject.base.getConfig import ReadConfig
-from app.base.pythonProject.base.getCrmCookies import get_crm_cookie
+from app.base.pythonProject.base.getCookies import get_crm_cookie
 logging = TestLog().getlog()
 class Ysx_Make_User(unittest.TestCase):
     """短信服务"""

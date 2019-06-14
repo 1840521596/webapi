@@ -7,7 +7,7 @@ import json
 # sys.path.append("../../base")
 from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
 from app.base.pythonProject.base.py_redis import MyRedis
-from app.base.pythonProject.base.getCrmCookies import get_crm_cookie
+from app.base.pythonProject.base.getCookies import get_crm_cookie
 logging = TestLog().getlog()
 class Ysx_Crm_MeiRiYiJuXueYuanGuanLi(unittest.TestCase):
     """CRM 每日一句学员管理"""

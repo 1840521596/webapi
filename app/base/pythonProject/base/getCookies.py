@@ -107,7 +107,28 @@ def get_web_home_cookie(env_flag,env_num):
         raise Exception, resp.content
     return cookies.get_dict()
 
+def get_xsjz_cookie(env_flag,env_num):
+    """登录销售简章后台配置系统，并返回cookies
+    :param env_flag:
+    :param env_num:
+    :return:
+    """
+    url = r"http://adm.yunshuxie.com/api/sys/login.htm"
+    cookies = requests.cookies.RequestsCookieJar() #生成cookies 容器
+    cookies.set('env_flag', env_flag)  # 设置测试环境
+    cookies.set("env_num", env_num)  # 设置环境号
+    header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","Content-Type":"application/x-www-form-urlencoded","Accept":"application/json, text/plain, */*","Connection":"keep-alive"}
+    params = {"userName": "guohongjie", "pwd": "0p80hg56ya"}
+    resp = requests.post(url=url, headers=header, cookies=cookies, data=params)
+    dict_resp = json.loads(resp.content, encoding="utf8")
+    #print dict_resp
+    if dict_resp["code"] == "0" or dict_resp["code"] == 0:
+        cookies.update(resp.cookies)
+    else:
+        raise Exception, resp.content
+    return cookies
+
 if __name__ == "__main__":
-    print get_web_home_cookie("beta","1")
+    print get_xsjz_cookie("beta","1")
 
 

@@ -8,7 +8,7 @@ import time
 # sys.path.append("../../base")
 from app.base.pythonProject.base.log import fengefu,lianjiefu,TestLog
 from app.base.pythonProject.base.py_redis import MyRedis
-from app.base.pythonProject.base.getCrmCookies import get_crm_cookie
+from app.base.pythonProject.base.getCookies import get_crm_cookie
 logging = TestLog().getlog()
 class Ysx_Crm_B_CRM(unittest.TestCase):
     """CRM B端CRM"""
