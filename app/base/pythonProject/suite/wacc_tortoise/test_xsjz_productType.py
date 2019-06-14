@@ -109,8 +109,8 @@ class ProductType_Test(unittest.TestCase):
         print self.resp.text
         result = json.loads(self.resp.text,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"code":"1"}
-        if result ["code"] == "1" or result["code"] == 1:
+        expect = {"code":"0"}
+        if result ["code"] == "0" or result["code"] == 0:
             assert result["code"]==expect["code"],self.msg.format(Expect=expect["code"],Really=result["code"])
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
@@ -154,7 +154,7 @@ class ProductType_Test(unittest.TestCase):
     def test_08_productType_getTreeList(self):
         """商品类型树形结构接口协议<br/>http://adm.yunshuxie.com/api/productType/getTreeList.htm
         """
-        url = r"http://adm.yunshuxie.com"+"/api/productType/getTreeList"
+        url = r"http://adm.yunshuxie.com"+"/api/productType/getTreeList.htm"
         self.resp = self.session.post(url=url)
         print self.resp.text
         result = json.loads(self.resp.text,encoding="utf8")
@@ -195,8 +195,8 @@ class ProductType_Test(unittest.TestCase):
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"code": "0"}
-        if result["code"] == "0" or result["code"] == 0:
+        expect = {"code": "10001"}
+        if result["code"] == "10001" or result["code"] == 10001:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
@@ -213,8 +213,8 @@ class ProductType_Test(unittest.TestCase):
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"code": "0"}
-        if result["code"] == "0" or result["code"] == 0:
+        expect = {"code": "10001"}
+        if result["code"] == "10001" or result["code"] == 10001:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
@@ -223,7 +223,7 @@ class ProductType_Test(unittest.TestCase):
         """删除类目接口协议<br/>http://adm.yunshuxie.com/api/productType/delete.htm<br/>{"id": 112}
         """
         url = r"http://adm.yunshuxie.com" + "/api/productType/delete.htm"
-        params = {"id": 112}
+        params = {"id": 2}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -231,8 +231,8 @@ class ProductType_Test(unittest.TestCase):
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"code": "0"}
-        if result["code"] == "0" or result["code"] == 0:
+        expect = {"code": "10001"}
+        if result["code"] == "10001" or result["code"] == 10001:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
@@ -241,7 +241,7 @@ class ProductType_Test(unittest.TestCase):
         """删除类目接口协议-商品已关联<br/>http://adm.yunshuxie.com/api/productType/delete.htm<br/>{"id": 112}
         """
         url = r"http://adm.yunshuxie.com" + "/api/productType/delete.htm"
-        params = {"id": 131}
+        params = {"id": 112}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
