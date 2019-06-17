@@ -8,6 +8,7 @@ from app.base.pythonProject.base.py_redis import MyRedis
 from app.base.pythonProject.base.getCookies import get_xsjz_cookie
 import time
 logging = TestLog().getlog()
+globals_values = {}
 class ProductType_Test(unittest.TestCase):
     """销售简章-类目相关协议"""
     @classmethod
@@ -97,11 +98,11 @@ class ProductType_Test(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_05_productType_getRow(self):
-        """获取单条类目首级节点对应信息接口协议<br/>http://adm.yunshuxie.com/api/productType/getRow.htm<br/>{"id":112}
+    def test_05_productType_getList(self):
+        """获取单条类目首级节点对应信息接口协议"title":"测试"<br/>http://adm.yunshuxie.com/api/productType/getList.htm<br/>{"pageIndex":0,"pageSize":1,"title":"测试"}
         """
-        url = r"http://adm.yunshuxie.com"+"/api/productType/getRow.htm"
-        params = {"id":112}
+        url = r"http://adm.yunshuxie.com"+"/api/productType/getList.htm"
+        params = {"pageIndex":0,"pageSize":1,"title":"测试"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -115,30 +116,31 @@ class ProductType_Test(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
+        globals()["globals_values"]["productId"] = result["data"]["list"][0]["id"]
     def test_06_productType_getList(self):
-        """获取单条类目首级节点对应信息接口协议"title":"测试"<br/>http://adm.yunshuxie.com/api/productType/getList.htm<br/>{"pageIndex":1,"pageSize":2,"title":"测试"}
-        """
-        url = r"http://adm.yunshuxie.com"+"/api/productType/getList.htm"
-        params = {"pageIndex":1,"pageSize":2,"title":"测试"}
-        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        """获取单条类目首级节点对应信息接口协议"title":""<br/>http://adm.yunshuxie.com/api/productType/getList.htm<br/>{"pageIndex":1,"pageSize":2,"title":""}
+         """
+        url = r"http://adm.yunshuxie.com" + "/api/productType/getList.htm"
+        params = {"pageIndex": 1, "pageSize": 2, "title": ""}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
-        self.resp = self.session.post(url=url,data=params)
+        self.resp = self.session.post(url=url, data=params)
         print self.resp.text
-        result = json.loads(self.resp.text,encoding="utf8")
+        result = json.loads(self.resp.text, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"code":"0"}
-        if result ["code"] == "0" or result["code"] == 0:
-            assert result["code"]==expect["code"],self.msg.format(Expect=expect["code"],Really=result["code"])
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_07_productType_getList(self):
-        """获取单条类目首级节点对应信息接口协议"title":""<br/>http://adm.yunshuxie.com/api/productType/getList.htm<br/>{"pageIndex":1,"pageSize":2,"title":""}
-        """
-        url = r"http://adm.yunshuxie.com"+"/api/productType/getList.htm"
-        params = {"pageIndex":1,"pageSize":2,"title":""}
-        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+    def test_07_productType_getRow(self):
+        """获取单条类目首级节点对应信息接口协议<br/>http://adm.yunshuxie.com/api/productType/getRow.htm<br/>{"id":%s}
+        """%(globals_values["productId"].encode("utf8"))
+        url = r"http://adm.yunshuxie.com"+"/api/productType/getRow.htm"
+        params = {"id":globals_values["productId"]}
+        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False,encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
         self.resp = self.session.post(url=url,data=params)
@@ -166,11 +168,11 @@ class ProductType_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_09_productType_update(self):
-        """获取单条类目首级节点对应信息接口协议"title":""<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id":112,"title":""}
-        """
+        """获取单条类目首级节点对应信息接口协议"title":""<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id":112,"title":"%s"}
+        """%(globals_values["productId"].encode("utf8"))
         url = r"http://adm.yunshuxie.com"+"/api/productType/update.htm"
-        params = {"id":112,"title":""}
-        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        params = {"id":globals_values["productId"],"title":""}
+        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False,encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
         self.resp = self.session.post(url=url,data=params)
@@ -184,47 +186,11 @@ class ProductType_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_10_productType_update(self):
-        """获取单条类目首级节点对应信息接口协议"title":"自动化测试"<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id": 112, "title": "自动化测试"}
-        """
+        """获取单条类目首级节点对应信息接口协议"title":"测试-修改"<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id": %s, "title": "测试-修改"}
+        """%(globals_values["productId"].encode("utf8"))
         url = r"http://adm.yunshuxie.com" + "/api/productType/update.htm"
-        params = {"id": 112, "title": "自动化测试"}
-        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-        print str_params
-        self.resp = self.session.post(url=url, data=params)
-        print self.resp.text
-        result = json.loads(self.resp.text, encoding="utf8")
-        logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"code": "10001"}
-        if result["code"] == "10001" or result["code"] == 10001:
-            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
-        else:
-            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
-                                                                     Really=result["code"])
-    def test_11_productType_update(self):
-        """获取单条类目首级节点对应信息接口协议-与商品产生关联<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id": 112, "title": "自动化测试"}
-        """
-        url = r"http://adm.yunshuxie.com" + "/api/productType/update.htm"
-        params = {"id": 112, "title": "自动化测试"}
-        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-        print str_params
-        self.resp = self.session.post(url=url, data=params)
-        print self.resp.text
-        result = json.loads(self.resp.text, encoding="utf8")
-        logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"code": "10001"}
-        if result["code"] == "10001" or result["code"] == 10001:
-            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
-        else:
-            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
-                                                                     Really=result["code"])
-    def test_12_productType_delete(self):
-        """删除类目接口协议<br/>http://adm.yunshuxie.com/api/productType/delete.htm<br/>{"id": 112}
-        """
-        url = r"http://adm.yunshuxie.com" + "/api/productType/delete.htm"
-        params = {"id": 2}
-        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        params = {"id": globals_values["productId"], "title": "测试-修改"}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False,encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
         self.resp = self.session.post(url=url, data=params)
@@ -237,12 +203,75 @@ class ProductType_Test(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_13_productType_delete(self):
-        """删除类目接口协议-商品已关联<br/>http://adm.yunshuxie.com/api/productType/delete.htm<br/>{"id": 112}
-        """
+    def test_11_productType_delete(self):
+        """删除类目接口协议<br/>http://adm.yunshuxie.com/api/productType/delete.htm<br/>{"id": %s}
+        """%(globals_values["productId"].encode("utf8"))
         url = r"http://adm.yunshuxie.com" + "/api/productType/delete.htm"
-        params = {"id": 112}
-        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        params = {"id": globals_values["productId"]}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False,encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+    def test_12_productType_update(self):
+        """获取单条类目首级节点对应信息接口协议-与商品产生关联<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id": %s, "title": "测试"}
+        """%(globals_values["productId"].encode("utf8"))
+        def add_spu_save():
+            """添加spu接口协议<br/>http://adm.yunshuxie.com/api/spu/save.htm<br/>{"type":112,"title":"测试商品",<br/>"imgUrls":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",<br/>"sellerPoint":"测试"","shareInfo":"测试","coupon":0,"introduceImgs":"测试使用","pcImgs":"测试","introduce":"测试"}
+                """
+            url = r"http://adm.yunshuxie.com" + "/api/spu/save.htm"
+            timestamp = "%d" % (time.time())
+            params = {"type": globals_values["productId"], "title": "测试商品-title-%s" % (timestamp),
+                          "imgUrls": "https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",
+                          "sellerPoint": "测试-sellerPoint-%s" % (timestamp),
+                          "shareInfo": "测试-shareInfo-%s" % (timestamp), "coupon": 0,
+                          "introduceImgs": "测试使用-introduceImgs-%s" % (timestamp),
+                          "pcImgs": "测试", "introduce": "测试%s" % (timestamp)}
+            logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False,encoding="utf8") + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
+            self.resp = self.session.post(url=url, data=params)
+            print self.resp.text
+            result = json.loads(self.resp.text, encoding="utf8")
+            logging.info(url + lianjiefu + self.resp.content + fengefu)
+            expect = {"code": "0"}
+            if result["code"] == "0" or result["code"] == 0:
+                assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                             Really=result["code"])
+            else:
+                assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                             Really=result["code"])
+
+        add_spu_save() #创建spu
+        url = r"http://adm.yunshuxie.com" + "/api/productType/update.htm"
+        params = {"id": globals_values["productId"], "title": "测试"}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False,encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code": "10001"}
+        if result["code"] == "10001" or result["code"] == 10001:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+    def test_13_productType_delete(self):
+        """删除类目接口协议-商品已关联<br/>http://adm.yunshuxie.com/api/productType/delete.htm<br/>{"id": %s}
+        """%(globals_values["productId"].encode("utf8"))
+        url = r"http://adm.yunshuxie.com" + "/api/productType/delete.htm"
+        params = {"id": globals_values["productId"]}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False,encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
         self.resp = self.session.post(url=url, data=params)

@@ -8,7 +8,7 @@ from app.base.pythonProject.base.py_redis import MyRedis
 from app.base.pythonProject.base.getCookies import get_xsjz_cookie
 import time
 logging = TestLog().getlog()
-globals_values = ""
+globals_values = {}
 class StandardProductUnit_Test(unittest.TestCase):
     """销售简章-SPU相关操作协议"""
     @classmethod
@@ -43,6 +43,7 @@ class StandardProductUnit_Test(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
+        globals()["globals_values"]["spu_id"] = result["data"]["id"]
     def test_02_spu_save(self):
         """添加spu接口协议-选填项为空<br/>http://adm.yunshuxie.com/api/spu/save.htm<br/>{"type":112,"title":"测试商品",<br/>"imgUrls":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",<br/>"sellerPoint":"","shareInfo":"","coupon":0,"introduceImgs":"测试使用","pcImgs":"","introduce":"测试使用-introduceImgs"}
         """
@@ -88,7 +89,7 @@ class StandardProductUnit_Test(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-        globals()["globals_values"] = result["data"]["id"]
+        globals()["globals_values"]["spu_id"] = result["data"]["id"]
     def test_04_spu_getList(self):
         """获取spu列表信息接口协议<br/>http://adm.yunshuxie.com/api/spu/getList.htm<br/>{"pageIndex":1,"pageSize":10,"title":""}
         """
@@ -108,9 +109,9 @@ class StandardProductUnit_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_05_spu_getRow(self):
-        """获取单条spu信息接口协议<br/>http://adm.yunshuxie.com/api/spu/getRow.htm<br/>{"id":%s}"""%globals_values.encode('utf8')
+        """获取单条spu信息接口协议<br/>http://adm.yunshuxie.com/api/spu/getRow.htm<br/>{"id":%s}"""%globals_values["spu_id"].encode('utf8')
         url = r"http://adm.yunshuxie.com"+"/api/spu/getRow.htm"
-        params = {"id":globals_values}
+        params = {"id":globals_values["spu_id"]}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -126,10 +127,10 @@ class StandardProductUnit_Test(unittest.TestCase):
                                                                     Really=result["code"])
     def test_06_spu_update(self):
         """更新spu接口协议<br/>http://adm.yunshuxie.com/api/spu/update.htm<br/>{"id":%s}
-        """%globals_values.encode("utf8")
+        """%globals_values["spu_id"].encode("utf8")
         url = r"http://adm.yunshuxie.com"+"/api/spu/update.htm"
         timestamp = "%d" % (time.time())
-        params = {"id":globals_values,"title":"测试使用-title-%s"%timestamp,
+        params = {"id":globals_values["spu_id"],"title":"测试使用-title-%s"%timestamp,
                   "imgUrls":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/04/24/21/1556113834007.jpg",
                   "sellerPoint":"测试-sellerPoint-%s"%timestamp,"shareInfo":"测试-shareInfo-%s"%timestamp,"coupon":1,
                   "introduceImgs":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/04/24/21/1556113834007.jpg",
@@ -169,9 +170,9 @@ class StandardProductUnit_Test(unittest.TestCase):
                                                                      Really=result["code"])
     def test_08_spu_getInfo(self):
         """获取单条spu以及相关sku信息接口协议-childList=[]<br/>http://adm.yunshuxie.com/api/spu/getInfo.htm<br/>{"id":%s}
-        """%globals_values.encode("utf8")
+        """%globals_values["spu_id"].encode("utf8")
         url = r"http://adm.yunshuxie.com"+"/api/spu/getInfo.htm"
-        spu_id = int(globals_values)
+        spu_id = int(globals_values["spu_id"])
         params = {"id":spu_id}
         self.resp = self.session.post(url=url,data=params)
         print self.resp.text
@@ -200,9 +201,9 @@ class StandardProductUnit_Test(unittest.TestCase):
                                                                      Really=result["code"])
     def test_10_spu_delete(self):
         """删除单条spu信息接口协议<br/>http://adm.yunshuxie.com/api/spu/delete.htm<br/>{"id":%s}
-        """%globals_values.encode("utf8")
+        """%globals_values["spu_id"].encode("utf8")
         url = r"http://adm.yunshuxie.com"+"/api/spu/delete.htm"
-        params = {"id":globals_values}
+        params = {"id":globals_values["spu_id"]}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
