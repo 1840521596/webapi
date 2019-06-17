@@ -38,8 +38,8 @@ class Smoke_Testing(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_01_productType_save(self):
-        """添加类目接口协议<br/>http://adm.yunshuxie.com/api/productType/save.htm<br/>{"pTitle":"自动化测试-pTitle-%s","pId":"","childTitle":"自动化测试-childTitle-%s"}
-        """%(timestamp,timestamp)
+        """添加类目接口协议<br/>http://adm.yunshuxie.com/api/productType/save.htm<br/>{"pTitle":"自动化测试-pTitle-","pId":"","childTitle":"自动化测试-childTitle-"}
+        """
         url = r"http://adm.yunshuxie.com"+"/api/productType/save.htm"
         params = {"pTitle":"自动化测试-pTitle-{timestamp}".format(timestamp=timestamp),"pId":"","childTitle":"自动化测试-childTitle-{timestamp}".format(timestamp=timestamp)}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
@@ -57,8 +57,8 @@ class Smoke_Testing(unittest.TestCase):
                                                                      Really=result["code"])
         globals()["globals_values"]["pTitle"] = params["pTitle"]
     def test_02_productType_getList(self):
-        """获取单条类目首级节点对应信息接口协议<br/>title=%s<br/>http://adm.yunshuxie.com/api/productType/getList.htm<br/>{"pageIndex":1,"pageSize":2,"title":%s}
-        """%(globals_values["pTitle"],globals_values["pTitle"])
+        """获取单条类目首级节点对应信息接口协议<br/>title=<br/>http://adm.yunshuxie.com/api/productType/getList.htm<br/>{"pageIndex":1,"pageSize":2,"title":}
+        """
         url = r"http://adm.yunshuxie.com"+"/api/productType/getList.htm"
         params = {"pageIndex":0,"pageSize":2,"title":globals_values["pTitle"]}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
@@ -76,8 +76,8 @@ class Smoke_Testing(unittest.TestCase):
                                                                      Really=result["code"])
         globals()["globals_values"]["id"] = result["data"]["list"][0]["id"]
     def test_03_productType_getRow(self):
-        """获取单条类目首级节点对应信息接口协议<br/>http://adm.yunshuxie.com/api/productType/getRow.htm<br/>{"id":%s}
-        """%(globals_values["id"].encode("utf8"))
+        """获取单条类目首级节点对应信息接口协议<br/>http://adm.yunshuxie.com/api/productType/getRow.htm<br/>{"id":}
+        """
         url = r"http://adm.yunshuxie.com"+"/api/productType/getRow.htm"
         params = {"id":globals_values["id"]}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
@@ -94,8 +94,8 @@ class Smoke_Testing(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_04_productType_update(self):
-        """获取单条类目首级节点对应信息接口协议<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id":%s,"title":"%s"}
-        """%(globals_values["id"].encode("utf8"),globals_values["pTitle"])
+        """获取单条类目首级节点对应信息接口协议<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id":,"title":}
+        """
         url = r"http://adm.yunshuxie.com"+"/api/productType/update.htm"
         params = {"id":globals_values["id"],"title":globals_values["pTitle"]}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False,encoding="utf8") + fengefu)
@@ -112,7 +112,7 @@ class Smoke_Testing(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_05_spu_save(self):
-        """添加spu接口协议<br/>http://adm.yunshuxie.com/api/spu/save.htm<br/>{"type":%s,"title":"自动化测试",<br/>"imgUrls":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",<br/>"sellerPoint":"自动化测试"","shareInfo":"自动化测试","coupon":0,"introduceImgs":"自动化测试","pcImgs":"自动化测试","introduce":"自动化测试"}
+        """添加spu接口协议<br/>http://adm.yunshuxie.com/api/spu/save.htm<br/>{"type":,"title":"自动化测试",<br/>"imgUrls":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",<br/>"sellerPoint":"自动化测试"","shareInfo":"自动化测试","coupon":0,"introduceImgs":"自动化测试","pcImgs":"自动化测试","introduce":"自动化测试"}
         """
         url = r"http://adm.yunshuxie.com" + "/api/spu/save.htm"  #暂时使用Mock 数据
         #url = r"http://uwsgi.sys.bandubanxie.com/mock" + "/api/spu/save.htm"
@@ -157,7 +157,7 @@ class Smoke_Testing(unittest.TestCase):
                                                                      Really=result["code"])
         globals()["globals_values"]["spu_id"] = result["data"][0]["id"]
     def test_07_spu_getRow(self):
-        """获取单条spu信息接口协议<br/>http://adm.yunshuxie.com/api/spu/getRow.htm<br/>{"id":%s}"""%globals_values["spu_id"].encode('utf8')
+        """获取单条spu信息接口协议<br/>http://adm.yunshuxie.com/api/spu/getRow.htm<br/>{"id":}"""
         url = r"http://adm.yunshuxie.com"+"/api/spu/getRow.htm"
         params = {"id":globals_values["spu_id"]}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False,encoding="utf8") + fengefu)
@@ -174,8 +174,8 @@ class Smoke_Testing(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                     Really=result["code"])
     def test_08_spu_update(self):
-        """更新spu接口协议<br/>http://adm.yunshuxie.com/api/spu/update.htm<br/>{"id":%s}
-        """%globals_values["spu_id"].encode('utf8')
+        """更新spu接口协议<br/>http://adm.yunshuxie.com/api/spu/update.htm<br/>{"id":}
+        """
         url = r"http://adm.yunshuxie.com"+"/api/spu/update.htm"
         timestamp = "%d" % (time.time())
         params = {"id":globals_values["spu_id"],"title":"测试使用-title-%s"%timestamp,

@@ -136,8 +136,8 @@ class ProductType_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_07_productType_getRow(self):
-        """获取单条类目首级节点对应信息接口协议<br/>http://adm.yunshuxie.com/api/productType/getRow.htm<br/>{"id":%s}
-        """%(globals_values["productId"].encode("utf8"))
+        """获取单条类目首级节点对应信息接口协议<br/>http://adm.yunshuxie.com/api/productType/getRow.htm<br/>{"id":}
+        """
         url = r"http://adm.yunshuxie.com"+"/api/productType/getRow.htm"
         params = {"id":globals_values["productId"]}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False,encoding="utf8") + fengefu)
@@ -168,8 +168,8 @@ class ProductType_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_09_productType_update(self):
-        """获取单条类目首级节点对应信息接口协议"title":""<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id":112,"title":"%s"}
-        """%(globals_values["productId"].encode("utf8"))
+        """获取单条类目首级节点对应信息接口协议"title":""<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id":112,"title":""}
+        """
         url = r"http://adm.yunshuxie.com"+"/api/productType/update.htm"
         params = {"id":globals_values["productId"],"title":""}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False,encoding="utf8") + fengefu)
@@ -186,8 +186,8 @@ class ProductType_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_10_productType_update(self):
-        """获取单条类目首级节点对应信息接口协议"title":"测试-修改"<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id": %s, "title": "测试-修改"}
-        """%(globals_values["productId"].encode("utf8"))
+        """获取单条类目首级节点对应信息接口协议"title":"测试-修改"<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id": , "title": "测试-修改"}
+        """
         url = r"http://adm.yunshuxie.com" + "/api/productType/update.htm"
         params = {"id": globals_values["productId"], "title": "测试-修改"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False,encoding="utf8") + fengefu)
@@ -204,8 +204,8 @@ class ProductType_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_11_productType_delete(self):
-        """删除类目接口协议<br/>http://adm.yunshuxie.com/api/productType/delete.htm<br/>{"id": %s}
-        """%(globals_values["productId"].encode("utf8"))
+        """删除类目接口协议<br/>http://adm.yunshuxie.com/api/productType/delete.htm<br/>{"id": }
+        """
         url = r"http://adm.yunshuxie.com" + "/api/productType/delete.htm"
         params = {"id": globals_values["productId"]}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False,encoding="utf8") + fengefu)
@@ -222,8 +222,8 @@ class ProductType_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_12_productType_update(self):
-        """获取单条类目首级节点对应信息接口协议-与商品产生关联<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id": %s, "title": "测试"}
-        """%(globals_values["productId"].encode("utf8"))
+        """获取单条类目首级节点对应信息接口协议-与商品产生关联<br/>http://adm.yunshuxie.com/api/productType/update.htm<br/>{"id":, "title": "测试"}
+        """
         def add_spu_save():
             """添加spu接口协议<br/>http://adm.yunshuxie.com/api/spu/save.htm<br/>{"type":112,"title":"测试商品",<br/>"imgUrls":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",<br/>"sellerPoint":"测试"","shareInfo":"测试","coupon":0,"introduceImgs":"测试使用","pcImgs":"测试","introduce":"测试"}
                 """
@@ -267,8 +267,8 @@ class ProductType_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_13_productType_delete(self):
-        """删除类目接口协议-商品已关联<br/>http://adm.yunshuxie.com/api/productType/delete.htm<br/>{"id": %s}
-        """%(globals_values["productId"].encode("utf8"))
+        """删除类目接口协议-商品已关联<br/>http://adm.yunshuxie.com/api/productType/delete.htm<br/>{"id": }
+        """
         url = r"http://adm.yunshuxie.com" + "/api/productType/delete.htm"
         params = {"id": globals_values["productId"]}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False,encoding="utf8") + fengefu)

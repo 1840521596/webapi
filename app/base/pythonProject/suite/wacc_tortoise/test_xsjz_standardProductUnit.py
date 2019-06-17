@@ -109,7 +109,7 @@ class StandardProductUnit_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_05_spu_getRow(self):
-        """获取单条spu信息接口协议<br/>http://adm.yunshuxie.com/api/spu/getRow.htm<br/>{"id":%s}"""%globals_values["spu_id"].encode('utf8')
+        """获取单条spu信息接口协议<br/>http://adm.yunshuxie.com/api/spu/getRow.htm<br/>{"id":}"""
         url = r"http://adm.yunshuxie.com"+"/api/spu/getRow.htm"
         params = {"id":globals_values["spu_id"]}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
@@ -126,8 +126,8 @@ class StandardProductUnit_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                     Really=result["code"])
     def test_06_spu_update(self):
-        """更新spu接口协议<br/>http://adm.yunshuxie.com/api/spu/update.htm<br/>{"id":%s}
-        """%globals_values["spu_id"].encode("utf8")
+        """更新spu接口协议<br/>http://adm.yunshuxie.com/api/spu/update.htm<br/>{"id":}
+        """
         url = r"http://adm.yunshuxie.com"+"/api/spu/update.htm"
         timestamp = "%d" % (time.time())
         params = {"id":globals_values["spu_id"],"title":"测试使用-title-%s"%timestamp,
@@ -169,8 +169,8 @@ class StandardProductUnit_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_08_spu_getInfo(self):
-        """获取单条spu以及相关sku信息接口协议-childList=[]<br/>http://adm.yunshuxie.com/api/spu/getInfo.htm<br/>{"id":%s}
-        """%globals_values["spu_id"].encode("utf8")
+        """获取单条spu以及相关sku信息接口协议-childList=[]<br/>http://adm.yunshuxie.com/api/spu/getInfo.htm<br/>{"id":}
+        """
         url = r"http://adm.yunshuxie.com"+"/api/spu/getInfo.htm"
         spu_id = int(globals_values["spu_id"])
         params = {"id":spu_id}
@@ -200,8 +200,8 @@ class StandardProductUnit_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_10_spu_delete(self):
-        """删除单条spu信息接口协议<br/>http://adm.yunshuxie.com/api/spu/delete.htm<br/>{"id":%s}
-        """%globals_values["spu_id"].encode("utf8")
+        """删除单条spu信息接口协议<br/>http://adm.yunshuxie.com/api/spu/delete.htm<br/>{"id":}
+        """
         url = r"http://adm.yunshuxie.com"+"/api/spu/delete.htm"
         params = {"id":globals_values["spu_id"]}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
