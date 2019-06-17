@@ -114,8 +114,8 @@ class Smoke_Testing(unittest.TestCase):
     def test_05_spu_save(self):
         """添加spu接口协议<br/>http://adm.yunshuxie.com/api/spu/save.htm<br/>{"type":%s,"title":"自动化测试",<br/>"imgUrls":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",<br/>"sellerPoint":"自动化测试"","shareInfo":"自动化测试","coupon":0,"introduceImgs":"自动化测试","pcImgs":"自动化测试","introduce":"自动化测试"}
         """
-        #url = r"http://adm.yunshuxie.com" + "/api/spu/save.htm"  #暂时使用Mock 数据
-        url = r"http://uwsgi.sys.bandubanxie.com/mock" + "/api/spu/save.htm"
+        url = r"http://adm.yunshuxie.com" + "/api/spu/save.htm"  #暂时使用Mock 数据
+        #url = r"http://uwsgi.sys.bandubanxie.com/mock" + "/api/spu/save.htm"
         timestamp = "%d" % (time.time())
         params = {"type": globals_values["id"], "title": "测试商品-title-%s" % (timestamp),
                   "imgUrls": "https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",
@@ -139,8 +139,8 @@ class Smoke_Testing(unittest.TestCase):
     def test_06_spu_getList(self):
         """获取spu列表信息接口协议<br/>http://adm.yunshuxie.com/api/spu/getList.htm<br/>{"pageIndex":1,"pageSize":10,"title":""}
         """
-        #url = r"http://adm.yunshuxie.com"+"/api/spu/getList.htm"
-        url = r"http://uwsgi.sys.bandubanxie.com/mock"+"/api/spu/getList.htm"
+        url = r"http://adm.yunshuxie.com"+"/api/spu/getList.htm"
+        #url = r"http://uwsgi.sys.bandubanxie.com/mock"+"/api/spu/getList.htm"
         params = {"pageIndex":1,"pageSize":10,"title":globals_values["spu_title"]}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False,encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
