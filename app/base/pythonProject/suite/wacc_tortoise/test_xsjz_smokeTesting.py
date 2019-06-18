@@ -117,11 +117,11 @@ class Smoke_Testing(unittest.TestCase):
         url = r"http://adm.yunshuxie.com" + "/api/spu/save.htm"  #暂时使用Mock 数据
         #url = r"http://uwsgi.sys.bandubanxie.com/mock" + "/api/spu/save.htm"
         timestamp = "%d" % (time.time())
-        params = {"type": globals_values["id"], "title": "测试商品-title-%s" % (timestamp),
+        params = {"type": globals_values["id"], "title": "自动化测试商品-title-%s" % (timestamp),
                   "imgUrls": "https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",
-                  "sellerPoint": "测试-sellerPoint-%s" % (timestamp), "shareInfo": "测试-shareInfo-%s" % (timestamp),
-                  "coupon": 0, "introduceImgs": "测试使用-introduceImgs-%s" % (timestamp),
-                  "pcImgs": "测试", "introduce": "测试%s" % (timestamp)}
+                  "sellerPoint": "自动化测试-sellerPoint-%s" % (timestamp), "shareInfo": "自动化测试-shareInfo-%s" % (timestamp),
+                  "coupon": 0, "introduceImgs": "自动化测试-introduceImgs-%s" % (timestamp),
+                  "pcImgs": "自动化测试", "introduce": "自动化测试%s" % (timestamp)}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False,encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -178,12 +178,12 @@ class Smoke_Testing(unittest.TestCase):
         """
         url = r"http://adm.yunshuxie.com"+"/api/spu/update.htm"
         timestamp = "%d" % (time.time())
-        params = {"id":globals_values["spu_id"],"title":"测试使用-title-%s"%timestamp,
+        params = {"id":globals_values["spu_id"],"title":"自动化测试-title-%s"%timestamp,
                   "imgUrls":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/04/24/21/1556113834007.jpg",
-                  "sellerPoint":"测试-sellerPoint-%s"%timestamp,"shareInfo":"测试-shareInfo-%s"%timestamp,"coupon":1,
+                  "sellerPoint":"自动化测试-sellerPoint-%s"%timestamp,"shareInfo":"自动化测试-shareInfo-%s"%timestamp,"coupon":1,
                   "introduceImgs":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/04/24/21/1556113834007.jpg",
                   "pcImgs":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/04/24/21/1556113834007.jpg",
-                  "introduce":"测试使用-introduce-%s"%timestamp}
+                  "introduce":"自动化测试-introduce-%s"%timestamp}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False,encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
