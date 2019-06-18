@@ -101,7 +101,7 @@ class Smoke_Testing(unittest.TestCase):
         productId = self.redis.str_get("product_id")
         pTitle = self.redis.str_get("pTitle")
         url = r"http://adm.yunshuxie.com"+"/api/productType/update.htm"
-        params = {"id":pTitle,"title":productId}
+        params = {"id":productId,"title":pTitle}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False,encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
