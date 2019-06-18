@@ -200,6 +200,7 @@ class Smoke_Testing(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         globals()["globals_values"] = {}
+        globals()["timestamp"] = ""
 
 if __name__ == "__main__":
     unittest.main()
