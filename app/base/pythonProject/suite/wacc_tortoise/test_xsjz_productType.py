@@ -286,7 +286,7 @@ class ProductType_Test(unittest.TestCase):
                                                                      Really=result["code"])
     @classmethod
     def tearDownClass(self):
-        pass
+        globals()["globals_values"] = {}
 
 if __name__ == "__main__":
     unittest.main()

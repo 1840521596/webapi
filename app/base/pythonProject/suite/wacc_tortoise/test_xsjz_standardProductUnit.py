@@ -230,7 +230,7 @@ class StandardProductUnit_Test(unittest.TestCase):
 
     @classmethod
     def tearDownClass(self):
-        globals().pop("globals_values")
+        globals()["globals_values"] = {}
 
 if __name__ == "__main__":
     unittest.main()
