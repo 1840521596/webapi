@@ -154,24 +154,6 @@ class StandardProductUnit_Test(unittest.TestCase):
                                                                      Really=result["code"])
 
     def test_07_spu_getInfo(self):
-        """获取单条spu以及相关sku信息接口协议-SPU不存在<br/>http://adm.yunshuxie.com/api/spu/getInfo.htm<br/>{"id":1}
-        """
-        url = r"http://adm.yunshuxie.com"+"/api/spu/getInfo.htm"
-        params = {"id":1}
-        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
-        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-        print str_params
-        self.resp = self.session.post(url=url,data=params)
-        print self.resp.text
-        result = json.loads(self.resp.text,encoding="utf8")
-        logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"code":"10002"}
-        if result ["code"] == "10002" or result["code"] == 10002:
-            assert result["code"]==expect["code"],self.msg.format(Expect=expect["code"],Really=result["code"])
-        else:
-            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
-                                                                     Really=result["code"])
-    def test_08_spu_getInfo(self):
         """获取单条spu以及相关sku信息接口协议-childList=[]<br/>http://adm.yunshuxie.com/api/spu/getInfo.htm<br/>{"id":}
         """
         url = r"http://adm.yunshuxie.com"+"/api/spu/getInfo.htm"
@@ -187,7 +169,7 @@ class StandardProductUnit_Test(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_09_spu_getInfo(self):
+    def test_08_spu_getInfo(self):
         """获取单条spu以及相关sku信息接口协议-存在SKU<br/>http://adm.yunshuxie.com/api/spu/getInfo.htm<br/>{"id":2}
         """
         def add_sku():
@@ -209,7 +191,7 @@ class StandardProductUnit_Test(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_10_spu_delete(self):
+    def test_09_spu_delete(self):
         """删除单条spu信息接口协议<br/>http://adm.yunshuxie.com/api/spu/delete.htm<br/>{"id":}
         """
         url = r"http://adm.yunshuxie.com"+"/api/spu/delete.htm"
@@ -227,6 +209,25 @@ class StandardProductUnit_Test(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
+    def test_10_spu_getInfo(self):
+        """获取单条spu以及相关sku信息接口协议-SPU不存在<br/>http://adm.yunshuxie.com/api/spu/getInfo.htm<br/>{"id":1}
+        """
+        url = r"http://adm.yunshuxie.com"+"/api/spu/getInfo.htm"
+        params = {"id":globals_values["spu_id"]}
+        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url,data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text,encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code":"10002"}
+        if result ["code"] == "10002" or result["code"] == 10002:
+            assert result["code"]==expect["code"],self.msg.format(Expect=expect["code"],Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+
     @classmethod
     def tearDownClass(self):
         pass
