@@ -77,12 +77,12 @@ def get_admin_cookie(env_flag,env_num):
     params = {"userName": "automation@yunshuxie.com" ,"pwd": "ysx2019"}
     resp = requests.post(url=url, headers=header, cookies=cookies,data=params)
     dict_resp =json.loads(resp.content, encoding="utf8")
-    print dict_resp
+    #print dict_resp
     if dict_resp["returnCode"] == "0" or dict_resp["returnCode"] == 0:
         cookies.update(resp.cookies)
     else:
         raise Exception, resp.content
-    return cookies.get_dict()
+    return cookies
 def get_web_home_cookie(env_flag,env_num):
     """ 登录PC云舒写官网, 并返回cookies
     :param url 请求连接
@@ -105,7 +105,7 @@ def get_web_home_cookie(env_flag,env_num):
         cookies.update(resp.cookies)
     else:
         raise Exception, resp.content
-    return cookies.get_dict()
+    return cookies
 
 def get_xsjz_cookie(env_flag,env_num):
     """登录销售简章后台配置系统，并返回cookies

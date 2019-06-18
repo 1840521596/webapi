@@ -402,11 +402,13 @@ $("#btn4").click(function () {
         var api_data=$("#get_params").val();
         var api_headers=$("#get_headers").val();
         var api_cookies=$("#get_cookies").val();
+        var project_cn=$("#project_choice").val();
         $.ajax({
             url: "/case_http_test",
             type: "post",
             data: {
-            case_host: case_host,
+                project_cn:project_cn,
+                case_host: case_host,
                 case_url: case_url,
                 method: method,
                 params: api_data,
@@ -426,11 +428,13 @@ $("#btn4").click(function () {
         var api_data = $("#post_params").val();
         var api_headers = $("#post_headers").val();
         var api_cookies = $("#post_cookies").val();
+        var project_cn=$("#project_choice").val();
         //alert(api_redirects)
         $.ajax({
             url: "/case_http_test",
             type: "post",
             data: {
+                project_cn:project_cn,
                 case_host: case_host,
                 case_url: case_url,
                 method: method,

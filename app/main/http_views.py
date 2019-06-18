@@ -2,7 +2,7 @@
 from . import test
 from flask import request,make_response,jsonify
 import requests
-import json
+from app.base.pythonProject.base.getCookies import *
 import sys
 if sys.getdefaultencoding() != 'utf-8':
     reload(sys)
@@ -15,6 +15,7 @@ def case_http_test():
     :param method:  请求方式
     :return:  Response
     """
+    project_cn = request.form["project_cn"]
     case_host = request.form["case_host"]
     case_url = request.form["case_url"]
     method = request.form["method"]
@@ -23,12 +24,14 @@ def case_http_test():
         headers = eval(request.form["headers"])
         cookies = eval(request.form["cookies"])
         url = case_host + case_url
-        # if cookies == "None":
-        #     cookies = None
-        # if headers == "None":
-        #     headers = None
-        # if params == "None":
-        #     params = None
+        if project_cn == "云舒写首页":
+            cookies = get_web_home_cookie(cookies["env_flag"],cookies["env_num"]).get_dict()
+        if project_cn in ["云舒写后台管理系统","上传文件"]:
+            cookies = get_admin_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
+        if project_cn == "云舒写CRM系统":
+            cookies = get_crm_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
+        if project_cn == "简章系统":
+            cookies = get_xsjz_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
         if method=="POST":
             resp = postFunction(url,params,headers,cookies)
         elif method=="GET":
