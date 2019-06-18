@@ -97,7 +97,7 @@ class StandardProductUnit_Test(unittest.TestCase):
         """获取spu列表信息接口协议<br/>http://adm.yunshuxie.com/api/spu/getList.htm<br/>{"pageIndex":1,"pageSize":10,"title":""}
         """
         url = r"http://adm.yunshuxie.com"+"/api/spu/getList.htm"
-        params = {"pageIndex":1,"pageSize":10,"title":""}
+        params = {"pageIndex":0,"pageSize":10,"title":""}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params

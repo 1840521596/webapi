@@ -141,7 +141,7 @@ class Smoke_Testing(unittest.TestCase):
         """
         url = r"http://adm.yunshuxie.com"+"/api/spu/getList.htm"
         #url = r"http://uwsgi.sys.bandubanxie.com/mock"+"/api/spu/getList.htm"
-        params = {"pageIndex":1,"pageSize":10,"title":globals_values["spu_title"]}
+        params = {"pageIndex":0,"pageSize":10,"title":globals_values["spu_title"]}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False,encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
