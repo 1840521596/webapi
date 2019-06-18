@@ -199,7 +199,7 @@ class Smoke_Testing(unittest.TestCase):
                                                                      Really=result["code"])
     @classmethod
     def tearDownClass(self):
-        pass
+        globals().pop("globals_values")
 
 if __name__ == "__main__":
     unittest.main()
