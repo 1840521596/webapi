@@ -27,8 +27,11 @@ class StandardProductUnit_Test(unittest.TestCase):
         """
         url = r"http://adm.yunshuxie.com"+"/api/spu/save.htm"
         timestamp = "%d"%(time.time())
-        params = {"type":112,"title":"测试商品-title-%s"%(timestamp),"imgUrls":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",
-                  "sellerPoint":"测试-sellerPoint-%s"%(timestamp),"shareInfo":"测试-shareInfo-%s"%(timestamp),"coupon":0,"introduceImgs":"测试使用-introduceImgs-%s" % (timestamp),
+        params = {"type":112,"title":"测试商品-title-%s"%(timestamp),
+                  "imgUrls":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",
+                  "sellerPoint":"测试-sellerPoint-%s"%(timestamp),
+                  "shareInfo":"测试-shareInfo-%s"%(timestamp),"coupon":0,
+                  "introduceImgs":"测试使用-introduceImgs-%s" % (timestamp),
                   "pcImgs":"测试","introduce":"测试%s"%(timestamp)}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
@@ -185,10 +188,17 @@ class StandardProductUnit_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_09_spu_getInfo(self):
-        """获取单条spu以及相关sku信息接口协议<br/>http://adm.yunshuxie.com/api/spu/getInfo.htm<br/>{"id":2}
+        """获取单条spu以及相关sku信息接口协议-存在SKU<br/>http://adm.yunshuxie.com/api/spu/getInfo.htm<br/>{"id":2}
         """
+        def add_sku():
+            url = r"http://adm.yunshuxie.com"+"/api/sku/save.htm"
+            params = {"spuId":int(globals_values["spu_id"]),"attributeIds":"123","marketPrice":"999","shopPrice":"999","courseIds":"111","stocks":"10"}
+            resp = self.session.post(url=url, params=params)
+            print resp.text
+        add_sku() #创建sku
         url = r"http://adm.yunshuxie.com"+"/api/spu/getInfo.htm"
-        params = {"id": 2}
+        spu_id = int(globals_values["spu_id"])
+        params = {"id": spu_id}
         self.resp = self.session.post(url=url,params=params)
         print self.resp.text
         result = json.loads(self.resp.text,encoding="utf8")

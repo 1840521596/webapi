@@ -155,7 +155,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-        globals()["globals_values"]["spu_id"] = result["data"][0]["id"]
+        globals()["globals_values"]["spu_id"] = result["data"]["list"][0]["id"]
     def test_07_spu_getRow(self):
         """获取单条spu信息接口协议<br/>http://adm.yunshuxie.com/api/spu/getRow.htm<br/>{"id":}"""
         url = r"http://adm.yunshuxie.com"+"/api/spu/getRow.htm"
