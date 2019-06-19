@@ -71,10 +71,29 @@ def update_phone():
     """Test_Phones"""
     pid = request.args.get("pid")
     phone = request.args.get("phone")
+    env = request.args.get("env")
     type = request.args.get("type")
     desc = request.args.get("desc")
     try:
-        Test_User_Reg.query.filter_by(id=pid).update(dict(phone=phone,type=type,description=desc))
+        if env not in ["beta", "stage,prod"]:
+            raise Exception, "操作环境不存在"
+        if len(phone) != 11:
+            raise Exception, "手机号需等于11位"
+        if type < 0 and type > 6:
+            raise Exception, "账号类型说明超出范围"
+        if pid =="":
+            datas = db.session.query(Test_User_Reg.id).filter_by(phone=phone,type=type,env=env).count()
+            if datas != 0:
+                raise Exception,"手机号已存在"
+            else:
+                datas = Test_User_Reg(phone=phone,env=env,type=type,description=desc)
+                db.session.add(datas)
+        else:
+            datas = db.session.query(Test_User_Reg.id).filter_by(phone=phone, type=type, env=env).count()
+            if datas != 0:
+                raise Exception, "手机号已存在"
+            else:
+                Test_User_Reg.query.filter_by(id=pid).update(dict(phone=phone,type=type,description=desc,env=env))
         db.session.commit()
         resp = {'datas': '更新成功', 'code': '200'}
     except Exception as e:

@@ -125,9 +125,10 @@ class Test_User_Reg(db.Model):
     type = db.Column(db.Integer,default=0) #注册类型
     env = db.Column(db.String(10)) #环境
     description = db.Column(db.Text) #备注
-    def __init__(self,phone,type,env):
+    def __init__(self,phone,type,env,description):
         self.phone = phone
         self.type = type
         self.env = env
+        self.description = description
     def __repr__(self):
         return '<Case %r>'%(self.telephone)

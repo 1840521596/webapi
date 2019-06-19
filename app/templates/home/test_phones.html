@@ -97,6 +97,9 @@
          <tbody id="casetb"> 
          </tbody> 
         </table>
+           <div class="theme-buy">
+         <a class="btn btn-primary btn-large update" href="javascript:;" style="margin-top: -5%;margin-bottom: -5%;margin-right: 100%;">+新增测试数据</a>
+        </div>
        </div>
       </div> 
      </div> 
@@ -124,7 +127,14 @@
           <td hidden="hidden"><input style="width: 100%; height: 100%" type="text" value="" id="targetId" placeholder="用例 ID"/></td>
           <td><input style="width: 100%; height: 100%" type="text" value="None" id="case_api" placeholder="手机号码" onfocus="this.placeholder=''" onblur="this.placeholder='手机号码'"/></td>
           <td><input style="width: 100%; height: 100%" type="text" value="None" id="case_desc" placeholder="账号类型" onfocus="this.placeholder=''" onblur="this.placeholder='账号类型'"/></td>
-          <td><input style="width: 100%; height: 100%" type="text" value="None" id="case_host" placeholder="存在环境" onfocus="this.placeholder=''" onblur="this.placeholder='存在环境'"/></td>
+          <td>
+	   <select id="case_host" style="width: 100%; height: 100%" name="请求方式">
+	    <option value="" selected="selected"> 请选择操作环境 </option>
+	    <option value="beta">beta</option>
+        <option value="stage,prod">stage,prod</option>
+	   </select>
+       </td>
+
           <td><input style="width: 100%; height: 100%" type="text" value="None" id="case_url" placeholder="号码描述" onfocus="this.placeholder=''" onblur="this.placeholder='号码描述'"/></td>
       </tr>
      </tbody>
@@ -176,7 +186,8 @@ $("body").delegate(".update", "click", function () {
         _td.eq(0).find("input").val(api_pid);
         _td.eq(1).find("input").val(data[0]);
         _td.eq(2).find("input").val(data[1]);
-        _td.eq(3).find("input").val(data[2]);
+        _td.eq(3).find("#case_host").val(data[2]);
+
         _td.eq(4).find("input").val(data[3]);
         //alert(_td.eq(0).find("input").val());
     };
@@ -185,7 +196,7 @@ $("body").delegate(".update", "click", function () {
         pid = _td.eq(0).find("input").val();
         phone = _td.eq(1).find("input").val();
         type = _td.eq(2).find("input").val();
-        env = _td.eq(3).find("input").val();
+        env = _td.eq(3).find("#case_host").val();
         desc = _td.eq(4).find("input").val();
             $.ajax({
                 url: "/update_phone",
