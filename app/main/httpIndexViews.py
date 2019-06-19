@@ -76,12 +76,12 @@ def search():
         #项目为空、接口名赋值、状态为all
         datas = db.session.query(Case_Http_API.id,Case_Http_API.project,Case_Http_API.case_api,Case_Http_API.description,Case_Http_API.case_url,Case_Http_API.method,
                                  Case_Http_API.params,Case_Http_API.response,Case_Http_API.status).filter_by(
-                                case_name=name).all()
+                                case_api=name).all()
     elif project=='None' and api_name and statu != 'all':
         #项目为空、接口名赋值、状态不为all
         datas = db.session.query(Case_Http_API.id,Case_Http_API.project,Case_Http_API.case_api,Case_Http_API.description,Case_Http_API.case_url,Case_Http_API.method,
                                  Case_Http_API.params,Case_Http_API.response,Case_Http_API.status).filter_by(
-                                case_name=name,status=statu).all()
+                                case_api=name,status=statu).all()
     elif project != "None" and not api_name and statu == 'all':
         #项目不为空、接口名为空、状态不为all
         datas = db.session.query(Case_Http_API.id,Case_Http_API.project,Case_Http_API.case_api,Case_Http_API.description,Case_Http_API.case_url,Case_Http_API.method,
@@ -93,18 +93,17 @@ def search():
     elif project != "None" and api_name and statu == 'all':
         #项目不为空、接口名不为空、状态为1,2
         datas = db.session.query(Case_Http_API.id,Case_Http_API.project,Case_Http_API.case_api,Case_Http_API.description,Case_Http_API.case_url,Case_Http_API.method,
-                                 Case_Http_API.params,Case_Http_API.response,Case_Http_API.status).filter_by(
-        project=project, case_name=name).all()
+                                 Case_Http_API.params,Case_Http_API.response,Case_Http_API.status).filter_by(project=project, case_api=name).all()
     elif project != "None" and api_name and statu != 'all':
         #项目不为空、接口名不为空、状态为1,2
         datas = db.session.query(Case_Http_API.id,Case_Http_API.project,Case_Http_API.case_api,Case_Http_API.description,Case_Http_API.case_url,Case_Http_API.method,
                                  Case_Http_API.params,Case_Http_API.response,Case_Http_API.status).filter_by(
-        project=project, case_name=name,status=statu).all()
+        project=project, case_api=name,status=statu).all()
     else:
         #剩余为为预期的判断逻辑
         datas = db.session.query(Case_Http_API.id,Case_Http_API.project,Case_Http_API.case_api,Case_Http_API.description,Case_Http_API.case_url,Case_Http_API.method,
                                  Case_Http_API.params,Case_Http_API.response,Case_Http_API.status).filter_by(
-                                project=project, case_name=name).all()
+                                project=project, case_api=name).all()
     resp = {"code": 200, "datas": datas}
     msg_resp = make_response(jsonify(resp))
     return msg_resp
@@ -152,7 +151,7 @@ def delete():
 def case_condition():
     """加载接口名称，操作接口名称配置"""
     project = request.args.get('project')
-    object_api = db.session.query(Case_Http_API.case_name).filter_by(project=project).all()
+    object_api = db.session.query(Case_Http_API.case_api).filter_by(project=project).all()
     dict_resp = {"code": 200, "datas":object_api}
     resp = make_response(jsonify(dict_resp))
     return resp
