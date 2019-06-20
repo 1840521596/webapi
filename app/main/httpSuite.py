@@ -8,8 +8,10 @@ from .. import db,redis
 from ..config.models import Project,Test_Env,Test_User_Reg
 from sqlalchemy import func
 from app.base.pythonProject.base.getConfig import s
+from app.base.pythonProject.base.couponReceive import coupon_test
 import redis as red
 from threading import Thread
+import json
 @test.route("/runSuiteApi",methods=["GET"])
 def runDatasApiTest():
 	"""测试集页面使用接口,用于上传测试用例后执行
@@ -224,6 +226,45 @@ def make_user():
 	except Exception as e:
 		msg = {"code": 400, "Msg": "执行失败", "ErrorMsg": str(e)}
 	return make_response(jsonify(msg))
+
+
+@test.route("/get_coupon",methods=["GET"])
+def get_coupon():
+	"""
+	领取代金券接口,传入测试环境&测试环境号&代金券价格&手机号码，领取10张当天使用的优惠券
+	:return:
+	"""
+	env_num = request.args.get("env_num")
+	env_flag = request.args.get("env_flag")
+	couponPrice = request.args.get("couponPrice")
+	phone = request.args.get("phone")
+	try:
+		if env_flag == "":
+			raise Exception("使用环境不能为空！")
+		if couponPrice == "":
+			raise Exception("代金券价格不能为空！")
+		if phone == "":
+			raise Exception("领取手机号不能为空！")
+		if len(phone) != 11:
+			raise Exception("领取手机号需等于11位！")
+		if env_flag in ["stage", "prod"]:
+			select_env_flag = ",".join(["stage", "prod"])
+		datas = db.session.query(Test_User_Reg.description).filter_by(phone=phone, env=select_env_flag).count()
+		if datas == 0:
+			raise Exception("手机号未存在于号码管理页面，请先增加该用户")
+		resp = coupon_test(env_flag=env_flag,env_num=env_num,couponPrice=couponPrice,phone=phone)
+		desc = json.dumps(resp["coupins_desc"],ensure_ascii=False,encoding="utf8")
+		datas = db.session.query(Test_User_Reg.id,Test_User_Reg.description).filter_by(phone=phone, env=select_env_flag).first()
+		d = datas[1] if datas[1] else ""
+		description = d +"<br/>"+desc
+		Test_User_Reg.query.filter_by(id=datas[0]).update(dict(phone=phone,description=description))
+		db.session.commit()
+	except Exception as e:
+		msg = {"code": 400, "Msg": "执行失败", "ErrorMsg": str(e)}
+	else:
+		msg = {"code": 200, "Msg": "执行成功", "ReturnMsg": resp}
+	return make_response(jsonify(msg))
+
 
 
 
