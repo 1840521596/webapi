@@ -89,11 +89,7 @@ def update_phone():
                 datas = Test_User_Reg(phone=phone,env=env,type=type,description=desc)
                 db.session.add(datas)
         else:
-            datas = db.session.query(Test_User_Reg.id).filter_by(phone=phone, type=type, env=env).count()
-            if datas != 0:
-                raise Exception, "手机号已存在"
-            else:
-                Test_User_Reg.query.filter_by(id=pid).update(dict(phone=phone,type=type,description=desc,env=env))
+            Test_User_Reg.query.filter_by(id=pid).update(dict(phone=phone,type=type,description=desc,env=env))
         db.session.commit()
         resp = {'datas': '更新成功', 'code': '200'}
     except Exception as e:
