@@ -249,6 +249,8 @@ def get_coupon():
 			raise Exception("领取手机号需等于11位！")
 		if env_flag in ["stage", "prod"]:
 			select_env_flag = ",".join(["stage", "prod"])
+		else:
+			select_env_flag = "beta"
 		datas = db.session.query(Test_User_Reg.description).filter_by(phone=phone, env=select_env_flag).count()
 		if datas == 0:
 			raise Exception("手机号未存在于号码管理页面，请先增加该用户")
