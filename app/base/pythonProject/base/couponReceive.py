@@ -71,8 +71,10 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
         #print "领取代金券:",resp.text
         result = json.loads(re.findall("{.*}", resp.text)[0], encoding="utf8")
         assert result["returnCode"] == 48 or result["returnCode"] == "48", result["returnMsg"]
+        coupins.append(result["data"]["couponId"])
     dict_coupins[u"代金券有效期"] = coupon_date
     dict_coupins[u"代金券编号"] = couponActivityNumber
+    dict_coupins["couponId"] = coupins
     resp_log["coupins_desc"] = dict_coupins
     return resp_log
 
