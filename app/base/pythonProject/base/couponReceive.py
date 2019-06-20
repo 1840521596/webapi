@@ -73,7 +73,8 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
         assert result["returnCode"] == 48 or result["returnCode"] == "48", result["returnMsg"]
         couponId = "couponId:"+result["data"]["couponId"]
         coupins.append(couponId)
-    dict_coupins["领取代金券--"+coupon_date] = coupins
+    dict_coupins[u"领取代金券--"+coupon_date] = coupins
+    dict_coupins[u"代金券编号"] = couponActivityNumber
     resp_log["coupins_desc"] = dict_coupins
     return resp_log
 
