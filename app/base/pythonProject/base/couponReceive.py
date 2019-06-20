@@ -67,13 +67,11 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
     coupins = []
     for i in range(10):
         resp = session.post(url,data=params)
-        resp_log[u"审核代金券-第%d次"%(i)] = resp.text
+        resp_log[u"领取代金券-第%d次"%(i)] = resp.text
         #print "领取代金券:",resp.text
         result = json.loads(re.findall("{.*}", resp.text)[0], encoding="utf8")
         assert result["returnCode"] == 48 or result["returnCode"] == "48", result["returnMsg"]
-        couponId = "couponId:"+result["data"]["couponId"]
-        coupins.append(couponId)
-    dict_coupins[u"领取代金券--"+coupon_date] = coupins
+    dict_coupins[u"代金券有效期"] = coupon_date
     dict_coupins[u"代金券编号"] = couponActivityNumber
     resp_log["coupins_desc"] = dict_coupins
     return resp_log
