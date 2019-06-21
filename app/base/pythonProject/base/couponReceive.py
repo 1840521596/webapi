@@ -5,6 +5,7 @@ import time
 import requests
 import json
 import re
+import datetime
 def coupon_test(env_flag,env_num,couponPrice,phone):
     """
     :param couponPrice:   单个代金券价格
@@ -20,10 +21,8 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
         "Accept-Language": "zh-CN,zh;q=0.9", "Connection": "keep-alive", "Upgrade-Insecure-Requests": "1"}
     session.headers = header
     session.cookies = cookies
-    date = time.localtime()
-    coupon_date = "{}-{:0>2}-{:0>2}".format(date.tm_year,date.tm_mon,date.tm_mday)
-    start_date = "{}-{:0>2}-{:0>2} 00:00:00".format(date.tm_year,date.tm_mon,date.tm_mday)
-    end_date = "{}-{:0>2}-{:0>2} 23:59:59".format(date.tm_year,date.tm_mon,date.tm_mday)
+    start_date = "{ymd} 00:00:00".format(ymd=datetime.datetime.now().strftime("%Y-%m-%d"))
+    end_date = "{ymd} 23:59:59".format(ymd=(datetime.datetime.now() + datetime.timedelta(days=10)).strftime("%Y-%m-%d"))
     url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/edit"
     name = "测试_自动化测试_%d"%(time.time())
     params = {"couponActivityName": name,
@@ -32,11 +31,11 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
               "couponSingleAmount": "{}".format(couponPrice),
               "couponDailyLimit": "10",
               "limitPersonReceive": "10",
-              "activityStartDate": "{}".format(start_date),
-              "activityEndDate": "{}".format(end_date),
+              "activityStartDate": start_date,
+              "activityEndDate": end_date,
               "couponType":"1","limitAmount":"","effectiveType": "2",
-              "validityDays": "","validatyEndDate": "{}".format(end_date),
-              "validatyStartDate": "{}".format(start_date),
+              "validityDays": "","validatyEndDate": end_date,
+              "validatyStartDate": start_date,
               "courseApplyType": "1","courseApply": "-1",
               "sendMode": "2","activityStatus": "","couponActivityId":""}
     #print params
@@ -72,7 +71,7 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
         result = json.loads(re.findall("{.*}", resp.text)[0], encoding="utf8")
         assert result["returnCode"] == 48 or result["returnCode"] == "48", result["returnMsg"]
         coupins.append(result["data"]["couponId"])
-    dict_coupins[u"代金券有效期"] = coupon_date
+    dict_coupins[u"代金券有效期"] = {"start":start_date,"end":end_date}
     dict_coupins[u"代金券编号"] = couponActivityNumber
     dict_coupins["couponId"] = coupins
     resp_log["coupins_desc"] = dict_coupins
