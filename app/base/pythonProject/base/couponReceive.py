@@ -60,12 +60,17 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
     result = json.loads(re.findall("{.*}", resp.text)[0], encoding="utf8")
     assert result["returnCode"]==0 or result["returnCode"]=="0",result["returnMsg"]
 
-    url = r"https://pay.yunshuxie.com/v1/coupon/post.htm".format(couponActivityNumber)
+    url = r"https://pay.yunshuxie.com/v1/coupon/post.htm"
     params = {"shareKey": "","actNum": couponActivityNumber,"phone": phone,"code": ""}
     dict_coupins = {}
     coupins = []
-    for i in range(10):
-        resp = session.post(url,data=params)
+    header = {"Accept": "application/json, text/javascript, */*; q=0.01","Content-Type": "application/x-www-form-urlencoded; charset=UTF-8","Origin": "http://pay.yunshuxie.com","Referer": "http://pay.yunshuxie.com/coupon/coupon_test.html?shareKey=null&actNum=20190306KLHJA&clientType=1","User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
+    if env_flag=="beta":
+        get_env_num = "5"
+    else:
+        get_env_num = env_num
+    for i in range(1,6):
+        resp = requests.post(url=url,data=params,headers=header,cookies={"env_flag":env_flag,"env_num":get_env_num})
         resp_log[u"领取代金券-第%d次"%(i)] = resp.text
         #print "领取代金券:",resp.text
         result = json.loads(re.findall("{.*}", resp.text)[0], encoding="utf8")
