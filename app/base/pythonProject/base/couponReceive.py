@@ -21,6 +21,9 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
         "Accept-Language": "zh-CN,zh;q=0.9", "Connection": "keep-alive", "Upgrade-Insecure-Requests": "1"}
     session.headers = header
     session.cookies = cookies
+    request_retry = requests.adapters.HTTPAdapter(max_retries=3)
+    session.mount("https://", request_retry)
+    session.mount("http://", request_retry)
     start_date = "{ymd} 00:00:00".format(ymd=datetime.datetime.now().strftime("%Y-%m-%d"))
     end_date = "{ymd} 23:59:59".format(ymd=(datetime.datetime.now() + datetime.timedelta(days=10)).strftime("%Y-%m-%d"))
     url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/edit"
@@ -43,12 +46,12 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
     resp_log[u"创建代金券"] = resp.text
     #print "创建代金券:",resp.text
     result = json.loads(re.findall("{.*}", resp.text)[0], encoding="utf8")
-    assert result["returnCode"]==0 or result["returnCode"]=="0",result["returnMsg"]
+    assert result["returnCode"]==0 or result["returnCode"]=="0","创建代金券:{msg}".format(msg=result["returnMsg"])
     url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/test_list" # 查询代金券 couponActivityId
     params = {"couponActivityName":name,"couponActivityNumber":"","activityStatus":"1","sort":"couponActivityId","order":"DESC","limit":"10","offset":"0"}
     resp = session.get(url=url, params=params)
     resp_log[u"查询代金券"] = resp.text
-    print resp.text
+    #print resp.text
     result = json.loads(re.findall("{.*}", resp.text)[0], encoding="utf8")
     couponActivityId = result["rows"][0]["couponActivityId"]
     couponActivityNumber = result["rows"][0]["couponActivityNumber"]
@@ -58,8 +61,7 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
     resp_log[u"审核代金券"] = resp.text
     #print "审核代金券:",resp.text
     result = json.loads(re.findall("{.*}", resp.text)[0], encoding="utf8")
-    assert result["returnCode"]==0 or result["returnCode"]=="0",result["returnMsg"]
-
+    assert result["returnCode"]==0 or result["returnCode"]=="0","审核代金券:{msg}".format(msg=result["returnMsg"])
     url = r"https://pay.yunshuxie.com/v1/coupon/post.htm"
     params = {"shareKey": "","actNum": couponActivityNumber,"phone": phone,"code": ""}
     dict_coupins = {}
@@ -74,7 +76,7 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
         resp_log[u"领取代金券-第%d次"%(i)] = resp.text
         #print "领取代金券:",resp.text
         result = json.loads(re.findall("{.*}", resp.text)[0], encoding="utf8")
-        assert result["returnCode"] == 48 or result["returnCode"] == "48", result["returnMsg"]
+        assert result["returnCode"] == 48 or result["returnCode"] == "48", "领取代金券:{msg}".format(msg=result["returnMsg"])
         coupins.append(result["data"]["couponId"])
     dict_coupins[u"代金券有效期"] = {"start":start_date,"end":end_date}
     dict_coupins[u"代金券编号"] = couponActivityNumber
