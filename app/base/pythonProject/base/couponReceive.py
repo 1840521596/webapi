@@ -30,7 +30,7 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
     name = "测试_自动化测试_%d"%(time.time())
     params = {"couponActivityName": name,
               "couponInstructions": "测试_自动化测试创建_%s"%(name),
-              "couponTotalAmount": "{}".format(int(couponPrice)*10),
+              "couponTotalAmount": "%.2f"%(float(couponPrice)*10),
               "couponSingleAmount": "{}".format(couponPrice),
               "couponDailyLimit": "10",
               "limitPersonReceive": "10",
