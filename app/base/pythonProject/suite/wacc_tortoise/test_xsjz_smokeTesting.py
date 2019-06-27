@@ -37,11 +37,11 @@ class Smoke_Testing(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_01_productType_save(self):
-        """添加类目接口协议<br/>http://adm.yunshuxie.com/api/productType/save.htm<br/>{"pTitle":"自动化测试-pTitle-","pId":"","childTitle":"自动化测试-childTitle-"}
+        """添加类目接口协议<br/>http://adm.yunshuxie.com/api/productType/save.htm<br/>{"pTitle":"冒烟自动化测试-pTitle-","pId":"","childTitle":"冒烟自动化测试-childTitle-"}
         """
         url = r"http://adm.yunshuxie.com"+"/api/productType/save.htm"
-        params = {"pTitle":"自动化测试-pTitle-{timestamp}".format(timestamp=self.timestamp),
-                  "pId":"","childTitle":"自动化测试-childTitle-{timestamp}".format(timestamp=self.timestamp)}
+        params = {"pTitle":"冒烟自动化测试-pTitle-{timestamp}".format(timestamp=self.timestamp),
+                  "pId":"","childTitle":"冒烟自动化测试-childTitle-{timestamp}".format(timestamp=self.timestamp)}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -116,17 +116,17 @@ class Smoke_Testing(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_05_spu_save(self):
-        """添加spu接口协议<br/>http://adm.yunshuxie.com/api/spu/save.htm<br/>{"type":,"title":"自动化测试",<br/>"imgUrls":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",<br/>"sellerPoint":"自动化测试"","shareInfo":"自动化测试","coupon":0,"introduceImgs":"自动化测试","pcImgs":"自动化测试","introduce":"自动化测试"}
+        """添加spu接口协议<br/>http://adm.yunshuxie.com/api/spu/save.htm<br/>{"type":,"title":"冒烟自动化测试",<br/>"imgUrls":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",<br/>"sellerPoint":"冒烟自动化测试"","shareInfo":"冒烟自动化测试","coupon":0,"introduceImgs":"冒烟自动化测试","pcImgs":"冒烟自动化测试","introduce":"冒烟自动化测试"}
         """
         productId = self.redis.str_get("product_id")
         url = r"http://adm.yunshuxie.com" + "/api/spu/save.htm"  #暂时使用Mock 数据
         #url = r"http://uwsgi.sys.bandubanxie.com/mock" + "/api/spu/save.htm"
-        params = {"type": productId, "title": "自动化测试商品-title-%s" % (self.timestamp),
+        params = {"type": productId, "title": "冒烟自动化测试商品-title-%s" % (self.timestamp),
                   "imgUrls": "https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",
-                  "sellerPoint": "自动化测试-sellerPoint-%s" % (self.timestamp),
-                  "shareInfo": "自动化测试-shareInfo-%s" % (self.timestamp),
-                  "coupon": 0, "introduceImgs": "自动化测试-introduceImgs-%s" % (self.timestamp),
-                  "pcImgs": "自动化测试", "introduce": "自动化测试%s" % (self.timestamp)}
+                  "sellerPoint": "冒烟自动化测试-sellerPoint-%s" % (self.timestamp),
+                  "shareInfo": "冒烟自动化测试-shareInfo-%s" % (self.timestamp),
+                  "coupon": 0, "introduceImgs": "冒烟自动化测试-introduceImgs-%s" % (self.timestamp),
+                  "pcImgs": "冒烟自动化测试", "introduce": "冒烟自动化测试%s" % (self.timestamp)}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False,encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -185,13 +185,13 @@ class Smoke_Testing(unittest.TestCase):
         """
         spu_id = self.redis.str_get("spu_id")
         url = r"http://adm.yunshuxie.com"+"/api/spu/update.htm"
-        params = {"id":spu_id,"title":"自动化测试-title-%s"%self.timestamp,
+        params = {"id":spu_id,"title":"冒烟自动化测试-title-%s"%self.timestamp,
                   "imgUrls":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/04/24/21/1556113834007.jpg",
-                  "sellerPoint":"自动化测试-sellerPoint-%s"%self.timestamp,
-                  "shareInfo":"自动化测试-shareInfo-%s"%self.timestamp,"coupon":1,
+                  "sellerPoint":"冒烟自动化测试-sellerPoint-%s"%self.timestamp,
+                  "shareInfo":"冒烟自动化测试-shareInfo-%s"%self.timestamp,"coupon":1,
                   "introduceImgs":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/04/24/21/1556113834007.jpg",
                   "pcImgs":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/04/24/21/1556113834007.jpg",
-                  "introduce":"自动化测试-introduce-%s"%self.timestamp}
+                  "introduce":"冒烟自动化测试-introduce-%s"%self.timestamp}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False,encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -205,6 +205,11 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
+    def test_09_sku_save(self):
+        """添加sku接口协议<br/>"""
+        spu_id = self.redis.str_get("spu_id")
+        url = r"http://adm.yunshuxie.com" + "/api/sku/save.htm"
+        params = {"spuId":spu_id,"attributeIds":"123","marketPrice":"999","shopPrice":"999","courseIds":"","stocks":""}
     @classmethod
     def tearDownClass(self):
         pass

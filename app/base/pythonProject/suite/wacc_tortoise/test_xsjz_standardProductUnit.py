@@ -232,6 +232,21 @@ class StandardProductUnit_Test(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
+    def test_11_spu_trial_getList(self):
+        """spu选择试听链接<br/>http://adm.yunshuxie.com/api/product/trial/getList.htm"""
+        url = r"http://adm.yunshuxie.com/api/product/trial/getList.htm"
+        self.resp = self.session.post(url=url)
+        print self.resp.text
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        result = json.loads(self.resp.text, encoding="utf8")
+        expect = {"code": "0"}
+        if result ["code"] == "0" or result["code"] == 0:
+            assert result["code"]==expect["code"],self.msg.format(Expect=expect["code"],Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+
+
 
     @classmethod
     def tearDownClass(self):
