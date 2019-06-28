@@ -209,7 +209,7 @@ class Smoke_Testing(unittest.TestCase):
         """添加sku接口协议<br/>http://adm.yunshuxie.com/api/sku/save.htm<br/>{"spuId":"","attributeIds":"123","marketPrice":"999",<br/>"shopPrice":"999","courseIds":"","stocks":""}"""
         spu_id = self.redis.str_get("spu_id")
         url = r"http://adm.yunshuxie.com" + "/api/sku/save.htm"
-        params = {"spuId":spu_id,"attributeIds":"123","marketPrice":"999","shopPrice":"999","courseIds":"999","stocks":"999"}
+        params = {"spuId":spu_id,"attributeIds":"1","marketPrice":"1","shopPrice":"1","courseIds":"1","stocks":"1"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -223,16 +223,45 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_10_spu_getInfo(self):
-        """获取单条spu以及相关sku信息接口协议<br/>"""
+    def test_10_sku_update(self):
+        """更新sku接口协议<br/>http://adm.yunshuxie.com/api/spu/getInfo.htm<br/>{"id":,"spuId":,"marketPrice":"9999999","shopPrice":"9999999","courseIds":"9999999"}"""
         spu_id = self.redis.str_get("spu_id")
-        url = r"http://adm.yunshuxie.com" + "/api/spu/getInfo.htm"
+        url = r"http://adm.yunshuxie.com" + "/api/sku/update.htm"
         params = {"id":spu_id}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
         self.resp = self.session.post(url=url, data=params)
         print self.resp.text
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        result = json.loads(self.resp.text, encoding="utf8")
+        sku_id = result["data"]["childList"][0]["id"]
+        self.redis.str_set("sku_id", sku_id)
+        url = r"http://adm.yunshuxie.com" + "/api/sku/update.htm"
+        params = {"id":sku_id,"spuId":spu_id,"marketPrice":"9999999","shopPrice":"9999999","courseIds":"9999999"}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        result = json.loads(self.resp.text, encoding="utf8")
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+    def test_11_stock_update(self):
+        """sku库存增减接口协议-增库存<br/>http://adm.yunshuxie.com/api/sku/save.htm<br/>{"id":, "operateType":"1", "num":"2"}"""
+        sku_id = self.redis.str_get("sku_id")
+        url = r"http://adm.yunshuxie.com" + "/api/stock/update.htm"
+        params = {"id":sku_id, "operateType":"1", "num":"2"}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
         expect = {"code": "0"}
@@ -241,6 +270,99 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
+    def test_12_stock_update(self):
+        """sku库存增减接口协议-减库存<br/>http://adm.yunshuxie.com/api/sku/save.htm<br/>{"id": "operateType":"2", "num":"1"}"""
+        sku_id = self.redis.str_get("sku_id")
+        url = r"http://adm.yunshuxie.com" + "/api/stock/update.htm"
+        params = {"id":sku_id, "operateType":"2", "num":"1"}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+    def test_13_sku_updateStatus(self):
+        """更新sku状态接口协议-下架<br/>http://adm.yunshuxie.com/api/sku/updateStatus.htm<br/>{"id":sku_id,"status":"0",<br/>"onlineTime":"2019-01-01 00:00:01","offlineTime":"2019-01-01 00:00:01"}"""
+        sku_id = self.redis.str_get("sku_id")
+        url = r"http://adm.yunshuxie.com" + "/api/sku/updateStatus.htm"
+        params =  {"id":sku_id,"status":"0","onlineTime":"2019-01-01 00:00:01","offlineTime":"2019-01-01 00:00:01"}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+    def test_14_sku_updateStatus(self):
+        """更新sku状态接口协议-上架<br/>http://adm.yunshuxie.com/api/sku/updateStatus.htm<br/>{"id":sku_id,"status":"1",<br/>"onlineTime":"2019-01-01 00:00:01","offlineTime":"2019-01-01 00:00:01"}"""
+        sku_id = self.redis.str_get("sku_id")
+        url = r"http://adm.yunshuxie.com" + "/api/sku/updateStatus.htm"
+        params =  {"id":sku_id,"status":"1","onlineTime":"2019-01-01 00:00:01","offlineTime":"2019-01-01 00:00:01"}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+
+    def test_15_sku_updateStatus(self):
+        """更新sku状态接口协议-自动上下架<br/>http://adm.yunshuxie.com/api/sku/updateStatus.htm<br/>{"id":sku_id,"status":"2",<br/>"onlineTime":"2019-01-01 00:00:01","offlineTime":"2019-12-31 00:00:01"}"""
+        sku_id = self.redis.str_get("sku_id")
+        url = r"http://adm.yunshuxie.com" + "/api/sku/updateStatus.htm"
+        params = {"id": sku_id, "status": "2", "onlineTime": "2019-01-01 00:00:01",
+                  "offlineTime": "2019-12-31 00:00:01"}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+    def test_16_sku_updateStatus(self):
+        """批量添加sku接口协议<br/>http://adm.yunshuxie.com/api/sku/saveList.htm<br/>{"skuList":[{"spuId":"%s","attributeIds":"222",<br/>"marketPrice":"222","shopPrice":"222","courseIds":"222","stocks":"222"},<br/>{"spuId":"%s","attributeIds":"333","marketPrice":"333",<br/>"shopPrice":"333","courseIds":"333","stocks":"333"}]}"""
+        sku_id = self.redis.str_get("sku_id")
+        url = r"http://adm.yunshuxie.com" + "/api/sku/saveList.htm"
+        params =  {"skuList":"""[{"spuId":"%s","attributeIds":"222","marketPrice":"222","shopPrice":"222","courseIds":"222","stocks":"222"},{"spuId":"%s","attributeIds":"333","marketPrice":"333","shopPrice":"333","courseIds":"333","stocks":"333"}]"""%(sku_id,sku_id)}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+
     @classmethod
     def tearDownClass(self):
         pass
