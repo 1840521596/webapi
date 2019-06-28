@@ -192,6 +192,7 @@
  //    alert(num);
  //    alert(phone);
   //   alert(user_role);
+  if ($("#user_role").length>0){
        $.ajax({
              url: "/make_user",
              type: "get",
@@ -216,7 +217,10 @@
                         alert(JSON.stringify(result));
                        }
                 });
-
+                }
+    else{
+    alert("请点击 CreatePhone 元素，并输入参数");
+    }
     }
 
 function createCoupon(){
@@ -228,6 +232,7 @@ function createCoupon(){
  //    alert(num);
  //    alert(phone);
   //   alert(couponPrice);
+  if ($("#couponPrice").length>0){
        $.ajax({
              url: "/get_coupon",
              type: "get",
@@ -245,6 +250,10 @@ function createCoupon(){
                         alert(JSON.stringify(result));
                        }
                 });
+             }
+      else{
+      alert("请点击 CreateCoupon 元素，并输入参数");
+      }
     }
 
 </script>
