@@ -7,11 +7,13 @@ class Project(db.Model):
     project_en = db.Column(db.String(100), unique=True) # 项目_英文
     domain = db.Column(db.String(100))
     description = db.Column(db.Text)#项目描述
-    def __init__(self,project,description,domain,project_en):
+    use_status = db.Column(db.Boolean,default=0)
+    def __init__(self,project,description,domain,project_en,use_status=0):
         self.project = project
         self.description = description
         self.domain = domain
         self.project_en = project_en
+        self.use_status = use_status
     def __repr__(self):
         return '<Case %r>'%(self.name)
 

@@ -119,7 +119,13 @@ def runDatasApiTest_yunwei():
 	developer_project = request.args.get("developer_project")
 	branch = request.args.get("branch")
 	try:
-		project_en = db.session.query(Project.project_en, Project.description).filter_by(project=project).first()  #查询项目
+		if project == "":
+			raise Exception("项目不能为空！")
+		if env_num == "":
+			raise Exception("环境编号不能为空！")
+		if env_flag == "":
+			raise Exception("使用环境不能为空！")
+		project_en = db.session.query(Project.project_en, Project.description).filter_by(project=project,use_status=1).first()  #查询项目
 		if project_en:  #判断项目存在
 			redis_env_flag_shell = "{project_en}_env_flag".format(project_en=project_en[0])
 			redis_env_num_shell = "{project_en}_env_num".format(project_en=project_en[0])

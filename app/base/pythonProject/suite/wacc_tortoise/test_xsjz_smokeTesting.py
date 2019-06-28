@@ -206,10 +206,41 @@ class Smoke_Testing(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_09_sku_save(self):
-        """添加sku接口协议<br/>"""
+        """添加sku接口协议<br/>http://adm.yunshuxie.com/api/sku/save.htm<br/>{"spuId":"","attributeIds":"123","marketPrice":"999",<br/>"shopPrice":"999","courseIds":"","stocks":""}"""
         spu_id = self.redis.str_get("spu_id")
         url = r"http://adm.yunshuxie.com" + "/api/sku/save.htm"
-        params = {"spuId":spu_id,"attributeIds":"123","marketPrice":"999","shopPrice":"999","courseIds":"","stocks":""}
+        params = {"spuId":spu_id,"attributeIds":"123","marketPrice":"999","shopPrice":"999","courseIds":"999","stocks":"999"}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+    def test_10_spu_getInfo(self):
+        """获取单条spu以及相关sku信息接口协议<br/>"""
+        spu_id = self.redis.str_get("spu_id")
+        url = r"http://adm.yunshuxie.com" + "/api/spu/getInfo.htm"
+        params = {"id":spu_id}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
     @classmethod
     def tearDownClass(self):
         pass
