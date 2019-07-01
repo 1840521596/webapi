@@ -224,6 +224,23 @@ class Smoke_Testing(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
     def test_10_product_attribute_save(self):
+        """添加规格接口协议<br/>http://adm.yunshuxie.com/api/product/attribute/save.htm<br/>{"title":"冒烟自动化测试","value":"冒烟自动化测试"}"""
+        url = r"http://adm.yunshuxie.com" + "/api/product/attribute/save.htm"
+        params = {"title":"冒烟自动化测试2-规格-%s"%(self.timestamp),"value":"冒烟自动化测试2-规格值-%s"%(self.timestamp)}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+    def test_11_product_attribute_getList(self):
         """规格列表接口协议<br/>http://adm.yunshuxie.com/api/product/attribute/getList.htm<br/>{"pageIndex":"1", "pageSize":"10", "productTypeName":"自动化测试"}"""
         url = r"http://adm.yunshuxie.com" + "/api/product/attribute/getList.htm"
         params =  {"pageIndex":"1", "pageSize":"10", "productTypeName":"自动化测试-规格-%s"%(self.timestamp)}
@@ -242,7 +259,23 @@ class Smoke_Testing(unittest.TestCase):
                                                                      Really=result["code"])
         attribute = result["data"]["list"][0]["id"]
         self.redis.str_set("attribute_id",attribute)
-    def test_11_product_attribute_getRow(self):
+        params = {"pageIndex": "1", "pageSize": "10", "productTypeName": "冒烟自动化测试2-规格-%s" % (self.timestamp)}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+        attribute = result["data"]["list"][0]["id"]
+        self.redis.str_set("attribute_smoke_id",attribute)
+    def test_12_product_attribute_getRow(self):
         """规格列表接口协议<br/>http://adm.yunshuxie.com/api/product/attribute/getRow.htm<br/>{"title":"自动化测试","value":"自动化测试"}"""
         attribute_id = self.redis.str_get("attribute_id")
         url = r"http://adm.yunshuxie.com" + "/api/product/attribute/getRow.htm"
@@ -263,9 +296,9 @@ class Smoke_Testing(unittest.TestCase):
         attribute = result["data"]["id"]
         self.redis.str_set("attribute_id",attribute)
 
-    def test_12_product_attribute_saveAttr(self):
+    def test_13_product_attribute_saveAttr(self):
         """添加子规格值接口协议<br/>http://adm.yunshuxie.com/api/product/attribute/saveAttr.htm<br/>{"title":"子规格值","pId":""}"""
-        attribute_id = self.redis.str_get("attribute_id")
+        attribute_id = self.redis.str_get("attribute_smoke_id")
         url = r"http://adm.yunshuxie.com" + "/api/product/attribute/saveAttr.htm"
         params = {"title":"子规格值-%s"%(self.timestamp),"pId": attribute_id}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
@@ -281,7 +314,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_13_product_attribute_update(self):
+    def test_14_product_attribute_update(self):
         """修改规格信息接口协议<br/>http://adm.yunshuxie.com/api/product/attribute/update.htm<br/>{"title":"规格名称","pId":""}"""
         attribute_id = self.redis.str_get("attribute_id")
         url = r"http://adm.yunshuxie.com" + "/api/product/attribute/update.htm"
@@ -299,7 +332,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_14_sku_save(self):
+    def test_15_sku_save(self):
         """添加sku接口协议<br/>http://adm.yunshuxie.com/api/sku/save.htm<br/>{"spuId":"","attributeIds":"123","marketPrice":"999",<br/>"shopPrice":"999","courseIds":"","stocks":""}"""
         spu_id = self.redis.str_get("spu_id")
         attribute_id = self.redis.str_get("attribute_id")
@@ -318,7 +351,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_15_sku_update(self):
+    def test_16_sku_update(self):
         """更新sku接口协议<br/>http://adm.yunshuxie.com/api/spu/getInfo.htm<br/>{"id":,"spuId":,"marketPrice":"9999999","shopPrice":"9999999","courseIds":"9999999"}"""
         spu_id = self.redis.str_get("spu_id")
         url = r"http://adm.yunshuxie.com" + "/api/spu/getInfo.htm"
@@ -347,7 +380,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_16_stock_update(self):
+    def test_17_stock_update(self):
         """sku库存增减接口协议-增库存<br/>http://adm.yunshuxie.com/api/sku/save.htm<br/>{"id":, "operateType":"1", "num":"2"}"""
         sku_id = self.redis.str_get("sku_id")
         url = r"http://adm.yunshuxie.com" + "/api/stock/update.htm"
@@ -365,7 +398,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_17_stock_update(self):
+    def test_18_stock_update(self):
         """sku库存增减接口协议-减库存<br/>http://adm.yunshuxie.com/api/sku/save.htm<br/>{"id": "operateType":"2", "num":"1"}"""
         sku_id = self.redis.str_get("sku_id")
         url = r"http://adm.yunshuxie.com" + "/api/stock/update.htm"
@@ -383,7 +416,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_18_sku_updateStatus(self):
+    def test_19_sku_updateStatus(self):
         """更新sku状态接口协议-下架<br/>http://adm.yunshuxie.com/api/sku/updateStatus.htm<br/>{"id":sku_id,"status":"0",<br/>"onlineTime":"2019-01-01 00:00:01","offlineTime":"2019-01-01 00:00:01"}"""
         sku_id = self.redis.str_get("sku_id")
         url = r"http://adm.yunshuxie.com" + "/api/sku/updateStatus.htm"
@@ -401,7 +434,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_19_sku_updateStatus(self):
+    def test_20_sku_updateStatus(self):
         """更新sku状态接口协议-上架<br/>http://adm.yunshuxie.com/api/sku/updateStatus.htm<br/>{"id":sku_id,"status":"1",<br/>"onlineTime":"2019-01-01 00:00:01","offlineTime":"2019-01-01 00:00:01"}"""
         sku_id = self.redis.str_get("sku_id")
         url = r"http://adm.yunshuxie.com" + "/api/sku/updateStatus.htm"
@@ -420,7 +453,7 @@ class Smoke_Testing(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
 
-    def test_20_sku_updateStatus(self):
+    def test_21_sku_updateStatus(self):
         """更新sku状态接口协议-自动上下架<br/>http://adm.yunshuxie.com/api/sku/updateStatus.htm<br/>{"id":sku_id,"status":"2",<br/>"onlineTime":"2019-01-01 00:00:01","offlineTime":"2019-12-31 00:00:01"}"""
         sku_id = self.redis.str_get("sku_id")
         url = r"http://adm.yunshuxie.com" + "/api/sku/updateStatus.htm"
@@ -439,7 +472,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_21_sku_saveList(self):
+    def test_22_sku_saveList(self):
         """批量添加sku接口协议<br/>http://adm.yunshuxie.com/api/sku/saveList.htm<br/>{"skuList":[{"spuId":"%s","attributeIds":"222",<br/>"marketPrice":"222","shopPrice":"222","courseIds":"222","stocks":"222"},<br/>{"spuId":"%s","attributeIds":"333","marketPrice":"333",<br/>"shopPrice":"333","courseIds":"333","stocks":"333"}]}"""
         spu_id = self.redis.str_get("spu_id")
         attribute_id = self.redis.str_get("attribute_id")
@@ -458,7 +491,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_22_sku_delete(self):
+    def test_23_sku_delete(self):
         """删除单条sku信息接口协议<br/>http://adm.yunshuxie.com/api/sku/delete.htm<br/>{"id": sku_id}"""
         sku_id = self.redis.str_get("sku_id")
         url = r"http://adm.yunshuxie.com" + "/api/sku/delete.htm"
@@ -476,7 +509,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_23_course_getList(self):
+    def test_24_course_getList(self):
         """sku选择课程列表<br/>http://adm.yunshuxie.com/api/course/getList.htm<br/>{"title": "测试"}"""
         url = r"http://adm.yunshuxie.com" + "/api/course/getList.htm"
         params = {"title": "测试"}
@@ -493,7 +526,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_24_course_getList(self):
+    def test_25_course_getList(self):
         """删除规格接口协议<br/>http://adm.yunshuxie.com/api/product/attribute/delete.htm<br/>{"id":""}"""
         url = r"http://adm.yunshuxie.com" + "/api/product/attribute/delete.htm"
         attribute_id = self.redis.str_get("attribute_id")
