@@ -102,7 +102,7 @@ class ProductType_Test(unittest.TestCase):
         """
         pTitle = self.redis.str_get("pTitle")
         url = r"http://adm.yunshuxie.com"+"/api/productType/getList.htm"
-        params = {"pageIndex":0,"pageSize":1,"title":pTitle}
+        params = {"pageIndex":0,"pageSize":10,"title":pTitle}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -117,6 +117,7 @@ class ProductType_Test(unittest.TestCase):
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
         self.redis.str_set("productId",result["data"]["list"][0]["id"])
+        self.redis.str_set("delete_productId", result["data"]["list"][1]["id"])
     def test_06_productType_getList(self):
         """获取单条类目首级节点对应信息类目协议"title":""<br/>http://adm.yunshuxie.com/api/productType/getList.htm<br/>{"pageIndex":1,"pageSize":2,"title":""}
          """
@@ -213,6 +214,21 @@ class ProductType_Test(unittest.TestCase):
         url = r"http://adm.yunshuxie.com" + "/api/productType/delete.htm"
         params = {"id": productId}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False,encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+        productId = self.redis.str_get("delete_productId")
+        params = {"id": productId}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
         self.resp = self.session.post(url=url, data=params)
