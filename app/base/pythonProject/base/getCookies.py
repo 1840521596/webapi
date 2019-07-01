@@ -5,6 +5,8 @@ import requests
 import base64
 from PIL import Image
 import json
+import urllib
+import hashlib
 def get_crm_cookie(env_flag,env_num):
     """登录crm,并返回cookies
     :param url 请求连接
@@ -128,7 +130,38 @@ def get_xsjz_cookie(env_flag,env_num):
         raise Exception, resp.content
     return cookies
 
+def get_wechat_login_cookie(env_flag,env_num):
+    """登录微信前台开始上课，并返回cookies
+    :param env_flag:
+    :param env_num:
+    :return:
+    """
+    url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
+    salt = "mengmengda"
+    cookies = requests.cookies.RequestsCookieJar() #生成cookies 容器
+    cookies.set('env_flag', env_flag)  # 设置测试环境
+    cookies.set("env_num", env_num)  # 设置环境号
+    header = {"Connection": "keep-alive"
+            , "Content-Type": "application/x-www-form-urlencoded",
+                  "Cache-Control": "no-cache",
+                  "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 Safari/601.1 wechatdevtools/1.02.1904090 MicroMessenger/6.7.3 Language/zh_CN webview/15578306374265793 webdebugger port/22562"}
+
+    params = {"userName": "60000007001", "pwd": "123456", "type": "3"}
+    string = urllib.urlencode(params)
+    s = string + salt
+    md = hashlib.md5()
+    md.update(s)
+    md5 = md.hexdigest()
+    data = string + "&sign=" + md5
+    resp = requests.post(url=url, headers=header, cookies=cookies, data=data)
+    dict_resp = json.loads(resp.content, encoding="utf8")
+    if dict_resp["code"] == "0" or dict_resp["code"] == 0:
+        cookies.update(resp.cookies)
+    else:
+        raise Exception, resp.content
+    return cookies
+
 if __name__ == "__main__":
-    print get_xsjz_cookie("beta","1")
+    print get_wechat_login_cookie("stage","1")
 
 

@@ -32,6 +32,8 @@ def case_http_test():
             cookies = get_crm_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
         if project_cn == "简章系统":
             cookies = get_xsjz_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
+        if project_cn == "新商品详情系统":
+            cookies = get_wechat_login_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
         if method=="POST":
             resp = postFunction(url,params,headers,cookies)
         elif method=="GET":
