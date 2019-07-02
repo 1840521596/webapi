@@ -508,7 +508,38 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_24_sku_delete(self):
+
+    def test_24_sku_updateStatus(self):
+        """新sku状态接口协议-上架<br/>http://adm.yunshuxie.com/api/sku/updateStatus.htm<br/>"""
+        spu_id = self.redis.str_get("spu_id")
+        url = r"http://adm.yunshuxie.com" + "/api/spu/getInfo.htm"
+        params = {"id": spu_id}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        result = json.loads(self.resp.text, encoding="utf8")
+        sku_id = result["data"]["childList"][1]["id"]
+        url = r"http://adm.yunshuxie.com" + "/api/sku/updateStatus.htm"
+        params = {"id": sku_id, "status": "1", "onlineTime": "2019-07-01 00:00:01",
+                  "offlineTime": "2019-12-31 00:00:01"}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False, encoding="utf8") + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = self.session.post(url=url, data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.text + fengefu)
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        else:
+            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
+                                                                     Really=result["code"])
+
+    def test_25_sku_delete(self):
         """删除单条sku信息接口协议<br/>http://adm.yunshuxie.com/api/sku/delete.htm<br/>{"id": sku_id}"""
         sku_id = self.redis.str_get("sku_id")
         url = r"http://adm.yunshuxie.com" + "/api/sku/delete.htm"
@@ -526,7 +557,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_25_course_getList(self):
+    def test_26_course_getList(self):
         """sku选择课程列表<br/>http://adm.yunshuxie.com/api/course/getList.htm<br/>{"title": "测试"}"""
         url = r"http://adm.yunshuxie.com" + "/api/course/getList.htm"
         params = {"title": "测试"}
@@ -543,7 +574,7 @@ class Smoke_Testing(unittest.TestCase):
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
                                                                      Really=result["code"])
-    def test_26_course_getList(self):
+    def test_27_course_getList(self):
         """删除规格接口协议<br/>http://adm.yunshuxie.com/api/product/attribute/delete.htm<br/>{"id":""}"""
         url = r"http://adm.yunshuxie.com" + "/api/product/attribute/delete.htm"
         attribute_id = self.redis.str_get("attribute_id")
