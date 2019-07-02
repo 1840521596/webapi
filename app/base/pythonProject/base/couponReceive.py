@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #-*-coding:utf-8
-from getCookies import get_crm_cookie
+from getCookies import get_ysx_crm_cookie
 import time
 import requests
 import json
@@ -14,7 +14,7 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
     """
     resp_log = {}
     session = requests.Session()
-    cookies = get_crm_cookie(env_flag,env_num)
+    cookies = get_ysx_crm_cookie(env_flag,env_num)
     header = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
         "Accept": "application/json, text/javascript, */*; q=0.01", "Accept-Encoding": "gzip, deflate, br",

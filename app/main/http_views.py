@@ -25,15 +25,15 @@ def case_http_test():
         cookies = eval(request.form["cookies"])
         url = case_host + case_url
         if project_cn == "云舒写首页":
-            cookies = get_web_home_cookie(cookies["env_flag"],cookies["env_num"]).get_dict()
+            cookies = get_wacc_home_cookie(cookies["env_flag"],cookies["env_num"]).get_dict()
         if project_cn in ["云舒写后台管理系统","上传文件"]:
-            cookies = get_admin_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
+            cookies = get_wacc_admin_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
         if project_cn == "云舒写CRM系统":
-            cookies = get_crm_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
+            cookies = get_ysx_crm_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
         if project_cn == "简章系统":
-            cookies = get_xsjz_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
+            cookies = get_wacc_tortoise_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
         if project_cn == "新商品详情系统":
-            cookies = get_wechat_login_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
+            cookies = get_wacc_bird_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
         if method=="POST":
             resp = postFunction(url,params,headers,cookies)
         elif method=="GET":

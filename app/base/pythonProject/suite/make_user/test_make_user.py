@@ -7,7 +7,7 @@ import redis
 from requests_toolbelt import MultipartEncoder
 from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
 from app.base.pythonProject.base.getConfig import ReadConfig
-from app.base.pythonProject.base.getCookies import get_crm_cookie
+from app.base.pythonProject.base.getCookies import get_ysx_crm_cookie
 logging = TestLog().getlog()
 class Ysx_Make_User(unittest.TestCase):
     """短信服务"""
@@ -67,7 +67,7 @@ class Ysx_Make_User(unittest.TestCase):
         """make_user_CRM平台备注测试用户
         """
         url = r"http://admin.crm.yunshuxie.com/test/account/management/insert/test/account"
-        cookies = get_crm_cookie(self.env_flag,self.env_num)
+        cookies = get_ysx_crm_cookie(self.env_flag,self.env_num)
         headers = {"Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate","Accept-Language": "zh-CN,zh;q=0.9","Cache-Control": "no-cache","Connection": "keep-alive","Content-Type": "application/x-www-form-urlencoded; charset=UTF-8","Pragma": "no-cache","Referer": "http://admin.crm.yunshuxie.com/test/account/management/goto/insert/test/account","User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","X-Requested-With": "XMLHttpRequest"}
         self.session.headers = headers
         self.session.cookies = cookies

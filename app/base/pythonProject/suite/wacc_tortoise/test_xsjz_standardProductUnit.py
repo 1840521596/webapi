@@ -5,7 +5,7 @@ import unittest
 import json
 from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
 from app.base.pythonProject.base.py_redis import MyRedis
-from app.base.pythonProject.base.getCookies import get_xsjz_cookie
+from app.base.pythonProject.base.getCookies import get_wacc_tortoise_cookie
 import time
 logging = TestLog().getlog()
 class StandardProductUnit_Test(unittest.TestCase):
@@ -17,7 +17,7 @@ class StandardProductUnit_Test(unittest.TestCase):
         env_num = self.redis.str_get("wacc_tortoise_env_num")
         self.timestamp = "%d"%(time.time())
         self.session = requests.Session()
-        cookies = get_xsjz_cookie(env_flag,env_num)
+        cookies = get_wacc_tortoise_cookie(env_flag,env_num)
         header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","Content-Type":"application/x-www-form-urlencoded","Accept":"application/json, text/plain, */*","Connection":"keep-alive"}
         self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
         self.session.headers = header

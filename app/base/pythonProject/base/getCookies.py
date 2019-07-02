@@ -7,7 +7,7 @@ from PIL import Image
 import json
 import urllib
 import hashlib
-def get_crm_cookie(env_flag,env_num):
+def get_ysx_crm_cookie(env_flag,env_num):
     """登录crm,并返回cookies
     :param url 请求连接
     :param header 请求头
@@ -56,9 +56,9 @@ def get_crm_cookie(env_flag,env_num):
     if result["code"] == 0:  # 判断登录是否成功
         return cookies
     else:
-        return(get_crm_cookie(env_flag,env_num))  # 递归
+        return(get_ysx_crm_cookie(env_flag,env_num))  # 递归
 
-def get_admin_cookie(env_flag,env_num):
+def get_wacc_admin_cookie(env_flag,env_num):
     """ 登录crm, 并返回cookies
     :param url 请求连接
     :param header 请求头
@@ -85,7 +85,7 @@ def get_admin_cookie(env_flag,env_num):
     else:
         raise Exception, resp.content
     return cookies
-def get_web_home_cookie(env_flag,env_num):
+def get_wacc_home_cookie(env_flag,env_num):
     """ 登录PC云舒写官网, 并返回cookies
     :param url 请求连接
     :param header 请求头
@@ -99,17 +99,17 @@ def get_web_home_cookie(env_flag,env_num):
               "Accept": "application/json, text/javascript, */*; q=0.01",
               "Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9",
               "Connection": "keep-alive","Host": "www.yunshuxie.com","Upgrade-Insecure-Requests": "1"}
-    params = {"userName": "60000008100" ,"pwd": "123456"}
+    params = {"userName": "60000007001" ,"pwd": "123456"}
     resp = requests.post(url=url, headers=header, cookies=cookies,data=params)
     dict_resp = json.loads(resp.content, encoding="utf8")
-    print dict_resp
+    #print dict_resp
     if dict_resp["returnCode"] == "0" or dict_resp["returnCode"] == 0:
         cookies.update(resp.cookies)
     else:
         raise Exception, resp.content
     return cookies
 
-def get_xsjz_cookie(env_flag,env_num):
+def get_wacc_tortoise_cookie(env_flag,env_num):
     """登录销售简章后台配置系统，并返回cookies
     :param env_flag:
     :param env_num:
@@ -130,7 +130,7 @@ def get_xsjz_cookie(env_flag,env_num):
         raise Exception, resp.content
     return cookies
 
-def get_wechat_login_cookie(env_flag,env_num):
+def get_wacc_bird_cookie(env_flag,env_num):
     """登录微信前台开始上课，并返回cookies
     :param env_flag:
     :param env_num:
@@ -161,7 +161,28 @@ def get_wechat_login_cookie(env_flag,env_num):
         raise Exception, resp.content
     return cookies
 
-if __name__ == "__main__":
-    print get_wechat_login_cookie("stage","1")
+
+def get_cookies(project,env_flag,env_num):
+    """
+    :param project: 发布项目
+    :param env_flag: 发布环境
+    :param env_num: 发布环境号
+    :return: cookies
+    """
+    if project == "ysx_crm":
+        cookie = get_ysx_crm_cookie(env_flag,env_num).get_dict()
+    elif project == "wacc_home":
+        cookie = get_wacc_home_cookie(env_flag,env_num).get_dict()
+    elif project == "wacc_admin":
+        cookie = get_wacc_admin_cookie(env_flag,env_num).get_dict()
+    elif project == "wacc_tortoise":
+        cookie = get_wacc_tortoise_cookie(env_flag,env_num).get_dict()
+    elif project == "wacc-bird":
+        cookie = get_wacc_bird_cookie(env_flag,env_num).get_dict()
+    else:
+        cookie = {"env_flag":env_flag,"env_num":env_num}
+    return cookie
+
+
 
 

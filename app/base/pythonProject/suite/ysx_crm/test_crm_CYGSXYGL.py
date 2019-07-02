@@ -7,7 +7,7 @@ import json
 # sys.path.append("../../base")
 from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
 from app.base.pythonProject.base.py_redis import MyRedis
-from app.base.pythonProject.base.getCookies import get_crm_cookie
+from app.base.pythonProject.base.getCookies import get_ysx_crm_cookie
 logging = TestLog().getlog()
 class Ysx_Crm_ChengYuGuShiXueYuanGuanLi(unittest.TestCase):
     """CRM 成语故事学员管理"""
@@ -17,7 +17,7 @@ class Ysx_Crm_ChengYuGuShiXueYuanGuanLi(unittest.TestCase):
         env_flag = redis.str_get("ysx_crm_env_flag")
         env_num = redis.str_get("ysx_crm_env_num")
         self.session = requests.Session()
-        cookies = get_crm_cookie(env_flag,env_num)
+        cookies = get_ysx_crm_cookie(env_flag,env_num)
         header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9","Connection": "keep-alive","Upgrade-Insecure-Requests": "1"}
         self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
         self.session.headers = header
