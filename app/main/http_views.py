@@ -32,7 +32,7 @@ def case_http_test():
             cookies = get_ysx_crm_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
         if project_cn == "简章系统":
             cookies = get_wacc_tortoise_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
-        if project_cn == "新商品详情系统":
+        if project_cn == "新商品详情系统" or project_cn == "新订单支付系统":
             cookies = get_wacc_bird_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
         if method=="POST":
             resp = postFunction(url,params,headers,cookies)
