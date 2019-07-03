@@ -306,7 +306,7 @@ function createCoupon(){
     var developer = $("#developer").val();
     var developer_project = $("#developer_project").val();
     var branch = $("#branch").val();
-  if ($("#RunSuiteApi").length>0){
+  if ($("#api_project").length>0){
        $.ajax({
              url: "/runSuiteApi_yunwei",
              type: "get",
@@ -328,7 +328,7 @@ function createCoupon(){
                 });
              }
       else{
-      alert("请点击 CreateCoupon 元素，并输入参数");
+      alert("请点击 RunSuiteApi 元素，并输入参数");
       }
     }
 
