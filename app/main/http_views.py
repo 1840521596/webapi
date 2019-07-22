@@ -35,7 +35,7 @@ def case_http_test():
             cookies = get_wacc_tortoise_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
         if project_cn == "新商品详情系统" or project_cn == "新订单支付系统":
             cookies = get_wacc_bird_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
-        if project_cn == "云舒写&罐罐熊(APP)":
+        if project_cn == "云舒写_罐罐熊":
             cookies = get_app_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
         if method=="POST":
             resp = postFunction(url,params,headers,cookies)
