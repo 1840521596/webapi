@@ -7,6 +7,7 @@ from PIL import Image
 import json
 import urllib
 import hashlib
+import redis
 def get_ysx_crm_cookie(env_flag,env_num):
     """登录crm,并返回cookies
     :param url 请求连接
@@ -160,7 +161,38 @@ def get_wacc_bird_cookie(env_flag,env_num):
     else:
         raise Exception, resp.content
     return cookies
-
+def get_app_cookie(env_flag,env_num):
+    """登录APP，并返回cookies
+    :param env_flag:
+    :param env_num:
+    :return:
+    """
+    if env_flag =="beta":
+        r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
+    else:
+        r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
+    redis_shell = "code_6_60000007001"
+    r.set(redis_shell,"123456")
+    url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
+    salt = "mengmengda"
+    cookies = requests.cookies.RequestsCookieJar()  # 生成cookies 容器
+    cookies.set('env_flag', env_flag)  # 设置测试环境
+    cookies.set("env_num", env_num)  # 设置环境号
+    header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded","User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
+    params = {"userName": "60000007001","smsCode": "123456", "type": "10"}
+    string = urllib.urlencode(params)
+    s = string + salt
+    md = hashlib.md5()
+    md.update(s)
+    md5 = md.hexdigest()
+    data = string + "&sign=" + md5
+    resp = requests.post(url=url, headers=header, cookies=cookies, data=data)
+    dict_resp = json.loads(resp.content, encoding="utf8")
+    if dict_resp["code"] == "0" or dict_resp["code"] == 0:
+        cookies.update(resp.cookies)
+    else:
+        raise Exception, resp.content
+    return cookies
 
 def get_cookies(project,env_flag,env_num):
     """
@@ -177,11 +209,19 @@ def get_cookies(project,env_flag,env_num):
         cookie = get_wacc_admin_cookie(env_flag,env_num).get_dict()
     elif project == "wacc_tortoise":
         cookie = get_wacc_tortoise_cookie(env_flag,env_num).get_dict()
-    elif project == "wacc-bird":
+    elif project == "wacc_bird":
         cookie = get_wacc_bird_cookie(env_flag,env_num).get_dict()
+    elif project == "wacc_mobile":
+        cookie = get_app_cookie(env_flag,env_num).get_dict()
     else:
         cookie = {"env_flag":env_flag,"env_num":env_num}
+
     return cookie
+
+if __name__ == "__main__":
+    print get_cookies("wacc_mobile","beta","1")
+
+
 
 
 
