@@ -8,6 +8,7 @@ import json
 import urllib
 import hashlib
 import redis
+from py_redis import MyRedis
 def get_ysx_crm_cookie(env_flag,env_num):
     """登录crm,并返回cookies
     :param url 请求连接
@@ -58,7 +59,6 @@ def get_ysx_crm_cookie(env_flag,env_num):
         return cookies
     else:
         return(get_ysx_crm_cookie(env_flag,env_num))  # 递归
-
 def get_wacc_admin_cookie(env_flag,env_num):
     """ 登录crm, 并返回cookies
     :param url 请求连接
@@ -92,6 +92,8 @@ def get_wacc_home_cookie(env_flag,env_num):
     :param header 请求头
     :return cookies
     """
+    r = MyRedis()
+    phone = r.str_get("wacc_home")
     url = r"https://www.yunshuxie.com/v5/web/account/login.htm"
     cookies = requests.cookies.RequestsCookieJar()  # 生成cookies 容器
     cookies.set('env_flag', env_flag)  # 设置测试环境
@@ -100,7 +102,7 @@ def get_wacc_home_cookie(env_flag,env_num):
               "Accept": "application/json, text/javascript, */*; q=0.01",
               "Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9",
               "Connection": "keep-alive","Host": "www.yunshuxie.com","Upgrade-Insecure-Requests": "1"}
-    params = {"userName": "60000007001" ,"pwd": "123456"}
+    params = {"userName": phone ,"pwd": "123456"}
     resp = requests.post(url=url, headers=header, cookies=cookies,data=params)
     dict_resp = json.loads(resp.content, encoding="utf8")
     #print dict_resp
@@ -109,19 +111,20 @@ def get_wacc_home_cookie(env_flag,env_num):
     else:
         raise Exception, resp.content
     return cookies
-
 def get_wacc_tortoise_cookie(env_flag,env_num):
     """登录销售简章后台配置系统，并返回cookies
     :param env_flag:
     :param env_num:
     :return:
     """
+    r = MyRedis()
+    username = r.str_get("wacc_tortoise")
     url = r"http://adm.yunshuxie.com/api/sys/login.htm"
     cookies = requests.cookies.RequestsCookieJar() #生成cookies 容器
     cookies.set('env_flag', env_flag)  # 设置测试环境
     cookies.set("env_num", env_num)  # 设置环境号
     header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","Content-Type":"application/x-www-form-urlencoded","Accept":"application/json, text/plain, */*","Connection":"keep-alive"}
-    params = {"userName": "guohongjie", "pwd": "0p80hg56ya"}
+    params = {"userName": username, "pwd": "0p80hg56ya"}
     resp = requests.post(url=url, headers=header, cookies=cookies, data=params)
     dict_resp = json.loads(resp.content, encoding="utf8")
     #print dict_resp
@@ -130,13 +133,14 @@ def get_wacc_tortoise_cookie(env_flag,env_num):
     else:
         raise Exception, resp.content
     return cookies
-
 def get_wacc_bird_cookie(env_flag,env_num):
     """登录微信前台开始上课，并返回cookies
     :param env_flag:
     :param env_num:
     :return:
     """
+    r = MyRedis()
+    phone = r.str_get("wacc_bird")
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
     salt = "mengmengda"
     cookies = requests.cookies.RequestsCookieJar() #生成cookies 容器
@@ -147,7 +151,7 @@ def get_wacc_bird_cookie(env_flag,env_num):
                   "Cache-Control": "no-cache",
                   "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 Safari/601.1 wechatdevtools/1.02.1904090 MicroMessenger/6.7.3 Language/zh_CN webview/15578306374265793 webdebugger port/22562"}
 
-    params = {"userName": "60000007001", "pwd": "123456", "type": "3"}
+    params = {"userName": phone, "pwd": "123456", "type": "3"}
     string = urllib.urlencode(params)
     s = string + salt
     md = hashlib.md5()
@@ -167,11 +171,13 @@ def get_app_cookie(env_flag,env_num):
     :param env_num:
     :return:
     """
+    w = MyRedis()
+    phone = w.str_get("wacc_mobile")
     if env_flag =="beta":
         r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
     else:
         r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
-    redis_shell = "code_6_60000007001"
+    redis_shell = "code_6_" + phone
     r.set(redis_shell,"123456")
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
     salt = "mengmengda"
@@ -179,7 +185,7 @@ def get_app_cookie(env_flag,env_num):
     cookies.set('env_flag', env_flag)  # 设置测试环境
     cookies.set("env_num", env_num)  # 设置环境号
     header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded","User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
-    params = {"userName": "60000007001","smsCode": "123456", "type": "10"}
+    params = {"userName": phone,"smsCode": "123456", "type": "10"}
     string = urllib.urlencode(params)
     s = string + salt
     md = hashlib.md5()
@@ -193,7 +199,6 @@ def get_app_cookie(env_flag,env_num):
     else:
         raise Exception, resp.content
     return cookies
-
 def get_cookies(project,env_flag,env_num):
     """
     :param project: 发布项目
@@ -219,7 +224,7 @@ def get_cookies(project,env_flag,env_num):
     return cookie
 
 if __name__ == "__main__":
-    print get_cookies("wacc_mobile","beta","1")
+    print get_cookies("wacc_mobile","stage","1")
 
 
 

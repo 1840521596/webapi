@@ -19,6 +19,7 @@ def case_http_test():
     case_host = request.form["case_host"]
     case_url = request.form["case_url"]
     method = request.form["method"]
+
     try:
         params = eval(request.form["params"])
         headers = eval(request.form["headers"])
