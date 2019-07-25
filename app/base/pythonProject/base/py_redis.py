@@ -13,3 +13,6 @@ class MyRedis(object):
     def str_set(self,key,value):
         res = self.r.set(key,value)
         return res
+    def del_key(self,key):
+        res = self.r.delete(key)
+        return res

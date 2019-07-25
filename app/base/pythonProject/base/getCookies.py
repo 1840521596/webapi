@@ -224,7 +224,7 @@ def get_cookies(project,env_flag,env_num):
     return cookie
 
 if __name__ == "__main__":
-    print get_cookies("wacc_mobile","stage","1")
+    print get_cookies("wacc_mobile","stage","6")
 
 
 
