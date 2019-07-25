@@ -13,8 +13,8 @@ class BearWord_Test(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.redis = MyRedis()
-        env_flag = "stage"  #self.redis.str_get("wacc_tortoise_env_flag")
-        env_num = "6"  #self.redis.str_get("wacc_tortoise_env_num")
+        env_flag = self.redis.str_get("wacc_moblie_env_flag")
+        env_num = self.redis.str_get("wacc_mobile_env_num")
         self.timestamp = "%d"%(time.time())
         self.session = requests.Session()
         cookies = {"env_flag":env_flag,"env_num":env_num}  #get_app_cookie(env_flag,env_num) #未进行登录展示接口
