@@ -83,7 +83,7 @@ class BearWord_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                      Really=result["returnCode"])
-        assert len(result["data"]) < 50, self.msg.format(Expect=u"最多50份", Really=u"大于50份")
+        assert len(result["data"]) <= 50, self.msg.format(Expect=u"最多50份", Really=u"大于50份")
     def test_03_bear_main_index(self):
         """App首页轮播图和弹窗接口<br/>http://mobile.yunshuxie.com/v1/bear/main/index.htm<br/>{"version":"1"}
         """
@@ -133,12 +133,12 @@ class BearWord_Test(unittest.TestCase):
         print self.resp.text
         result = json.loads(self.resp.text,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"code":"0"}
-        if result ["code"] == "0" or result["code"] == 0:
-            assert result["code"]==expect["code"],self.msg.format(Expect=expect["code"],Really=result["code"])
+        expect = {"returnCode":"0"}
+        if result ["returnCode"] == "0" or result["returnCode"] == 0:
+            assert result["returnCode"]==expect["returnCode"],self.msg.format(Expect=expect["returnCode"],Really=result["returnCode"])
         else:
-            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
-                                                                     Really=result["code"])
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                     Really=result["returnCode"])
     def test_06_bear_student_praise(self):
         """点赞接口<br/>http://mobile.yunshuxie.com/v1/bear/student/praise.htm<br/>{"workId":"1","deviceId":"1","isApp":"1"}
         """
@@ -152,12 +152,12 @@ class BearWord_Test(unittest.TestCase):
         print self.resp.text
         result = json.loads(self.resp.text,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"code":"0"}
-        if result ["code"] == "0" or result["code"] == 0:
-            assert result["code"]==expect["code"],self.msg.format(Expect=expect["code"],Really=result["code"])
+        expect = {"returnCode":"0"}
+        if result ["returnCode"] == "0" or result["returnCode"] == 0:
+            assert result["returnCode"]==expect["returnCode"],self.msg.format(Expect=expect["returnCode"],Really=result["returnCode"])
         else:
-            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
-                                                                     Really=result["code"])
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                     Really=result["returnCode"])
     def test_07_bear_student_cancelPraise(self):
         """取消点赞接口<br/>http://mobile.yunshuxie.com/v1/bear/student/cancelPraise.htm<br/>{"workId":"1","deviceId":"1","isApp":"1"}
         """
@@ -171,12 +171,12 @@ class BearWord_Test(unittest.TestCase):
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"code": "0"}
-        if result["code"] == "0" or result["code"] == 0:
-            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        expect = {"returnCode": "0"}
+        if result["returnCode"] == "0" or result["returnCode"] == 0:
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"], Really=result["returnCode"])
         else:
-            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
-                                                                     Really=result["code"])
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                     Really=result["returnCode"])
     def test_08_bear_student_cancelPraise(self):
         """取消点赞接口<br/>http://mobile.yunshuxie.com/v1/bear/student/cancelPraise.htm<br/>{"workId":"1","deviceId":"1","isApp":"2"}
         """
@@ -190,12 +190,12 @@ class BearWord_Test(unittest.TestCase):
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"code": "0"}
-        if result["code"] == "0" or result["code"] == 0:
-            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
+        expect = {"returnCode": "0"}
+        if result["returnCode"] == "0" or result["returnCode"] == 0:
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"], Really=result["returnCode"])
         else:
-            assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
-                                                                     Really=result["code"])
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                     Really=result["returnCode"])
     @classmethod
     def tearDownClass(self):
         pass
