@@ -9,7 +9,7 @@ from app.base.pythonProject.base.py_redis import MyRedis
 import time
 logging = TestLog().getlog()
 class BearWord_Test(unittest.TestCase):
-    """首页，不需要账号<br>1.首页，优秀作品墙，展示最新推荐的50份优秀作业。最多50份<br>2.首页，点击优秀作品墙的作品，可以打开作品详情页<br>3.首页，打开优秀作品详情页，可点击语音按钮播放老师的批改录音<br>4.首页，可给作品点赞或取消点赞<br>5.首页打开作品详情页，可分享到微信"""
+    """<br>首页，不需要账号<br>1.首页，优秀作品墙，展示最新推荐的50份优秀作业。最多50份<br>2.首页，点击优秀作品墙的作品，可以打开作品详情页<br>3.首页，打开优秀作品详情页，可点击语音按钮播放老师的批改录音<br>4.首页，可给作品点赞或取消点赞<br>5.首页打开作品详情页，可分享到微信"""
     @classmethod
     def setUpClass(self):
         self.redis = MyRedis()
@@ -25,7 +25,7 @@ class BearWord_Test(unittest.TestCase):
     def test_00__app_release_version_get_app_version_v2(self):
         """APP获取更新提示<br>https://mobile.yunshuxie.com/v2/app_release_version/get_app_version_v2.htm<br/>
         """
-        url = r"""https://mobile.yunshuxie.com"+"/v2/app_release_version/get_app_version_v2.htm"""
+        url = r"https://mobile.yunshuxie.com"+"/v2/app_release_version/get_app_version_v2.htm"
         params = {"appType":"bear_android","version":"1.0.1"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
