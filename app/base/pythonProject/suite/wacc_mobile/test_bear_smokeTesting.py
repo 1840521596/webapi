@@ -21,7 +21,7 @@ class BearWord_Test(unittest.TestCase):
         header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded","User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
         self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
         self.session.headers = header
-        self.session.cookies = cookies
+        self.session.cookies = requests.utils.cookiejar_from_dict(cookies)
     def test_00__app_release_version_get_app_version_v2(self):
         """APP获取更新提示<br>https://mobile.yunshuxie.com/v2/app_release_version/get_app_version_v2.htm<br/>
         """
