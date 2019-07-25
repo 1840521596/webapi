@@ -54,16 +54,17 @@ class BearWord_Test(unittest.TestCase):
         result = json.loads(self.resp.text,encoding="utf8")
         logging.info(url + lianjiefu + self.resp.content + fengefu)
         expect = {"returnCode":"0"}
+        if result["data"]:
+            self.redis.str_set("bearWord_workId", result["data"][0]["workId"])
+        else:
+            self.redis.del_key("bearWord_workId")
         if result ["returnCode"] == "0" or result["returnCode"] == 0:
             assert result["returnCode"]==expect["returnCode"],self.msg.format(Expect=expect["returnCode"],Really=result["returnCode"])
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                      Really=result["returnCode"])
-        assert len(result["data"])<50,self.msg.format(Expect=u"最多50份",Really=u"大于50份")
-        if result["data"]:
-            self.redis.str_set("bearWord_workId", result["data"][0]["workId"])
-        else:
-            self.redis.del_key("bearWord_workId")
+        assert len(result["data"])<=50,self.msg.format(Expect=u"最多50份",Really=u"大于50份")
+
     def test_02_bear_student_excellenceWorks(self):
         """微信，优秀作品墙，展示最新推荐的50份优秀作业。最多50份<br/>http://mobile.yunshuxie.com/v1/bear/student/excellenceWorks.htm<br/>{"deviceId":"629a5eb2a857f86dadaa043b414984f2","isApp":"2"}
         """
