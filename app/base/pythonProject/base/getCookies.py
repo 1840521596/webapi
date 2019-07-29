@@ -86,14 +86,14 @@ def get_wacc_admin_cookie(env_flag,env_num):
     else:
         raise Exception, resp.content
     return cookies
-def get_wacc_home_cookie(env_flag,env_num):
+def get_wacc_home_cookie(env_flag,env_num,phone=None):
     """ 登录PC云舒写官网, 并返回cookies
     :param url 请求连接
     :param header 请求头
     :return cookies
     """
     r = MyRedis()
-    phone = r.str_get("wacc_home")
+    phone = phone if phone else r.str_get("wacc_home")
     url = r"https://www.yunshuxie.com/v5/web/account/login.htm"
     cookies = requests.cookies.RequestsCookieJar()  # 生成cookies 容器
     cookies.set('env_flag', env_flag)  # 设置测试环境
@@ -133,14 +133,14 @@ def get_wacc_tortoise_cookie(env_flag,env_num):
     else:
         raise Exception, resp.content
     return cookies
-def get_wacc_bird_cookie(env_flag,env_num):
+def get_wacc_bird_cookie(env_flag,env_num,phone=None):
     """登录微信前台开始上课，并返回cookies
     :param env_flag:
     :param env_num:
     :return:
     """
     r = MyRedis()
-    phone = r.str_get("wacc_bird")
+    phone = phone if phone else r.str_get("wacc_bird")
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
     salt = "mengmengda"
     cookies = requests.cookies.RequestsCookieJar() #生成cookies 容器
@@ -165,14 +165,14 @@ def get_wacc_bird_cookie(env_flag,env_num):
     else:
         raise Exception, resp.content
     return cookies
-def get_app_cookie(env_flag,env_num):
+def get_app_cookie(env_flag,env_num,phone=None):
     """登录APP，并返回cookies
     :param env_flag:
     :param env_num:
     :return:
     """
     w = MyRedis()
-    phone = w.str_get("wacc_mobile")
+    phone = phone if phone else w.str_get("wacc_mobile")
     if env_flag =="beta":
         r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
     else:
@@ -199,7 +199,7 @@ def get_app_cookie(env_flag,env_num):
     else:
         raise Exception, resp.content
     return cookies
-def get_cookies(project,env_flag,env_num):
+def get_cookies(project,env_flag,env_num,phone=None):
     """
     :param project: 发布项目
     :param env_flag: 发布环境
@@ -209,22 +209,21 @@ def get_cookies(project,env_flag,env_num):
     if project == "ysx_crm":
         cookie = get_ysx_crm_cookie(env_flag,env_num).get_dict()
     elif project == "wacc_home":
-        cookie = get_wacc_home_cookie(env_flag,env_num).get_dict()
+        cookie = get_wacc_home_cookie(env_flag,env_num,phone).get_dict()
     elif project == "wacc_admin":
         cookie = get_wacc_admin_cookie(env_flag,env_num).get_dict()
     elif project == "wacc_tortoise":
         cookie = get_wacc_tortoise_cookie(env_flag,env_num).get_dict()
     elif project == "wacc_bird":
-        cookie = get_wacc_bird_cookie(env_flag,env_num).get_dict()
+        cookie = get_wacc_bird_cookie(env_flag,env_num,phone).get_dict()
     elif project == "wacc_mobile":
-        cookie = get_app_cookie(env_flag,env_num).get_dict()
+        cookie = get_app_cookie(env_flag,env_num,phone).get_dict()
     else:
         cookie = {"env_flag":env_flag,"env_num":env_num}
-
     return cookie
 
 if __name__ == "__main__":
-    print get_cookies("wacc_mobile","stage","6")
+    print get_cookies("wacc_mobile","beta","6","60000009092")
 
 
 
