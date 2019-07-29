@@ -30,7 +30,7 @@ class BearWord_Class_Test(unittest.TestCase):
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         cookies = {"env_flag":self.env_flag,"env_num":self.env_num}
         print str_params
-        self.resp = requests.post(url=url, headers=self.headers, cookies=cookies, data=params)
+        self.resp = requests.post(url=url, headers=self.header, cookies=cookies, data=params)
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.content + fengefu)
@@ -51,7 +51,7 @@ class BearWord_Class_Test(unittest.TestCase):
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
-        self.resp = self.session(url=url,data=params)
+        self.resp = self.session.post(url=url,data=params)
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.content + fengefu)
@@ -71,7 +71,7 @@ class BearWord_Class_Test(unittest.TestCase):
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
-        self.resp = self.session(url=url, data=params)
+        self.resp = self.session.post(url=url, data=params)
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.content + fengefu)

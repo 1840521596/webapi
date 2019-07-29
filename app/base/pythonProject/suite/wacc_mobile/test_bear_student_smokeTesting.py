@@ -22,7 +22,7 @@ class BearWord_Student_Test(unittest.TestCase):
         self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
         self.session.headers = header
         self.session.cookies = requests.utils.cookiejar_from_dict(cookies)
-    def test_01__app_release_version_get_app_version_v2(self):
+    def test_01_app_release_version_get_app_version_v2(self):
         """APP获取更新提示<br>https://mobile.yunshuxie.com/v2/app_release_version/get_app_version_v2.htm<br/>
         """
         url = r"https://mobile.yunshuxie.com"+"/v2/app_release_version/get_app_version_v2.htm"
@@ -148,60 +148,69 @@ class BearWord_Student_Test(unittest.TestCase):
     def test_07_bear_student_praise(self):
         """点赞接口<br/>http://mobile.yunshuxie.com/v1/bear/student/praise.htm<br/>{"workId":"1","deviceId":"1","isApp":"1"}
         """
-        bearWord_workId = self.redis.str_get("bearWord_workId")
-        url = r"http://mobile.yunshuxie.com"+"/v1/bear/student/praise.htm"
-        params = {"workId":bearWord_workId,"deviceId":"629a5eb2a857f86dadaa043b414984f2","isApp":"1"}
-        logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
-        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-        print str_params
-        self.resp = self.session.post(url=url,data=params)
-        print self.resp.text
-        result = json.loads(self.resp.text,encoding="utf8")
-        logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"returnCode":"0"}
-        if result ["returnCode"] == "0" or result["returnCode"] == 0:
-            assert result["returnCode"]==expect["returnCode"],self.msg.format(Expect=expect["returnCode"],Really=result["returnCode"])
+        bearWord_workId = self.redis.str_get("bearWord_workId") if self.redis.str_get("bearWord_workId") else None
+        if bearWord_workId:
+            url = r"http://mobile.yunshuxie.com"+"/v1/bear/student/praise.htm"
+            params = {"workId":bearWord_workId,"deviceId":"629a5eb2a857f86dadaa043b414984f2","isApp":"1"}
+            logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
+            self.resp = self.session.post(url=url,data=params)
+            print self.resp.text
+            result = json.loads(self.resp.text,encoding="utf8")
+            logging.info(url + lianjiefu + self.resp.text + fengefu)
+            expect = {"returnCode":"0"}
+            if result ["returnCode"] == "0" or result["returnCode"] == 0:
+                assert result["returnCode"]==expect["returnCode"],self.msg.format(Expect=expect["returnCode"],Really=result["returnCode"])
+            else:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                         Really=result["returnCode"])
         else:
-            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-                                                                     Really=result["returnCode"])
+            print u"未存在作品展示"
     def test_08_bear_student_cancelPraise(self):
         """取消点赞接口<br/>http://mobile.yunshuxie.com/v1/bear/student/cancelPraise.htm<br/>{"workId":"1","deviceId":"1","isApp":"1"}
         """
-        bearWord_workId = self.redis.str_get("bearWord_workId")
-        url = r"http://mobile.yunshuxie.com" + "/v1/bear/student/cancelPraise.htm"
-        params = {"workId": bearWord_workId, "deviceId": "629a5eb2a857f86dadaa043b414984f2", "isApp": "1"}
-        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-        print str_params
-        self.resp = self.session.post(url=url, data=params)
-        print self.resp.text
-        result = json.loads(self.resp.text, encoding="utf8")
-        logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"returnCode": "0"}
-        if result["returnCode"] == "0" or result["returnCode"] == 0:
-            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"], Really=result["returnCode"])
+        bearWord_workId = self.redis.str_get("bearWord_workId") if self.redis.str_get("bearWord_workId") else None
+        if bearWord_workId:
+            url = r"http://mobile.yunshuxie.com" + "/v1/bear/student/cancelPraise.htm"
+            params = {"workId": bearWord_workId, "deviceId": "629a5eb2a857f86dadaa043b414984f2", "isApp": "1"}
+            logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
+            self.resp = self.session.post(url=url, data=params)
+            print self.resp.text
+            result = json.loads(self.resp.text, encoding="utf8")
+            logging.info(url + lianjiefu + self.resp.text + fengefu)
+            expect = {"returnCode": "0"}
+            if result["returnCode"] == "0" or result["returnCode"] == 0:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"], Really=result["returnCode"])
+            else:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                         Really=result["returnCode"])
         else:
-            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-                                                                     Really=result["returnCode"])
+            print u"取消点赞接口未存在数据"
     def test_09_bear_student_cancelPraise(self):
         """取消点赞接口<br/>http://mobile.yunshuxie.com/v1/bear/student/cancelPraise.htm<br/>{"workId":"1","deviceId":"1","isApp":"2"}
         """
-        bearWord_workId = self.redis.str_get("bearWord_workId")
-        url = r"http://mobile.yunshuxie.com" + "/v1/bear/student/cancelPraise.htm"
-        params = {"workId": bearWord_workId, "deviceId": "629a5eb2a857f86dadaa043b414984f2", "isApp": "2"}
-        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-        print str_params
-        self.resp = self.session.post(url=url, data=params)
-        print self.resp.text
-        result = json.loads(self.resp.text, encoding="utf8")
-        logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"returnCode": "0"}
-        if result["returnCode"] == "0" or result["returnCode"] == 0:
-            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"], Really=result["returnCode"])
+        bearWord_workId = self.redis.str_get("bearWord_workId") if self.redis.str_get("bearWord_workId") else None
+        if bearWord_workId:
+            url = r"http://mobile.yunshuxie.com" + "/v1/bear/student/cancelPraise.htm"
+            params = {"workId": bearWord_workId, "deviceId": "629a5eb2a857f86dadaa043b414984f2", "isApp": "2"}
+            logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
+            self.resp = self.session.post(url=url, data=params)
+            print self.resp.text
+            result = json.loads(self.resp.text, encoding="utf8")
+            logging.info(url + lianjiefu + self.resp.text + fengefu)
+            expect = {"returnCode": "0"}
+            if result["returnCode"] == "0" or result["returnCode"] == 0:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"], Really=result["returnCode"])
+            else:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                         Really=result["returnCode"])
         else:
-            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-                                                                     Really=result["returnCode"])
+            print u"取消点赞接口未存在数据"
     def test_10_bear_student_myWorkList(self):
         """我的作品展示列表<br>http://mobile.yunshuxie.com/v1/bear/student/myWorkList.htm<br/>{"type":"4"全部作品,"page":"1"}"""
         url = r"http://mobile.yunshuxie.com"+r"/v1/bear/student/myWorkList.htm"
@@ -277,6 +286,7 @@ class BearWord_Student_Test(unittest.TestCase):
     def test_14_bear_student_summary(self):
         """查询总结语列表<br>http://mobile.yunshuxie.com/v1/bear/student/summary.htm<br/>"""
         url = r"http://mobile.yunshuxie.com"+r"/v1/bear/student/myWorkList.htm"
+        params = {"type":"4"}
         self.resp = self.session.post(url=url)
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
@@ -293,7 +303,6 @@ class BearWord_Student_Test(unittest.TestCase):
         url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/myWorkList.htm"
         params = {"type": "1", "page": "1"}  #查看教师已点评的课程作品
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         self.resp = self.session.post(url=url, data=params)
         result = json.loads(self.resp.text, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)

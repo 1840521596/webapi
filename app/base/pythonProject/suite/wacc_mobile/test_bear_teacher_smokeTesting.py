@@ -43,13 +43,6 @@ class BearWord_Teacher_Test(unittest.TestCase):
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.content + fengefu)
-        expect = {"returnCode": "0"}
-        if result["returnCode"] == "0" or result["returnCode"] == 0:
-            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-                                                                                 Really=result["returnCode"])
-        else:
-            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-                                                                                 Really=result["returnCode"])
         if result["rows"]:
             bearWord_Teacher_memberId = result["rows"][0]["memberId"]
             self.redis.str_set("bearWord_Teacher_memberId",bearWord_Teacher_memberId)
@@ -80,13 +73,6 @@ class BearWord_Teacher_Test(unittest.TestCase):
             print self.resp.text
             result = json.loads(self.resp.text, encoding="utf8")
             logging.info(url + lianjiefu + self.resp.content + fengefu)
-            expect = {"returnCode": "0"}
-            if result["returnCode"] == "0" or result["returnCode"] == 0:
-                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-                                                                                     Really=result["returnCode"])
-            else:
-                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-                                                                                     Really=result["returnCode"])
         else:
             print u"查询用户无数据"
             raise Exception,u"查询用户无数据"
