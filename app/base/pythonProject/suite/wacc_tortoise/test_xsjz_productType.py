@@ -280,8 +280,8 @@ class ProductType_Test(unittest.TestCase):
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         logging.info(url + lianjiefu + self.resp.text + fengefu)
-        expect = {"code": "10001"}
-        if result["code"] == "10001" or result["code"] == 10001:
+        expect = {"code": "0"}
+        if result["code"] == "0" or result["code"] == 0:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"], Really=result["code"])
         else:
             assert result["code"] == expect["code"], self.msg.format(Expect=expect["code"],
