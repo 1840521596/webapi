@@ -31,7 +31,7 @@ class StandardProductUnit_Test(unittest.TestCase):
                   "sellerPoint":"测试-sellerPoint-%s"%(self.timestamp),
                   "shareInfo":"测试-shareInfo-%s"%(self.timestamp),"coupon":0,
                   "introduceImgs":"测试使用-introduceImgs-%s" % (self.timestamp),
-                  "pcImgs":"测试","introduce":"测试%s"%(self.timestamp)}
+                  "pcImgs":"测试","introduce":"测试%s"%(self.timestamp),"auditionIds":"1234","telPhone":"60000007001"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -54,7 +54,7 @@ class StandardProductUnit_Test(unittest.TestCase):
                   "imgUrls": "https://oss-ysx-pic.yunshuxie.com/agent_c/2019/03/12/19/1552388927736.jpg",
                   "sellerPoint": "", "shareInfo": "",
                   "coupon": 0, "introduceImgs": "测试使用-introduceImgs-%s" % (self.timestamp),
-                  "pcImgs": "", "introduce": "测试使用-introduceImgs-%s" % (self.timestamp)}
+                  "pcImgs": "", "introduce": "测试使用-introduceImgs-%s" % (self.timestamp),"auditionIds":"1234","telPhone":"60000007001"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -77,7 +77,7 @@ class StandardProductUnit_Test(unittest.TestCase):
                   "sellerPoint":"测试-sellerPoint-%s"%(self.timestamp),
                   "shareInfo":"测试-shareInfo-%s"%(self.timestamp),"coupon":0,
                   "introduceImgs":"测试使用-introduceImgs-%s"%(self.timestamp),
-                  "pcImgs":"测试-pcImgs-%s"%(self.timestamp),"introduce":"测试-introduce-%s"%(self.timestamp)}
+                  "pcImgs":"测试-pcImgs-%s"%(self.timestamp),"introduce":"测试-introduce-%s"%(self.timestamp),"auditionIds":"1234","telPhone":"60000007001"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
