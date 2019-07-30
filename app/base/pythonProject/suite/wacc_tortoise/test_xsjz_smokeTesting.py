@@ -191,7 +191,7 @@ class Smoke_Testing(unittest.TestCase):
                   "shareInfo":"冒烟自动化测试-shareInfo-%s"%self.timestamp,"coupon":1,
                   "introduceImgs":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/04/24/21/1556113834007.jpg",
                   "pcImgs":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/04/24/21/1556113834007.jpg",
-                  "introduce":"冒烟自动化测试-introduce-%s"%self.timestamp}
+                  "introduce":"冒烟自动化测试-introduce-%s"%self.timestamp,"telPhone":"60000007001"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False,encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params

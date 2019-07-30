@@ -138,7 +138,7 @@ class StandardProductUnit_Test(unittest.TestCase):
                   "sellerPoint":"测试-sellerPoint-%s"%self.timestamp,"shareInfo":"测试-shareInfo-%s"%self.timestamp,"coupon":1,
                   "introduceImgs":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/04/24/21/1556113834007.jpg",
                   "pcImgs":"https://oss-ysx-pic.yunshuxie.com/agent_c/2019/04/24/21/1556113834007.jpg",
-                  "introduce":"测试使用-introduce-%s"%self.timestamp}
+                  "introduce":"测试使用-introduce-%s"%self.timestamp,"telPhone":"60000007001"}
         logging.info(url + lianjiefu + json.dumps(params,ensure_ascii=False,encoding="utf8") + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params

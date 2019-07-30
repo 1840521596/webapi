@@ -254,7 +254,7 @@ class ProductType_Test(unittest.TestCase):
                           "sellerPoint": "类目测试-sellerPoint-%s" % (self.timestamp),
                           "shareInfo": "类目测试-shareInfo-%s" % (self.timestamp), "coupon": 0,
                           "introduceImgs": "类目测试使用-introduceImgs-%s" % (self.timestamp),
-                          "pcImgs": "类目测试", "introduce": "类目测试%s" % (self.timestamp)}
+                          "pcImgs": "类目测试", "introduce": "类目测试%s" % (self.timestamp),"telPhone":"60000007001"}
             logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False,encoding="utf8") + fengefu)
             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
             print str_params
