@@ -219,7 +219,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         url = r"https://mobile.yunshuxie.com/v1/bear/teacher/upload_voice.htm"
         cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
         files = {
-            'file': open('test.amr', 'rb'),
+            'file': open('/home/work/ysx-webapi/app/base/pythonProject/suite/wacc_mobile/mp3.amr', 'rb'),
         }
         self.session.cookies = cookies
         self.resp = self.session.post(url=url, files=files)

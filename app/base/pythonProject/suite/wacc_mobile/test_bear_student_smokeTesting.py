@@ -57,8 +57,8 @@ class BearWord_Student_Test(unittest.TestCase):
                     if result["returnCode"] == "0" or result["returnCode"] == 0:
                         print u"phone:%s添加课程期次%s成功"%(self.phone,productCoursehourseId)
                     else:
-                        print u"phone:%s添加课程期次%s失败"%(self.phone,productCoursehourseId)
-                        raise Exception,u"phone:%s添加课程期次%s失败"%(self.phone,productCoursehourseId)
+                        print u"phone:%s添加课程期次%s失败,msg=%s"%(self.phone,productCoursehourseId,self.resp.text)
+                        #raise Exception,u"phone:%s添加课程期次%s失败"%(self.phone,productCoursehourseId)
             else:
                 print u"不存在课程期次"
                 raise Exception,u"不存在课程期次"
