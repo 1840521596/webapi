@@ -17,7 +17,7 @@ class BearWord_Student_Test(unittest.TestCase):
         self.env_num = self.redis.str_get("wacc_mobile_env_num")
         self.timestamp = "%d"%(time.time())
         self.session = requests.Session()
-        cookies = get_app_cookie(self.env_flag,self.env_num) #未进行登录展示接口
+        cookies = {"env_flag":self.env_flag,"env_num":self.env_num}#get_app_cookie(self.env_flag,self.env_num) #未进行登录展示接口
         self.header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded","User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
         self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
         self.session.headers = self.header
@@ -26,7 +26,7 @@ class BearWord_Student_Test(unittest.TestCase):
     def test_admin_v1_elementary_joinCategoryProduct(self):
         """罐罐熊练字课-用户授权课程<br>https://admin.yunshuxie.com/v1/elementary/joinCategoryProduct.json"""
         cookies = get_wacc_admin_cookie(self.env_flag,self.env_num)
-        headers = {"Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9","Cache-Control": "no-cache","Connection": "keep-alive","Content-Length": "73","Content-Type": "application/x-www-form-urlencoded; charset=UTF-8","Origin": "https://admin.yunshuxie.com","Pragma": "no-cache","Referer": "https://admin.yunshuxie.com/","User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","X-Requested-With": "XMLHttpRequest"}
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
         url = r"https://admin.yunshuxie.com"+r"/v1/admin/edit_book/query/AllVipmember_list.json"  #查询授权手机号
         params = {"memberId":"","memberPhone":self.phone,"sort":"memberId","order":"desc","limit":"10","offset":"0"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
@@ -47,7 +47,7 @@ class BearWord_Student_Test(unittest.TestCase):
             logging.info(url + lianjiefu + self.resp.content + fengefu)
             url = r"https://admin.yunshuxie.com"+r"/v1/elementary/joinCategoryProduct.json"
             if result["rows"]:
-                for datas in len(result["row"]):
+                for datas in result["rows"]:
                     productCoursehourseId = datas["productCoursehourseId"]
                     params = {"memberId":memberId,"productCoursehourseId":productCoursehourseId,
                               "orderId":"","accreditReason":"测试","phone":self.phone,"categoryId":"102","orderSn":""}
@@ -56,6 +56,9 @@ class BearWord_Student_Test(unittest.TestCase):
                     result = json.loads(self.resp.text, encoding="utf8")
                     if result["returnCode"] == "0" or result["returnCode"] == 0:
                         print u"phone:%s添加课程期次%s成功"%(self.phone,productCoursehourseId)
+                    else:
+                        print u"phone:%s用户添加课程期次%s失败%s"%(self.phone,productCoursehourseId)
+                        raise Exception,u"phone:%s用户添加课程期次%s失败%s"%(self.phone,productCoursehourseId)
             else:
                 print u"不存在课程期次"
                 raise Exception,u"不存在课程期次"
