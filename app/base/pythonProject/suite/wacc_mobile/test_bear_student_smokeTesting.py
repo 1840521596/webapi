@@ -23,48 +23,6 @@ class BearWord_Student_Test(unittest.TestCase):
         self.session.headers = self.header
         self.session.cookies = requests.utils.cookiejar_from_dict(cookies)
         self.phone = self.redis.str_get("make_user_phones")
-    def test_00_admin_v1_elementary_joinCategoryProduct(self):
-        """罐罐熊练字课-用户授权课程<br>https://admin.yunshuxie.com/v1/elementary/joinCategoryProduct.json"""
-        cookies = get_wacc_admin_cookie(self.env_flag,self.env_num)
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
-        url = r"https://admin.yunshuxie.com"+r"/v1/admin/edit_book/query/AllVipmember_list.json"  #查询授权手机号
-        params = {"sort": "memberId", "memberId": "", "memberPhone": self.phone, "limit": "10", "offset": "0", "order": "desc"}
-        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-        print str_params
-        self.resp = requests.get(url=url,headers=headers,cookies=cookies,params=params)
-        result = json.loads(self.resp.text, encoding="utf8")
-        logging.info(url + lianjiefu + self.resp.content + fengefu)
-        if result["rows"]:
-            memberId = result["rows"][0]["memberId"]
-            url = r"https://admin.yunshuxie.com"+r"/v1/elementary/query/category_elementary_course_list.json"
-            params = {"memberId":"","categoryId":"102","sort":"productId","order":"desc","limit":"10","offset":"0"}
-            logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-            print str_params
-            self.resp = requests.get(url=url, headers=headers, cookies=cookies, params=params)
-            result = json.loads(self.resp.text, encoding="utf8")
-            logging.info(url + lianjiefu + self.resp.content + fengefu)
-            url = r"https://admin.yunshuxie.com"+r"/v1/elementary/joinCategoryProduct.json"
-            if result["rows"]:
-                for datas in result["rows"]:
-                    productCoursehourseId = datas["productCoursehourseId"]
-                    params = {"memberId":memberId,"productCoursehourseId":productCoursehourseId,
-                              "orderId":"","accreditReason":"测试","phone":self.phone,"categoryId":"102","orderSn":""}
-                    self.resp = requests.post(url=url, headers=headers, cookies=cookies, params=params)
-                    logging.info(url + lianjiefu + self.resp.content + fengefu)
-                    result = json.loads(self.resp.text, encoding="utf8")
-                    if result["returnCode"] == "0" or result["returnCode"] == 0:
-                        print u"phone:%s添加课程期次%s成功"%(self.phone,productCoursehourseId)
-                    else:
-                        print u"phone:%s用户添加课程期次%s失败%s"%(self.phone,productCoursehourseId)
-                        raise Exception,u"phone:%s用户添加课程期次%s失败%s"%(self.phone,productCoursehourseId)
-            else:
-                print u"不存在课程期次"
-                raise Exception,u"不存在课程期次"
-        else:
-            print u"用户不存在"
-            raise Exception,u"用户不存在"
     def test_01_app_release_version_get_app_version_v2(self):
         """用户未登录-APP获取更新提示<br>https://mobile.yunshuxie.com/v2/app_release_version/get_app_version_v2.htm<br/>
         """
@@ -254,7 +212,52 @@ class BearWord_Student_Test(unittest.TestCase):
                                                                          Really=result["returnCode"])
         else:
             print u"取消点赞接口未存在数据"
-    def test_10_bear_student_myWorkList(self):
+    def test_11_admin_v1_elementary_joinCategoryProduct(self):
+        """罐罐熊练字课-用户授权课程<br>https://admin.yunshuxie.com/v1/elementary/joinCategoryProduct.json"""
+        cookies = get_wacc_admin_cookie(self.env_flag,self.env_num)
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
+        url = r"https://admin.yunshuxie.com"+r"/v1/admin/edit_book/query/AllVipmember_list.json"  #查询授权手机号
+        self.phone = self.redis.str_get("make_new_users")
+        params = {"sort": "memberId", "memberId": "", "memberPhone": self.phone, "limit": "10", "offset": "0", "order": "desc"}
+        logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        self.resp = requests.get(url=url,params=params,headers=headers,cookies=cookies)
+        result = json.loads(self.resp.text, encoding="utf8")
+        logging.info(url + lianjiefu + self.resp.content + fengefu)
+        if result["rows"]:
+            memberId = result["rows"][0]["memberId"]
+            url = r"https://admin.yunshuxie.com"+r"/v1/elementary/query/category_elementary_course_list.json"
+            params = {"memberId":"","categoryId":"102","sort":"productId","order":"desc","limit":"10","offset":"0"}
+            logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
+            self.resp = requests.get(url=url, headers=headers, cookies=cookies, params=params)
+            result = json.loads(self.resp.text, encoding="utf8")
+            logging.info(url + lianjiefu + self.resp.content + fengefu)
+            url = r"https://admin.yunshuxie.com"+r"/v1/elementary/joinCategoryProduct.json"
+            if result["rows"]:
+                for datas in result["rows"]:
+                    productCoursehourseId = datas["productCoursehourseId"]
+                    params = {"memberId":memberId,"productCoursehourseId":productCoursehourseId,
+                              "orderId":"","accreditReason":"测试","phone":self.phone,"categoryId":"102","orderSn":""}
+                    self.resp = requests.post(url=url, headers=headers, cookies=cookies, params=params)
+                    logging.info(url + lianjiefu + self.resp.content + fengefu)
+                    result = json.loads(self.resp.text, encoding="utf8")
+                    if result["returnCode"] == "0" or result["returnCode"] == 0:
+                        print u"phone:%s添加课程期次%s成功"%(self.phone,productCoursehourseId)
+                    else:
+                        print u"phone:%s用户添加课程期次%s失败%s"%(self.phone,productCoursehourseId)
+                        raise Exception,u"phone:%s用户添加课程期次%s失败%s"%(self.phone,productCoursehourseId)
+            else:
+                print u"不存在课程期次"
+                raise Exception,u"不存在课程期次"
+        else:
+            print u"用户不存在"
+            raise Exception,u"用户不存在"
+
+
+    def test_12_bear_student_myWorkList(self):
         """用户登录-我的作品展示列表<br>http://mobile.yunshuxie.com/v1/bear/student/myWorkList.htm<br/>{"type":"4"全部作品,"page":"1"}"""
         url = r"http://mobile.yunshuxie.com"+r"/v1/bear/student/myWorkList.htm"
         params = {"type":"4","page":"1"}
@@ -273,7 +276,7 @@ class BearWord_Student_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
-    def test_11_bear_student_myWorkList(self):
+    def test_13_bear_student_myWorkList(self):
         """用户登录-我的作品展示列表<br>http://mobile.yunshuxie.com/v1/bear/student/myWorkList.htm<br/>{"type":"3"优秀作品,"page":"1"}"""
         url = r"http://mobile.yunshuxie.com"+r"/v1/bear/student/myWorkList.htm"
         params = {"type":"3","page":"1"}
@@ -292,7 +295,7 @@ class BearWord_Student_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
-    def test_12_bear_student_myWorkList(self):
+    def test_14_bear_student_myWorkList(self):
         """用户登录-我的作品展示列表<br>http://mobile.yunshuxie.com/v1/bear/student/myWorkList.htm<br/>{"type":"2"未点评,"page":"1"}"""
         url = r"http://mobile.yunshuxie.com"+r"/v1/bear/student/myWorkList.htm"
         params = {"type":"2","page":"1"}
@@ -311,7 +314,7 @@ class BearWord_Student_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
-    def test_13_bear_student_myWorkList(self):
+    def test_15_bear_student_myWorkList(self):
         """用户登录-我的作品展示列表<br>http://mobile.yunshuxie.com/v1/bear/student/myWorkList.htm<br/>{"type":"1"已点评,"page":"1"}"""
         url = r"http://mobile.yunshuxie.com"+r"/v1/bear/student/myWorkList.htm"
         params = {"type":"1","page":"1"}
@@ -330,7 +333,7 @@ class BearWord_Student_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
-    def test_14_bear_student_summary(self):
+    def test_16_bear_student_summary(self):
         """用户登录-查询总结语列表<br>http://mobile.yunshuxie.com/v1/bear/student/summary.htm<br/>"""
         url = r"http://mobile.yunshuxie.com"+r"/v1/bear/student/myWorkList.htm"
         cookies = get_app_cookie(self.env_flag,self.env_num,phone=self.phone)
@@ -346,7 +349,7 @@ class BearWord_Student_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
-    def test_15_bear_student_commentTeacher(self):
+    def test_17_bear_student_commentTeacher(self):
         """用户登录-评价老师接口<br>http://mobile.yunshuxie.com/v1/bear/student/commentTeacher.htm<br/>"""
         url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/myWorkList.htm"
         params = {"type": "1", "page": "1"}  #查看教师已点评的课程作品
