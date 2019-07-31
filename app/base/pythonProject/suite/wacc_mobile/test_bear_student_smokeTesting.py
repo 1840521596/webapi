@@ -23,7 +23,7 @@ class BearWord_Student_Test(unittest.TestCase):
         self.session.headers = self.header
         self.session.cookies = requests.utils.cookiejar_from_dict(cookies)
         self.phone = self.redis.str_get("make_user_phones")
-    def test_admin_v1_elementary_joinCategoryProduct(self):
+    def test_00_admin_v1_elementary_joinCategoryProduct(self):
         """罐罐熊练字课-用户授权课程<br>https://admin.yunshuxie.com/v1/elementary/joinCategoryProduct.json"""
         cookies = get_wacc_admin_cookie(self.env_flag,self.env_num)
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
