@@ -28,7 +28,7 @@ class BearWord_Student_Test(unittest.TestCase):
         cookies = get_wacc_admin_cookie(self.env_flag,self.env_num)
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
         url = r"https://admin.yunshuxie.com"+r"/v1/admin/edit_book/query/AllVipmember_list.json"  #查询授权手机号
-        params = {"memberId":"","memberPhone":self.phone,"sort":"memberId","order":"desc","limit":"10","offset":"0"}
+        params = {"sort": "memberId", "memberId": "", "memberPhone": self.phone, "limit": "10", "offset": "0", "order": "desc"}
         logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
