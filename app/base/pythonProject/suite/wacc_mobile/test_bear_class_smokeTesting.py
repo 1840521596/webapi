@@ -13,7 +13,7 @@ class BearWord_Class_Test(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.redis = MyRedis()
-        self.env_flag = self.redis.str_get("wacc_moblie_env_flag")
+        self.env_flag = self.redis.str_get("wacc_mobile_env_flag")
         self.env_num = self.redis.str_get("wacc_mobile_env_num")
         self.timestamp = "%d"%(time.time())
         self.session = requests.Session()
