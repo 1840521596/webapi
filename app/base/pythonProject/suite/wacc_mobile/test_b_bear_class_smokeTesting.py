@@ -146,98 +146,89 @@ class BearWord_Class_Test(unittest.TestCase):
             raise Exception,u"当前页面不存在章节数据"
     def test_06_bear_student_uploadWork(self):
         """ 上传作品<br>https://mobile.yunshuxie.com/v1/bear/student/uploadWork.htm<br/>{img,content,productChapterId,isApp}"""
-        if self.env_flag != "beta":
-            print u"当前运行环境非beta,跳过上传作品接口"
-        else:
-            productChapterId = self.redis.str_get("bearWord_productChapterId") if self.redis.str_get("bearWord_productChapterId") else None
-            if productChapterId:
-                url = r"http://mobile.yunshuxie.com" + "/v1/bear/student/uploadWork.htm"
-                params = {"img":"https://ysx-sts-upload.oss-cn-beijing.aliyuncs.com/pic/ios/avatar/2019/07/26/14/44/15/f0611a93e0034d5ab5ebc0c86dc4046c/D373EF8C-8F81-47F2-83FC-8B072F536EEB.png",
-                          "content":"测试,权限归测试组所有",
-                          "productChapterId":productChapterId,"isApp":"2"}
-                #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-                str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-                print str_params
-                self.resp = self.session.post(url=url, data=params)
-                print self.resp.text
-                result = json.loads(self.resp.text, encoding="utf8")
-                #logging.info(url + lianjiefu + self.resp.text + fengefu)
-                expect = {"returnCode": "0"}
-                if result["returnCode"] == "0" or result["returnCode"] == 0:
-                    assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-                                                                                         Really=result["returnCode"])
-                else:
-                    assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-                                                                                         Really=result["returnCode"])
-                if result["data"]["workId"]:
-                    workId = self.redis.str_set("bearWord_workId", result["data"]["workId"])
-                else:
-                    self.redis.del_key("bearWord_workId")
-
+        productChapterId = self.redis.str_get("bearWord_productChapterId") if self.redis.str_get("bearWord_productChapterId") else None
+        if productChapterId:
+            url = r"http://mobile.yunshuxie.com" + "/v1/bear/student/uploadWork.htm"
+            params = {"img":"https://ysx-sts-upload.oss-cn-beijing.aliyuncs.com/pic/ios/avatar/2019/07/26/14/44/15/f0611a93e0034d5ab5ebc0c86dc4046c/D373EF8C-8F81-47F2-83FC-8B072F536EEB.png",
+                      "content":"测试,权限归测试组所有",
+                      "productChapterId":productChapterId,"isApp":"2"}
+            #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
+            self.resp = self.session.post(url=url, data=params)
+            print self.resp.text
+            result = json.loads(self.resp.text, encoding="utf8")
+            #logging.info(url + lianjiefu + self.resp.text + fengefu)
+            expect = {"returnCode": "0"}
+            if result["returnCode"] == "0" or result["returnCode"] == 0:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                 Really=result["returnCode"])
             else:
-                print u"当前页面不存在章节数据"
-                raise Exception, u"当前页面不存在章节数据"
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                 Really=result["returnCode"])
+            if result["data"]["workId"]:
+                workId = self.redis.str_set("bearWord_workId", result["data"]["workId"])
+            else:
+                self.redis.del_key("bearWord_workId")
+        else:
+            print u"当前页面不存在章节数据"
+            raise Exception, u"当前页面不存在章节数据"
     def test_07_bear_student_clock(self):
         """ 打卡接口<br>https://mobile.yunshuxie.com/v1/bear/student/clock.htm<br/>{img,content,productChapterId,isApp}"""
-        if self.env_flag != "beta":
-            print u"当前运行环境非beta,跳过打卡接口"
-        else:
-            productCourseId = self.redis.str_get("bearWord_productCourseId") if self.redis.str_get("bearWord_productCourseId") else None
-            productChapterId = self.redis.str_get("bearWord_productChapterId") if self.redis.str_get("bearWord_productChapterId") else None
-            if productCourseId and productChapterId:
-                url = r"http://mobile.yunshuxie.com" + "/v1/bear/student/clock.htm"
-                params = {"productCourseId":productCourseId,"productChapterId":productChapterId,"isApp":"2"}
-                #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-                str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-                print str_params
-                self.resp = self.session.post(url=url, data=params)
-                print self.resp.text
-                result = json.loads(self.resp.text, encoding="utf8")
-                #logging.info(url + lianjiefu + self.resp.text + fengefu)
-                expect = {"returnCode": "0"}
-                if result["returnCode"] == "0" or result["returnCode"] == 0:
-                    assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-                                                                                         Really=result["returnCode"])
-                else:
-                    assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+
+        productCourseId = self.redis.str_get("bearWord_productCourseId") if self.redis.str_get("bearWord_productCourseId") else None
+        productChapterId = self.redis.str_get("bearWord_productChapterId") if self.redis.str_get("bearWord_productChapterId") else None
+        if productCourseId and productChapterId:
+            url = r"http://mobile.yunshuxie.com" + "/v1/bear/student/clock.htm"
+            params = {"productCourseId":productCourseId,"productChapterId":productChapterId,"isApp":"2"}
+            #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
+            self.resp = self.session.post(url=url, data=params)
+            print self.resp.text
+            result = json.loads(self.resp.text, encoding="utf8")
+            #logging.info(url + lianjiefu + self.resp.text + fengefu)
+            expect = {"returnCode": "0"}
+            if result["returnCode"] == "0" or result["returnCode"] == 0:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                          Really=result["returnCode"])
             else:
-                print u"当前页面不存在章节数据"
-                raise Exception, u"当前页面不存在章节数据"
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                         Really=result["returnCode"])
+        else:
+            print u"当前页面不存在章节数据"
+            raise Exception, u"当前页面不存在章节数据"
     def test_08_bear_student_uploadWork(self):
         """重新上传作品<br>https://mobile.yunshuxie.com/v1/bear/student/uploadWork.htm<br/>{img,content,productChapterId,isApp}"""
         time.sleep(5)
-        if self.env_flag != "beta":
-            print u"当前运行环境非beta,跳过上传作品接口"
-        else:
-            productChapterId = self.redis.str_get("bearWord_productChapterId") if self.redis.str_get("bearWord_productChapterId") else None
-            if productChapterId:
-                url = r"http://mobile.yunshuxie.com" + "/v1/bear/student/uploadWork.htm"
-                params = {
+        productChapterId = self.redis.str_get("bearWord_productChapterId") if self.redis.str_get("bearWord_productChapterId") else None
+        if productChapterId:
+            url = r"http://mobile.yunshuxie.com" + "/v1/bear/student/uploadWork.htm"
+            params = {
                     "img": "https://ysx-sts-upload.oss-cn-beijing.aliyuncs.com/pic/ios/avatar/2019/07/26/14/44/15/f0611a93e0034d5ab5ebc0c86dc4046c/D373EF8C-8F81-47F2-83FC-8B072F536EEB.png",
                     "content": "测试,权限归测试组所有",
                     "productChapterId": productChapterId, "isApp": "2"}
-                #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-                str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-                print str_params
-                self.resp = self.session.post(url=url, data=params)
-                print self.resp.text
-                result = json.loads(self.resp.text, encoding="utf8")
-                #logging.info(url + lianjiefu + self.resp.text + fengefu)
-                expect = {"returnCode": "13008"}
-                if result["returnCode"] == "13008" or result["returnCode"] == 13008:
-                    assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+            #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
+            self.resp = self.session.post(url=url, data=params)
+            print self.resp.text
+            result = json.loads(self.resp.text, encoding="utf8")
+            #logging.info(url + lianjiefu + self.resp.text + fengefu)
+            expect = {"returnCode": "13008"}
+            if result["returnCode"] == "13008" or result["returnCode"] == 13008:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                          Really=result["returnCode"])
-                else:
-                    assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-                                                                                         Really=result["returnCode"])
-                if result["data"]["workId"]:
-                    workId = self.redis.str_set("bearWord_workId",result["data"]["workId"])
-                else:
-                    self.redis.del_key("bearWord_workId")
             else:
-                print u"当前页面不存在章节数据"
-                raise Exception, u"当前页面不存在章节数据"
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                         Really=result["returnCode"])
+            if result["data"]["workId"]:
+                workId = self.redis.str_set("bearWord_workId",result["data"]["workId"])
+            else:
+                self.redis.del_key("bearWord_workId")
+        else:
+            print u"当前页面不存在章节数据"
+            raise Exception, u"当前页面不存在章节数据"
     @classmethod
     def tearDownClass(self):
         pass
