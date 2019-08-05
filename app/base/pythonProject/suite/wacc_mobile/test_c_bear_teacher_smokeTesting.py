@@ -168,34 +168,34 @@ class BearWord_Teacher_Test(unittest.TestCase):
         self.resp = requests.get(url=url,params=params,headers=header,cookies=cookies)
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
-        # if result["rows"]:
-        #     timeLineId = self.redis.str_set("bearWord")
-    def test_07_admin_bear_course_batch_job_assgin(self):
-        """admin平台-分配指定服务老师<br>https://admin.yunshuxie.com/v1/bear_course/batch_job_assgin.htm"""
-        workId = self.redis.str_get("bearWord_workId") if self.redis.str_get("bearWord_workId") else None
-        url = r"https://admin.yunshuxie.com"+r"/v1/bear_course/batch_job_assgin.htm"
-        params ={"timelineIds": workId,"teacherPhone": self.phone,"assginJobStatus": "0"}
-        # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-        print str_params
-        cookies = get_wacc_admin_cookie(self.env_flag, self.env_num)
-        header = {"Accept": "application/json, text/javascript, */*; q=0.01",
-                  "Accept-Encoding": "gzip, deflate, br",
-                  "Accept-Language": "zh-CN,zh;q=0.9",
-                  "Cache-Control": "no-cache", "Connection": "keep-alive",
-                  "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-                  "Origin": "https://admin.yunshuxie.com",
-                  "Pragma": "no-cache", "Referer": "https://admin.yunshuxie.com/",
-                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
-                  "X-Requested-With": "XMLHttpRequest"}
-        self.resp = requests.post(url=url,data=params,headers=header,cookies=cookies)
-        print self.resp.text
-        result = json.loads(self.resp.text, encoding="utf8")
+        if result["rows"]:
+            admin_workId = self.redis.str_set("admin_bearWord_workId", result["rows"][0]["timeLineId"])
+    # def test_07_admin_bear_course_batch_job_assgin(self):
+    #     """admin平台-分配指定服务老师<br>https://admin.yunshuxie.com/v1/bear_course/batch_job_assgin.htm"""
+    #     workId = self.redis.str_get("bearWord_workId") if self.redis.str_get("bearWord_workId") else None
+    #     url = r"https://admin.yunshuxie.com"+r"/v1/bear_course/batch_job_assgin.htm"
+    #     params ={"timelineIds": workId,"teacherPhone": self.phone,"assginJobStatus": "0"}
+    #     # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+    #     str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+    #     print str_params
+    #     cookies = get_wacc_admin_cookie(self.env_flag, self.env_num)
+    #     header = {"Accept": "application/json, text/javascript, */*; q=0.01",
+    #               "Accept-Encoding": "gzip, deflate, br",
+    #               "Accept-Language": "zh-CN,zh;q=0.9",
+    #               "Cache-Control": "no-cache", "Connection": "keep-alive",
+    #               "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    #               "Origin": "https://admin.yunshuxie.com",
+    #               "Pragma": "no-cache", "Referer": "https://admin.yunshuxie.com/",
+    #               "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
+    #               "X-Requested-With": "XMLHttpRequest"}
+    #     self.resp = requests.post(url=url,data=params,headers=header,cookies=cookies)
+    #     print self.resp.text
+    #     result = json.loads(self.resp.text, encoding="utf8")
     def test_08_admin_bear_course_batch_job_assgin(self):
         """admin平台-重新分配指定服务老师<br>https://admin.yunshuxie.com/v1/bear_course/batch_job_assgin.htm"""
-        bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
+        workId = self.redis.str_get("admin_bearWord_workId") if self.redis.str_get("admin_bearWord_workId") else None
         url = r"https://admin.yunshuxie.com"+r"/v1/bear_course/batch_job_assgin.htm"
-        params ={"timelineIds": bearWord_timelineId,"teacherPhone": self.phone,"assginJobStatus": "3"}
+        params ={"timelineIds": workId,"teacherPhone": self.phone,"assginJobStatus": "3"}
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -309,104 +309,104 @@ class BearWord_Teacher_Test(unittest.TestCase):
         else:
             print u"当前教师未存在待批改作业"
             raise Exception, u"当前教师未存在待批改作业"
-    # def test_13_v1_bear_teacher_upload_voice(self):
-    #     """上传批改语音接口<br>https://mobile.yunshuxie.com/v1/bear/teacher/upload_voice.htm<br>files=binary"""
-    #     url = r"https://mobile.yunshuxie.com/v1/bear/teacher/upload_voice.htm"
-    #     cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
-    #     header = {"Connection": "keep-alive",  # "Content-Type": "multipart/form-data",
-    #               "User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
-    #     files = {
-    #         'file': ("mp3.amr",open(r'/home/work/ysx-webapi/app/base/pythonProject/suite/wacc_mobile/mp3.amr', 'rb'),"multipart/form-data"),
-    #     }
-    #     str_params = """{'file': ("mp3.amr",open(r'mp3.amr', 'rb'),"multipart/form-data")}"""
-    #     # logging.info(url + lianjiefu + str_params + fengefu)
-    #     print str_params
-    #     self.resp = requests.post(url=url,headers=header,files=files,cookies=cookies.get_dict())
-    #     print self.resp.text
-    #     result = json.loads(self.resp.text, encoding="utf8")
-    #     #logging.info(url + lianjiefu + self.resp.content + fengefu)
-    #     expect = {"returnCode": "0"}
-    #     if result["returnCode"] == "0" or result["returnCode"] == 0:
-    #         assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-    #                                                                              Really=result["returnCode"])
-    #     else:
-    #         assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-    #                                                                              Really=result["returnCode"])
-    #     if result["data"]["mp3"] != "":
-    #         bearWord_mp3_link = self.redis.str_set("bearWord_mp3_link",result["data"]["mp3"])
-    # def test_14_v1_bear_teacher_save_correction_records(self):
-    #     """老师端：批改作业保存<br>https://mobile.yunshuxie.com/v1/bear/teacher/save_correction_records.htm<br>{"timeLineId":"","commentVoice":"","excellence":"","commentContent":""}"""
-    #     bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
-    #     commentVoice = self.redis.str_get("bearWord_mp3_link") if self.redis.str_get("bearWord_mp3_link") else None
-    #     bearWord_submitUpdateDate = self.redis.str_get("bearWord_submitUpdateDate") if self.redis.str_get("bearWord_submitUpdateDate") else ""
-    #     if bearWord_timelineId and commentVoice:
-    #         url = r"https://mobile.yunshuxie.com" + r"/v1/bear/teacher/check_timeLineSatus.htm"
-    #         header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded",
-    #                   "User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
-    #         cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
-    #         params = {"timeLineId":bearWord_timelineId,"excellence":"0","commentVoice":commentVoice,"commentContent":"测试批改保存","submitUpdateDate":bearWord_submitUpdateDate}
-    #         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-    #         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-    #         print str_params
-    #         self.resp = requests.post(url=url,data=params,cookies=cookies,headers=header)
-    #         print self.resp.text
-    #         result = json.loads(self.resp.text, encoding="utf8")
-    #         #logging.info(url + lianjiefu + self.resp.content + fengefu)
-    #         expect = {"returnCode": "0"}
-    #         if result["returnCode"] == "0" or result["returnCode"] == 0:
-    #             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-    #                                                                                      Really=result["returnCode"])
-    #         else:
-    #             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-    #                                                                                      Really=result["returnCode"])
-    #     else:
-    #         print u"当前教师未存在待批改作业"
-    #         raise Exception, u"当前教师未存在待批改作业"
-    # def test_15_v1_bear_teacher_corrected_record_list(self):
-    #     """老师端：批改记录<br>https://mobile.yunshuxie.com/v1/bear/teacher/corrected_record_list.htm<br>{"page":"1","pageSize":"10","jobType":"0"}"""
-    #     url = r"https://mobile.yunshuxie.com"+r"/v1/bear/teacher/corrected_record_list.htm"
-    #     params = {"page":"1","pageSize":"10","jobType":"0"}
-    #     # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-    #     str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-    #     print str_params
-    #     cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
-    #     self.session.cookies = cookies
-    #     self.resp = self.session.post(url=url,data=params)
-    #     print self.resp.text
-    #     result = json.loads(self.resp.text, encoding="utf8")
-    #     #logging.info(url + lianjiefu + self.resp.content + fengefu)
-    #     expect = {"returnCode": "0"}
-    #     if result["returnCode"] == "0" or result["returnCode"] == 0:
-    #         assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-    #                                                                              Really=result["returnCode"])
-    #     else:
-    #         assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-    #                                                                              Really=result["returnCode"])
-    # def test_16_v1_bear_teacher_recommend_job(self):
-    #     """老师端：推荐/取消推荐优秀作业-推荐<br>https://mobile.yunshuxie.com/v1/bear/teacher/recommend_job.htm.htm<br>{"timeLineId":"","excellence":"1"}"""
-    #     bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
-    #     if bearWord_timelineId:
-    #         url = r"https://mobile.yunshuxie.com"+r"/v1/bear/teacher/recommend_job.htm"
-    #         params = {"timeLineId":bearWord_timelineId,"excellence":"1"}
-    #         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-    #         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-    #         print str_params
-    #         cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
-    #         self.session.cookies = cookies
-    #         self.resp = self.session.post(url=url,data=params)
-    #         print self.resp.text
-    #         result = json.loads(self.resp.text, encoding="utf8")
-    #         #logging.info(url + lianjiefu + self.resp.content + fengefu)
-    #         expect = {"returnCode": "0"}
-    #         if result["returnCode"] == "0" or result["returnCode"] == 0:
-    #             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-    #                                                                                  Really=result["returnCode"])
-    #         else:
-    #             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-    #                                                                                  Really=result["returnCode"])
-    #     else:
-    #         print u"当前教师未存在待批改作业"
-    #         raise Exception,u"当前教师未存在待批改作业"
+    def test_13_v1_bear_teacher_upload_voice(self):
+        """上传批改语音接口<br>https://mobile.yunshuxie.com/v1/bear/teacher/upload_voice.htm<br>files=binary"""
+        url = r"https://mobile.yunshuxie.com/v1/bear/teacher/upload_voice.htm"
+        cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+        header = {"Connection": "keep-alive",  # "Content-Type": "multipart/form-data",
+                  "User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
+        files = {
+            'file': ("mp3.amr",open(r'/home/work/ysx-webapi/app/base/pythonProject/suite/wacc_mobile/mp3.amr', 'rb'),"multipart/form-data"),
+        }
+        str_params = """{'file': ("mp3.amr",open(r'mp3.amr', 'rb'),"multipart/form-data")}"""
+        # logging.info(url + lianjiefu + str_params + fengefu)
+        print str_params
+        self.resp = requests.post(url=url,headers=header,files=files,cookies=cookies.get_dict())
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        #logging.info(url + lianjiefu + self.resp.content + fengefu)
+        expect = {"returnCode": "0"}
+        if result["returnCode"] == "0" or result["returnCode"] == 0:
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                 Really=result["returnCode"])
+        else:
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                 Really=result["returnCode"])
+        if result["data"]["mp3"] != "":
+            bearWord_mp3_link = self.redis.str_set("bearWord_mp3_link",result["data"]["mp3"])
+    def test_14_v1_bear_teacher_save_correction_records(self):
+        """老师端：批改作业保存<br>https://mobile.yunshuxie.com/v1/bear/teacher/save_correction_records.htm<br>{"timeLineId":"","commentVoice":"","excellence":"","commentContent":""}"""
+        bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
+        commentVoice = self.redis.str_get("bearWord_mp3_link") if self.redis.str_get("bearWord_mp3_link") else None
+        bearWord_submitUpdateDate = self.redis.str_get("bearWord_submitUpdateDate") if self.redis.str_get("bearWord_submitUpdateDate") else ""
+        if bearWord_timelineId and commentVoice:
+            url = r"https://mobile.yunshuxie.com" + r"/v1/bear/teacher/check_timeLineSatus.htm"
+            header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded",
+                      "User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
+            cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+            params = {"timeLineId":bearWord_timelineId,"excellence":"0","commentVoice":commentVoice,"commentContent":"测试批改保存","submitUpdateDate":bearWord_submitUpdateDate}
+            # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
+            self.resp = requests.post(url=url,data=params,cookies=cookies,headers=header)
+            print self.resp.text
+            result = json.loads(self.resp.text, encoding="utf8")
+            #logging.info(url + lianjiefu + self.resp.content + fengefu)
+            expect = {"returnCode": "0"}
+            if result["returnCode"] == "0" or result["returnCode"] == 0:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                         Really=result["returnCode"])
+            else:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                         Really=result["returnCode"])
+        else:
+            print u"当前教师未存在待批改作业"
+            raise Exception, u"当前教师未存在待批改作业"
+    def test_15_v1_bear_teacher_corrected_record_list(self):
+        """老师端：批改记录<br>https://mobile.yunshuxie.com/v1/bear/teacher/corrected_record_list.htm<br>{"page":"1","pageSize":"10","jobType":"0"}"""
+        url = r"https://mobile.yunshuxie.com"+r"/v1/bear/teacher/corrected_record_list.htm"
+        params = {"page":"1","pageSize":"10","jobType":"0"}
+        # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+        print str_params
+        cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+        self.session.cookies = cookies
+        self.resp = self.session.post(url=url,data=params)
+        print self.resp.text
+        result = json.loads(self.resp.text, encoding="utf8")
+        #logging.info(url + lianjiefu + self.resp.content + fengefu)
+        expect = {"returnCode": "0"}
+        if result["returnCode"] == "0" or result["returnCode"] == 0:
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                 Really=result["returnCode"])
+        else:
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                 Really=result["returnCode"])
+    def test_16_v1_bear_teacher_recommend_job(self):
+        """老师端：推荐/取消推荐优秀作业-推荐<br>https://mobile.yunshuxie.com/v1/bear/teacher/recommend_job.htm.htm<br>{"timeLineId":"","excellence":"1"}"""
+        bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
+        if bearWord_timelineId:
+            url = r"https://mobile.yunshuxie.com"+r"/v1/bear/teacher/recommend_job.htm"
+            params = {"timeLineId":bearWord_timelineId,"excellence":"1"}
+            # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
+            cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+            self.session.cookies = cookies
+            self.resp = self.session.post(url=url,data=params)
+            print self.resp.text
+            result = json.loads(self.resp.text, encoding="utf8")
+            #logging.info(url + lianjiefu + self.resp.content + fengefu)
+            expect = {"returnCode": "0"}
+            if result["returnCode"] == "0" or result["returnCode"] == 0:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                     Really=result["returnCode"])
+            else:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                     Really=result["returnCode"])
+        else:
+            print u"当前教师未存在待批改作业"
+            raise Exception,u"当前教师未存在待批改作业"
 
     @classmethod
     def tearDownClass(self):
