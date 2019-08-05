@@ -339,13 +339,14 @@ class BearWord_Teacher_Test(unittest.TestCase):
         bearWord_submitUpdateDate = self.redis.str_get("bearWord_submitUpdateDate") if self.redis.str_get("bearWord_submitUpdateDate") else ""
         if bearWord_timelineId and commentVoice:
             url = r"https://mobile.yunshuxie.com" + r"/v1/bear/teacher/check_timeLineSatus.htm"
+            header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded",
+                      "User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
             cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
             params = {"timeLineId":bearWord_timelineId,"excellence":"0","commentVoice":commentVoice,"commentContent":"测试批改保存","submitUpdateDate":bearWord_submitUpdateDate}
             # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
             print str_params
-            self.session.cookies = cookies
-            self.resp = self.session.post(url=url,data=params)
+            self.resp = requests.post(url=url,data=params,cookies=cookies,headers=header)
             print self.resp.text
             result = json.loads(self.resp.text, encoding="utf8")
             #logging.info(url + lianjiefu + self.resp.content + fengefu)
