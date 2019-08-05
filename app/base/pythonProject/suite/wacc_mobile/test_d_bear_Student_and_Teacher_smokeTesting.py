@@ -125,7 +125,37 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
-    def test_06_bear_student_commentTeacher(self):
+    def test_06_v1_bear_teacher_save_correction_records(self):
+        """老师端：批改作业保存<br>https://mobile.yunshuxie.com/v1/bear/teacher/save_correction_records.htm<br>{"timeLineId":"","commentVoice":"","excellence":"","commentContent":""}"""
+        bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get(
+            "bearWord_timelineId") else None
+        commentVoice = self.redis.str_get("bearWord_mp3_link") if self.redis.str_get("bearWord_mp3_link") else None
+        bearWord_submitUpdateDate = self.redis.str_get("bearWord_submitUpdateDate") if self.redis.str_get(
+            "bearWord_submitUpdateDate") else ""
+        if bearWord_timelineId and commentVoice:
+            url = r"https://mobile.yunshuxie.com" + r"/v1/bear/teacher/check_timeLineSatus.htm"
+            cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+            params = {"timeLineId": bearWord_timelineId, "excellence": "0", "commentVoice": commentVoice,
+                      "commentContent": "测试批改保存", "submitUpdateDate": bearWord_submitUpdateDate}
+            # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+            print str_params
+            self.session.cookies = cookies
+            self.resp = self.session.post(url=url, data=params)
+            print self.resp.text
+            result = json.loads(self.resp.text, encoding="utf8")
+            # logging.info(url + lianjiefu + self.resp.content + fengefu)
+            expect = {"returnCode": "0"}
+            if result["returnCode"] == "0" or result["returnCode"] == 0:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                     Really=result["returnCode"])
+            else:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                     Really=result["returnCode"])
+        else:
+            print u"当前教师未存在待批改作业"
+            raise Exception, u"当前教师未存在待批改作业"
+    def test_07_bear_student_commentTeacher(self):
         """用户登录-评价老师接口<br>http://mobile.yunshuxie.com/v1/bear/student/commentTeacher.htm<br/>"""
         url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/myWorkList.htm"
         params = {"type": "1", "page": "1"}  # 查看教师已点评的课程作品
@@ -172,6 +202,8 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
         else:
             print u"未存在教师已点评的课程作品数据"
             raise Exception, u"未存在教师已点评的课程作品数据"
+
+
     # def test_07_v1_bear_teacher_recommend_job(self):
     #     """老师端：推荐/取消推荐优秀作业-取消推荐<br>https://mobile.yunshuxie.com/v1/bear/teacher/recommend_job.htm.htm<br>{"timeLineId":"","excellence":"0"}"""
     #     bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
