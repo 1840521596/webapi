@@ -1,0 +1,43 @@
+[1mdiff --git a/app/base/pythonProject/base/getCookies.py b/app/base/pythonProject/base/getCookies.py[m
+[1mindex 9ed7834..1e68b07 100644[m
+[1m--- a/app/base/pythonProject/base/getCookies.py[m
+[1m+++ b/app/base/pythonProject/base/getCookies.py[m
+[36m@@ -223,7 +223,7 @@[m [mdef get_cookies(project,env_flag,env_num,phone=None):[m
+     return cookie[m
+ [m
+ if __name__ == "__main__":[m
+[31m-    print get_cookies("wacc_mobile","beta","6","60000009092")[m
+[32m+[m[32m    print get_cookies("wacc_mobile","stage","8","60000007122")[m
+ [m
+ [m
+ [m
+[1mdiff --git a/app/base/pythonProject/config/config.ini b/app/base/pythonProject/config/config.ini[m
+[1mindex be413a3..993927b 100644[m
+[1m--- a/app/base/pythonProject/config/config.ini[m
+[1m+++ b/app/base/pythonProject/config/config.ini[m
+[36m@@ -1,6 +1,6 @@[m
+ [ENV][m
+ env_flag = beta[m
+[31m-env_num = 1[m
+[32m+[m[32menv_num = 8[m
+ prod_stage = 172.17.1.44:6379[m
+ beta = 172.17.1.81:6389[m
+ [m
+[1mdiff --git a/app/base/pythonProject/suite/wacc_mobile/test_a_bear_student_smokeTesting.py b/app/base/pythonProject/suite/wacc_mobile/test_a_bear_student_smokeTesting.py[m
+[1mindex 7189a16..8dfed9f 100644[m
+[1m--- a/app/base/pythonProject/suite/wacc_mobile/test_a_bear_student_smokeTesting.py[m
+[1m+++ b/app/base/pythonProject/suite/wacc_mobile/test_a_bear_student_smokeTesting.py[m
+[36m@@ -57,8 +57,12 @@[m [mclass BearWord_Student_Test(unittest.TestCase):[m
+             url = r"https://admin.yunshuxie.com"+r"/v1/elementary/joinCategoryProduct.json"[m
+             if result["rows"]:[m
+                 for datas in result["rows"]:[m
+[32m+[m[32m                    if self.env_flag == "beta":  #自定义选择课程[m
+[32m+[m[32m                        product = 9018[m
+[32m+[m[32m                    else:[m
+[32m+[m[32m                        product = 8400[m
+                     productCoursehourseId = datas["productCoursehourseId"][m
+[31m-                    if productCoursehourseId == 9018:  #仅授权体验课[m
+[32m+[m[32m                    if productCoursehourseId == product:  #仅授权体验课[m
+                         params = {"memberId":memberId,"productCoursehourseId":productCoursehourseId,[m
+                               "orderId":"","accreditReason":"测试","phone":self.phone,"categoryId":"102","orderSn":"","grade": "1"}[m
+                         self.resp = requests.post(url=url, headers=headers, cookies=cookies, params=params)[m

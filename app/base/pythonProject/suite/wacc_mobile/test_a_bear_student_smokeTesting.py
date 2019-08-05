@@ -34,6 +34,10 @@ class BearWord_Student_Test(unittest.TestCase):
         self.phone = self.redis.str_get("make_user_phones")
     def test_00_admin_v1_elementary_joinCategoryProduct(self):
         """罐罐熊练字课-用户授权课程<br>https://admin.yunshuxie.com/v1/elementary/joinCategoryProduct.json"""
+        if self.env_flag == "beta":  # 自定义课程选择
+            product = 9018
+        else:
+            product = 8400
         cookies = get_wacc_admin_cookie(self.env_flag,self.env_num)
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
         url = r"https://admin.yunshuxie.com"+r"/v1/admin/edit_book/query/AllVipmember_list.json"  #查询授权手机号
@@ -58,7 +62,7 @@ class BearWord_Student_Test(unittest.TestCase):
             if result["rows"]:
                 for datas in result["rows"]:
                     productCoursehourseId = datas["productCoursehourseId"]
-                    if productCoursehourseId == 9018:  #仅授权体验课
+                    if productCoursehourseId == product:  #仅授权体验课
                         params = {"memberId":memberId,"productCoursehourseId":productCoursehourseId,
                               "orderId":"","accreditReason":"测试","phone":self.phone,"categoryId":"102","orderSn":"","grade": "1"}
                         self.resp = requests.post(url=url, headers=headers, cookies=cookies, params=params)
