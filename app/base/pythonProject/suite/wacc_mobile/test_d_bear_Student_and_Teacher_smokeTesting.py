@@ -146,22 +146,13 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
         self.resp = requests.get(url=url, params=params, headers=header, cookies=cookies)
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
-        admin_workId = self.redis.str_set("admin_bearWord_workId", result["rows"][0]["timeLineId"])
+        admin_workId = result["rows"][0]["timeLineId"]
         url = r"https://admin.yunshuxie.com"+r"/v1/bear_course/batch_job_assgin.htm"
         params ={"timelineIds": admin_workId,"teacherPhone": self.phone,"assginJobStatus": "0"}
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
         cookies = get_wacc_admin_cookie(self.env_flag, self.env_num)
-        header = {"Accept": "application/json, text/javascript, */*; q=0.01",
-                  "Accept-Encoding": "gzip, deflate, br",
-                  "Accept-Language": "zh-CN,zh;q=0.9",
-                  "Cache-Control": "no-cache", "Connection": "keep-alive",
-                  "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-                  "Origin": "https://admin.yunshuxie.com",
-                  "Pragma": "no-cache", "Referer": "https://admin.yunshuxie.com/",
-                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
-                  "X-Requested-With": "XMLHttpRequest"}
         self.resp = requests.post(url=url,data=params,headers=header,cookies=cookies)
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
