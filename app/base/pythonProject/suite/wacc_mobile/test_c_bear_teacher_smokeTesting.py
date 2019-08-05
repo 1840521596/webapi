@@ -168,27 +168,27 @@ class BearWord_Teacher_Test(unittest.TestCase):
         self.resp = requests.get(url=url,params=params,headers=header,cookies=cookies)
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
-    def test_07_admin_bear_course_batch_job_assgin(self):
-        """admin平台-分配指定服务老师<br>https://admin.yunshuxie.com/v1/bear_course/batch_job_assgin.htm"""
-        workId = self.redis.str_get("bearWord_workId") if self.redis.str_get("bearWord_workId") else None
-        url = r"https://admin.yunshuxie.com"+r"/v1/bear_course/batch_job_assgin.htm"
-        params ={"timelineIds": workId,"teacherPhone": self.phone,"assginJobStatus": "0"}
-        # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-        str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-        print str_params
-        cookies = get_wacc_admin_cookie(self.env_flag, self.env_num)
-        header = {"Accept": "application/json, text/javascript, */*; q=0.01",
-                  "Accept-Encoding": "gzip, deflate, br",
-                  "Accept-Language": "zh-CN,zh;q=0.9",
-                  "Cache-Control": "no-cache", "Connection": "keep-alive",
-                  "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-                  "Origin": "https://admin.yunshuxie.com",
-                  "Pragma": "no-cache", "Referer": "https://admin.yunshuxie.com/",
-                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
-                  "X-Requested-With": "XMLHttpRequest"}
-        self.resp = requests.post(url=url,data=params,headers=header,cookies=cookies)
-        print self.resp.text
-        result = json.loads(self.resp.text, encoding="utf8")
+    # def test_07_admin_bear_course_batch_job_assgin(self):
+    #     """admin平台-分配指定服务老师<br>https://admin.yunshuxie.com/v1/bear_course/batch_job_assgin.htm"""
+    #     workId = self.redis.str_get("bearWord_workId") if self.redis.str_get("bearWord_workId") else None
+    #     url = r"https://admin.yunshuxie.com"+r"/v1/bear_course/batch_job_assgin.htm"
+    #     params ={"timelineIds": workId,"teacherPhone": self.phone,"assginJobStatus": "0"}
+    #     # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+    #     str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+    #     print str_params
+    #     cookies = get_wacc_admin_cookie(self.env_flag, self.env_num)
+    #     header = {"Accept": "application/json, text/javascript, */*; q=0.01",
+    #               "Accept-Encoding": "gzip, deflate, br",
+    #               "Accept-Language": "zh-CN,zh;q=0.9",
+    #               "Cache-Control": "no-cache", "Connection": "keep-alive",
+    #               "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    #               "Origin": "https://admin.yunshuxie.com",
+    #               "Pragma": "no-cache", "Referer": "https://admin.yunshuxie.com/",
+    #               "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
+    #               "X-Requested-With": "XMLHttpRequest"}
+    #     self.resp = requests.post(url=url,data=params,headers=header,cookies=cookies)
+    #     print self.resp.text
+    #     result = json.loads(self.resp.text, encoding="utf8")
     def test_08_admin_bear_course_batch_job_assgin(self):
         """admin平台-重新分配指定服务老师<br>https://admin.yunshuxie.com/v1/bear_course/batch_job_assgin.htm"""
         workId = self.redis.str_get("bearWord_workId") if self.redis.str_get("bearWord_workId") else None
