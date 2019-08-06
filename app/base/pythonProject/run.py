@@ -18,7 +18,8 @@ def get_allcase(project):
     case_path = os.path.join(TEST_FOLDER +"/suite/",project)
     dis = unittest.TestLoader()
     discover = dis.discover(case_path, pattern="test*.py")
-    print discover
+    print type(discover)
+    print discover._tests
     suite = unittest.TestSuite()
     suite.addTest(discover)
     return suite
