@@ -10,9 +10,12 @@ class MyRedis(object):
     def str_get(self,key):
         res = self.r.get(key)
         return res
-    def str_set(self,key,value):
-        res = self.r.set(key,value)
+    def str_set(self,key,value,ex=60):
+        res = self.r.set(key,value,ex=ex)
         return res
     def del_key(self,key):
         res = self.r.delete(key)
         return res
+if __name__ == "__main__":
+    s = MyRedis()
+    s.str_set("wc","1234")
