@@ -81,7 +81,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
                       "Pragma": "no-cache", "Referer": "https://admin.yunshuxie.com/",
                       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
                       "X-Requested-With": "XMLHttpRequest"}
-            params = {"memberId":bearWord_Teacher_memberId,"teacherType": "2"} #teacherType==2,测试老师
+            params = {"memberId":bearWord_Teacher_memberId,"teacherType": "1"} #teacherType==2,测试老师
             #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
             print str_params
