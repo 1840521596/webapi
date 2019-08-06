@@ -336,6 +336,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
             bearWord_mp3_link = self.redis.str_set("bearWord_mp3_link",result["data"]["mp3"],ex=60)
     def test_14_v1_bear_teacher_save_correction_records(self):
         """老师端：批改作业保存<br>https://mobile.yunshuxie.com/v1/bear/teacher/save_correction_records.htm<br>{"timeLineId":"","commentVoice":"","excellence":"","commentContent":""}"""
+        time.sleep(10)
         bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
         commentVoice = self.redis.str_get("bearWord_mp3_link") if self.redis.str_get("bearWord_mp3_link") else None
         bearWord_submitUpdateDate = self.redis.str_get("bearWord_submitUpdateDate") if self.redis.str_get("bearWord_submitUpdateDate") else ""
@@ -344,7 +345,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
             header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded",
                       "User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
             cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
-            params = {"timeLineId":bearWord_timelineId,"excellence":"0","commentVoice":commentVoice,"commentContent":"测试批改保存","submitUpdateDate":bearWord_submitUpdateDate}
+            params = {"timeLineId":bearWord_timelineId,"excellence":"0","commentVoice":commentVoice,"commentContent":"测试作业批改","submitUpdateDate":bearWord_submitUpdateDate}
             # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
             print str_params
