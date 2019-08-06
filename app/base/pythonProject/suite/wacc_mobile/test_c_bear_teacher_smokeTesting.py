@@ -61,7 +61,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         #logging.info(url + lianjiefu + self.resp.content + fengefu)
         if result["rows"]:
             bearWord_Teacher_memberId = result["rows"][0]["memberId"]
-            self.redis.str_set("bearWord_Teacher_memberId",bearWord_Teacher_memberId)
+            self.redis.str_set("bearWord_Teacher_memberId",bearWord_Teacher_memberId,ex=60)
         else:
             print u"查询用户无数据"
             raise Exception,u"查询用户无数据"
@@ -169,7 +169,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         if result["rows"]:
-            admin_workId = self.redis.str_set("admin_bearWord_workId", result["rows"][0]["timeLineId"])
+            admin_workId = self.redis.str_set("admin_bearWord_workId", result["rows"][0]["timeLineId"],ex=60)
     def test_07_admin_bear_course_batch_job_assgin(self):
         """admin平台-分配指定服务老师<br>https://admin.yunshuxie.com/v1/bear_course/batch_job_assgin.htm"""
         workId = self.redis.str_get("bearWord_workId") if self.redis.str_get("bearWord_workId") else None
@@ -316,7 +316,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         header = {"Connection": "keep-alive",  # "Content-Type": "multipart/form-data",
                   "User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
         files = {
-            'file': ("mp3.amr",open(r'/home/work/ysx-webapi/app/base/pythonProject/suite/wacc_mobile/mp3.amr', 'rb'),"multipart/form-data"),
+            'file': ("mp3.amr",open(r'./app/base/pythonProject/suite/wacc_mobile/mp3.amr', 'rb'),"multipart/form-data"),
         }
         str_params = """{'file': ("mp3.amr",open(r'mp3.amr', 'rb'),"multipart/form-data")}"""
         # logging.info(url + lianjiefu + str_params + fengefu)
@@ -333,7 +333,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
         if result["data"]["mp3"] != "":
-            bearWord_mp3_link = self.redis.str_set("bearWord_mp3_link",result["data"]["mp3"])
+            bearWord_mp3_link = self.redis.str_set("bearWord_mp3_link",result["data"]["mp3"],ex=60)
     def test_14_v1_bear_teacher_save_correction_records(self):
         """老师端：批改作业保存<br>https://mobile.yunshuxie.com/v1/bear/teacher/save_correction_records.htm<br>{"timeLineId":"","commentVoice":"","excellence":"","commentContent":""}"""
         bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None

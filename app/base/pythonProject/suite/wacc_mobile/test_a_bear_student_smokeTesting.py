@@ -9,8 +9,9 @@ from app.base.pythonProject.base.getCookies import get_app_cookie,get_wacc_admin
 import time
 #logging = TestLog().getlog()
 class BearWord_Student_Test(unittest.TestCase):
-    """<br>首页，不需要账号<br>0.新建用户授权课程其次<br>
-    1.获取版本更新提示,进入首页<br>2.APP展示最新推荐的并最多50份优秀作业<br>
+    """<br>首页，不需要账号<br>
+    0.新建用户授权课程其次<br>
+    1.获取版本更新提示,进入首页,展示最新推荐的并最多50份优秀作业<br>
     2.APP-展示最新推荐的并最多50份优秀作业<br>
     3.微信-展示最新推荐的并最多50份优秀作业<br>
     4.用户未登录-首页轮播图和弹窗接口<br>
