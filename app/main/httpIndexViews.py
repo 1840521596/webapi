@@ -40,6 +40,12 @@ def http_insert():
     params = request.form["params"]
     headers = request.form["headers"]
     cookies = request.form["cookies"]
+    scheduling = request.form["scheduling"]
+    assertValue = request.form["assert"]
+    if scheduling == "True":
+        scheduling = 1
+    else:
+        scheduling = 0
     try:
         datas = Case_Http_API(project=project,
                               case_api=case_api,
@@ -47,7 +53,7 @@ def http_insert():
                               case_host=case_host,
                               case_url=case_url,
                               method=method,
-                 params=params,response=response,headers=headers,cookies=cookies)
+                 params=params,response=response,headers=headers,cookies=cookies,scheduling=scheduling,assertValue=assertValue)
         db.session.add(datas)
         db.session.commit()
         msg = {"datas":"%s 更新成功!"%(case_api),"code":200}
@@ -121,10 +127,16 @@ def update():
     response = request.form['response']
     headers = request.form['headers']
     cookies = request.form['cookies']
+    scheduling = request.form["scheduling"]
+    assertValue = request.form["assert"]
+    if scheduling == "True":
+        scheduling = 1
+    else:
+        scheduling = 0
     try:
         Case_Http_API.query.filter_by(id=pid).update(dict(
             project=project,case_api=case_api,description=description,case_host=case_host,
-            case_url=case_url,headers=headers,cookies=cookies,
+            case_url=case_url,headers=headers,cookies=cookies,scheduling=scheduling,assertValue=assertValue,
             method=method,params=params,response=response))
         db.session.commit()
         resp = {'datas': '更新成功', 'code': '200'}

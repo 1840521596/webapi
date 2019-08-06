@@ -33,8 +33,10 @@ class Case_Http_API(db.Model):
     response = db.Column(db.Text)#预期结果
     status = db.Column(db.Boolean,default=0)
     api_type = db.Column(db.String(5),default='http')
-    def __init__(self,project,case_api,params,case_host,headers,cookies,
-                 description,case_url,method,response,api_type='http',status=0):
+    scheduling = db.Column(db.Boolean,default=0)
+    assertValue = db.Column(db.Text)
+    def __init__(self,project,case_api,params,case_host,headers,cookies,assertValue,
+                 description,case_url,method,response,api_type='http',status=0,scheduling=0):
         self.project = project
         self.case_api = case_api
         self.description = description
@@ -47,6 +49,8 @@ class Case_Http_API(db.Model):
         self.case_host = case_host
         self.headers = headers
         self.cookies = cookies
+        self.assertValue = assertValue
+        self.scheduling = scheduling
 
     def __repr__(self):
         """返回打印数据"""

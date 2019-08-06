@@ -282,6 +282,8 @@ jQuery(document).ready(function ($) {
                 case_url: $("#case_url").val(),
                 method: $("#method").find("option:selected").val(),
                 except_result: $("#except_result").val(),
+                scheduling: $("#Scheduling").find("option:selected").val(),
+                assert: $("#assert").val(),
             });
         });
        // alert($("#targetId").val());
@@ -304,7 +306,9 @@ jQuery(document).ready(function ($) {
                     response: _case[0].except_result,
                     params: $("#get_params").val(),
                     headers: $("#get_headers").val(),
-                    cookies: $("#get_cookies").val()
+                    cookies: $("#get_cookies").val(),
+                    scheduling: $("#Scheduling").find("option:selected").val(),
+                    assert: $("#assert").val(),
                 }}).done(function (result){
                     if (result.status == "200"){
                         alert(result.datas);
@@ -329,7 +333,9 @@ jQuery(document).ready(function ($) {
                     response: _case[0].except_result,
                     params: $("#post_params").val(),
                     headers: $("#post_headers").val(),
-                    cookies: $("#post_cookies").val()
+                    cookies: $("#post_cookies").val(),
+                    scheduling: $("#Scheduling").find("option:selected").val(),
+                    assert: $("#assert").val(),
                 }
             }).done(function(result){
                     if (result.status == "200"){
@@ -357,7 +363,9 @@ jQuery(document).ready(function ($) {
                     response: _case[0].except_result,
                     params: $("#get_params").val(),
                     headers: $("#get_headers").val(),
-                    cookies: $("#get_cookies").val()}
+                    cookies: $("#get_cookies").val(),
+                    scheduling: $("#Scheduling").find("option:selected").val(),
+                assert: $("#assert").val(),}
             }).done(function(result){
                     if (result.status == "200"){
                         alert(result.datas);
@@ -382,7 +390,9 @@ jQuery(document).ready(function ($) {
                     response: _case[0].except_result,
                     params: $("#post_params").val(),
                     headers: $("#post_headers").val(),
-                    cookies: $("#post_cookies").val()
+                    cookies: $("#post_cookies").val(),
+                    scheduling: $("#Scheduling").find("option:selected").val(),
+                assert: $("#assert").val(),
                 }
             }).done(function(result){
                     if (result.status == "200"){
@@ -440,7 +450,7 @@ $("#btn4").click(function () {
                 method: method,
                 params: api_data,
                 headers: api_headers,
-                cookies: api_cookies
+                cookies: api_cookies,
             }
         }).done(function (result) {
             if (result.code == "200")
@@ -669,4 +679,14 @@ function saveValues(id,saveId){
   alert('数据保存成功');
   $(".theme-cookies").remove();
   //$(".theme-cookies").css('display','none');
-}
+};
+$("#Scheduling").change(function(){
+ var scheduling=$("#Scheduling").find("option:selected").val();
+ //alert(scheduling);
+ if (scheduling=="True"){
+ $("#assert").attr('disabled',false);
+ }
+ else{
+ $("#assert").attr('disabled',true);
+ };
+});
