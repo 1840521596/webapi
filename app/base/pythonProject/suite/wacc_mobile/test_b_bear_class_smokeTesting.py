@@ -29,7 +29,7 @@ class BearWord_Class_Test(unittest.TestCase):
         self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
         self.session.headers = self.header
         self.phone_Exist_Course = self.redis.str_get("make_user_phones")#"60000009092"  #存在课程
-        cookies = get_app_cookie(self.env_flag,self.env_num) #进行登录展示接口_新用户
+        cookies = get_app_cookie(self.env_flag,self.env_num,self.phone_Exist_Course) #进行登录展示接口_新用户
         self.session.cookies = cookies
     def test_01_bear_student_courseList(self):
         """课程列表接口-未登录<br>https://mobile.yunshuxie.com/v1/bear/student/courseList.htm<br/>{"page":"1","isApp":"2"}
