@@ -81,7 +81,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
                       "Pragma": "no-cache", "Referer": "https://admin.yunshuxie.com/",
                       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
                       "X-Requested-With": "XMLHttpRequest"}
-            params = {"memberId":bearWord_Teacher_memberId,"teacherType": "1"}
+            params = {"memberId":bearWord_Teacher_memberId,"teacherType": "2"} #teacherType==2,测试老师
             #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
             print str_params
@@ -382,31 +382,31 @@ class BearWord_Teacher_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
-    def test_16_v1_bear_teacher_recommend_job(self):
-        """老师端：推荐/取消推荐优秀作业-推荐<br>https://mobile.yunshuxie.com/v1/bear/teacher/recommend_job.htm.htm<br>{"timeLineId":"","excellence":"1"}"""
-        bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
-        if bearWord_timelineId:
-            url = r"https://mobile.yunshuxie.com"+r"/v1/bear/teacher/recommend_job.htm"
-            params = {"timeLineId":bearWord_timelineId,"excellence":"1"}
-            # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-            str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-            print str_params
-            cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
-            self.session.cookies = cookies
-            self.resp = self.session.post(url=url,data=params)
-            print self.resp.text
-            result = json.loads(self.resp.text, encoding="utf8")
-            #logging.info(url + lianjiefu + self.resp.content + fengefu)
-            expect = {"returnCode": "0"}
-            if result["returnCode"] == "0" or result["returnCode"] == 0:
-                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-                                                                                     Really=result["returnCode"])
-            else:
-                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-                                                                                     Really=result["returnCode"])
-        else:
-            print u"当前教师未存在待批改作业"
-            raise Exception,u"当前教师未存在待批改作业"
+    # def test_16_v1_bear_teacher_recommend_job(self):
+    #     """老师端：推荐/取消推荐优秀作业-推荐<br>https://mobile.yunshuxie.com/v1/bear/teacher/recommend_job.htm.htm<br>{"timeLineId":"","excellence":"1"}"""
+    #     bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
+    #     if bearWord_timelineId:
+    #         url = r"https://mobile.yunshuxie.com"+r"/v1/bear/teacher/recommend_job.htm"
+    #         params = {"timeLineId":bearWord_timelineId,"excellence":"1"}
+    #         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+    #         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+    #         print str_params
+    #         cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+    #         self.session.cookies = cookies
+    #         self.resp = self.session.post(url=url,data=params)
+    #         print self.resp.text
+    #         result = json.loads(self.resp.text, encoding="utf8")
+    #         #logging.info(url + lianjiefu + self.resp.content + fengefu)
+    #         expect = {"returnCode": "0"}
+    #         if result["returnCode"] == "0" or result["returnCode"] == 0:
+    #             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+    #                                                                                  Really=result["returnCode"])
+    #         else:
+    #             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+    #                                                                                  Really=result["returnCode"])
+    #     else:
+    #         print u"当前教师未存在待批改作业"
+    #         raise Exception,u"当前教师未存在待批改作业"
 
     @classmethod
     def tearDownClass(self):
