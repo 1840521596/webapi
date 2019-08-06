@@ -9,23 +9,7 @@ from app.base.pythonProject.base.getCookies import get_app_cookie,get_wacc_admin
 import time
 #logging = TestLog().getlog()
 class BearWord_Teacher_Test(unittest.TestCase):
-    """<br>首页,教师端操作<br>
-    1.admin-查询用户手机号<br>
-    2.admin-添加用户手机号为教师<br>
-    3.APP-个人中心-开启通知并判断是否教师角色<br>
-    4.APP个人中心关闭接收作业<br>
-    5.APP个人中心开启接收作业<br>
-    6.admin-查询用户作业详情<br>
-    7.admin-用户指定分配服务老师<br>
-    8.admin-用户重新分配指定分配服务老师<br>
-    9.老师端：待批改列表<br>
-    10.老师端：用户作业详情<br>
-    11.老师端：驳回理由列表<br>
-    12.老师端：校验用户是否重新提交作业<br>
-    13.老师端：上传批改语音接口<br>
-    14.老师端：批改作业保存<br>
-    15.老师端：批改记录<br>
-    16.老师端：推荐/取消推荐优秀作业--推荐"""
+    """<br>首页,教师端操作<br>1.admin平台-运营管理-罐罐熊管理-添加罐罐熊老师-查询用户手机号<br>2.admin-添加用户手机号为教师<br>3.APP-个人中心-开启通知并判断是否教师角色<br>4.罐罐熊-教师端-个人中心-接收作业开关-关闭<br>5.罐罐熊-教师端-个人中心-接收作业开关-开启<br>6.admin-查询用户作业详情<br>7.admin-用户指定分配服务老师<br>8.admin-用户重新分配指定分配服务老师<br>9.老师端：待批改列表<br>10.老师端：用户作业详情<br>11.老师端：驳回理由列表<br>12.老师端：校验用户是否重新提交作业<br>13.老师端：上传批改语音接口<br>14.老师端：批改作业保存<br>15.老师端：批改记录<br>16.老师端：推荐/取消推荐优秀作业--推荐"""
     @classmethod
     def setUpClass(self):
         self.redis = MyRedis()
@@ -81,7 +65,11 @@ class BearWord_Teacher_Test(unittest.TestCase):
                       "Pragma": "no-cache", "Referer": "https://admin.yunshuxie.com/",
                       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
                       "X-Requested-With": "XMLHttpRequest"}
-            params = {"memberId":bearWord_Teacher_memberId,"teacherType": "1"} #teacherType==2,测试老师
+            if self.env_flag != "beta":
+                teacherType = "2"
+            else:
+                teacherType = "1"
+            params = {"memberId":bearWord_Teacher_memberId,"teacherType": teacherType} #teacherType==2,测试老师
             #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
             print str_params

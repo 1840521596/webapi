@@ -9,15 +9,7 @@ from app.base.pythonProject.base.getCookies import get_app_cookie
 import time
 #logging = TestLog().getlog()
 class BearWord_Class_Test(unittest.TestCase):
-    """<br>学生端-上课<br>
-    1.未登录，上课页显示登录按钮<br>
-    2.已登录-微信-查看课程列表<br>
-    3.已登录-APP-存在课程<br>
-    4.已登录-APP-进入所选课程,查看章节列表<br>
-    5.已登录-视频播放到70%即为已学习状态，解锁上传作品按钮<br>
-    6.已登录-APP-上传作业，成功上传<br>
-    7.已登录-APP-打卡接口<br>
-    8.已登录-APP-作业被点评前，重新上传作业成功"""
+    """<br>学生端-上课<br>1.未登录，上课页显示登录按钮<br>2.已登录-微信-查看课程列表<br>3.已登录-APP-存在课程<br>4.已登录-APP-进入所选课程,查看章节列表<br>5.已登录-视频播放到70%即为已学习状态，解锁上传作品按钮<br>6.已登录-APP-上传作业，成功上传<br>7.已登录-APP-打卡接口<br>8.已登录-APP-作业被点评前，重新上传作业成功"""
     @classmethod
     def setUpClass(self):
         self.redis = MyRedis()

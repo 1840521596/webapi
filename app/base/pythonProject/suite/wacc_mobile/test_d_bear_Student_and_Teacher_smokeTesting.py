@@ -9,15 +9,7 @@ from app.base.pythonProject.base.getCookies import get_app_cookie,get_wacc_admin
 import time
 #logging = TestLog().getlog()
 class BearWord_Student_and_Teacher_Test(unittest.TestCase):
-    """<br>首页，账号登录<br>
-    1.用户登录-我的作品展示列表<br>
-    2.用户登录-我的作品展示列表&优秀作品&未点评&已点评<br>
-    5.查询总结语列表<br>
-    6.用户登录-评价老师接口（查看教师已点评的课程作品）（遍历进入课程，获取是否已分配服务老师）（找到存在服务老师的数据，进行评价）<br>
-    7.教师登录：推荐/取消推荐优秀作业-取消推荐<br>
-    8.教师登录：作业退回接口-教师端<br>
-    9.教师登录：驳回接口-教师端
-    """
+    """<br>首页，账号登录<br>1.用户登录-我的作品展示列表<br>2.用户登录-我的作品展示列表&优秀作品&未点评&已点评<br>5.查询总结语列表<br>6.用户登录-评价老师接口（查看教师已点评的课程作品）（遍历进入课程，获取是否已分配服务老师）（找到存在服务老师的数据，进行评价）<br>7.教师登录：推荐/取消推荐优秀作业-取消推荐<br>8.教师登录：作业退回接口-教师端<br>9.教师登录：驳回接口-教师端"""
     @classmethod
     def setUpClass(self):
         self.redis = MyRedis()
@@ -125,7 +117,6 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
-
     def test_06_bear_student_commentTeacher(self):
         """用户登录-评价老师接口<br>http://mobile.yunshuxie.com/v1/bear/student/commentTeacher.htm<br/>"""
         url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/myWorkList.htm"
