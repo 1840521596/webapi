@@ -341,7 +341,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         commentVoice = self.redis.str_get("bearWord_mp3_link") if self.redis.str_get("bearWord_mp3_link") else None
         bearWord_submitUpdateDate = self.redis.str_get("bearWord_submitUpdateDate") if self.redis.str_get("bearWord_submitUpdateDate") else ""
         if bearWord_timelineId and commentVoice:
-            url = r"https://mobile.yunshuxie.com" + r"/v1/bear/teacher/check_timeLineSatus.htm"
+            url = r"https://mobile.yunshuxie.com" + r"/v1/bear/teacher/save_correction_records.htm"
             header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded",
                       "User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
             cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
@@ -365,7 +365,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
             raise Exception, u"当前教师未存在待批改作业"
     def test_15_v1_bear_teacher_corrected_record_list(self):
         """老师端：批改记录<br>https://mobile.yunshuxie.com/v1/bear/teacher/corrected_record_list.htm<br>{"page":"1","pageSize":"10","jobType":"0"}"""
-        time.sleep(5)
+        time.sleep(2)
         url = r"https://mobile.yunshuxie.com"+r"/v1/bear/teacher/corrected_record_list.htm"
         params = {"page":"1","pageSize":"10","jobType":"0"}
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
