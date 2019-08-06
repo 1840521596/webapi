@@ -233,8 +233,6 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
         else:
             print u"未存在教师已点评的课程作品数据"
             raise Exception, u"未存在教师已点评的课程作品数据"
-
-
     def test_09_v1_bear_teacher_recommend_job(self):
         """老师端：推荐/取消推荐优秀作业-取消推荐<br>https://mobile.yunshuxie.com/v1/bear/teacher/recommend_job.htm.htm<br>{"timeLineId":"","excellence":"0"}"""
         bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
