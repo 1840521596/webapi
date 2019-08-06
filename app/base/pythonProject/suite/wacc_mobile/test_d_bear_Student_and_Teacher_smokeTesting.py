@@ -126,53 +126,53 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
 
-    # def test_08_bear_student_commentTeacher(self):
-    #     """用户登录-评价老师接口<br>http://mobile.yunshuxie.com/v1/bear/student/commentTeacher.htm<br/>"""
-    #     url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/myWorkList.htm"
-    #     params = {"type": "1", "page": "1"}  # 查看教师已点评的课程作品
-    #     cookies = get_app_cookie(self.env_flag, self.env_num, phone=self.phone)
-    #     # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-    #     self.resp = requests.post(url=url, headers=self.header, cookies=cookies, data=params)
-    #     result = json.loads(self.resp.text, encoding="utf8")
-    #     # logging.info(url + lianjiefu + self.resp.text + fengefu)
-    #     workId_list = []
-    #     if result["data"]["list"]:
-    #         for m in result["data"]["list"]:
-    #             workId_list.append(m["workId"])
-    #         # 查看课程作品，判断是否存在teacherId
-    #         for workId in workId_list:
-    #             url = r"http://mobile.yunshuxie.com" + "/v1/bear/student/workInfo.htm"
-    #             params = {"workId": workId, "deviceId": "629a5eb2a857f86dadaa043b414984f2"}
-    #             # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-    #             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
-    #             self.resp = requests.post(url=url, headers=self.header, cookies=cookies, data=params)
-    #             result = json.loads(self.resp.text, encoding="utf8")
-    #             # logging.info(url + lianjiefu + self.resp.text + fengefu)
-    #             if result["data"]["teacherId"] != "":
-    #                 workId = result["data"]["workId"]
-    #                 teacherId = result["data"]["teacherId"]
-    #                 break
-    #             else:
-    #                 print u"未存在已点评已分配教师的作品数据"
-    #                 raise Exception, u"未存在已点评已分配教师的作品数据"
-    #         url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/commentTeacher.htm"
-    #         params = {"workId": workId, "teacherId": teacherId, "commentContent": "测试评价教师功能", "commentStar": "5",
-    #                   "isApp": "2"}
-    #         cookies = get_app_cookie(self.env_flag, self.env_num, phone=self.phone)
-    #         self.resp = requests.post(url=url, headers=self.header, cookies=cookies, data=params)
-    #         print self.resp.text
-    #         result = json.loads(self.resp.text, encoding="utf8")
-    #         # logging.info(url + lianjiefu + self.resp.text + fengefu)
-    #         expect = {"returnCode": "0"}
-    #         if result["returnCode"] == "0" or result["returnCode"] == 0:
-    #             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-    #                                                                                  Really=result["returnCode"])
-    #         else:
-    #             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
-    #                                                                                  Really=result["returnCode"])
-    #     else:
-    #         print u"未存在教师已点评的课程作品数据"
-    #         raise Exception, u"未存在教师已点评的课程作品数据"
+    def test_06_bear_student_commentTeacher(self):
+        """用户登录-评价老师接口<br>http://mobile.yunshuxie.com/v1/bear/student/commentTeacher.htm<br/>"""
+        url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/myWorkList.htm"
+        params = {"type": "1", "page": "1"}  # 查看教师已点评的课程作品
+        cookies = get_app_cookie(self.env_flag, self.env_num, phone=self.phone)
+        # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+        self.resp = requests.post(url=url, headers=self.header, cookies=cookies, data=params)
+        result = json.loads(self.resp.text, encoding="utf8")
+        # logging.info(url + lianjiefu + self.resp.text + fengefu)
+        workId_list = []
+        if result["data"]["list"]:
+            for m in result["data"]["list"]:
+                workId_list.append(m["workId"])
+            # 查看课程作品，判断是否存在teacherId
+            for workId in workId_list:
+                url = r"http://mobile.yunshuxie.com" + "/v1/bear/student/workInfo.htm"
+                params = {"workId": workId, "deviceId": "629a5eb2a857f86dadaa043b414984f2"}
+                # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
+                str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
+                self.resp = requests.post(url=url, headers=self.header, cookies=cookies, data=params)
+                result = json.loads(self.resp.text, encoding="utf8")
+                # logging.info(url + lianjiefu + self.resp.text + fengefu)
+                if result["data"]["teacherId"] != "":
+                    workId = result["data"]["workId"]
+                    teacherId = result["data"]["teacherId"]
+                    break
+                else:
+                    print u"未存在已点评已分配教师的作品数据"
+                    raise Exception, u"未存在已点评已分配教师的作品数据"
+            url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/commentTeacher.htm"
+            params = {"workId": workId, "teacherId": teacherId, "commentContent": "测试评价教师功能", "commentStar": "5",
+                      "isApp": "2"}
+            cookies = get_app_cookie(self.env_flag, self.env_num, phone=self.phone)
+            self.resp = requests.post(url=url, headers=self.header, cookies=cookies, data=params)
+            print self.resp.text
+            result = json.loads(self.resp.text, encoding="utf8")
+            # logging.info(url + lianjiefu + self.resp.text + fengefu)
+            expect = {"returnCode": "0"}
+            if result["returnCode"] == "0" or result["returnCode"] == 0:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                     Really=result["returnCode"])
+            else:
+                assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                     Really=result["returnCode"])
+        else:
+            print u"未存在教师已点评的课程作品数据"
+            raise Exception, u"未存在教师已点评的课程作品数据"
     # def test_09_v1_bear_teacher_recommend_job(self):
     #     """老师端：推荐/取消推荐优秀作业-取消推荐<br>https://mobile.yunshuxie.com/v1/bear/teacher/recommend_job.htm.htm<br>{"timeLineId":"","excellence":"0"}"""
     #     bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
