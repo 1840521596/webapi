@@ -35,8 +35,6 @@ def runDatasApiTest():
 	except Exception as e:
 		msg = {"code":400,"Msg":"执行失败","ErrorMsg":str(e)}
 	return make_response(jsonify(msg))
-
-
 # @test.route("/runSuiteApi_yunwei",methods=["GET"])
 # def runDatasApiTest_yunwei():
 # 	"""运维发布版本后使用接口
@@ -101,8 +99,6 @@ def runDatasApiTest():
 # 	except Exception as e:
 # 		msg = {"code":400,"Msg":"执行失败","ErrorMsg":str(e)}
 # 	return make_response(jsonify(msg))
-
-
 @test.route("/runSuiteApi_yunwei",methods=["GET"])
 def runDatasApiTest_yunwei():
 	"""运维发布版本后使用接口
@@ -119,6 +115,8 @@ def runDatasApiTest_yunwei():
 	developer_project = request.args.get("developer_project")
 	branch = request.args.get("branch")
 	try:
+		if env_flag != "beta":
+			raise Exception("当前环境非测试环境！")
 		if project == "":
 			raise Exception("项目不能为空！")
 		if env_num == "":
@@ -273,15 +271,21 @@ def get_coupon():
 		msg = {"code": 200, "Msg": "执行成功", "ReturnMsg": resp}
 	return make_response(jsonify(msg))
 
-
-
-
-
-
-
 @test.route("/searchEnvNum",methods=["GET"])
 def searchEnvNum():
 	env_flag = request.args.get("env_flag")
 	env_num = db.session.query(Test_Env.env_num).filter_by(env_flag=env_flag).all()
 	msg = {"code":200,"msg":env_num}
 	return make_response(jsonify(msg))
+
+
+
+
+@test.route("/runSchedule",methods=["GET"])
+def run_schedule():
+	"""
+	运行web端录入接口调度
+	:param: project 测试项目
+	:return:
+	"""
+	project = request.args.get("project").strip()
