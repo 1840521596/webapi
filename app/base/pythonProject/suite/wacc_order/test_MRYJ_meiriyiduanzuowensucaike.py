@@ -16,8 +16,8 @@ class MeiRiYiDuanZuWenSuCaiKe_Test(unittest.TestCase):
     def setUpClass(self):
         #s = ReadConfig()
         redis = MyRedis()
-        self.env_flag = redis.str_get("peiniyueduPeinixizuo_env_flag")
-        self.env_num = redis.str_get("peiniyueduPeinixizuo_env_num")
+        self.env_flag = redis.str_get("wacc_order_env_flag")
+        self.env_num = redis.str_get("wacc_order_env_num")
         self.phonenum = redis.str_get("make_user_phones")
         self.session = requests.Session()
         request_retry = requests.adapters.HTTPAdapter(max_retries=3)
