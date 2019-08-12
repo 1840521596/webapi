@@ -12,6 +12,7 @@ from app.base.pythonProject.base.couponReceive import coupon_test
 import redis as red
 from threading import Thread
 import json
+from ..tasks.tasks import wctvb
 @test.route("/runSuiteApi",methods=["GET"])
 def runDatasApiTest():
 	"""测试集页面使用接口,用于上传测试用例后执行
@@ -289,3 +290,17 @@ def run_schedule():
 	:return:
 	"""
 	project = request.args.get("project").strip()
+
+@test.route("/test_wctv",methods=["GET"])
+def test_wctv():
+	wctvb.apply_async(args=["wctv"],countdown=5)
+	#wctvb.delay("wctv\n")
+	print "test_wctv"
+	return "ok"
+@test.route("/phones",methods=["GET"])
+def phones():
+	phones = db.session.query(Test_User_Reg.phone).all()
+	list_phone = []
+	for phone in phones:
+		list_phone.append(phone[0])
+	return jsonify(",".join(list_phone))

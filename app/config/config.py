@@ -15,7 +15,7 @@ TEST_FOLDER = './app/base/pythonProject'
 class TestingConfig(object):#研发环境配置
 	SECRET_KEY = 'guohongjie'
 	basedir=os.path.abspath(os.path.dirname(__file__))
-	SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://test:test@172.10.21.32:3306/ApiTestDB?charset=utf8"  #mysql 配置
+	SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://test:test@localhost:3306/ApiTestDB?charset=utf8"  #mysql 配置
 	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 	CSRF_ENABLED = True
 	DEBUG = True
@@ -24,6 +24,8 @@ class TestingConfig(object):#研发环境配置
 	REDIS_HOST = "localhost"
 	REDIS_PORT = 6379
 	REDIS_DB = 0
+	CELERY_BROKER_URL = 'redis://localhost:6379/1'
+	CELERY_RESULT_BACKEND = 'redis://localhost:6379/2'
 	@staticmethod
 	def init_app(app):
 		pass
