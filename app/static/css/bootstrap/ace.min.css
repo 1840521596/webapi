@@ -5125,7 +5125,8 @@ button.btn:active {
 
 .btn-info,.btn-info:focus {
 	background-color: #6fb3e0!important;
-	border-color: #6fb3e0
+	border-color: #6fb3e0;
+	text-align:center
 }
 
 .btn-info:active,.btn-info:hover,.open .btn-info.dropdown-toggle {

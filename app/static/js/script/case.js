@@ -206,6 +206,7 @@ jQuery(document).ready(function ($) {
         $("#actual_result").removeAttr("style");
         $("#btn4").removeAttr("style");
         var _td = $("#tbdata").find("td");
+        var _td_1 =  $("#tbdata_1").find("td");
        // alert(api_pid);
         $("#targetId").val(api_pid);
         //alert(_td.eq(0));
@@ -218,6 +219,15 @@ jQuery(document).ready(function ($) {
         _td.eq(6).find("option").attr("selected",false);
         _td.eq(6).find("option[value="+data[5]+"]").prop("selected",true);
         _td.eq(7).find("input").val(data[6]);
+        document.getElementById("check1").checked=data[10];
+        if (data[10]){
+        $("#assert").attr('disabled',false);
+        }
+        else{
+        $("#assert").attr('disabled',true);
+        }
+        document.getElementById("check2").checked=data[11];
+        document.getElementById("assert").value=data[12];
         var _ad = $("#apt_datas").find("td");
         //alert(data[0]);
         if (data[5]=='GET'){
@@ -282,7 +292,8 @@ jQuery(document).ready(function ($) {
                 case_url: $("#case_url").val(),
                 method: $("#method").find("option:selected").val(),
                 except_result: $("#except_result").val(),
-                scheduling: $("#Scheduling").find("option:selected").val(),
+                scheduling: $("#check1").is(':checked'),
+                islogin: $("#check2").is(':checked'),
                 assert: $("#assert").val(),
             });
         });
@@ -307,7 +318,8 @@ jQuery(document).ready(function ($) {
                     params: $("#get_params").val(),
                     headers: $("#get_headers").val(),
                     cookies: $("#get_cookies").val(),
-                    scheduling: $("#Scheduling").find("option:selected").val(),
+                    scheduling: $("#check1").is(':checked'),
+                    islogin: $("#check2").is(':checked'),
                     assert: $("#assert").val(),
                 }}).done(function (result){
                     if (result.status == "200"){
@@ -334,7 +346,8 @@ jQuery(document).ready(function ($) {
                     params: $("#post_params").val(),
                     headers: $("#post_headers").val(),
                     cookies: $("#post_cookies").val(),
-                    scheduling: $("#Scheduling").find("option:selected").val(),
+                    scheduling: $("#check1").is(':checked'),
+                    islogin: $("#check2").is(':checked'),
                     assert: $("#assert").val(),
                 }
             }).done(function(result){
@@ -364,7 +377,8 @@ jQuery(document).ready(function ($) {
                     params: $("#get_params").val(),
                     headers: $("#get_headers").val(),
                     cookies: $("#get_cookies").val(),
-                    scheduling: $("#Scheduling").find("option:selected").val(),
+                    scheduling: $("#check1").is(':checked'),
+                    islogin: $("#check2").is(':checked'),
                 assert: $("#assert").val(),}
             }).done(function(result){
                     if (result.status == "200"){
@@ -391,7 +405,8 @@ jQuery(document).ready(function ($) {
                     params: $("#post_params").val(),
                     headers: $("#post_headers").val(),
                     cookies: $("#post_cookies").val(),
-                    scheduling: $("#Scheduling").find("option:selected").val(),
+                    scheduling: $("#check1").is(':checked'),
+                    islogin: $("#check2").is(':checked'),
                 assert: $("#assert").val(),
                 }
             }).done(function(result){
@@ -680,13 +695,12 @@ function saveValues(id,saveId){
   $(".theme-cookies").remove();
   //$(".theme-cookies").css('display','none');
 };
-$("#Scheduling").change(function(){
- var scheduling=$("#Scheduling").find("option:selected").val();
- //alert(scheduling);
- if (scheduling=="True"){
- $("#assert").attr('disabled',false);
+$("#check1").change(function(){
+ var scheduling=$("#check1").is(':checked');
+ if (scheduling==true){
+  $("#assert").attr('disabled',false);
  }
  else{
- $("#assert").attr('disabled',true);
+  $("#assert").attr('disabled',true);
  };
 });

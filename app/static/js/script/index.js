@@ -1,8 +1,5 @@
 $(function(){
     //获取用户信息
-    var cookie_group = decodeURIComponent($.cookie('group'))
-    var cookie_name = decodeURIComponent($.cookie('name'))
-    $(".dropdown").text(cookie_group+" 的 "+cookie_name)
     // 左侧点击展开收起
     $(".article-list-tit").on("click",function(){
         $(this).toggleClass("down").parents(".article-list").siblings().find(".article-list-tit").removeClass("down");

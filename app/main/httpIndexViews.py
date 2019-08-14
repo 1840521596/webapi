@@ -42,17 +42,22 @@ def http_insert():
     cookies = request.form["cookies"]
     scheduling = request.form["scheduling"]
     assertValue = request.form["assert"]
-    if scheduling == "True":
+    islogin = request.form["islogin"]
+    if scheduling == "true":
         scheduling = 1
     else:
         scheduling = 0
+    if islogin == "true":
+        islogin = 1
+    else:
+        islogin = 0
     try:
         datas = Case_Http_API(project=project,
                               case_api=case_api,
                               description=case_desc,
                               case_host=case_host,
                               case_url=case_url,
-                              method=method,
+                              method=method,isLogin=islogin,
                  params=params,response=response,headers=headers,cookies=cookies,scheduling=scheduling,assertValue=assertValue)
         db.session.add(datas)
         db.session.commit()
@@ -129,13 +134,19 @@ def update():
     cookies = request.form['cookies']
     scheduling = request.form["scheduling"]
     assertValue = request.form["assert"]
-    if scheduling == "True":
+    islogin = request.form["islogin"]
+
+    if scheduling == "true":
         scheduling = 1
     else:
         scheduling = 0
+    if islogin =="true":
+        islogin = 1
+    else:
+        islogin = 0
     try:
         Case_Http_API.query.filter_by(id=pid).update(dict(
-            project=project,case_api=case_api,description=description,case_host=case_host,
+            project=project,case_api=case_api,description=description,case_host=case_host,isLogin=islogin,
             case_url=case_url,headers=headers,cookies=cookies,scheduling=scheduling,assertValue=assertValue,
             method=method,params=params,response=response))
         db.session.commit()
@@ -183,7 +194,10 @@ def httpUnionSearch():
                                   Case_Http_API.response,
                                   Case_Http_API.params,
                                   Case_Http_API.headers,
-                                  Case_Http_API.cookies).filter_by(project=project,case_api=case_api,id=pid,method=method).first()
+                                  Case_Http_API.cookies,
+                                  Case_Http_API.scheduling,
+                                  Case_Http_API.isLogin,
+                                  Case_Http_API.assertValue).filter_by(project=project,case_api=case_api,id=pid,method=method).first()
     resp = {"code": 200, "datas": object_api}
     msg_resp = make_response(jsonify(resp))
     return msg_resp

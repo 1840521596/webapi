@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #-*-coding:utf-8 -*-
 __author__ = "guohongjie"
-from flask import make_response,request,jsonify
+from flask import make_response,request,jsonify,url_for,redirect
 from . import test
 from ..base.pythonProject import run
 from .. import db,redis
@@ -12,7 +12,7 @@ from app.base.pythonProject.base.couponReceive import coupon_test
 import redis as red
 from threading import Thread
 import json
-from ..tasks.tasks import wctvb
+from ..tasks.tasks import run_api
 @test.route("/runSuiteApi",methods=["GET"])
 def runDatasApiTest():
 	"""测试集页面使用接口,用于上传测试用例后执行
@@ -231,8 +231,6 @@ def make_user():
 	except Exception as e:
 		msg = {"code": 400, "Msg": "执行失败", "ErrorMsg": str(e)}
 	return make_response(jsonify(msg))
-
-
 @test.route("/get_coupon",methods=["GET"])
 def get_coupon():
 	"""
@@ -271,7 +269,6 @@ def get_coupon():
 	else:
 		msg = {"code": 200, "Msg": "执行成功", "ReturnMsg": resp}
 	return make_response(jsonify(msg))
-
 @test.route("/searchEnvNum",methods=["GET"])
 def searchEnvNum():
 	env_flag = request.args.get("env_flag")
@@ -282,21 +279,65 @@ def searchEnvNum():
 
 
 
-@test.route("/runSchedule",methods=["GET"])
+@test.route("/runSchedule",methods=["POST"])
 def run_schedule():
 	"""
 	运行web端录入接口调度
 	:param: project 测试项目
 	:return:
 	"""
-	project = request.args.get("project").strip()
+	project = "test" #request.args.get("project").strip()
+	num = 10#request.args.get("num") if request.args.get("num") else None
+	task = run_api.apply_async(args=[project],countdown=num)
+	return jsonify({}), 202, {'Location': url_for('test.taskstatus',task_id=task.id)}
 
-@test.route("/test_wctv",methods=["GET"])
-def test_wctv():
-	wctvb.apply_async(args=["wctv"],countdown=5)
-	#wctvb.delay("wctv\n")
-	print "test_wctv"
-	return "ok"
+
+@test.route('/status/<task_id>')
+def taskstatus(task_id):
+	task = run_api.AsyncResult(task_id)
+	if task.state == 'PENDING':
+		response = {
+			'state': task.state,
+			'current': 0,
+			'total': 1,
+			'status': u'启动中...'
+		}
+	elif task.state != 'FAILURE':
+		response = {
+			'state': task.state,
+			'current': task.info.get('current', 0),
+			'total': task.info.get('total', 1),
+			'status': task.info.get('status', ''),
+			'pass_status':task.info.get('pass_status',''),
+			'datas':task.info.get('data_list','')
+		}
+		if 'result' in task.info:
+			response['result'] = task.info['result']
+	else:
+		response = {
+			'state': task.state,
+			'current': 1,
+			'total': 1,
+			'status': str(task.info),  # this is the exception raised
+		}
+	return jsonify(response)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @test.route("/phones",methods=["GET"])
 def phones():
 	phones = db.session.query(Test_User_Reg.phone).all()
@@ -304,3 +345,4 @@ def phones():
 	for phone in phones:
 		list_phone.append(phone[0])
 	return jsonify(",".join(list_phone))
+

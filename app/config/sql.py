@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 #-*-coding:utf-8 -*-
-import MySQLdb
+import pymysql
 
 def select_sql(sql):
-	db = MySQLdb.connect("10.144.24.130","test","test","autoTest",charset='utf8')
+	db = pymysql.connect("localhost","test","test","ApiTestDB",charset='utf8')
 	# 使用cursor()方法获取操作游标 
 	cursor = db.cursor()
 	# 使用execute方法执行SQL语句
@@ -20,7 +20,7 @@ def select_sql(sql):
 	db.close()
 	return data
 def insert_sql(sql):
-	db = MySQLdb.connect('10.144.24.130','test','test','autoTest',charset='utf8')
+	db = pymysql.connect('localhost','test','test','ApiTestDB',charset='utf8')
 	cursor = db.cursor()
 	cursor.execute("set character_set_connection=utf8")
 	cursor.execute("set character_set_client=utf8")
@@ -38,7 +38,7 @@ def insert_sql(sql):
 		db.close()
 		return {"result":False,"reson":str(e)}
 def update_sql(sql):
-	db = MySQLdb.connect('10.144.24.130', 'test', 'test', 'autoTest', charset='utf8')
+	db = pymysql.connect('localhost', 'test', 'test', 'ApiTestDB', charset='utf8')
 	cursor = db.cursor()
 	cursor.execute("set character_set_connection=utf8")
 	cursor.execute("set character_set_client=utf8")
@@ -57,8 +57,9 @@ def update_sql(sql):
 		return {"result":False,"reson":str(e)}
 
 if __name__ == "__main__":
-	s = """update behave_config set position='Then 移动鼠标到' where position='Then 移动鼠标';"""
-	tupledate = insert_sql(s)
+	s = """select * from case_http_api where project='%s' and scheduling='0'"""%("云舒写首页")
+	print s
+	datas = select_sql(s)
 	# ss= """insert into behave_config values('Given 操作页面HTML元素','输入')"""
 	# tupledate = insert_sql(ss)
 	# sss = """insert into behave_config values('Given 操作页面HTML元素','单击')"""
@@ -73,7 +74,7 @@ if __name__ == "__main__":
 	# tupledate = insert_sql(aa)
 	# aaa= """insert into behave_config values('Then 添加等待时间','秒等待')"""
 	# tupledate = insert_sql(aaa)
-	#print tupledate
+	print datas
 	#print insert_sql(s)
 
 

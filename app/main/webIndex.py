@@ -19,7 +19,9 @@ def webIndex():
 @views.route("/testIndex",methods=["GET"])
 def testIndex():
     return render_template('home/test_phones.html')
-
+@views.route('/run_api_index', methods=['GET', 'POST'])
+def run_api_index():
+    return render_template('/home/run_api_index.html')
 @views.route("/query_phones",methods=["GET"])
 def test_query():
     """Test_Phones"""
