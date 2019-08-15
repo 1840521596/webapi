@@ -93,7 +93,7 @@ def get_wacc_home_cookie(env_flag,env_num,phone=None):
     :return cookies
     """
     r = MyRedis()
-    phone = phone if phone else r.str_get("wacc_home")
+    phone = phone if phone else r.str_get("wacc_home_user_phone")
     url = r"https://www.yunshuxie.com/v5/web/account/login.htm"
     cookies = requests.cookies.RequestsCookieJar()  # 生成cookies 容器
     cookies.set('env_flag', env_flag)  # 设置测试环境
@@ -140,7 +140,7 @@ def get_wacc_bird_cookie(env_flag,env_num,phone=None):
     :return:
     """
     r = MyRedis()
-    phone = phone if phone else r.str_get("wacc_bird")
+    phone = phone if phone else r.str_get("wacc_bird_user_phone")
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
     salt = "mengmengda"
     cookies = requests.cookies.RequestsCookieJar() #生成cookies 容器
@@ -172,7 +172,7 @@ def get_app_cookie(env_flag,env_num,phone=None):
     :return:
     """
     w = MyRedis()
-    phone = phone if phone else w.str_get("wacc_mobile")
+    phone = phone if phone else w.str_get("wacc_mobile_user_phone")
     if env_flag =="beta":
         r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
     else:
@@ -223,7 +223,7 @@ def get_cookies(project,env_flag,env_num,phone=None):
     return cookie
 
 if __name__ == "__main__":
-    print get_cookies("wacc_mobile","beta","6","60000009092")
+    print get_cookies("wacc_mobile","beta","7","60000021182")
 
 
 
