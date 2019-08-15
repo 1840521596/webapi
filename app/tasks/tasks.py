@@ -147,7 +147,9 @@ def find_key(resp,fkey,fvalue,resp_key=None):
     else:
         return False
 
-
+def make_html_report():
+    html_table = """<table id = "progressing_2" class ="table table-striped table-bordered table-hover" > < tbody > < tr > < th width="10%" class ="btn-info" > 接口名称 < / th > < th width="20%" class ="btn-info" > URL < / th > < th width="5%" class ="btn-info" > 请求方式 < / th > < th width="30%" class ="btn-info" > 返回结果 < / th > < th width="30%" class ="btn-info" > 预期结果 < / th > < th width="5%" class ="btn-info" > 测试结果 < / th > < / tr > < / tbody > < tbody id="casetb_2" > < / tbody > < / table >"""
+    
 
 if __name__ == "__main__":
     run_api("wc","云舒写首页")
