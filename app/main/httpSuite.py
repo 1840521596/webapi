@@ -286,11 +286,17 @@ def run_schedule():
 	:param: project 测试项目
 	:return:
 	"""
-	project = "云舒写后台管理系统" #request.args.get("project").strip()
-	developer = u"guohongjie"
-	num = 10#request.args.get("num") if request.args.get("num") else None
-	task = run_api.apply_async(args=[project,developer],countdown=num)
-	return jsonify({}), 202, {'Location': url_for('test.taskstatus',task_id=task.id)}
+	project = request.form["project"]#"云舒写后台管理系统" #request.args.get("project").strip()
+	developer = request.form["developer"]
+	timer =  request.form["timer"] #request.args.get("num") if request.args.get("num") else None
+	if timer=="None" or timer==None:
+		timer = 0
+	try:
+		task = run_api.apply_async(args=[project,developer],countdown=int(timer))
+		msg = {"code":"200","msg":"操作成功"}
+	except Exception as e:
+		msg = {"code":"400","msg":"操作失败","reason":str(e)}
+	return jsonify(msg), 202, {'Location': url_for('test.taskstatus',task_id=task.id)}
 
 
 @test.route('/status/<task_id>')

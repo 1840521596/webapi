@@ -54,11 +54,19 @@
                                     <select id="project" class="form-control" style="width:230px;" name="测试项目">
 
                                         <option value="None" selected = "selected">请选择项目</option>
-                                        {% for project in api_project %}
+                                        {% for project in projects %}
                                             <option value="{{ project[0] }}">{{ project[0] }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
+                                <div class="form-group col-lg-4">
+                                <label class="col-lg-4 control-label text-right">测试人员(英文)</label>
+                                <input value="" type="text" id="developer" class="form-control" style="width:230px;">
+                                </div>
+                                <div class="form-group col-lg-4">
+                                <label class="col-lg-4 control-label text-right">定时启动(秒)</label>
+                                <input value="" type="text" id="timer" class="form-control" style="width:230px;">
+                            </div>
                             </div>
                         </form>
                         <div class="panel-footer text-right clearfix">
@@ -101,11 +109,16 @@
             $.ajax({
                 type: 'POST',
                 url: '/runSchedule',
+                data: {
+                project: $("#project").find("option:selected").val(),
+                developer: $("#developer").val(),
+                timer: $("#timer").val(),
+            },
                 success: function(data, status, request) {
                     status_url = request.getResponseHeader('Location');
                     var project = 'test';
-                    var table_html='<table id="' +progressing_count+'" class="table table-striped table-bordered table-hover"><tbody><tr><th width="10%" class="btn-info">接口名称</th><th width="20%" class="btn-info">URL</th><th width="5%" class="btn-info">请求方式</th><th width="30%" class="btn-info">返回结果</th><th width="30%" class="btn-info">预期结果</th><th width="5%" class="btn-info">测试结果</th></tr></tbody><tbody id="'+casetb+'"></tbody></table>'
-                    $('.page-content-report').append(table_html);
+                   // var table_html='<table id="' +progressing_count+'" class="table table-striped table-bordered table-hover"><tbody><tr><th width="10%" class="btn-info">接口名称</th><th width="20%" class="btn-info">URL</th><th width="5%" class="btn-info">请求方式</th><th width="30%" class="btn-info">返回结果</th><th width="30%" class="btn-info">预期结果</th><th width="5%" class="btn-info">测试结果</th></tr></tbody><tbody id="'+casetb+'"></tbody></table>'
+                   // $('.page-content-report').append(table_html);
                     update_progress(status_url, nanobar, div[0],casetb);
                 },
                 error: function() {

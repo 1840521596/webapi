@@ -21,7 +21,8 @@ def testIndex():
     return render_template('home/test_phones.html')
 @views.route('/run_api_index', methods=['GET', 'POST'])
 def run_api_index():
-    return render_template('/home/run_api_index.html')
+    api_project = Project.query.with_entities(Project.project).distinct().all()
+    return render_template('/home/run_api_index.html',projects=api_project)
 @views.route("/query_phones",methods=["GET"])
 def test_query():
     """Test_Phones"""
