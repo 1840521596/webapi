@@ -287,8 +287,9 @@ def run_schedule():
 	:return:
 	"""
 	project = "云舒写后台管理系统" #request.args.get("project").strip()
+	developer = u"guohongjie"
 	num = 10#request.args.get("num") if request.args.get("num") else None
-	task = run_api.apply_async(args=[project],countdown=num)
+	task = run_api.apply_async(args=[project,developer],countdown=num)
 	return jsonify({}), 202, {'Location': url_for('test.taskstatus',task_id=task.id)}
 
 
