@@ -71,7 +71,7 @@ def run_api(self,project,developer):
                           meta={'current': i, 'total': case_total,
                                 'status': case_api,"pass_status":pass_status,"data_list":resp_text})
     endTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') # 获取结束时间
-    project_cn = datas_list[i]["project"]
+    project_cn = datas_list[0]["project"]
     start_time = startTime
     end_time = endTime
     case_total = case_total
