@@ -5,7 +5,7 @@ from flask import make_response,request,jsonify,url_for,redirect
 from . import test
 from ..base.pythonProject import run
 from .. import db,redis
-from ..config.models import Project,Test_Env,Test_User_Reg
+from ..config.models import Project,Test_Env,Test_User_Reg,Case_Http_API
 from sqlalchemy import func
 from app.base.pythonProject.base.getConfig import s
 from app.base.pythonProject.base.couponReceive import coupon_test
@@ -289,14 +289,19 @@ def run_schedule():
 	project = request.form["project"]#"云舒写后台管理系统" #request.args.get("project").strip()
 	developer = request.form["developer"]
 	timer =  request.form["timer"] #request.args.get("num") if request.args.get("num") else None
+	api_count = db.session.query(Case_Http_API.id).filter_by(project=project).count()
 	if timer=="None" or timer==None:
 		timer = 0
 	try:
+		if not api_count:
+			raise Exception, u"该项目下未存在测试用例"
 		task = run_api.apply_async(args=[project,developer],countdown=int(timer))
 		msg = {"code":"200","msg":"操作成功"}
+		return jsonify(msg), 202, {'Location': url_for('test.taskstatus', task_id=task.id)}
 	except Exception as e:
 		msg = {"code":"400","msg":"操作失败","reason":str(e)}
-	return jsonify(msg), 202, {'Location': url_for('test.taskstatus',task_id=task.id)}
+	return make_response(jsonify(msg))
+
 
 
 @test.route('/status/<task_id>')
