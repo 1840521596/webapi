@@ -53,6 +53,7 @@ def run_api(self,project,developer):
         assertValue = assertValue  #"校验参数"
         responce_params = resp_text  #"返回参数"
         method = datas_list[i]["method"]
+        project_cn = datas_list[i]["project"]
         if pass_status == 1:
             status_color = "btn-success"
             case_status = u"通过"
@@ -71,7 +72,6 @@ def run_api(self,project,developer):
                           meta={'current': i, 'total': case_total,
                                 'status': case_api,"pass_status":pass_status,"data_list":resp_text})
     endTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') # 获取结束时间
-    project_cn = datas_list[0]["project"]
     start_time = startTime
     end_time = endTime
     case_total = case_total
