@@ -3,7 +3,8 @@
 import pymysql
 
 def select_sql(sql):
-	db = pymysql.connect("localhost","test","test","ApiTestDB",charset='utf8')
+	#db = pymysql.connect("localhost","test","test","ApiTestDB",charset='utf8')
+	db = pymysql.connect("172.17.0.203", "qa_all", "stz8HxsG7weemkd", "qa_automation",port=3306, charset='utf8')
 	# 使用cursor()方法获取操作游标 
 	cursor = db.cursor()
 	# 使用execute方法执行SQL语句
