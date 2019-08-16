@@ -289,7 +289,7 @@ def run_schedule():
 	project = request.form["project"]#"云舒写后台管理系统" #request.args.get("project").strip()
 	developer = request.form["developer"]
 	timer =  request.form["timer"] #request.args.get("num") if request.args.get("num") else None
-	api_count = db.session.query(Case_Http_API.id).filter_by(project=project).count()
+	api_count = db.session.query(Case_Http_API.id).filter_by(project=project,scheduling=1).count()
 	if timer=="None" or timer==None:
 		timer = 0
 	try:
