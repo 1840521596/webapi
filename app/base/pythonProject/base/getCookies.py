@@ -118,7 +118,7 @@ def get_wacc_tortoise_cookie(env_flag,env_num):
     :return:
     """
     r = MyRedis()
-    username = r.str_get("wacc_tortoise")
+    username = r.str_get("wacc_tortoise_user")
     url = r"http://adm.yunshuxie.com/api/sys/login.htm"
     cookies = requests.cookies.RequestsCookieJar() #生成cookies 容器
     cookies.set('env_flag', env_flag)  # 设置测试环境
