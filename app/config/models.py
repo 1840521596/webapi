@@ -138,5 +138,15 @@ class Test_User_Reg(db.Model):
         self.type = type
         self.env = env
         self.description = description
-    def __repr__(self):
-        return '<Case %r>'%(self.telephone)
+
+class Key_Value(db.Model):
+    __tablename__ = "key_value"
+    id = db.Column(db.Integer,primary_key=True) #序号ID
+    user_key = db.Column(db.String(100)) #手机号
+    status = db.Column(db.Integer,default=0) #注册类型
+    user_value = db.Column(db.String(500)) #环境
+    def __init__(self,id,user_key,user_value,status=1):
+        self.id = id
+        self.user_key = user_key
+        self.user_value = user_value
+        self.status = status

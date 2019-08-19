@@ -2,8 +2,8 @@
 #-*-coding:utf-8 -*-
 from . import views
 from flask import render_template,request,make_response,jsonify
-from .. import db
-from ..config.models import Project, Case_Http_API,Web_Model_Set,Test_User_Reg
+from .. import db,redis
+from ..config.models import Project, Case_Http_API,Web_Model_Set,Test_User_Reg,Key_Value
 @views.route("/index",methods=["GET"])
 def webIndex():
     """WEB首页"""
@@ -99,3 +99,22 @@ def update_phone():
         db.session.rollback()
         resp = {'datas': str(e), 'code': '400'}
     return make_response(jsonify(resp))
+
+@views.route("/get_redis_key",methods=["GET"])
+def get_redis_key():
+    redis_key = db.session.query(Key_Value.user_key).filter_by(status=1).all()
+    s = ",".join([key[0] for key in redis_key])
+    return s
+@views.route("/set_key_value",methods=["GET"])
+def set_key_value():
+    key = request.args.get("key")
+    value = request.args.get("value")
+    try:
+        if key.upper()=="NONE" or key==None:
+            raise Exception,"Key不能为空！"
+        redis.set(key,value)
+        msg = "set success!"
+    except Exception as e:
+        print str(e)
+        msg = str(e)
+    return jsonify({"code":"200","msg":msg})
