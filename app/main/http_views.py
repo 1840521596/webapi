@@ -24,23 +24,27 @@ def case_http_test():
         params = eval(request.form["params"])
         headers = eval(request.form["headers"])
         cookies = eval(request.form["cookies"])
+        islogin = request.form["islogin"]
         url = case_host + case_url
-        if project_cn == "云舒写首页":
-            cookies = get_wacc_home_cookie(cookies["env_flag"],cookies["env_num"]).get_dict()
-        if project_cn in ["云舒写后台管理系统","上传文件"]:
-            cookies = get_wacc_admin_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
-        if project_cn == "云舒写CRM系统":
-            cookies = get_ysx_crm_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
-        if project_cn == "简章系统":
-            cookies = get_wacc_tortoise_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
-        if project_cn == "新商品详情系统" or project_cn == "新订单支付系统":
-            cookies = get_wacc_bird_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
-        if project_cn == "云舒写_罐罐熊":
-            cookies = get_app_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
+        if islogin.upper() == "TRUE" or islogin==True:
+            if project_cn == "云舒写首页":
+                new_cookies = get_wacc_home_cookie(cookies["env_flag"],cookies["env_num"]).get_dict()
+            if project_cn in ["云舒写后台管理系统","上传文件"]:
+                new_cookies = get_wacc_admin_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
+            if project_cn == "云舒写CRM系统":
+                new_cookies = get_ysx_crm_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
+            if project_cn == "简章系统":
+                new_cookies = get_wacc_tortoise_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
+            if project_cn == "新商品详情系统" or project_cn == "新订单支付系统":
+                new_cookies = get_wacc_bird_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
+            if project_cn == "云舒写_罐罐熊":
+                new_cookies = get_app_cookie(cookies["env_flag"], cookies["env_num"]).get_dict()
+        else:
+            new_cookies = cookies
         if method=="POST":
-            resp = postFunction(url,params,headers,cookies)
+            resp = postFunction(url,params,headers,new_cookies)
         elif method=="GET":
-            resp = getFunction(url,params,headers,cookies)
+            resp = getFunction(url,params,headers,new_cookies)
     except Exception as e:
         resp = str(e)
     response = make_response(jsonify({"code":200,"datas":resp}))  # 返回response

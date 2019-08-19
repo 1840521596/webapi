@@ -428,6 +428,7 @@ $("#btn4").click(function () {
         var api_headers=$("#get_headers").val();
         var api_cookies=$("#get_cookies").val();
         var project_cn=$("#project_choice").val();
+        var islogin=$("#check2").is(':checked');
         $.ajax({
             url: "/case_http_test",
             type: "post",
@@ -439,6 +440,7 @@ $("#btn4").click(function () {
                 params: api_data,
                 headers: api_headers,
                 cookies: api_cookies,
+                islogin: islogin
             }
         }).done(function (result) {
             if (result.code == "200")
@@ -454,6 +456,7 @@ $("#btn4").click(function () {
         var api_headers = $("#post_headers").val();
         var api_cookies = $("#post_cookies").val();
         var project_cn=$("#project_choice").val();
+        var islogin=$("#check2").is(':checked');
         //alert(api_redirects)
         $.ajax({
             url: "/case_http_test",
@@ -466,6 +469,7 @@ $("#btn4").click(function () {
                 params: api_data,
                 headers: api_headers,
                 cookies: api_cookies,
+                islogin: islogin,
             }
         }).done(function (result) {
             if (result.code == "200")
