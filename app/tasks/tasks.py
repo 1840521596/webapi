@@ -10,7 +10,7 @@ import json
 import os
 
 
-#@celery.task(bind=True)
+@celery.task(bind=True)
 def run_api(self,project,developer):
     html_test_msg = ""
     sql = """select project,case_api,case_host,case_url,method,params,headers,cookies,islogin,assertValue from case_http_api where project='%s' and scheduling='1'"""%(project)
@@ -68,9 +68,9 @@ def run_api(self,project,developer):
                                                  status_color=status_color, case_status=case_status,
                                                  responce_params=responce_params,pid=str(i))
         html_test_msg += new_detailed
-       # self.update_state(state='PROGRESS',
-       #                   meta={'current': i, 'total': case_total,
-        #                        'status': case_api,"pass_status":pass_status,"data_list":resp_text})
+        self.update_state(state='PROGRESS',
+                          meta={'current': i, 'total': case_total,
+                                'status': case_api,"pass_status":pass_status,"data_list":resp_text})
     endTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') # 获取结束时间
     start_time = startTime
     end_time = endTime
