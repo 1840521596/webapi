@@ -42,7 +42,10 @@ def get_ysx_crm_cookie(env_flag,env_num):
         captcha_resp = requests.post(url=url,headers=captcha_header,json=data)  # 获取验证码
         captcha = json.loads(captcha_resp.content,encoding="utf8")["string"].lower()  # 最小化
     url = r"http://admin.crm.yunshuxie.com/sys/login"
-    params = {"username": "autotester","password": "123456","captcha": captcha}  # 登录接口
+    if env_flag.upper() =="BETA":
+        params = {"username": "admin", "password": "Yunshuxie916@1ppt", "captcha": captcha}  # 登录接口
+    else:
+        params = {"username": "autotester","password": "123456","captcha": captcha}  # 登录接口
     header = {"Accept": "application/json, text/javascript, */*; q=0.0",
               "Cache-Control": "no-cache",
               "Connection": "keep-alive",
@@ -224,7 +227,7 @@ def get_cookies(project,env_flag,env_num,phone=None):
 
 if __name__ == "__main__":
     #print get_cookies("wacc_mobile","beta","7","60000021182")
-    print get_ysx_crm_cookie("prod","")
+    print get_ysx_crm_cookie("beta","1")
 
 
 
