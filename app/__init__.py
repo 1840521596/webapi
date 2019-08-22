@@ -4,11 +4,11 @@ from flask import Flask,render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from config.config import config
-from flask_redis import Redis
+from flask_redis import FlaskRedis
 from celery import Celery
 bootstrap = Bootstrap()
 db = SQLAlchemy()
-redis = Redis()
+redis = FlaskRedis()
 def make_celery(app):
     celery = Celery(app.import_name,broker=app.config['CELERY_BROKER_URL'])
     celery.conf.update(app.config)
