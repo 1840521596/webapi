@@ -333,7 +333,7 @@ def taskstatus(task_id):
 			'state': task.state,
 			'current': 1,
 			'total': 1,
-			'status': str(task.info),  # this is the exception raised
+			'status':  str(task.info.get('status', '')) +":" +str(task.info),  # this is the exception raised
 		}
 	return jsonify(response)
 
