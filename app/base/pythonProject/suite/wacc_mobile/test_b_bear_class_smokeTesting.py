@@ -64,7 +64,7 @@ class BearWord_Class_Test(unittest.TestCase):
                                                                                  Really=result["returnCode"])
     def test_03_bear_student_courseList(self):
         """课程列表接口-已登录(存在课程)<br>https://mobile.yunshuxie.com/v1/bear/student/courseList.htm<br/>{"page":"1","isApp":"1"}"""
-        cookies = get_app_cookie(self.env_flag,self.env_num,phone=self.phone_Exist_Course) #进行登录展示接口_新用户
+        cookies = get_app_cookie(self.env_flag,self.env_num,user=self.phone_Exist_Course) #进行登录展示接口_新用户
         self.session.cookies = cookies
         url = r"https://mobile.yunshuxie.com" + "/v1/bear/student/courseList.htm"
         params = {"page": "1", "isApp": "2"}

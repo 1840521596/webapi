@@ -9,7 +9,7 @@ import urllib
 import hashlib
 import redis
 from py_redis import MyRedis
-def get_ysx_crm_cookie(env_flag,env_num):
+def get_ysx_crm_cookie(env_flag,env_num,user=None):
     """登录crm,并返回cookies
     :param url 请求连接
     :param header 请求头
@@ -62,7 +62,7 @@ def get_ysx_crm_cookie(env_flag,env_num):
         return cookies
     else:
         return(get_ysx_crm_cookie(env_flag,env_num))  # 递归
-def get_wacc_admin_cookie(env_flag,env_num):
+def get_wacc_admin_cookie(env_flag,env_num,user=None):
     """ 登录crm, 并返回cookies
     :param url 请求连接
     :param header 请求头
@@ -89,14 +89,14 @@ def get_wacc_admin_cookie(env_flag,env_num):
     else:
         raise Exception, resp.content
     return cookies
-def get_wacc_home_cookie(env_flag,env_num,phone=None):
+def get_wacc_home_cookie(env_flag,env_num,user=None):
     """ 登录PC云舒写官网, 并返回cookies
     :param url 请求连接
     :param header 请求头
     :return cookies
     """
     r = MyRedis()
-    phone = phone if phone else r.str_get("wacc_home_user_phone")
+    user = user if user else r.str_get("wacc_home_user_phone")
     url = r"https://www.yunshuxie.com/v5/web/account/login.htm"
     cookies = requests.cookies.RequestsCookieJar()  # 生成cookies 容器
     cookies.set('env_flag', env_flag)  # 设置测试环境
@@ -105,7 +105,7 @@ def get_wacc_home_cookie(env_flag,env_num,phone=None):
               "Accept": "application/json, text/javascript, */*; q=0.01",
               "Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9",
               "Connection": "keep-alive","Host": "www.yunshuxie.com","Upgrade-Insecure-Requests": "1"}
-    params = {"userName": phone ,"pwd": "123456"}
+    params = {"userName": user ,"pwd": "123456"}
     resp = requests.post(url=url, headers=header, cookies=cookies,data=params)
     dict_resp = json.loads(resp.content, encoding="utf8")
     #print dict_resp
@@ -114,7 +114,7 @@ def get_wacc_home_cookie(env_flag,env_num,phone=None):
     else:
         raise Exception, resp.content
     return cookies
-def get_wacc_tortoise_cookie(env_flag,env_num):
+def get_wacc_tortoise_cookie(env_flag,env_num,user=None):
     """登录销售简章后台配置系统，并返回cookies
     :param env_flag:
     :param env_num:
@@ -136,14 +136,14 @@ def get_wacc_tortoise_cookie(env_flag,env_num):
     else:
         raise Exception, resp.content
     return cookies
-def get_wacc_bird_cookie(env_flag,env_num,phone=None):
+def get_wacc_bird_cookie(env_flag,env_num,user=None):
     """登录微信前台开始上课，并返回cookies
     :param env_flag:
     :param env_num:
     :return:
     """
     r = MyRedis()
-    phone = phone if phone else r.str_get("wacc_bird_user_phone")
+    user = user if user else r.str_get("wacc_bird_user_phone")
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
     salt = "mengmengda"
     cookies = requests.cookies.RequestsCookieJar() #生成cookies 容器
@@ -154,7 +154,7 @@ def get_wacc_bird_cookie(env_flag,env_num,phone=None):
                   "Cache-Control": "no-cache",
                   "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 Safari/601.1 wechatdevtools/1.02.1904090 MicroMessenger/6.7.3 Language/zh_CN webview/15578306374265793 webdebugger port/22562"}
 
-    params = {"userName": phone, "pwd": "123456", "type": "3"}
+    params = {"userName": user, "pwd": "123456", "type": "3"}
     string = urllib.urlencode(params)
     s = string + salt
     md = hashlib.md5()
@@ -168,19 +168,19 @@ def get_wacc_bird_cookie(env_flag,env_num,phone=None):
     else:
         raise Exception, resp.content
     return cookies
-def get_app_cookie(env_flag,env_num,phone=None):
+def get_app_cookie(env_flag,env_num,user=None):
     """登录APP，并返回cookies
     :param env_flag:
     :param env_num:
     :return:
     """
     w = MyRedis()
-    phone = phone if phone else w.str_get("wacc_mobile_user_phone")
+    user = user if user else w.str_get("wacc_mobile_user_phone")
     if env_flag =="beta":
         r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
     else:
         r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
-    redis_shell = "code_6_" + phone
+    redis_shell = "code_6_" + user
     r.set(redis_shell,"123456")
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
     salt = "mengmengda"
@@ -188,7 +188,7 @@ def get_app_cookie(env_flag,env_num,phone=None):
     cookies.set('env_flag', env_flag)  # 设置测试环境
     cookies.set("env_num", env_num)  # 设置环境号
     header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded","User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
-    params = {"userName": phone,"smsCode": "123456", "type": "10"}
+    params = {"userName": user,"smsCode": "123456", "type": "10"}
     string = urllib.urlencode(params)
     s = string + salt
     md = hashlib.md5()
@@ -202,7 +202,7 @@ def get_app_cookie(env_flag,env_num,phone=None):
     else:
         raise Exception, resp.content
     return cookies
-def get_cookies(project,env_flag,env_num,phone=None):
+def get_cookies(project,env_flag,env_num,user=None):
     """
     :param project: 发布项目
     :param env_flag: 发布环境
@@ -210,17 +210,17 @@ def get_cookies(project,env_flag,env_num,phone=None):
     :return: cookies
     """
     if project == "ysx_crm":
-        cookie = get_ysx_crm_cookie(env_flag,env_num).get_dict()
+        cookie = get_ysx_crm_cookie(env_flag,env_num,user).get_dict()
     elif project == "wacc_home":
-        cookie = get_wacc_home_cookie(env_flag,env_num,phone).get_dict()
+        cookie = get_wacc_home_cookie(env_flag,env_num,user).get_dict()
     elif project == "wacc_admin":
-        cookie = get_wacc_admin_cookie(env_flag,env_num).get_dict()
+        cookie = get_wacc_admin_cookie(env_flag,env_num,user).get_dict()
     elif project == "wacc_tortoise":
-        cookie = get_wacc_tortoise_cookie(env_flag,env_num).get_dict()
+        cookie = get_wacc_tortoise_cookie(env_flag,env_num,user).get_dict()
     elif project == "wacc_bird":
-        cookie = get_wacc_bird_cookie(env_flag,env_num,phone).get_dict()
+        cookie = get_wacc_bird_cookie(env_flag,env_num,user).get_dict()
     elif project == "wacc_mobile":
-        cookie = get_app_cookie(env_flag,env_num,phone).get_dict()
+        cookie = get_app_cookie(env_flag,env_num,user).get_dict()
     else:
         cookie = {"env_flag":env_flag,"env_num":env_num}
     return cookie
