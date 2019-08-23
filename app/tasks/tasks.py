@@ -32,14 +32,14 @@ def run_api(self,project,developer):
     ####
     for i in range(case_total):
         current += 1  # 计数器+1
+        case_api = datas_list[i]["case_api"]  # 接口名称
+        case_url = datas_list[i]["case_host"] + datas_list[i]["case_url"]
+        case_params = datas_list[i]["params"]
+        assertValue = datas_list[i]["assertValue"]
         status_key_list,resp_status,resp_text = run_test(datas_list[i])  # 传入 单条 接口用例数据
         print status_key_list
         print resp_status
         print resp_text
-        case_api = datas_list[i]["case_api"]  # 接口名称
-        case_url = datas_list[i]["case_host"] + "/" + datas_list[i]["case_url"]
-        case_params = datas_list[i]["params"]
-        assertValue = datas_list[i]["assertValue"]
         if resp_status =="True":
             pass_status = 1
             case_success += 1
@@ -110,7 +110,7 @@ def run_api(self,project,developer):
     return {'current': current, 'total': case_total, 'status': u'执行成功!','result': case_success,"case_failed":case_failed,"case_mistake":case_mistake}
 def run_test(dict_datas):
     project = dict_datas["project"]  # 业务项目
-    url = dict_datas["case_host"] + "/" + dict_datas["case_url"] # 请求连接
+    url = dict_datas["case_host"] + dict_datas["case_url"] # 请求连接
     method = dict_datas["method"]  # 请求方式
     params = eval(dict_datas["params"])  # 请求参数
     headers = eval(dict_datas["headers"])  # 请求头
@@ -127,7 +127,7 @@ def run_test(dict_datas):
         project_en = select_sql(sql)[0][0]  # 获取项目名称
         cookies = get_cookies(project_en,env_flag,env_num,user=account)  # 更新cookies信息，变更为已登录
     try:
-        assertValue_dict = None if dict_datas["assertValue"] == "None" else json.loads(dict_datas["assertValue"],
+        assertValue_dict = None if dict_datas["assertValue"] == "None" or dict_datas["assertValue"] == None else json.loads(dict_datas["assertValue"],
                                                                                        encoding="utf8")  # 校验数据
         if method.upper == "GET":
             resp = getFunction(url=url,headers=headers,params=params,cookies=cookies)

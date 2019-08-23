@@ -36,12 +36,12 @@ def http_insert():
     case_host = request.form['case_host']
     case_url = request.form['case_url']
     method = request.form['method']
-    response = request.form['response']
-    params = request.form["params"]
-    headers = request.form["headers"]
-    cookies = request.form["cookies"]
+    response = replace_cn(request.form['response'])
+    params = replace_cn(request.form["params"])
+    headers = replace_cn(request.form["headers"])
+    cookies = replace_cn(request.form["cookies"])
     scheduling = request.form["scheduling"]
-    assertValue = request.form["assert"]
+    assertValue = replace_cn(request.form["assert"])
     islogin = request.form["islogin"]
     account = request.form["account"]
     #test_suite = request.form["test_suite"]
@@ -131,12 +131,12 @@ def update():
     case_host = request.form['case_host']
     case_url = request.form['case_url']
     method = request.form['method']
-    params = request.form['params']
-    response = request.form['response']
-    headers = request.form['headers']
-    cookies = request.form['cookies']
+    params = replace_cn(request.form['params'])
+    response = replace_cn(request.form['response'])
+    headers = replace_cn(request.form['headers'])
+    cookies = replace_cn(request.form['cookies'])
     scheduling = request.form["scheduling"]
-    assertValue = request.form["assert"]
+    assertValue = replace_cn(request.form["assert"])
     islogin = request.form["islogin"]
     account = request.form["account"]
     #test_suite = request.form["test_suite"]
@@ -207,3 +207,13 @@ def httpUnionSearch():
     resp = {"code": 200, "datas": object_api}
     msg_resp = make_response(jsonify(resp))
     return msg_resp
+
+def replace_cn(str_params):
+    new_str_params = str_params.replace("＂",'"')
+    new_str_params1 = new_str_params.replace("＂",'"')
+    new_str_params2 = new_str_params1.replace("＇","'")
+    new_str_params3 = new_str_params2.replace("，",",")
+    new_str_params4 = new_str_params3.replace("｛","{")
+    new_str_params5 = new_str_params4.replace("｝","}")
+    new_str_params6 = new_str_params5.replace("：",":")
+    return new_str_params6
