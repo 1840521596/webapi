@@ -222,11 +222,11 @@ jQuery(document).ready(function ($) {
         document.getElementById("check1").checked=data[10];
         if (data[10]){
         $("#assert").attr('disabled',false);
-        $("#test_suite").attr('disabled',false);
+        //$("#test_suite").attr('disabled',false);
         }
         else{
         $("#assert").attr('disabled',true);
-        $("#test_suite").attr('disabled',true);
+        //$("#test_suite").attr('disabled',true);
         }
         document.getElementById("check2").checked=data[11];
         if (data[11]){
@@ -237,7 +237,7 @@ jQuery(document).ready(function ($) {
         }
         document.getElementById("assert").value=data[12];
         document.getElementById("account").value=data[13];  //account
-        document.getElementById("test_suite").value=data[14];  //test_suite
+       // document.getElementById("test_suite").value=data[14];  //test_suite
         var _ad = $("#apt_datas").find("td");
         //alert(data[0]);
         if (data[5]=='GET'){
@@ -306,7 +306,7 @@ jQuery(document).ready(function ($) {
                 islogin: $("#check2").is(':checked'),
                 assert: $("#assert").val(),
                 account: $("#account").val(),
-                test_suite: $("#test_suite").val(),
+                //test_suite: $("#test_suite").val(),
 
             });
         });
@@ -335,7 +335,7 @@ jQuery(document).ready(function ($) {
                     islogin: $("#check2").is(':checked'),
                     assert: $("#assert").val(),
                     account: $("#account").val(),
-                test_suite: $("#test_suite").val(),
+                //test_suite: $("#test_suite").val(),
                 }}).done(function (result){
                     if (result.status == "200"){
                         alert(result.datas);
@@ -365,7 +365,7 @@ jQuery(document).ready(function ($) {
                     islogin: $("#check2").is(':checked'),
                     assert: $("#assert").val(),
                     account: $("#account").val(),
-                test_suite: $("#test_suite").val(),
+               // test_suite: $("#test_suite").val(),
                 }
             }).done(function(result){
                     if (result.status == "200"){
@@ -398,7 +398,7 @@ jQuery(document).ready(function ($) {
                     islogin: $("#check2").is(':checked'),
                 assert: $("#assert").val(),
                 account: $("#account").val(),
-                test_suite: $("#test_suite").val(),
+                //test_suite: $("#test_suite").val(),
                 }
             }).done(function(result){
                     if (result.status == "200"){
@@ -429,7 +429,7 @@ jQuery(document).ready(function ($) {
                     islogin: $("#check2").is(':checked'),
                 assert: $("#assert").val(),
                 account: $("#account").val(),
-                test_suite: $("#test_suite").val(),
+               // test_suite: $("#test_suite").val(),
                 }
             }).done(function(result){
                     if (result.status == "200"){
@@ -729,11 +729,11 @@ $("#check1").change(function(){
  var scheduling=$("#check1").is(':checked');
  if (scheduling==true){
   $("#assert").attr('disabled',false);
-  $("#test_suite").attr('disabled',false);
+ // $("#test_suite").attr('disabled',false);
  }
  else{
   $("#assert").attr('disabled',true);
-  $("#test_suite").attr('disabled',true);
+ // $("#test_suite").attr('disabled',true);
  };
 });
 $("#check2").change(function(){

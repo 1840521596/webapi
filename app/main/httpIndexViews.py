@@ -44,7 +44,7 @@ def http_insert():
     assertValue = request.form["assert"]
     islogin = request.form["islogin"]
     account = request.form["account"]
-    test_suite = request.form["test_suite"]
+    #test_suite = request.form["test_suite"]
     if scheduling == "true":
         scheduling = 1
     else:
@@ -61,7 +61,7 @@ def http_insert():
                               case_url=case_url,
                               method=method,isLogin=islogin,
                  params=params,response=response,headers=headers,cookies=cookies,
-                              scheduling=scheduling,assertValue=assertValue,account=account,test_suite=test_suite)
+                              scheduling=scheduling,assertValue=assertValue,account=account)
         db.session.add(datas)
         db.session.commit()
         msg = {"datas":"%s 更新成功!"%(case_api),"code":200}
@@ -139,7 +139,7 @@ def update():
     assertValue = request.form["assert"]
     islogin = request.form["islogin"]
     account = request.form["account"]
-    test_suite = request.form["test_suite"]
+    #test_suite = request.form["test_suite"]
 
     if scheduling == "true":
         scheduling = 1
@@ -153,7 +153,7 @@ def update():
         Case_Http_API.query.filter_by(id=pid).update(dict(
             project=project,case_api=case_api,description=description,case_host=case_host,isLogin=islogin,
             case_url=case_url,headers=headers,cookies=cookies,scheduling=scheduling,assertValue=assertValue,
-            method=method,params=params,response=response,account=account,test_suite=test_suite))
+            method=method,params=params,response=response,account=account))
         db.session.commit()
         resp = {'datas': '更新成功', 'code': '200'}
     except Exception as e:
@@ -203,8 +203,7 @@ def httpUnionSearch():
                                   Case_Http_API.scheduling,
                                   Case_Http_API.isLogin,
                                   Case_Http_API.assertValue,
-                                  Case_Http_API.account,
-                                  Case_Http_API.test_suite).filter_by(project=project,case_api=case_api,id=pid,method=method).first()
+                                  Case_Http_API.account).filter_by(project=project,case_api=case_api,id=pid,method=method).first()
     resp = {"code": 200, "datas": object_api}
     msg_resp = make_response(jsonify(resp))
     return msg_resp

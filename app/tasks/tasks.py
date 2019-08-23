@@ -13,10 +13,10 @@ import os
 @celery.task(bind=True)
 def run_api(self,project,developer):
     html_test_msg = ""
-    sql = """select project,case_api,case_host,case_url,method,params,headers,cookies,islogin,assertValue from case_http_api where project='%s' and scheduling='1'"""%(project)
+    sql = """select project,case_api,case_host,case_url,method,params,headers,cookies,islogin,assertValue,account from case_http_api where project='%s' and scheduling='1'"""%(project)
     datas = select_sql(sql)
     datas_list = []
-    keys = ["project","case_api","case_host","case_url","method","params","headers","cookies","islogin","assertValue"]
+    keys = ["project","case_api","case_host","case_url","method","params","headers","cookies","islogin","assertValue","account"]
     for data in datas:
         key_value = dict(zip(keys,data))
         datas_list.append(key_value)
@@ -33,7 +33,9 @@ def run_api(self,project,developer):
     for i in range(case_total):
         current += 1  # 计数器+1
         status_key_list,resp_status,resp_text = run_test(datas_list[i])  # 传入 单条 接口用例数据
-        #print status_key_list
+        print status_key_list
+        print resp_status
+        print resp_text
         case_api = datas_list[i]["case_api"]  # 接口名称
         case_url = datas_list[i]["case_host"] + "/" + datas_list[i]["case_url"]
         case_params = datas_list[i]["params"]
@@ -70,7 +72,7 @@ def run_api(self,project,developer):
         html_test_msg += new_detailed
         self.update_state(state='PROGRESS',
                           meta={'current': i, 'total': case_total,
-                                'status': case_api,"pass_status":pass_status,"data_list":resp_text})
+                               'status': case_api,"pass_status":pass_status,"data_list":resp_text})
     endTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') # 获取结束时间
     start_time = startTime
     end_time = endTime
@@ -113,15 +115,20 @@ def run_test(dict_datas):
     params = eval(dict_datas["params"])  # 请求参数
     headers = eval(dict_datas["headers"])  # 请求头
     islogin = dict_datas["islogin"]  # 是否需要前置登录
-    assertValue_dict = None if dict_datas["assertValue"]=="None" else json.loads(dict_datas["assertValue"],encoding="utf8") # 校验数据
+    case_api = dict_datas["case_api"]  # 接口名称
     cookies = eval(dict_datas["cookies"])
     if islogin:  # 判断需要登陆状态时，进行登录
         env_flag = cookies["env_flag"]
         env_num = cookies["env_num"]
+        account = dict_datas["account"]  #需要登录状态时,获取登录状态
+        if account.upper() == "NONE" or account==None:
+            account=None
         sql = """select project_en from project_api where project='%s';""" % (project)
         project_en = select_sql(sql)[0][0]  # 获取项目名称
-        cookies = get_cookies(project_en,env_flag,env_num)  # 更新cookies信息，变更为已登录
+        cookies = get_cookies(project_en,env_flag,env_num,user=account)  # 更新cookies信息，变更为已登录
     try:
+        assertValue_dict = None if dict_datas["assertValue"] == "None" else json.loads(dict_datas["assertValue"],
+                                                                                       encoding="utf8")  # 校验数据
         if method.upper == "GET":
             resp = getFunction(url=url,headers=headers,params=params,cookies=cookies)
         else:
@@ -148,7 +155,8 @@ def run_test(dict_datas):
     except Exception as e:
         status_key_list = []
         pass_status = "Mistake"
-        return status_key_list,pass_status,str(e)
+        error_msg = case_api + ':' + str(e)
+        return status_key_list,pass_status,error_msg
 def postFunction(url, params, headers, cookies):
     resp = requests.post(url, data=params, headers=headers, cookies=cookies)
     return resp
@@ -217,7 +225,7 @@ def wechatQY_msg(developer,project_en,success_count,error_count,failure_count,re
         raise Exception,str(e)
 
 if __name__ == "__main__":
-    run_api("wctv","云舒写后台管理系统","GUOHONGJIE")
+    run_api("wctv","云舒写and罐罐熊","GUOHONGJIE")
 
 
 

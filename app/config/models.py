@@ -40,7 +40,7 @@ class Case_Http_API(db.Model):
     test_suite = db.Column(db.String(100))
     def __init__(self,project,case_api,params,case_host,headers,cookies,assertValue,
                  description,case_url,method,response,api_type='http',status=0,scheduling=0,
-                 isLogin=0,account=account,test_suite=test_suite):
+                 isLogin=0,account=account):
         self.project = project
         self.case_api = case_api
         self.description = description
@@ -57,7 +57,6 @@ class Case_Http_API(db.Model):
         self.scheduling = scheduling
         self.isLogin = isLogin
         self.account = account
-        self.test_suite = test_suite
 
     def __repr__(self):
         """返回打印数据"""
