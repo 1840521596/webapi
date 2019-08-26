@@ -78,8 +78,8 @@ def run_api(self,project,developer,cookies):
     end_time = endTime
     case_total = case_total
     case_pass = str(case_success)
-    env_flag = u"根据接口信息配置获取"
-    env_num = u"根据接口信息配置获取"
+    env_flag = eval(cookies)["env_flag"]
+    env_num = eval(cookies)["env_num"]
     case_fail = str(case_failed)
     case_mistake = case_mistake
     wc = html_all.replace("{project_cn}", project_cn)
