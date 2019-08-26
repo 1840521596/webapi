@@ -11,12 +11,12 @@ import os
 
 
 @celery.task(bind=True)
-def run_api(self,project,developer):
+def run_api(self,project,developer,cookies):
     html_test_msg = ""
-    sql = """select project,case_api,case_host,case_url,method,params,headers,cookies,islogin,assertValue,account from case_http_api where project='%s' and scheduling='1'"""%(project)
+    sql = """select project,case_api,case_host,case_url,method,params,headers,islogin,assertValue,account from case_http_api where project='%s' and scheduling='1'"""%(project)
     datas = select_sql(sql)
     datas_list = []
-    keys = ["project","case_api","case_host","case_url","method","params","headers","cookies","islogin","assertValue","account"]
+    keys = ["project","case_api","case_host","case_url","method","params","headers","islogin","assertValue","account"]
     for data in datas:
         key_value = dict(zip(keys,data))
         datas_list.append(key_value)
@@ -36,7 +36,7 @@ def run_api(self,project,developer):
         case_url = datas_list[i]["case_host"] + datas_list[i]["case_url"]
         case_params = datas_list[i]["params"]
         assertValue = datas_list[i]["assertValue"]
-        status_key_list,resp_status,resp_text = run_test(datas_list[i])  # 传入 单条 接口用例数据
+        status_key_list,resp_status,resp_text = run_test(datas_list[i],cookies)  # 传入 单条 接口用例数据
         print status_key_list
         print resp_status
         print resp_text
@@ -108,7 +108,7 @@ def run_api(self,project,developer):
     wechatQY_msg(developer=developer,project_en=project_en,report_url=report_url,
                  success_count=str(case_pass),error_count=str(case_fail),failure_count=str(case_mistake))
     return {'current': current, 'total': case_total, 'status': u'执行成功!','result': case_success,"case_failed":case_failed,"case_mistake":case_mistake}
-def run_test(dict_datas):
+def run_test(dict_datas,cookies):
     project = dict_datas["project"]  # 业务项目
     url = dict_datas["case_host"] + dict_datas["case_url"] # 请求连接
     method = dict_datas["method"]  # 请求方式
@@ -116,7 +116,7 @@ def run_test(dict_datas):
     headers = eval(dict_datas["headers"])  # 请求头
     islogin = dict_datas["islogin"]  # 是否需要前置登录
     case_api = dict_datas["case_api"]  # 接口名称
-    cookies = eval(dict_datas["cookies"])
+    cookies = eval(cookies)
     if islogin:  # 判断需要登陆状态时，进行登录
         env_flag = cookies["env_flag"]
         env_num = cookies["env_num"]

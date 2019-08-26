@@ -289,6 +289,7 @@ def run_schedule():
 	project = request.form["project"]#"云舒写后台管理系统" #request.args.get("project").strip()
 	developer = request.form["developer"]
 	timer =  request.form["timer"] #request.args.get("num") if request.args.get("num") else None
+	cookies = request.form["cookies"]
 	api_count = db.session.query(Case_Http_API.id).filter_by(project=project).count()
 	api_case_count = db.session.query(Case_Http_API.id).filter_by(project=project,scheduling=1).count()
 	if timer=="None" or timer==None:
@@ -298,7 +299,7 @@ def run_schedule():
 			raise Exception, u"该项目下未存在测试用例"
 		if not api_case_count:
 			raise Exception, u"该项目下未存在调度用例"
-		task = run_api.apply_async(args=[project,developer],countdown=int(timer))
+		task = run_api.apply_async(args=[project,developer,cookies],countdown=int(timer))
 		msg = {"code":"200","msg":"操作成功"}
 		return jsonify(msg), 202, {'Location': url_for('test.taskstatus', task_id=task.id)}
 	except Exception as e:
