@@ -65,10 +65,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
                       "Pragma": "no-cache", "Referer": "https://admin.yunshuxie.com/",
                       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
                       "X-Requested-With": "XMLHttpRequest"}
-            if self.env_flag != "beta":
-                teacherType = "2"
-            else:
-                teacherType = "1"
+            teacherType = "2"
             params = {"memberId":bearWord_Teacher_memberId,"teacherType": teacherType} #teacherType==2,测试老师
             #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
@@ -139,7 +136,8 @@ class BearWord_Teacher_Test(unittest.TestCase):
     def test_06_admin_bear_course_query_bearMmeber_timeLine(self):
         """admin平台-查询用户详情<br>https://admin.yunshuxie.com/v1/bear_course/query/bearMmeber_timeLine.json"""
         url = r"https://admin.yunshuxie.com"+r"/v1/bear_course/query/bearMmeber_timeLine.json"
-        params ={"timeLineType":"8","phone":self.phone,"timeLineStatus": "6","beginDate": "","endDate":"","teacherPhone": "","order": "asc","limit": "10","offset": "0"}
+        params ={"timeLineType":"11","phone":self.phone,"timeLineStatus": "6","beginDate": "",
+                 "endDate":"","teacherPhone": "","order": "asc","limit": "10","offset": "0"}
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -158,6 +156,8 @@ class BearWord_Teacher_Test(unittest.TestCase):
         result = json.loads(self.resp.text, encoding="utf8")
         if result["rows"]:
             admin_workId = self.redis.str_set("admin_bearWord_workId", result["rows"][0]["timeLineId"],ex=60)
+        else:
+            raise Exception,u"当前用户未存在测试作业数据"
     def test_07_admin_bear_course_batch_job_assgin(self):
         """admin平台-分配指定服务老师<br>https://admin.yunshuxie.com/v1/bear_course/batch_job_assgin.htm"""
         workId = self.redis.str_get("bearWord_workId") if self.redis.str_get("bearWord_workId") else None
@@ -179,6 +179,13 @@ class BearWord_Teacher_Test(unittest.TestCase):
         self.resp = requests.post(url=url,data=params,headers=header,cookies=cookies)
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
+        expect = {"returnCode": "0"}
+        if result["returnCode"] == "0" or result["returnCode"] == 0:
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                 Really=result["returnCode"])
+        else:
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                 Really=result["returnCode"])
     def test_08_admin_bear_course_batch_job_assgin(self):
         """admin平台-重新分配指定服务老师<br>https://admin.yunshuxie.com/v1/bear_course/batch_job_assgin.htm"""
         workId = self.redis.str_get("admin_bearWord_workId") if self.redis.str_get("admin_bearWord_workId") else None
@@ -200,6 +207,13 @@ class BearWord_Teacher_Test(unittest.TestCase):
         self.resp = requests.post(url=url,data=params,headers=header,cookies=cookies)
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
+        expect = {"returnCode": "0"}
+        if result["returnCode"] == "0" or result["returnCode"] == 0:
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                 Really=result["returnCode"])
+        else:
+            assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
+                                                                                 Really=result["returnCode"])
     def test_09_v1_bear_teacher_not_correct_list(self):
         """老师端：待批改列表<br>https://mobile.yunshuxie.com/v1/bear/teacher/not_correct_list.htm<br>{"page":"","pageSize":""}"""
         url =r"https://mobile.yunshuxie.com"+r"/v1/bear/teacher/not_correct_list.htm"
