@@ -12,7 +12,7 @@ from app.base.pythonProject.base.couponReceive import coupon_test
 import redis as red
 from threading import Thread
 import json
-from ..tasks.tasks import run_api
+from ..tasks.tasks import run_api,run_api_case
 @test.route("/runSuiteApi",methods=["GET"])
 def runDatasApiTest():
 	"""测试集页面使用接口,用于上传测试用例后执行
@@ -157,26 +157,25 @@ def runDatasApiTest_yunwei():
 					raise Exception("ErrorMsg: 用户手机号创建失败{phone}".format(phone=new_phone))
 				else:
 					if chose_run.has_key("new_phone"):  #字典内存在新用户号码，传入新手机号
-						process = Thread(target=run.run_yunwei_case,name="",
-										  args=(project_en[0],env_num,env_flag,project_en[1],project,chose_run["new_phone"],
-												developer,developer_project,branch))
-						process.start()
-						msg = {"code": 200, "Msg": "执行成功", "url": r"http://uwsgi.sys.bandubanxie.com/Report"}
+						# process = Thread(target=run.run_yunwei_case,name="",
+						# 				  args=(project_en[0],env_num,env_flag,project_en[1],project,chose_run["new_phone"],
+						# 						developer,developer_project,branch))
+						# process.start()
+
+						task = run_api_case.apply_async(args=[project_en[0],env_num,env_flag,project_en[1],
+											project,chose_run["new_phone"],
+								developer,developer_project,branch])
+						msg = {"code": 200, "Msg": "执行成功,请查收测试报告", "url": r"http://uwsgi.sys.bandubanxie.com/Report"}
 			else:
 				chose_run["new_phone"] = None
-				process = Thread(target=run.run_yunwei_case,args=(project_en[0],env_num,env_flag,project_en[1],project,
-																  chose_run["new_phone"],developer,developer_project,branch))
-				process.start()
-				msg = {"code": 200, "Msg": "执行成功", "url": r"http://uwsgi.sys.bandubanxie.com/Report"}
-			# if result["Error"] != 0 or result["Failure"] !=0:  #执行反馈存在错误和失败，短信通知
-			# 	message = """《{project_cn}》接口测试报告存在失败用例，请访问 http://uwsgi.sys.bandubanxie.com/Report 查看，脚本错误数量：{error} 个;失败数量：{failure}""".format(project_cn=project,error=result["Error"],failure=result["Failure"])
-			# 	sendMsg(message,["18519118952"]) # 郭宏杰  王梦晓  洪琛  张红铃
-			# 	#sendMsg(message,["18519118952","15201532513","18010136420","13520170386"]) # 郭宏杰  王梦晓  洪琛  张红铃
-			# 	msg = {"code": 400, "Msg": "接口测试成功，存在未通过项", "url": r"http://uwsgi.sys.bandubanxie.com/Report",
-			# 	   "Error": result["Error"], "Failure": result["Failure"], "Success": result["Success"]}
-			# else:
-			# 	msg = {"code": 200, "Msg": "执行成功", "url": r"http://uwsgi.sys.bandubanxie.com/Report",
-			# 		   "Error": result["Error"], "Failure": result["Failure"], "Success": result["Success"]}
+				# process = Thread(target=run.run_yunwei_case,args=(project_en[0],env_num,env_flag,project_en[1],project,
+				# 												  chose_run["new_phone"],developer,developer_project,branch))
+				# process.start()
+				# project_en,env_num,env_flag,description,project_cn,new_phone=None,developer=None,developer_project=None,branch=None
+				task = run_api_case.apply_async(args=[project_en[0],env_num,env_flag,
+									project_en[1],project,chose_run["new_phone"],
+									developer,developer_project,branch])
+				msg = {"code": 200, "Msg": "执行成功,请查收测试报告","url": r"http://uwsgi.sys.bandubanxie.com/Report"}
 		else:
 			raise Exception("{project}不存在".format(project=project))
 	except Exception as e:

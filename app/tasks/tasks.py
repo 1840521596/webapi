@@ -4,6 +4,7 @@ from celery_app import celery
 from app.config.sql import select_sql
 from app.config.html_template import test_case_detailed,html_all
 from app.base.pythonProject.base.getCookies import get_cookies
+from app.base.pythonProject.run import run_yunwei_case
 import requests
 import datetime
 import json
@@ -224,6 +225,16 @@ def wechatQY_msg(developer,project_en,success_count,error_count,failure_count,re
     except Exception as e:
         raise Exception,str(e)
 
+@celery.task()
+def run_api_case(project_en,env_num,env_flag,description,project_cn,new_phone=None,developer=None,developer_project=None,branch=None):
+    try:#project_en,env_num,env_flag,description,project_cn,new_phone=None,developer=None,developer_project=None,branch=None
+        run_yunwei_case(project_en=project_en,
+                        env_num=env_num,
+                        env_flag=env_flag,description=description,
+                        project_cn=project_cn,new_phone=new_phone,developer=developer,developer_project=developer_project,branch=branch)
+        return u"执行成功!"
+    except Exception as e:
+        return str(e)
 if __name__ == "__main__":
     run_api("wctv","云舒写and罐罐熊","GUOHONGJIE")
 
