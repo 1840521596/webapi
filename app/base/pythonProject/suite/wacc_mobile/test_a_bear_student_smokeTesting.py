@@ -26,7 +26,7 @@ class BearWord_Student_Test(unittest.TestCase):
     def test_00_admin_v1_elementary_joinCategoryProduct(self):
         """罐罐熊练字课-用户授权课程<br>https://admin.yunshuxie.com/v1/elementary/joinCategoryProduct.json"""
         if self.env_flag == "beta":  # 自定义课程选择
-            product = 9018
+            product = 8309
         else:
             product = 8400
         cookies = get_wacc_admin_cookie(self.env_flag,self.env_num)
