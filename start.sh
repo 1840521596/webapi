@@ -12,7 +12,7 @@ else
 rm uwsgi.log;
 fi;
 echo "启动uwsgi.ini文件"
-uwsgi uwsgi.ini;
+uwsgi uwsgi.ini &
 echo "启动celery_task任务"
-celery -A  manage.celery worker --loglevel=info & > celery.log
+nohup celery -A  manage.celery worker --loglevel=info > celery.log &
 exit
