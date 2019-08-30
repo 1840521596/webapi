@@ -26,7 +26,7 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
     session.mount("http://", request_retry)
     start_date = "{ymd} 00:00:00".format(ymd=datetime.datetime.now().strftime("%Y-%m-%d"))
     end_date = "{ymd} 23:59:59".format(ymd=(datetime.datetime.now() + datetime.timedelta(days=10)).strftime("%Y-%m-%d"))
-    url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/edit"
+    url = r"https://admin.crm.yunshuxie.com/v1/crm/coupon_activity/edit"
     name = "测试_自动化测试_%d"%(time.time())
     params = {"couponActivityName": name,
               "couponInstructions": "测试_自动化测试创建_%s"%(name),
@@ -47,7 +47,7 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
     #print "创建代金券:",resp.text
     result = json.loads(re.findall("{.*}", resp.text)[0], encoding="utf8")
     assert result["returnCode"]==0 or result["returnCode"]=="0","创建代金券:{msg}".format(msg=result["returnMsg"])
-    url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/test_list" # 查询代金券 couponActivityId
+    url = r"https://admin.crm.yunshuxie.com/v1/crm/coupon_activity/test_list" # 查询代金券 couponActivityId
     params = {"couponActivityName":name,"couponActivityNumber":"","activityStatus":"1","sort":"couponActivityId","order":"DESC","limit":"10","offset":"0"}
     resp = session.get(url=url, params=params)
     resp_log[u"查询代金券"] = resp.text
@@ -55,7 +55,7 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
     result = json.loads(re.findall("{.*}", resp.text)[0], encoding="utf8")
     couponActivityId = result["rows"][0]["couponActivityId"]
     couponActivityNumber = result["rows"][0]["couponActivityNumber"]
-    url = r"http://admin.crm.yunshuxie.com/v1/crm/coupon_activity/edit"  #审核代金券
+    url = r"https://admin.crm.yunshuxie.com/v1/crm/coupon_activity/edit"  #审核代金券
     params = {"couponActivityId": couponActivityId,"activityStatus": "3"}
     resp = session.post(url=url, data=params)
     resp_log[u"审核代金券"] = resp.text
