@@ -41,7 +41,7 @@ def get_ysx_crm_cookie(env_flag,env_num,user=None):
                               "Content-Type":"application/json"}
         captcha_resp = requests.post(url=url,headers=captcha_header,json=data)  # 获取验证码
         captcha = json.loads(captcha_resp.content,encoding="utf8")["string"].lower()  # 最小化
-    url = r"http://admin.crm.yunshuxie.com/sys/login"
+    url = r"https://admin.crm.yunshuxie.com/sys/login"
     if env_flag.upper() =="BETA":
         params = {"username": "admin", "password": "Yunshuxie916@1ppt", "captcha": captcha}  # 登录接口
     else:
