@@ -48,7 +48,7 @@ class Ysx_Make_User(unittest.TestCase):
         userPhone = self.phoneNumList.split(",")
         employeeTypes = self.employeeTypes.split(",")
         for index in range(len(userName)):
-            datas = {"memberIcon": "", "pwd": "123456", "email": "automation@yunshuxie.com", "weiboName": "",
+            datas = {"memberIcon": "", "pwd": "test123456", "email": "automation@yunshuxie.com", "weiboName": "",
                      "nickName": userName[index], "qq": "", "interest": "", "phone":userPhone[index] , "weichatNum": "",
                      "remark": "自动化测试", "memberType": employeeTypes[index], "ChoiceOfTeacher": "默认分组", "ChoiceOfTeacher": "默认分组",
                      "readRole": "0", "ChoiceOfTeacher": "云舒写教育科技", "button": ""}
