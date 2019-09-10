@@ -32,14 +32,20 @@ class Ysx_Make_User(unittest.TestCase):
         #cookie_dict = {'env_flag':"beta","env_num":"2"}  #设置环境号
         cookies = requests.utils.cookiejar_from_dict(cookie_dict, cookiejar=None, overwrite=True)
         self.session.cookies = cookies
-        self.header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9","Connection": "keep-alive","Host": "www.yunshuxie.com","Upgrade-Insecure-Requests": "1"}
+        self.header = {"User-Agent":
+                           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
+                       "Accept": "application/json, text/javascript, */*; q=0.01",
+                       "Accept-Encoding": "gzip, deflate, br",
+                       "Accept-Language": "zh-CN,zh;q=0.9",
+                       "Connection": "keep-alive"
+            ,"Host": "admin.yunshuxie.com","Upgrade-Insecure-Requests": "1"}
         self.session.headers = self.header
         self.salt = "mengmengda"
         self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
     def test_01_make_user(self):
         """make_user_admin平台创建测试用户
         """
-        url = r"https://www.yunshuxie.com"+"/v5/web/account/login.htm"
+        url = "https://admin.yunshuxie.com/common_index/loginIn.json"#r"https://www.yunshuxie.com"+"/v5/web/account/login.htm"
         data = {"userName": self.admin_usernmae, "pwd": self.admin_pwd}
         self.resp = self.session.post(url, data=data)  # 登录admin测试环境,记录cookies
         url = r"https://admin.yunshuxie.com/v1/admin/account/add/user.json"
