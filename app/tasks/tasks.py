@@ -216,7 +216,7 @@ def wechatQY_msg(developer,project_en,success_count,error_count,failure_count,re
                                         report_url=report_url
                            )
         params = {
-            "tos": u"guohongjie,renhuihui,zhaohongling,pengjunxia,wangmengxiao,hongchen,tianningxue,liushuang,xuhongying,jiayujiao,panze,{developer}".format(
+            "tos": u"guohongjie,renhuihui,zhaohongling,pengjunxia,wangmengxiao,hongchen,tianningxue,liushuang,xuhongying,jiayujiao,panze,huyanfeng,liangguoqing,{developer}".format(
                 developer=developer),
             "content": content, "app": "qa", "sed": "guohongjie"}
         qiye_wechat_url = r"http://msg.inf.bandubanxie.com/api/v0.2/msg/qiye_weixin"
