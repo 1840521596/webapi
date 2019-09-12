@@ -334,6 +334,7 @@ def taskstatus(task_id):
 			'current': 1,
 			'total': 1,
 			'status': str(task.info),  # this is the exception raised
+			'errorMsg':str(task.traceback)
 		}
 	return jsonify(response)
 
