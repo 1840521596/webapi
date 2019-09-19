@@ -42,10 +42,7 @@ def get_ysx_crm_cookie(env_flag,env_num,user=None):
         captcha_resp = requests.post(url=url,headers=captcha_header,json=data)  # 获取验证码
         captcha = json.loads(captcha_resp.content,encoding="utf8")["string"].lower()  # 最小化
     url = r"https://admin.crm.yunshuxie.com/sys/login"
-    if env_flag.upper() =="BETA":
-        params = {"username": "admin", "password": "ysx2019", "captcha": captcha}  # 登录接口
-    else:
-        params = {"username": "autotester","password": "123456","captcha": captcha}  # 登录接口
+    params = {"username": "autotester","password": "123456","captcha": captcha}  # 登录接口
     header = {"Accept": "application/json, text/javascript, */*; q=0.0",
               "Cache-Control": "no-cache",
               "Connection": "keep-alive",
