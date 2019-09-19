@@ -4,11 +4,11 @@ var get_title="<tr height=\"36px\"> \n" +
     "       <th colspan=\"2\" width=\"20%\">Cookies(缓存)</th>\n" +
     "      </tr>";
 var get_data="<tr height=\"36px\">\n" +
-    "<td colspan=\"3\"><input style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"get_params\" placeholder=\"测试数据\" \n" +
+    "<td colspan=\"3\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"get_params\" placeholder=\"测试数据\" \n" +
     "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='测试数据'\"></td>\n" +
-    "<td colspan=\"3\"><input style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"get_headers\" placeholder=\"Headers\" \n" +
+    "<td colspan=\"3\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"get_headers\" placeholder=\"Headers\" \n" +
     "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='Headers'\"></td>\n" +
-    "<td colspan=\"2\"><input style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"get_cookies\" placeholder=\"Cookies\" \n" +
+    "<td colspan=\"2\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"get_cookies\" placeholder=\"Cookies\" \n" +
     "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='Cookies'\"></td>\n" +
     "</tr>"
 
@@ -20,11 +20,11 @@ var post_title="<tr height=\"36px\"> \n" +
     "      </tr>";
 
 var post_data="<tr height=\"36px\">\n" +
-    "<td colspan=\"3\"><input style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"post_params\" placeholder=\"测试数据\" \n" +
+    "<td colspan=\"3\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"post_params\" placeholder=\"测试数据\" \n" +
         "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='测试数据'\"></td>\n" +
-    "<td colspan=\"3\"><input style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"post_headers\" placeholder=\"Headers\" \n" +
+    "<td colspan=\"3\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"post_headers\" placeholder=\"Headers\" \n" +
         "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='Headers'\"></td>\n" +
-    "<td colspan=\"2\"><input style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"post_cookies\" placeholder=\"Cookies\" \n" +
+    "<td colspan=\"2\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"post_cookies\" placeholder=\"Cookies\" \n" +
         "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='Cookies'\"/></td>\n" +
     "</tr>"
 
