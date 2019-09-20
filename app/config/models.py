@@ -38,9 +38,10 @@ class Case_Http_API(db.Model):
     isLogin = db.Column(db.Boolean,default=0)
     account = db.Column(db.String(100))
     test_suite = db.Column(db.String(100))
+    isUpload = db.Column(db.Boolean,default=0)
     def __init__(self,project,case_api,params,case_host,headers,cookies,assertValue,
                  description,case_url,method,response,api_type='http',status=0,scheduling=0,
-                 isLogin=0,account=account):
+                 isLogin=0,account=account,isUpload=0):
         self.project = project
         self.case_api = case_api
         self.description = description
@@ -57,6 +58,7 @@ class Case_Http_API(db.Model):
         self.scheduling = scheduling
         self.isLogin = isLogin
         self.account = account
+        self.isUpload = isUpload
 
     def __repr__(self):
         """返回打印数据"""
@@ -66,10 +68,18 @@ class Case_Http_API(db.Model):
         """返回打印数据"""
         return '<Case %r>'%self.project
 
-
-
-
-
+class Case_Http_File(db.Model):
+    __tablename__ = "case_http_file"
+    id = db.Column(db.Integer, primary_key=True)
+    case_api_id = db.Column(db.String(100))
+    file_desc = db.Column(db.Text)
+    file_name = db.Column(db.String(100))
+    content_type = db.Column(db.String(500))
+    def __init__(self,case_api_id,file_desc,file_name,content_type):
+        self.case_api_id = case_api_id
+        self.file_desc = file_desc
+        self.file_name = file_name
+        self.content_type = content_type
 class Case_Dubbo_API(db.Model):
     __tablename__ = "case_dubbo_api"#表明
     id = db.Column(db.Integer, primary_key=True)  # 序号ID

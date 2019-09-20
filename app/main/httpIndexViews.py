@@ -2,7 +2,7 @@
 from . import views
 from flask import render_template,request,make_response,jsonify
 from .. import db
-from ..config.models import Project, Case_Http_API
+from ..config.models import Project, Case_Http_API ,Case_Http_File
 @views.route('/addHttpProject',methods=['POST','GET'])
 def add_project():
     """增加测试项目"""
@@ -44,6 +44,7 @@ def http_insert():
     assertValue = replace_cn(request.form["assert"])
     islogin = request.form["islogin"]
     account = request.form["account"]
+    upload_file = request.form["upload_file"]
     #test_suite = request.form["test_suite"]
     if scheduling == "true":
         scheduling = 1
@@ -53,13 +54,17 @@ def http_insert():
         islogin = 1
     else:
         islogin = 0
+    if upload_file == "true":
+        upload_file = 1
+    else:
+        upload_file = 0
     try:
         datas = Case_Http_API(project=project,
                               case_api=case_api,
                               description=case_desc,
                               case_host=case_host,
                               case_url=case_url,
-                              method=method,isLogin=islogin,
+                              method=method,isLogin=islogin,isUpload=upload_file,
                  params=params,response=response,headers=headers,cookies=cookies,
                               scheduling=scheduling,assertValue=assertValue,account=account)
         db.session.add(datas)
@@ -139,6 +144,7 @@ def update():
     assertValue = replace_cn(request.form["assert"])
     islogin = request.form["islogin"]
     account = request.form["account"]
+    upload_file = request.form["upload_file"]
     #test_suite = request.form["test_suite"]
 
     if scheduling == "true":
@@ -149,11 +155,15 @@ def update():
         islogin = 1
     else:
         islogin = 0
+    if upload_file =="false":
+        upload_file = 0
+    else:
+        upload_file = 1
     try:
         Case_Http_API.query.filter_by(id=pid).update(dict(
             project=project,case_api=case_api,description=description,case_host=case_host,isLogin=islogin,
             case_url=case_url,headers=headers,cookies=cookies,scheduling=scheduling,assertValue=assertValue,
-            method=method,params=params,response=response,account=account))
+            method=method,params=params,response=response,account=account,isUpload=upload_file))
         db.session.commit()
         resp = {'datas': '更新成功', 'code': '200'}
     except Exception as e:
@@ -207,6 +217,43 @@ def httpUnionSearch():
     resp = {"code": 200, "datas": object_api}
     msg_resp = make_response(jsonify(resp))
     return msg_resp
+
+@views.route("/save_upload_data",methods=["POST"])
+def save_upload_data():
+    file_1 = request.files['file']
+    file_desc = request.form["file_desc"]
+    filename = file_1.filename
+    content_type = file_1.mimetype
+    targetId = request.form["targetId"]  #获取case_api　数据库id值,如接口新建则为999999999
+    if targetId=="999999999":  #新建数据
+        project = request.form["project"]
+        case_api = request.form["case_api"]
+        case_desc = request.form["case_desc"]
+        case_host = request.form["case_host"]
+        case_url = request.form["case_url"]
+        method = request.form["method"]
+        try:
+            targetId = db.session.query(Case_Http_API.id).filter_by(project=project,case_api=case_api,
+                                                                description=case_desc,case_host=case_host,
+                                                                    case_url=case_url,method=method).first()
+            datas = Case_Http_File(case_api_id=targetId[0],file_desc=file_desc,
+                                   file_name=filename,content_type=content_type)
+            db.session.add(datas)
+            db.session.commit()
+            resp = {"datas": "%s 更新成功!" % (case_api), "code": 200}
+        except Exception as e:
+            db.session.rollback()
+            resp = {"code": 400, "datas": str(e)}
+    else:  #修改数据
+        try:
+            datas = Case_Http_File.query.filter_by(case_api_id=targetId).update(dict(
+                file_desc=file_desc,file_name=filename,content_type=content_type))
+            db.session.commit()
+            resp = {'datas': '更新成功', 'code': '200'}
+        except Exception as e:
+            db.session.rollback()
+            resp = {'datas': str(e), 'code': '400'}
+    return make_response(jsonify(resp))
 
 def replace_cn(str_params):
     new_str_params = str_params.replace("＂",'"')

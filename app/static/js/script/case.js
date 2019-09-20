@@ -32,7 +32,7 @@ var file_data ="<tr height=\"36px\"> \n" +
     "       <th colspan=\"3\" style=\"text-align:center;\">file_desc(备注）</th>\n" +
     "       <th colspan=\"5\" style=\"text-align:center;\" >上传文件</th>\n" +
         "<tr height=\"36px\">\n" +
-    "<td colspan=\"3\" class=\"wctv\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"file_desc\" placeholder=\"file_desc\" \n" +
+    "<td colspan=\"3\" class=\"wctv\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"file\" id=\"file_desc\" placeholder=\"file_desc\" \n" +
         "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='file_desc'\"></td>\n" +
         "<td colspan=\"2\" class=\"wctv\"><input style=\"width: 100%; height: 100%\" type=\"file\" id=\"FileUpload\" placeholder=\"FileUpload\" name=\"FileUpload\" \n" +
         "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='FileUpload'\"></td>\n" +
@@ -105,6 +105,7 @@ jQuery(document).ready(function ($) {
         $("#actual_result").attr("readOnly","true");
         $("#actual_result").removeAttr("style");
         $('.theme-popover').slideDown(200);
+        $("#btn4").bind("click",http_test);
     })
     $('.theme-poptit .close').click(function () {
         $('.theme-popover-mask').fadeOut(100);
@@ -273,6 +274,7 @@ jQuery(document).ready(function ($) {
 
     }
     $("body").delegate(".update", "click", function () {
+    $("#btn4").bind("click",http_test);
                 $td = $(this).parents("tr").find("td");
                 // alert("===" + $(this).data("pid"));
                 var api_pid = $td.eq(0).text();
@@ -301,223 +303,9 @@ jQuery(document).ready(function ($) {
                     initAPIparams($td.eq(5).text());
                 });
         });//打开新增数据弹层
-    $("#btn1").click(function () {
-        var _case = [];
-        $("#tbdata tr").each(function () {
-            var tr = $(this);
-            _case.push({
-                project: $("#project_choice").find("option:selected").val(),
-                case_api: $("#case_api").val(),
-                case_desc: $("#case_desc").val(),
-                case_host: $("#case_host").val(),
-                case_url: $("#case_url").val(),
-                method: $("#method").find("option:selected").val(),
-                except_result: $("#except_result").val(),
-                scheduling: $("#check1").is(':checked'),
-                islogin: $("#check2").is(':checked'),
-                assert: $("#assert").val(),
-                account: $("#account").val(),
-                //test_suite: $("#test_suite").val(),
+    $("#btn1").bind("click",save_http_data);
+});
 
-            });
-        });
-       // alert($("#targetId").val());
-        //alert(typeof($("#targetId").val()));
-        if ($("#targetId").val()!= "999999999" ) {
-            //数据更新
-            //alert(_case[0].method);
-            if (_case[0].method=="GET"){
-            $.ajax({
-                url: "/httpUpdate",
-                type: "post",
-                data: {
-                    pid: $("#targetId").val(),
-                    project: _case[0].project,
-                    case_api: _case[0].case_api,
-                    description: _case[0].case_desc,
-                    case_host: _case[0].case_host,
-                    case_url: _case[0].case_url,
-                    method: _case[0].method,
-                    response: _case[0].except_result,
-                    params: $("#get_params").val(),
-                    headers: $("#get_headers").val(),
-                    cookies: $("#get_cookies").val(),
-                    scheduling: $("#check1").is(':checked'),
-                    islogin: $("#check2").is(':checked'),
-                    assert: $("#assert").val(),
-                    account: $("#account").val(),
-                //test_suite: $("#test_suite").val(),
-                }}).done(function (result){
-                    if (result.status == "200"){
-                        alert(result.datas);
-                        location.reload()}
-                    else{
-                        alert(result.datas);
-                       }
-                });
-                }
-            else if (_case[0].method=="POST"){
-                $.ajax({
-                url: "/httpUpdate",
-                type: "post",
-                data: {
-                    pid: $("#targetId").val(),
-                    project: _case[0].project,
-                    case_api: _case[0].case_api,
-                    description: _case[0].case_desc,
-                    case_host: _case[0].case_host,
-                    case_url: _case[0].case_url,
-                    method: _case[0].method,
-                    response: _case[0].except_result,
-                    params: $("#post_params").val(),
-                    headers: $("#post_headers").val(),
-                    cookies: $("#post_cookies").val(),
-                    scheduling: $("#check1").is(':checked'),
-                    islogin: $("#check2").is(':checked'),
-                    assert: $("#assert").val(),
-                    account: $("#account").val(),
-               // test_suite: $("#test_suite").val(),
-                }
-            }).done(function(result){
-                    if (result.status == "200"){
-                        alert(result.datas);
-                        location.reload()}
-                    else{
-                        alert(result.datas);
-                       }
-                });
-            }
-        } else {
-            //数据新增
-            if (_case[0].method=="GET"){
-            $.ajax({
-                url: "/httpInsert",
-                type: "post",
-                data: {
-                    pid: $("#targetId").val(),
-                    project: _case[0].project,
-                    case_api: _case[0].case_api,
-                    description: _case[0].case_desc,
-                    case_host: _case[0].case_host,
-                    case_url: _case[0].case_url,
-                    method: _case[0].method,
-                    response: _case[0].except_result,
-                    params: $("#get_params").val(),
-                    headers: $("#get_headers").val(),
-                    cookies: $("#get_cookies").val(),
-                    scheduling: $("#check1").is(':checked'),
-                    islogin: $("#check2").is(':checked'),
-                assert: $("#assert").val(),
-                account: $("#account").val(),
-                //test_suite: $("#test_suite").val(),
-                }
-            }).done(function(result){
-                    if (result.status == "200"){
-                        alert(result.datas);
-                        location.reload()}
-                    else{
-                        alert(result.datas);
-                       }
-                });;
-                }
-            else if (_case[0].method=="POST"){
-                $.ajax({
-                url: "/httpInsert",
-                type: "post",
-                data: {
-                    pid: $("#targetId").val(),
-                    project: _case[0].project,
-                    case_api: _case[0].case_api,
-                    description: _case[0].case_desc,
-                    case_host: _case[0].case_host,
-                    case_url: _case[0].case_url,
-                    method: _case[0].method,
-                    response: _case[0].except_result,
-                    params: $("#post_params").val(),
-                    headers: $("#post_headers").val(),
-                    cookies: $("#post_cookies").val(),
-                    scheduling: $("#check1").is(':checked'),
-                    islogin: $("#check2").is(':checked'),
-                assert: $("#assert").val(),
-                account: $("#account").val(),
-               // test_suite: $("#test_suite").val(),
-                }
-            }).done(function(result){
-                    if (result.status == "200"){
-                        alert(result.datas);
-                        location.reload()}
-                    else{
-                        alert(result.datas);
-                       }
-                });
-            };}});
-});
-$("#btn4").click(function () {
-    var case_host=$("#case_host").val();
-    var case_url=$("#case_url").val();
-    var method=$("#method").find("option:selected").val();
-    if (method=="GET"){
-        var api_data=$("#get_params").val();
-        var api_headers=$("#get_headers").val();
-        var api_cookies=$("#get_cookies").val();
-        var project_cn=$("#project_choice").val();
-        var islogin=$("#check2").is(':checked');
-        var account=$("#account").val();
-        $.ajax({
-            url: "/case_http_test",
-            type: "post",
-            data: {
-                project_cn:project_cn,
-                case_host: case_host,
-                case_url: case_url,
-                method: method,
-                params: api_data,
-                headers: api_headers,
-                cookies: api_cookies,
-                islogin: islogin,
-                account: account,
-            }
-        }).done(function (result) {
-            if (result.code == "200")
-            {var wc = result.datas;
-                alert(wc);
-               // $("#RS").html("");
-                $("#RS").html(wc);
-              }
-            else{alert(result.code,result.datas);}
-        });}
-    else if (method=="POST") {
-        var api_data = $("#post_params").val();
-        var api_headers = $("#post_headers").val();
-        var api_cookies = $("#post_cookies").val();
-        var project_cn=$("#project_choice").val();
-        var islogin=$("#check2").is(':checked');
-        var account=$("#account").val();
-        //alert(api_redirects)
-        $.ajax({
-            url: "/case_http_test",
-            type: "post",
-            data: {
-                project_cn:project_cn,
-                case_host: case_host,
-                case_url: case_url,
-                method: method,
-                params: api_data,
-                headers: api_headers,
-                cookies: api_cookies,
-                islogin: islogin,
-                account: account,
-            }
-        }).done(function (result) {
-            if (result.code == "200")
-            {var wc = result.datas;
-                alert(wc);
-               // $("#RS").html("");
-                $("#RS").html(wc);
-            }
-            else{alert(result.code,result.datas);}
-        });}
-});
 
 $("#btn5").click(function () {
     var case_host=$("#case_host").val();
@@ -755,41 +543,379 @@ $("#check2").change(function(){
   $("#account").attr('disabled',true);
  };});
 $("#check3").change(function(){
-var scheduling=$("#check3").is(":checked");
-if (scheduling==true){
-    $("#btn4").attr("id","btn6");
-    $("#apt_others").append(file_data);
+var upload_file=$("#check3").is(":checked");
+if (upload_file==true){
+    $("#btn4").unbind("click");  //取消btn4 运行测试点击事件
+    $("#btn4").attr("id","btn6");　　//更改id=btn6(运行测试按钮)
+    $("#btn6").bind("click",http_upload_test);  //btn6添加http_upload_test运行测试功能事件
+    $("#apt_others").append(file_data);  //添加上传文件input 框
+
+    $("#btn1").unbind("click");  //取消btn1 保存数据点击事件
+    $("#btn1").attr("id","btn7");
+    $("#btn7").bind("click",save_file_data);
 }
 else{
-$("#btn6").attr("id","btn4");
-$("#apt_others").html("");
+$("#btn6").unbind("click");　　//取消btn6绑定事件
+$("#btn6").attr("id","btn4");　　//更改id=btn4(运行测试按钮)
+$("#btn4").bind("click",http_test);  //btn4添加http_test运行测试功能事件
+$("#apt_others").html("");  //清空上传文件input 框
+
+$("#btn7").unbind("click");  //保存按钮解除保存文件事件
+$("#btn7").attr("id","btn1");　　//id=btn1
+$("#btn1").bind("click",save_http_data);  //btn1添加保存数据事件
 };
 });
-
-function  btn_upload() {
+function http_test () {
+    var case_host=$("#case_host").val();
+    var case_url=$("#case_url").val();
+    var method=$("#method").find("option:selected").val();
+    if (method=="GET"){
+        var api_data=$("#get_params").val();
+        var api_headers=$("#get_headers").val();
+        var api_cookies=$("#get_cookies").val();
+        var project_cn=$("#project_choice").val();
+        var islogin=$("#check2").is(':checked');
+        var account=$("#account").val();
+        $.ajax({
+            url: "/case_http_test",
+            type: "post",
+            data: {
+                project_cn:project_cn,
+                case_host: case_host,
+                case_url: case_url,
+                method: method,
+                params: api_data,
+                headers: api_headers,
+                cookies: api_cookies,
+                islogin: islogin,
+                account: account,
+            }
+        }).done(function (result) {
+            if (result.code == "200")
+            {var wc = result.datas;
+                alert(wc);
+               // $("#RS").html("");
+                $("#RS").html(wc);
+              }
+            else{alert(result.code,result.datas);}
+        });}
+    else if (method=="POST") {
+        var api_data = $("#post_params").val();
+        var api_headers = $("#post_headers").val();
+        var api_cookies = $("#post_cookies").val();
+        var project_cn=$("#project_choice").val();
+        var islogin=$("#check2").is(':checked');
+        var account=$("#account").val();
+        //alert(api_redirects)
+        $.ajax({
+            url: "/case_http_test",
+            type: "post",
+            data: {
+                project_cn:project_cn,
+                case_host: case_host,
+                case_url: case_url,
+                method: method,
+                params: api_data,
+                headers: api_headers,
+                cookies: api_cookies,
+                islogin: islogin,
+                account: account,
+            }
+        }).done(function (result) {
+            if (result.code == "200")
+            {var wc = result.datas;
+                alert(wc);
+               // $("#RS").html("");
+                $("#RS").html(wc);
+            }
+            else{alert(result.code,result.datas);}
+        });}
+};
+function http_upload_test() {
                var fileObj = document.getElementById("FileUpload").files[0]; // js 获取文件对象
                if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
-                   alert("请选择图片");
+                   alert("请选择文件");
                    return;
                }
                var formFile = new FormData();
+               var file_desc = $("#file_desc").val()
                formFile.append("action", "UploadVMKImagePath");
                formFile.append("file", fileObj); //加入文件对象
-               var data = formFile;
+               var data_flie = formFile;
+
+               var case_host=$("#case_host").val();
+                var case_url=$("#case_url").val();
+                var method=$("#method").find("option:selected").val();
+            if (method=="GET"){
+                var api_data=$("#get_params").val();
+                var api_headers=$("#get_headers").val();
+                var api_cookies=$("#get_cookies").val();
+                var project_cn=$("#project_choice").val();
+                var islogin=$("#check2").is(':checked');
+                var account=$("#account").val();
+                   data_flie.append("project_cn",project_cn);
+                    data_flie.append("case_host",case_host);
+                    data_flie.append("case_url",case_url);
+                    data_flie.append("method",method);
+                    data_flie.append("params",api_data);
+                    data_flie.append("headers",api_headers);
+                    data_flie.append("cookies",api_cookies);
+                    data_flie.append("islogin",islogin);
+                    data_flie.append("account",account);
+                    data_flie.append("file_desc",file_desc);
                $.ajax({
-                   url: "/upload",
-                   data: data,
-                   type: "Post",
-                   dataType: "json",
-                   cache: false,//上传文件无需缓存
-                   processData: false,//用于对data参数进行序列化处理 这里必须false
-                   contentType: false, //必须
-                   success: function (result) {
-                       alert("上传完成!");
-                       console.log(result);
-                   },
-               });
+                        url: "/test_upload",
+                        type: "post",
+                        data: data_flie,
+                        dataType: "json",
+                        cache: false,//上传文件无需缓存
+                        processData: false,//用于对data参数进行序列化处理 这里必须false
+                        contentType: false, //必须
+                    }).done(function (result) {
+                    if (result.code == "200")
+                    {var wc = result.datas;
+                        alert(wc);
+                       // $("#RS").html("");
+                        $("#RS").html(wc);
+                      }
+                    else{alert(result.code,result.datas);}
+                });}
+            else if (method=="POST") {
+                    var api_data = $("#post_params").val();
+                    var api_headers = $("#post_headers").val();
+                    var api_cookies = $("#post_cookies").val();
+                    var project_cn=$("#project_choice").val();
+                    var islogin=$("#check2").is(':checked');
+                    var account=$("#account").val();
+                    //alert(api_redirects)
+                    data_flie.append("params",api_data);
+                    data_flie.append("project_cn",project_cn);
+                    data_flie.append("case_host",case_host);
+                    data_flie.append("case_url",case_url);
+                    data_flie.append("method",method);
+                    data_flie.append("params",api_data);
+                    data_flie.append("headers",api_headers);
+                    data_flie.append("cookies",api_cookies);
+                    data_flie.append("islogin",islogin);
+                    data_flie.append("account",account);
+                    data_flie.append("file_desc",file_desc);
+                    $.ajax({
+                        url: "/test_upload",
+                        type: "post",
+                        data: data_flie,
+                        dataType: "json",
+                        cache: false,//上传文件无需缓存
+                        processData: false,//用于对data参数进行序列化处理 这里必须false
+                        contentType: false, //必须
+                    }).done(function (result) {
+                        if (result.code == "200")
+                        {var wc = result.datas;
+                            alert(wc);
+                           // $("#RS").html("");
+                            $("#RS").html(wc);
+                        }
+                        else{alert(result.code,result.datas);}
+                    });}
                };
+function save_http_data () {
+        var _case = [];
+        var upload_file=$("#check3").is(":checked");
+        $("#tbdata tr").each(function () {
+            var tr = $(this);
+            _case.push({
+                project: $("#project_choice").find("option:selected").val(),
+                case_api: $("#case_api").val(),
+                case_desc: $("#case_desc").val(),
+                case_host: $("#case_host").val(),
+                case_url: $("#case_url").val(),
+                method: $("#method").find("option:selected").val(),
+                except_result: $("#except_result").val(),
+                scheduling: $("#check1").is(':checked'),
+                islogin: $("#check2").is(':checked'),
+                assert: $("#assert").val(),
+                account: $("#account").val(),
+                //test_suite: $("#test_suite").val(),
+
+            });
+        });
+        if ($("#targetId").val()!= "999999999" ) {
+            //数据更新
+            //alert(_case[0].method);
+            if (_case[0].method=="GET"){
+            $.ajax({
+                url: "/httpUpdate",
+                type: "post",
+                data: {
+                    pid: $("#targetId").val(),
+                    project: _case[0].project,
+                    case_api: _case[0].case_api,
+                    description: _case[0].case_desc,
+                    case_host: _case[0].case_host,
+                    case_url: _case[0].case_url,
+                    method: _case[0].method,
+                    response: _case[0].except_result,
+                    params: $("#get_params").val(),
+                    headers: $("#get_headers").val(),
+                    cookies: $("#get_cookies").val(),
+                    scheduling: $("#check1").is(':checked'),
+                    islogin: $("#check2").is(':checked'),
+                    assert: $("#assert").val(),
+                    account: $("#account").val(),
+                    upload_file:upload_file,
+                //test_suite: $("#test_suite").val(),
+                }}).done(function (result){
+                    if (result.status == "200"){
+                        alert(result.datas);
+                        location.reload()}
+                    else{
+                        alert(result.datas);
+                       }
+                });
+                }
+            else if (_case[0].method=="POST"){
+                $.ajax({
+                url: "/httpUpdate",
+                type: "post",
+                data: {
+                    pid: $("#targetId").val(),
+                    project: _case[0].project,
+                    case_api: _case[0].case_api,
+                    description: _case[0].case_desc,
+                    case_host: _case[0].case_host,
+                    case_url: _case[0].case_url,
+                    method: _case[0].method,
+                    response: _case[0].except_result,
+                    params: $("#post_params").val(),
+                    headers: $("#post_headers").val(),
+                    cookies: $("#post_cookies").val(),
+                    scheduling: $("#check1").is(':checked'),
+                    islogin: $("#check2").is(':checked'),
+                    assert: $("#assert").val(),
+                    account: $("#account").val(),
+                    upload_file:upload_file,
+               // test_suite: $("#test_suite").val(),
+                }
+            }).done(function(result){
+                    if (result.status == "200"){
+                        alert(result.datas);
+                        location.reload()}
+                    else{
+                        alert(result.datas);
+                       }
+                });
+            }
+        } else {
+            //数据新增
+            if (_case[0].method=="GET"){
+            $.ajax({
+                url: "/httpInsert",
+                type: "post",
+                data: {
+                    pid: $("#targetId").val(),
+                    project: _case[0].project,
+                    case_api: _case[0].case_api,
+                    description: _case[0].case_desc,
+                    case_host: _case[0].case_host,
+                    case_url: _case[0].case_url,
+                    method: _case[0].method,
+                    response: _case[0].except_result,
+                    params: $("#get_params").val(),
+                    headers: $("#get_headers").val(),
+                    cookies: $("#get_cookies").val(),
+                    scheduling: $("#check1").is(':checked'),
+                    islogin: $("#check2").is(':checked'),
+                    upload_file:$("#check3").is(":checked"),
+                assert: $("#assert").val(),
+                account: $("#account").val(),
+                upload_file:upload_file,
+                //test_suite: $("#test_suite").val(),
+                }
+            }).done(function(result){
+                    if (result.status == "200"){
+                        alert(result.datas);
+                        location.reload()}
+                    else{
+                        alert(result.datas);
+                       }
+                });;
+                }
+            else if (_case[0].method=="POST"){
+                $.ajax({
+                url: "/httpInsert",
+                type: "post",
+                data: {
+                    pid: $("#targetId").val(),
+                    project: _case[0].project,
+                    case_api: _case[0].case_api,
+                    description: _case[0].case_desc,
+                    case_host: _case[0].case_host,
+                    case_url: _case[0].case_url,
+                    method: _case[0].method,
+                    response: _case[0].except_result,
+                    params: $("#post_params").val(),
+                    headers: $("#post_headers").val(),
+                    cookies: $("#post_cookies").val(),
+                    scheduling: $("#check1").is(':checked'),
+                    islogin: $("#check2").is(':checked'),
+                    upload_file:$("#check3").is(":checked"),
+                assert: $("#assert").val(),
+                account: $("#account").val(),
+                    upload_file:upload_file,
+               // test_suite: $("#test_suite").val(),
+                }
+            }).done(function(result){
+                    if (result.status == "200"){
+                        alert(result.datas);
+                        location.reload()}
+                    else{
+                        alert(result.datas);
+                       }
+                });
+            };}}
+function save_file_data () {
+    save_http_data();  //保存接口测试数据
+    var project=$("#project_choice").find("option:selected").val();
+    var case_api=$("#case_api").val();
+    var case_desc=$("#case_desc").val();
+    var case_host=$("#case_host").val();
+    var case_url=$("#case_url").val();
+    var method=$("#method").find("option:selected").val();
+    var file_desc=$("#file_desc").val();
+    var targetId=$("#targetId").val();
+    var fileObj = document.getElementById("FileUpload").files[0]; // js 获取文件对象
+    if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
+        alert("请选择文件");
+        return;}
+    var formFile = new FormData();
+    var file_desc = $("#file_desc").val()
+    formFile.append("action", "UploadVMKImagePath");
+    formFile.append("file", fileObj); //加入文件对象
+    formFile.append("project",project);
+    formFile.append("case_api",case_api);
+    formFile.append("case_desc",case_desc);
+    formFile.append("case_host",case_host);
+    formFile.append("case_url",case_url);
+    formFile.append("method",method);
+    formFile.append("file_desc",file_desc);
+    formFile.append("targetId",targetId);
+               var data_flie = formFile;
+               $.ajax({
+                        url: "/save_upload_data",
+                        type: "post",
+                        data: data_flie,
+                        dataType: "json",
+                        cache: false,//上传文件无需缓存
+                        processData: false,//用于对data参数进行序列化处理 这里必须false
+                        contentType: false, //必须
+                    }).done(function (result) {
+                        if (result.code == "200")
+                        {var wc = result.datas;
+                            alert(wc);
+                           // $("#RS").html("");
+                            $("#RS").html(wc);}
+                        else{alert(result.code,result.datas);}
+                    });
+};
 function btn_clear(){
    var file = document.getElementById("FileUpload");
      // for IE, Opera, Safari, Chrome
