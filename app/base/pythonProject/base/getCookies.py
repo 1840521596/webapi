@@ -224,7 +224,7 @@ def get_cookies(project,env_flag,env_num,user=None):
 
 if __name__ == "__main__":
     #print get_cookies("wacc_mobile","beta","7","60000021182")
-    print get_ysx_crm_cookie("beta","1")
+    print get_wacc_admin_cookie("test","").get_dict()
 
 
 

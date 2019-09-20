@@ -1,31 +1,42 @@
 var get_title="<tr height=\"36px\"> \n" +
-    "       <th colspan=\"3\" width=\"20%\">Params(参数）</th>\n" +
-    "       <th colspan=\"3\" width=\"20%\">Headers(标头)</th>\n" +
-    "       <th colspan=\"2\" width=\"20%\">Cookies(缓存)</th>\n" +
+    "       <th colspan=\"3\" width=\"20%\" class=\"wctv\">Params(参数）</th>\n" +
+    "       <th colspan=\"3\" width=\"20%\" class=\"wctv\">Headers(标头)</th>\n" +
+    "       <th colspan=\"2\" width=\"20%\" class=\"wctv\">Cookies(缓存)</th>\n" +
     "      </tr>";
 var get_data="<tr height=\"36px\">\n" +
-    "<td colspan=\"3\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"get_params\" placeholder=\"测试数据\" \n" +
+    "<td colspan=\"3\" class=\"wctv\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"get_params\" placeholder=\"测试数据\" \n" +
     "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='测试数据'\"></td>\n" +
-    "<td colspan=\"3\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"get_headers\" placeholder=\"Headers\" \n" +
+    "<td colspan=\"3\" class=\"wctv\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"get_headers\" placeholder=\"Headers\" \n" +
     "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='Headers'\"></td>\n" +
-    "<td colspan=\"2\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"get_cookies\" placeholder=\"Cookies\" \n" +
+    "<td colspan=\"2\" class=\"wctv\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"get_cookies\" placeholder=\"Cookies\" \n" +
     "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='Cookies'\"></td>\n" +
     "</tr>"
 
 
 var post_title="<tr height=\"36px\"> \n" +
-    "       <th colspan=\"3\" width=\"20%\">Data(参数）</th>\n" +
-    "       <th colspan=\"3\" width=\"20%\">Headers(标头)</th>\n" +
-    "       <th colspan=\"2\" width=\"15%\">Cookies(缓存)</th>\n" +
+    "       <th colspan=\"3\" width=\"20%\" style=\"text-align:center;\"  class=\"wctv\">Data(参数）</th>\n" +
+    "       <th colspan=\"3\" width=\"20%\" style=\"text-align:center;\" class=\"wctv\">Headers(标头)</th>\n" +
+    "       <th colspan=\"2\" width=\"15%\" style=\"text-align:center;\" class=\"wctv\">Cookies(缓存)</th>\n" +
     "      </tr>";
 
 var post_data="<tr height=\"36px\">\n" +
-    "<td colspan=\"3\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"post_params\" placeholder=\"测试数据\" \n" +
+    "<td colspan=\"3\" class=\"wctv\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"post_params\" placeholder=\"测试数据\" \n" +
         "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='测试数据'\"></td>\n" +
-    "<td colspan=\"3\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"post_headers\" placeholder=\"Headers\" \n" +
+    "<td colspan=\"3\" class=\"wctv\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"post_headers\" placeholder=\"Headers\" \n" +
         "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='Headers'\"></td>\n" +
-    "<td colspan=\"2\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"post_cookies\" placeholder=\"Cookies\" \n" +
+    "<td colspan=\"2\" class=\"wctv\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"post_cookies\" placeholder=\"Cookies\" \n" +
         "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='Cookies'\"/></td>\n" +
+    "</tr>"
+
+var file_data ="<tr height=\"36px\"> \n" +
+    "       <th colspan=\"3\" style=\"text-align:center;\">file_desc(备注）</th>\n" +
+    "       <th colspan=\"5\" style=\"text-align:center;\" >上传文件</th>\n" +
+        "<tr height=\"36px\">\n" +
+    "<td colspan=\"3\" class=\"wctv\"><input maxlength=\"900000000\" style=\"width: 100%; height: 100%\" type=\"text\" value=\"None\" id=\"file_desc\" placeholder=\"file_desc\" \n" +
+        "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='file_desc'\"></td>\n" +
+        "<td colspan=\"2\" class=\"wctv\"><input style=\"width: 100%; height: 100%\" type=\"file\" id=\"FileUpload\" placeholder=\"FileUpload\" name=\"FileUpload\" \n" +
+        "onfocus=\"this.placeholder=''\" onblur=\"this.placeholder='FileUpload'\"></td>\n" +
+        "<td colspan=\"2\" class=\"wctv\"><button class=\"btn btn-default\" onclick=\"btn_upload()\">上传</button><button class=\"btn btn-default\" onclick=\"btn_clear()\">清空</button></td>\n" +
     "</tr>"
 
 
@@ -740,8 +751,51 @@ $("#check2").change(function(){
  var scheduling=$("#check2").is(':checked');
  if (scheduling==true){
   $("#account").attr('disabled',false);
- }
- else{
+ }else{
   $("#account").attr('disabled',true);
- };
+ };});
+$("#check3").change(function(){
+var scheduling=$("#check3").is(":checked");
+if (scheduling==true){
+    $("#btn4").attr("id","btn6");
+    $("#apt_others").append(file_data);
+}
+else{
+$("#btn6").attr("id","btn4");
+$("#apt_others").html("");
+};
 });
+
+function  btn_upload() {
+               var fileObj = document.getElementById("FileUpload").files[0]; // js 获取文件对象
+               if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
+                   alert("请选择图片");
+                   return;
+               }
+               var formFile = new FormData();
+               formFile.append("action", "UploadVMKImagePath");
+               formFile.append("file", fileObj); //加入文件对象
+               var data = formFile;
+               $.ajax({
+                   url: "/upload",
+                   data: data,
+                   type: "Post",
+                   dataType: "json",
+                   cache: false,//上传文件无需缓存
+                   processData: false,//用于对data参数进行序列化处理 这里必须false
+                   contentType: false, //必须
+                   success: function (result) {
+                       alert("上传完成!");
+                       console.log(result);
+                   },
+               });
+               };
+function btn_clear(){
+   var file = document.getElementById("FileUpload");
+     // for IE, Opera, Safari, Chrome
+     if (file.outerHTML) {
+         file.outerHTML = file.outerHTML;
+     } else { // FF(包括3.5)
+         file.value = "";
+     }
+   };
