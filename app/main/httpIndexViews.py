@@ -213,7 +213,8 @@ def httpUnionSearch():
                                   Case_Http_API.scheduling,
                                   Case_Http_API.isLogin,
                                   Case_Http_API.assertValue,
-                                  Case_Http_API.account).filter_by(project=project,case_api=case_api,id=pid,method=method).first()
+                                  Case_Http_API.account,
+                                  Case_Http_API.isUpload).filter_by(project=project,case_api=case_api,id=pid,method=method).first()
     resp = {"code": 200, "datas": object_api}
     msg_resp = make_response(jsonify(resp))
     return msg_resp
@@ -253,6 +254,10 @@ def save_upload_data():
         except Exception as e:
             db.session.rollback()
             resp = {'datas': str(e), 'code': '400'}
+    try:
+        file_1.save("./app/upload_file/%s" % (filename))
+    except Exception as e:
+        resp = {'datas': str(e), 'code': '401'}
     return make_response(jsonify(resp))
 
 def replace_cn(str_params):

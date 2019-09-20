@@ -232,6 +232,8 @@ jQuery(document).ready(function ($) {
         _td.eq(6).find("option[value="+data[5]+"]").prop("selected",true);
         _td.eq(7).find("input").val(data[6]);
         document.getElementById("check1").checked=data[10];
+        //alert(data[14]);
+        document.getElementById("check3").checked=data[14];
         if (data[10]){
         $("#assert").attr('disabled',false);
         //$("#test_suite").attr('disabled',false);
