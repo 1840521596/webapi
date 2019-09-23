@@ -111,7 +111,6 @@ jQuery(document).ready(function ($) {
         $('.theme-popover-mask').fadeOut(100);
         $('.theme-popover').slideUp(200, function () {
             var _td = $("#tbdata").find("td");
-            $("#btn1").unbind("click");
             $("#btn4").unbind("click");
             $("#btn6").unbind("click");
             $("#btn7").unbind("click");
