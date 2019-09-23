@@ -235,8 +235,9 @@ def save_upload_data():
             targetId = db.session.query(Case_Http_API.id).filter_by(project=project,case_api=case_api,
                                                                 description=case_desc,case_host=case_host,
                                                                     case_url=case_url,method=method).first()
-            datas = Case_Http_File(case_api_id=targetId[0],file_desc=file_desc,
+            datas = Case_Http_File(case_api_id=targetId,file_desc=file_desc,
                                    file_name=filename,content_type=content_type)
+            targetId = targetId[0]
             db.session.add(datas)
             db.session.commit()
             resp = {"datas": "%s 更新成功!" % (case_api), "code": 200}
@@ -259,9 +260,11 @@ def save_upload_data():
                 method = request.form["method"]
                 targetId = db.session.query(Case_Http_API.id).filter_by(project=project, case_api=case_api,
                                                                         description=case_desc, case_host=case_host,
-                                                                        case_url=case_url, method=method).first()
+                                                                        case_url=case_url, method=method,
+                                                                        id=targetId).first()
                 datas = Case_Http_File(case_api_id=targetId[0], file_desc=file_desc,
                                        file_name=filename, content_type=content_type)
+                targetId = targetId[0]
                 db.session.add(datas)
                 db.session.commit()
                 resp = {"datas": "%s 更新成功!" % (case_api), "code": 200}
