@@ -145,8 +145,6 @@ def update():
     islogin = request.form["islogin"]
     account = request.form["account"]
     upload_file = request.form["upload_file"]
-    #test_suite = request.form["test_suite"]
-
     if scheduling == "true":
         scheduling = 1
     else:
@@ -160,7 +158,7 @@ def update():
     else:
         upload_file = 1
     try:
-        Case_Http_API.query.filter_by(id=pid).update(dict(
+        datas = Case_Http_API.query.filter_by(id=pid).update(dict(
             project=project,case_api=case_api,description=description,case_host=case_host,isLogin=islogin,
             case_url=case_url,headers=headers,cookies=cookies,scheduling=scheduling,assertValue=assertValue,
             method=method,params=params,response=response,account=account,isUpload=upload_file))
@@ -249,13 +247,29 @@ def save_upload_data():
         try:
             datas = Case_Http_File.query.filter_by(case_api_id=targetId).update(dict(
                 file_desc=file_desc,file_name=filename,content_type=content_type))
-            db.session.commit()
-            resp = {'datas': '更新成功', 'code': '200'}
+            if datas:
+                db.session.commit()
+                resp = {'datas': '更新成功', 'code': '200'}
+            else:  #新增数据
+                project = request.form["project"]
+                case_api = request.form["case_api"]
+                case_desc = request.form["case_desc"]
+                case_host = request.form["case_host"]
+                case_url = request.form["case_url"]
+                method = request.form["method"]
+                targetId = db.session.query(Case_Http_API.id).filter_by(project=project, case_api=case_api,
+                                                                        description=case_desc, case_host=case_host,
+                                                                        case_url=case_url, method=method).first()
+                datas = Case_Http_File(case_api_id=targetId[0], file_desc=file_desc,
+                                       file_name=filename, content_type=content_type)
+                db.session.add(datas)
+                db.session.commit()
+                resp = {"datas": "%s 更新成功!" % (case_api), "code": 200}
         except Exception as e:
             db.session.rollback()
             resp = {'datas': str(e), 'code': '400'}
     try:
-        file_1.save("./app/upload_file/%s" % (filename))
+        file_1.save("./app/upload_file/%s_%s" % (targetId,filename))
     except Exception as e:
         resp = {'datas': str(e), 'code': '401'}
     return make_response(jsonify(resp))

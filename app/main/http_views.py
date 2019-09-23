@@ -3,6 +3,8 @@ from . import test
 from flask import request,make_response,jsonify
 import requests
 from app.base.pythonProject.base.getCookies import *
+from .. import db
+from ..config.models import Case_Http_File
 import sys
 if sys.getdefaultencoding() != 'utf-8':
     reload(sys)
@@ -26,6 +28,8 @@ def case_http_test():
         islogin = request.form["islogin"]
         account = request.form["account"]
         url = case_host + case_url
+        isUpload = request.form["isUpload"]
+        targetId = request.form["pid"]
         if account.upper() == "NONE" or account==None:
             account = None
         if islogin.upper() == "TRUE" or islogin==True:
@@ -45,10 +49,25 @@ def case_http_test():
                 raise Exception,"project_cn has not exists or not need set login status!"
         else:
             new_cookies = cookies
-        if method=="POST":
-            resp = postFunction(url,params,headers,new_cookies)
-        elif method=="GET":
-            resp = getFunction(url,params,headers,new_cookies)
+        if isUpload=="false":
+            if method=="POST":
+                resp = postFunction(url,params,headers,new_cookies)
+            elif method=="GET":
+                resp = getFunction(url,params,headers,new_cookies)
+        else:  #已上传文件,进入界面点击测试
+            file_name = db.session.query(Case_Http_File.file_name,
+                                         Case_Http_File.content_type,
+                                         Case_Http_File.file_desc,
+                                         Case_Http_File.case_api_id).filter_by(case_api_id=targetId).first()
+            if file_name:
+                file_1 = open("./app/upload_file/%s_%s"%(file_name[3],file_name[0]))
+                upload_file = {file_name[2]: (file_name[0], file_1, file_name[1])}
+                if method=="POST":
+                    resp = postFunctionFile(url,params,headers,new_cookies,upload_file)
+                elif method=="GET":
+                    resp = getFunctionFile(url,params,headers,new_cookies,upload_file)
+            else:
+                raise Exception,"当前接口未存在测试文件,请重新上传后测试！"
     except Exception as e:
         resp = str(e)
     response = make_response(jsonify({"code":200,"datas":resp}))  # 返回response

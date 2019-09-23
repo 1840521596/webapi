@@ -111,6 +111,10 @@ jQuery(document).ready(function ($) {
         $('.theme-popover-mask').fadeOut(100);
         $('.theme-popover').slideUp(200, function () {
             var _td = $("#tbdata").find("td");
+            $("#btn1").unbind("click");
+            $("#btn4").unbind("click");
+            $("#btn6").unbind("click");
+            $("#btn7").unbind("click");
         });
        // $("#targetId").val("");
         //alert("关闭");
@@ -578,6 +582,7 @@ function http_test () {
         var project_cn=$("#project_choice").val();
         var islogin=$("#check2").is(':checked');
         var account=$("#account").val();
+        var upload_file=$("#check3").is(":checked");
         $.ajax({
             url: "/case_http_test",
             type: "post",
@@ -591,6 +596,8 @@ function http_test () {
                 cookies: api_cookies,
                 islogin: islogin,
                 account: account,
+                isUpload: upload_file,
+                pid: $("#targetId").val(),
             }
         }).done(function (result) {
             if (result.code == "200")
@@ -608,6 +615,7 @@ function http_test () {
         var project_cn=$("#project_choice").val();
         var islogin=$("#check2").is(':checked');
         var account=$("#account").val();
+        var upload_file=$("#check3").is(":checked");
         //alert(api_redirects)
         $.ajax({
             url: "/case_http_test",
@@ -622,6 +630,8 @@ function http_test () {
                 cookies: api_cookies,
                 islogin: islogin,
                 account: account,
+                 isUpload: upload_file,
+                pid: $("#targetId").val(),
             }
         }).done(function (result) {
             if (result.code == "200")
