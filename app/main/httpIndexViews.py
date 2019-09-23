@@ -235,7 +235,7 @@ def save_upload_data():
             targetId = db.session.query(Case_Http_API.id).filter_by(project=project,case_api=case_api,
                                                                 description=case_desc,case_host=case_host,
                                                                     case_url=case_url,method=method).first()
-            datas = Case_Http_File(case_api_id=str(targetId),file_desc=file_desc,
+            datas = Case_Http_File(case_api_id=str(targetId[0]),file_desc=file_desc,
                                    file_name=filename,content_type=content_type)
             targetId = targetId[0]
             db.session.add(datas)
@@ -272,7 +272,7 @@ def save_upload_data():
             db.session.rollback()
             resp = {'datas': str(e), 'code': '400'}
     try:
-        file_1.save("./app/upload_file/%s_%s" % (targetId,filename))
+        file_1.save("./app/upload_file/%s_%s" % (str(targetId),filename))
     except Exception as e:
         resp = {'datas': str(e), 'code': '401'}
     return make_response(jsonify(resp))
