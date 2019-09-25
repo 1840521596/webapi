@@ -4,11 +4,11 @@ __author__ = "guohongjie"
 import requests
 import base64
 from PIL import Image
-import json
-import urllib
-import hashlib
 import redis
 from py_redis import MyRedis
+import json
+import hashlib
+import urllib
 def get_ysx_crm_cookie(env_flag,env_num,user=None):
     """登录crm,并返回cookies
     :param url 请求连接
@@ -199,7 +199,66 @@ def get_app_cookie(env_flag,env_num,user=None):
     else:
         raise Exception, resp.content
     return cookies
+def get_wechat_cookie(env_flag,env_num,user=None):
+    session = requests.Session()
+    request_retry = requests.adapters.HTTPAdapter(max_retries=3)
+    session.mount("https://", request_retry)
+    session.mount("http://", request_retry)
+    cookies = requests.cookies.RequestsCookieJar()
+    header = {"Connection": "keep-alive"
+        , "Content-Type": "application/x-www-form-urlencoded",
+              "Cache-Control": "no-cache",
+              "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 Safari/601.1 wechatdevtools/1.02.1904090 MicroMessenger/6.7.3 Language/zh_CN webview/15578306374265793 webdebugger port/22562"}
+
+    session.headers = header
+    cookies.set('env_flag', env_flag)  # 设置测试环境
+    cookies.set("env_num", env_num)  # 设置环境号
+    session.cookies = cookies
+    salt = "mengmengda"
+    url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
+    params = {"userName": user, "pwd": "123456", "type": "2","wechatCode":"081NtWKq1tU8kl0Vf5Iq1ddyKq1NtWKY"}
+    string = urllib.urlencode(params)
+    s = string + salt
+    md = hashlib.md5()
+    md.update(s)
+    md5 = md.hexdigest()
+    data = string + "&sign=" + md5
+    resp = session.post(url, data=data)
+    print resp.content
+    dict_resp = json.loads(resp.content, encoding="utf8")
+    if dict_resp["code"] == "0" or dict_resp["code"] == 0:
+        cookies.update(resp.cookies)
+    else:
+        raise Exception, resp.content
+    return cookies
+def get_wechat_ggx_cookies(env_flag,env_num,user=None):
+    session = requests.Session()
+    request_retry = requests.adapters.HTTPAdapter(max_retries=3)
+    session.mount("https://", request_retry)
+    session.mount("http://", request_retry)
+    cookies = requests.cookies.RequestsCookieJar()
+    header = {"Connection": "keep-alive"
+        , "Content-Type": "application/x-www-form-urlencoded",
+              "Cache-Control": "no-cache",
+              "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 Safari/601.1 wechatdevtools/1.02.1904090 MicroMessenger/6.7.3 Language/zh_CN webview/15578306374265793 webdebugger port/22562"}
+    session.headers = header
+    cookies.set('env_flag', env_flag)  # 设置测试环境
+    cookies.set("env_num", env_num)  # 设置环境号
+    cookies.set("name","mp-bear")
+    session.cookies = cookies
+    url = r"http://wap.yunshuxie.com/v1/mini/login.htm"
+    params = {"phone":user,"validate":"1234561","userType":"67","openId":"oPPdW4-Ty_9hIDlEGgRto5NLIGo4","unionId":"o_Pn8s8QLZF4OEgQsxJTNqSkDAbI","isApp":"1"}
+    resp = session.get(url, params=params)
+    print resp.content
+    dict_resp = json.loads(resp.content, encoding="utf8")
+    cookies.set("SessionKey",dict_resp['data']['token'])
+    if dict_resp["returnCode"] == "0" or dict_resp["returnCode"] == 0:
+        cookies.update(resp.cookies)
+    else:
+        raise Exception, resp.content
+    return cookies
 def get_cookies(project,env_flag,env_num,user=None):
+
     """
     :param project: 发布项目
     :param env_flag: 发布环境
@@ -224,9 +283,7 @@ def get_cookies(project,env_flag,env_num,user=None):
 
 if __name__ == "__main__":
     #print get_cookies("wacc_mobile","beta","7","60000021182")
-    print get_wacc_admin_cookie("test","").get_dict()
-
-
+    print get_wechat_ggx_cookies("prod","","60000009005").get_dict()
 
 
 
