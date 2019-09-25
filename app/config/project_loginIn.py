@@ -19,6 +19,6 @@ def loginIn(project_cn,env_flag,env_num,account):
         new_cookies = get_app_cookie(env_flag,env_num, account)
     elif project_cn == "陪你阅读陪你写作":
         new_cookies = get_wechat_cookie(env_flag,env_num, account)
-    elif project_cn == "罐罐熊练字课小程序":
+    elif project_cn == "罐罐熊练字课微信小程序":
         new_cookies = get_wechat_ggx_cookies(env_flag,env_num,account)
     return new_cookies
