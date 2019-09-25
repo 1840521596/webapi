@@ -216,7 +216,7 @@ def get_wechat_cookie(env_flag,env_num,user=None):
     session.cookies = cookies
     salt = "mengmengda"
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
-    params = {"userName": user, "pwd": "123456", "type": "2","wechatCode":"081NtWKq1tU8kl0Vf5Iq1ddyKq1NtWKY"}
+    params = {"userName": user, "pwd": "test123456", "type": "2","wechatCode":"081NtWKq1tU8kl0Vf5Iq1ddyKq1NtWKY"}
     string = urllib.urlencode(params)
     s = string + salt
     md = hashlib.md5()
@@ -230,6 +230,52 @@ def get_wechat_cookie(env_flag,env_num,user=None):
         cookies.update(resp.cookies)
     else:
         raise Exception, resp.content
+    return cookies
+def get_wechat_capth_cookie(env_flag,env_num,user=None):
+    salt = "mengmengda"
+    session = requests.Session()
+    request_retry = requests.adapters.HTTPAdapter(max_retries=3)
+    session.mount("https://", request_retry)
+    session.mount("http://", request_retry)
+    header = {"Connection": "keep-alive"
+        , "Content-Type": "application/x-www-form-urlencoded",
+              "Cache-Control": "no-cache",
+              "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 Safari/601.1 wechatdevtools/1.02.1904090 MicroMessenger/6.7.3 Language/zh_CN webview/15578306374265793 webdebugger port/22562"}
+    session.headers = header
+    cookies = {"env_flag": env_flag, "env_num": env_num}
+    session.cookies = requests.utils.cookiejar_from_dict(cookies)
+    url = r"https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code"
+    params_get_phone_code = {"phone": user, "verType": "2"}  # 1登录 ;2修改手机号
+    string = urllib.urlencode(params_get_phone_code)
+    s = string + salt
+    md = hashlib.md5()
+    md.update(s)
+    md5 = md.hexdigest()
+    data = string + "&sign=" + md5
+    resp = session.post(url, data=data)
+    dict_resp = json.loads(resp.content, encoding="utf8")
+    # print self.resp.content
+    if env_flag=="beta":
+        r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
+    else:
+        r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
+    redis_shell = "code_" + params_get_phone_code["verType"] + "_" + params_get_phone_code["phone"]
+    capth = r.get(redis_shell)
+    expect = {"code": "0"}
+    url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
+    # PC登录
+    params = {"userName": user, "smsCode": capth, "type": "9","wechatCode":"081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc"}
+    string = urllib.urlencode(params)
+    s = string + salt
+    md = hashlib.md5()
+    md.update(s)
+    md5 = md.hexdigest()
+    data = string + "&sign=" + md5
+    resp = session.post(url, data=data)  # PC短信验证码登录
+    print resp.content
+    cookies = resp.cookies
+    cookies.set('env_flag', env_flag)  # 设置测试环境
+    cookies.set("env_num", env_num)  # 设置环境号
     return cookies
 def get_wechat_ggx_cookies(env_flag,env_num,user=None):
     session = requests.Session()
@@ -283,7 +329,7 @@ def get_cookies(project,env_flag,env_num,user=None):
 
 if __name__ == "__main__":
     #print get_cookies("wacc_mobile","beta","7","60000021182")
-    print get_wechat_ggx_cookies("prod","","60000009005").get_dict()
+    print get_wechat_capth_cookie("beta","8","15174157495").get_dict()
 
 
 
