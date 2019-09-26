@@ -289,10 +289,10 @@
                  }).done(function(result){
                     if (result.code == "200"){
                         alert(JSON.stringify(result));
-                        window.open(result.url);
-                        window.focus();
+                       // window.open(result.url);
+                       // window.focus();
                         }
-                    else if (result.code == "204"){
+                    else if (result.code != "204"){
                         alert(JSON.stringify(result));
                         window.open(result.url);
                         window.focus();
