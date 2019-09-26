@@ -244,16 +244,16 @@ def get_wechat_capth_cookie(env_flag,env_num,user=None):
     session.headers = header
     cookies = {"env_flag": env_flag, "env_num": env_num}
     session.cookies = requests.utils.cookiejar_from_dict(cookies)
-    url = r"https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code"
+    #url = r"https://api.yunshuxie.com/yunshuxie-message-service/sms/get_phone_code"
     params_get_phone_code = {"phone": user, "verType": "2"}  # 1登录 ;2修改手机号
-    string = urllib.urlencode(params_get_phone_code)
-    s = string + salt
-    md = hashlib.md5()
-    md.update(s)
-    md5 = md.hexdigest()
-    data = string + "&sign=" + md5
-    resp = session.post(url, data=data)
-    dict_resp = json.loads(resp.content, encoding="utf8")
+    #string = urllib.urlencode(params_get_phone_code)
+    #s = string + salt
+    #md = hashlib.md5()
+    #md.update(s)
+    #md5 = md.hexdigest()
+    #data = string + "&sign=" + md5
+    #resp = session.post(url, data=data)
+    #dict_resp = json.loads(resp.content, encoding="utf8")
     # print self.resp.content
     if env_flag=="beta":
         r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
@@ -264,6 +264,7 @@ def get_wechat_capth_cookie(env_flag,env_num,user=None):
         r.set("SESS:LOGIN:WXTEMPCODE_081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc",
               "{\"openid\":\"o38sIv8Brn0Q_jGRvae6t6KX28DE\",\"nickname\":\"Bleach\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
     redis_shell = "code_" + params_get_phone_code["verType"] + "_" + params_get_phone_code["phone"]
+    r.set(redis_shell,"123456")
     capth = r.get(redis_shell)
     expect = {"code": "0"}
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
@@ -333,7 +334,7 @@ def get_cookies(project,env_flag,env_num,user=None):
 
 if __name__ == "__main__":
     #print get_cookies("wacc_mobile","beta","7","60000021182")
-    print get_wacc_admin_cookie("beta","3","15174157495").get_dict()
+    print get_wechat_capth_cookie("beta","8","15174157495").get_dict()
 
 
 
