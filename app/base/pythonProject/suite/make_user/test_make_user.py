@@ -46,7 +46,7 @@ class Ysx_Make_User(unittest.TestCase):
         """make_user_admin平台创建测试用户
         """
         url = "https://admin.yunshuxie.com/common_index/loginIn.json"#r"https://www.yunshuxie.com"+"/v5/web/account/login.htm"
-        data = {"userName": self.admin_usernmae, "pwd": self.admin_pwd}
+        data = {"userName": self.admin_usernmae, "pwd": self.admin_pwd,"emailVerifyCode":"ysx2019"}
         self.resp = self.session.post(url, data=data)  # 登录admin测试环境,记录cookies
         url = r"https://admin.yunshuxie.com/v1/admin/account/add/user.json"
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","X-Requested-With": "XMLHttpRequest","Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9","Cache-Control": "no-cache","Connection": "keep-alive","Content-Type": "multipart/form-data; boundary=----WebKitFormBoundaryF7Lcp4O5PcTcLugw"}
@@ -54,10 +54,16 @@ class Ysx_Make_User(unittest.TestCase):
         userPhone = self.phoneNumList.split(",")
         employeeTypes = self.employeeTypes.split(",")
         for index in range(len(userName)):
-            datas = {"memberIcon": "", "pwd": "test123456", "email": "automation@yunshuxie.com", "weiboName": "",
-                     "nickName": userName[index], "qq": "", "interest": "", "phone":userPhone[index] , "weichatNum": "",
-                     "remark": "自动化测试", "memberType": employeeTypes[index], "ChoiceOfTeacher": "默认分组", "ChoiceOfTeacher": "默认分组",
-                     "readRole": "0", "ChoiceOfTeacher": "云舒写教育科技", "button": ""}
+            datas = {"memberIcon": "", "pwd": "test123456",
+                     "email": "automation@yunshuxie.com", "weiboName": "",
+                     "nickName": userName[index], "qq": "",
+                     "interest": "", "phone":userPhone[index] , "weichatNum": "",
+                     "remark": "自动化测试",
+                     "memberType": employeeTypes[index],
+                     "ChoiceOfTeacher": "默认分组",
+                     "ChoiceOfTeacher": "默认分组",
+                     "readRole": "0", "ChoiceOfTeacher": "云舒写教育科技",
+                     "button": ""}
             data = MultipartEncoder(datas)
             headers["Content-Type"] = data.content_type
             self.session.headers = headers

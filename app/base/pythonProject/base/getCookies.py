@@ -333,7 +333,7 @@ def get_cookies(project,env_flag,env_num,user=None):
 
 if __name__ == "__main__":
     #print get_cookies("wacc_mobile","beta","7","60000021182")
-    print get_wacc_admin_cookie("beta","5","15174157495").get_dict()
+    print get_wacc_admin_cookie("beta","3","15174157495").get_dict()
 
 
 
