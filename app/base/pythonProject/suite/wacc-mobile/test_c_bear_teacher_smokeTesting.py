@@ -328,7 +328,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         header = {"Connection": "keep-alive",  # "Content-Type": "multipart/form-data",
                   "User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
         files = {
-            'file': ("mp3.amr",open(r'./app/base/pythonProject/suite/wacc_mobile/mp3.amr', 'rb'),"multipart/form-data"),
+            'file': ("mp3.amr",open(r'./app/base/pythonProject/suite/wacc-mobile/mp3.amr', 'rb'),"multipart/form-data"),
         }
         str_params = """{'file': ("mp3.amr",open(r'mp3.amr', 'rb'),"multipart/form-data")}"""
         # logging.info(url + lianjiefu + str_params + fengefu)

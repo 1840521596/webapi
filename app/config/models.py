@@ -16,7 +16,22 @@ class Project(db.Model):
         self.use_status = use_status
     def __repr__(self):
         return '<Case %r>'%(self.name)
-
+class runSuiteProject(db.Model):
+    __tablename__ = "runSuiteProject"  # 表名
+    id = db.Column(db.Integer,primary_key=True)#序号ID
+    project = db.Column(db.String(100), unique=True) # 项目
+    project_en = db.Column(db.String(100), unique=True) # 项目_英文
+    domain = db.Column(db.String(100))
+    description = db.Column(db.Text)#项目描述
+    use_status = db.Column(db.Boolean,default=0)
+    def __init__(self,project,description,domain,project_en,use_status=0):
+        self.project = project
+        self.description = description
+        self.domain = domain
+        self.project_en = project_en
+        self.use_status = use_status
+    def __repr__(self):
+        return '<Case %r>'%(self.name)
 
 class Case_Http_API(db.Model):
     __tablename__ = "case_http_api" #表名

@@ -316,24 +316,24 @@ def get_cookies(project,env_flag,env_num,user=None):
     :param env_num: 发布环境号
     :return: cookies
     """
-    if project == "ysx_crm":
+    if project == "ysx-crm":
         cookie = get_ysx_crm_cookie(env_flag,env_num,user).get_dict()
     elif project == "wacc_home":
         cookie = get_wacc_home_cookie(env_flag,env_num,user).get_dict()
-    elif project == "wacc_admin":
+    elif project == "wacc-admin":
         cookie = get_wacc_admin_cookie(env_flag,env_num,user).get_dict()
-    elif project == "wacc_tortoise":
+    elif project == "wacc-tortoise":
         cookie = get_wacc_tortoise_cookie(env_flag,env_num,user).get_dict()
     elif project == "wacc_bird":
         cookie = get_wacc_bird_cookie(env_flag,env_num,user).get_dict()
-    elif project == "wacc_mobile":
+    elif project == "wacc-mobile":
         cookie = get_app_cookie(env_flag,env_num,user).get_dict()
     else:
         cookie = {"env_flag":env_flag,"env_num":env_num}
     return cookie
 
 if __name__ == "__main__":
-    #print get_cookies("wacc_mobile","beta","7","60000021182")
+    #print get_cookies("wacc-mobile","beta","7","60000021182")
     print get_wechat_capth_cookie("beta","8","15174157495").get_dict()
 
 

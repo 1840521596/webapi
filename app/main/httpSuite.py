@@ -5,7 +5,7 @@ from flask import make_response,request,jsonify,url_for,redirect
 from . import test
 from ..base.pythonProject import run
 from .. import db,redis
-from ..config.models import Project,Test_Env,Test_User_Reg,Case_Http_API
+from ..config.models import Project,Test_Env,Test_User_Reg,Case_Http_API,runSuiteProject
 from sqlalchemy import func
 from app.base.pythonProject.base.getConfig import s
 from app.base.pythonProject.base.couponReceive import coupon_test
@@ -124,7 +124,7 @@ def runDatasApiTest_yunwei():
 			raise Exception("环境编号不能为空！")
 		if env_flag == "":
 			raise Exception("使用环境不能为空！")
-		project_en = db.session.query(Project.project_en, Project.description).filter_by(project=project,use_status=1).first()  #查询项目
+		project_en = db.session.query(runSuiteProject.project_en, runSuiteProject.description).filter_by(project_en=project,use_status=1).first()  #查询项目
 		if project_en:  #判断项目存在
 			redis_env_flag_shell = "{project_en}_env_flag".format(project_en=project_en[0])
 			redis_env_num_shell = "{project_en}_env_num".format(project_en=project_en[0])
@@ -134,7 +134,7 @@ def runDatasApiTest_yunwei():
 			redis_host = s.get_env("beta").split(":") if env_flag == "beta" else s.get_env("prod_stage").split(":")
 			r = red.Redis(host=redis_host[0], port=int(redis_host[1]), password="yunshuxie1029Password")
 			r.set("021ZaJtG17hM310SblvG1NZutG1ZaJtQ",'o38sIv_7FQInsBKJEUExn7wYxoHc&21_bk4dQIEFnYz5w8zJwDqan84UFmV_XVKEO5MJf7fv1pGR8tRH2MAtxpk0Pc1SqDwe5S90CE6TQo1wd346qEA5FQ')
-			if "admin".upper() not in project_en[0].upper() and "crm".upper() not in project_en[0].upper() and "wacc_tortoise".upper() not in project_en[0].upper():  # 判断项目不等于admin&&crm，新增测试用户
+			if "admin".upper() not in project_en[0].upper() and "crm".upper() not in project_en[0].upper() and "wacc-tortoise".upper() not in project_en[0].upper():  # 判断项目不等于admin&&crm，新增测试用户
 				try:
 					if env_flag in ["stage", "prod"]:
 						new_env_flag = ",".join(["stage", "prod"])
