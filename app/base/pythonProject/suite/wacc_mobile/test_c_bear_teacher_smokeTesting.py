@@ -4,23 +4,24 @@ import requests
 import unittest
 import json
 from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
-from app.base.pythonProject.base.py_redis import MyRedis
+from app.base.pythonProject.base.py_redis import fromRedis
 from app.base.pythonProject.base.getCookies import get_app_cookie,get_wacc_admin_cookie
 import time
 #logging = TestLog().getlog()
 class BearWord_Teacher_Test(unittest.TestCase):
     """<br>首页,教师端操作<br>1.admin平台-运营管理-罐罐熊管理-添加罐罐熊老师-查询用户手机号<br>2.admin-添加用户手机号为教师<br>3.APP-个人中心-开启通知并判断是否教师角色<br>4.罐罐熊-教师端-个人中心-接收作业开关-关闭<br>5.罐罐熊-教师端-个人中心-接收作业开关-开启<br>6.admin-查询用户作业详情<br>7.admin-用户指定分配服务老师<br>8.admin-用户重新分配指定分配服务老师<br>9.老师端：待批改列表<br>10.老师端：用户作业详情<br>11.老师端：驳回理由列表<br>12.老师端：校验用户是否重新提交作业<br>13.老师端：上传批改语音接口<br>14.老师端：批改作业保存<br>15.老师端：批改记录<br>16.老师端：推荐/取消推荐优秀作业--推荐"""
     @classmethod
-    def setUpClass(self):
-        self.redis = MyRedis()
-        self.env_flag = self.redis.str_get("wacc_mobile_env_flag")
-        self.env_num = self.redis.str_get("wacc_mobile_env_num")
+    @fromRedis(getKey=["wacc_mobile_env_flag","wacc_mobile_env_num","make_user_phones"])
+    def setUpClass(self,getKey):
+        self.env_flag = "beta"#getKey["wacc_mobile_env_flag"]
+        self.env_num = "1"#getKey["wacc_mobile_env_num"]
+        self.phone = getKey["make_user_phones"]
         self.timestamp = "%d"%(time.time())
         self.session = requests.Session()
-        self.phone = self.redis.str_get("make_user_phones")
         header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded","User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
         self.msg = """\n        Expect:  {Expect}-*-\n        Really:  {Really}"""  # 校验HTTP返回代码
         self.session.headers = header
+    @fromRedis(setKey=["bearWord_Teacher_memberId"])
     def test_01_admin_bear_course_query_bearUser_list(self):
         """admin平台-运营管理-罐罐熊管理-添加罐罐熊老师-查询用户手机号<br>https://admin.yunshuxie.com/v1/bear_course/query/bearUser_list.json<br/>
         """
@@ -43,16 +44,17 @@ class BearWord_Teacher_Test(unittest.TestCase):
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         #logging.info(url + lianjiefu + self.resp.content + fengefu)
+        print result["rows"]
         if result["rows"]:
-            bearWord_Teacher_memberId = result["rows"][0]["memberId"]
-            self.redis.str_set("bearWord_Teacher_memberId",bearWord_Teacher_memberId,ex=60)
+            return [result["rows"][0]["memberId"]]
         else:
             print u"查询用户无数据"
             raise Exception,u"查询用户无数据"
-    def test_02_admin_bear_course_add_bearTeacher(self):
+    @fromRedis(getKey=["bearWord_Teacher_memberId"])
+    def test_02_admin_bear_course_add_bearTeacher(self,getKey):
         """admin平台-运营管理-罐罐熊管理-添加罐罐熊老师-添加用户手机号为老师<br>https://admin.yunshuxie.com/v1/bear_course/add_bearTeacher.htm<br/>
         """
-        bearWord_Teacher_memberId = self.redis.str_get("bearWord_Teacher_memberId") if self.redis.str_get("bearWord_Teacher_memberId") else None
+        bearWord_Teacher_memberId = getKey["bearWord_Teacher_memberId"]
         if bearWord_Teacher_memberId:
             cookies = get_wacc_admin_cookie(self.env_flag,self.env_num)
             url = r"https://admin.yunshuxie.com"+"/v1/bear_course/add_bearTeacher.htm"
@@ -75,6 +77,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
             result = json.loads(self.resp.text, encoding="utf8")
             #logging.info(url + lianjiefu + self.resp.content + fengefu)
         else:
+
             print u"查询用户无数据"
             raise Exception,u"查询用户无数据"
     def test_03_v1_bear_main_personData(self):
@@ -133,6 +136,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
+    @fromRedis(setKey=["admin_bearWord_workId"])
     def test_06_admin_bear_course_query_bearMmeber_timeLine(self):
         """admin平台-查询用户详情<br>https://admin.yunshuxie.com/v1/bear_course/query/bearMmeber_timeLine.json"""
         url = r"https://admin.yunshuxie.com"+r"/v1/bear_course/query/bearMmeber_timeLine.json"
@@ -155,12 +159,13 @@ class BearWord_Teacher_Test(unittest.TestCase):
         print self.resp.text
         result = json.loads(self.resp.text, encoding="utf8")
         if result["rows"]:
-            admin_workId = self.redis.str_set("admin_bearWord_workId", result["rows"][0]["timeLineId"],ex=60)
+            return [result["rows"][0]["timeLineId"]]
         else:
             raise Exception,u"当前用户未存在测试作业数据"
-    def test_07_admin_bear_course_batch_job_assgin(self):
+    @fromRedis(getKey=["bearWord_workId"])
+    def test_07_admin_bear_course_batch_job_assgin(self,getKey):
         """admin平台-分配指定服务老师<br>https://admin.yunshuxie.com/v1/bear_course/batch_job_assgin.htm"""
-        workId = self.redis.str_get("bearWord_workId") if self.redis.str_get("bearWord_workId") else None
+        workId = getKey["bearWord_workId"]
         url = r"https://admin.yunshuxie.com"+r"/v1/bear_course/batch_job_assgin.htm"
         params ={"timelineIds": workId,"teacherPhone": self.phone,"assginJobStatus": "0"}
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
@@ -186,9 +191,10 @@ class BearWord_Teacher_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
-    def test_08_admin_bear_course_batch_job_assgin(self):
+    @fromRedis(getKey=["admin_bearWord_workId"])
+    def test_08_admin_bear_course_batch_job_assgin(self,getKey):
         """admin平台-重新分配指定服务老师<br>https://admin.yunshuxie.com/v1/bear_course/batch_job_assgin.htm"""
-        workId = self.redis.str_get("admin_bearWord_workId") if self.redis.str_get("admin_bearWord_workId") else None
+        workId = getKey["admin_bearWord_workId"]
         url = r"https://admin.yunshuxie.com"+r"/v1/bear_course/batch_job_assgin.htm"
         params ={"timelineIds": workId,"teacherPhone": self.phone,"assginJobStatus": "3"}
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
@@ -214,6 +220,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
+    @fromRedis(setKey=["bearWord_timelineId"])
     def test_09_v1_bear_teacher_not_correct_list(self):
         """老师端：待批改列表<br>https://mobile.yunshuxie.com/v1/bear/teacher/not_correct_list.htm<br>{"page":"","pageSize":""}"""
         url =r"https://mobile.yunshuxie.com"+r"/v1/bear/teacher/not_correct_list.htm"
@@ -235,13 +242,14 @@ class BearWord_Teacher_Test(unittest.TestCase):
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
         if result["data"]["notCorrectJobList"]:
-            bearWord_timelineId = self.redis.str_set("bearWord_timelineId",result["data"]["notCorrectJobList"][0]["timelineId"])
+            return [result["data"]["notCorrectJobList"][0]["timelineId"]]
         else:
             print u"当前教师未存在待批改作业"
             raise Exception,u"当前教师未存在待批改作业"
-    def test_10_v1_bear_teacher_bear_task(self):
+    @fromRedis(setKey=["bearWord_submitUpdateDate"],getKey=["bearWord_timelineId"])
+    def test_10_v1_bear_teacher_bear_task(self,getKey):
         """老师端：用户作业详情<br>https://mobile.yunshuxie.com/v1/bear/teacher/bear_task.htm<br>{"timeLineId":""}"""
-        bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
+        bearWord_timelineId = getKey["bearWord_timelineId"]
         if bearWord_timelineId:
             url = r"https://mobile.yunshuxie.com" + r"/v1/bear/teacher/bear_task.htm"
             params = {"timeLineId":bearWord_timelineId}
@@ -265,7 +273,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
                 # bearWord_timelineId = self.redis.str_set("bearWord_timelineId",
                 #                                          result["data"]["notCorrectJobList"][0]["timelineId"])
                 if result["data"]["submitUpdateDate"] !="":
-                    bearWord_submitUpdateDate = self.redis.str_set("bearWord_submitUpdateDate",result["data"]["submitUpdateDate"])
+                    return [result["data"]["submitUpdateDate"]]
         else:
             print u"当前教师未存在待批改作业"
             raise Exception,u"当前教师未存在待批改作业"
@@ -285,10 +293,11 @@ class BearWord_Teacher_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                      Really=result["returnCode"])
-    def test_12_v1_bear_teacher_check_timeLineSatus(self):
+    @fromRedis(getKey=["bearWord_timelineId","bearWord_submitUpdateDate"])
+    def test_12_v1_bear_teacher_check_timeLineSatus(self,getKey):
         """老师端：校验用户是否重新提交作业<br>https://mobile.yunshuxie.com/v1/bear/teacher/check_timeLineSatus.htm<br>{"timeLineId":"","submitUpdateDate":""}"""
-        bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
-        bearWord_submitUpdateDate = self.redis.str_get("bearWord_submitUpdateDate") if self.redis.str_get("bearWord_submitUpdateDate") else ""
+        bearWord_timelineId = getKey["bearWord_timelineId"]
+        bearWord_submitUpdateDate = getKey["bearWord_submitUpdateDate"]
         if bearWord_timelineId:
             url = r"https://mobile.yunshuxie.com" + r"/v1/bear/teacher/check_timeLineSatus.htm"
             cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
@@ -311,6 +320,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         else:
             print u"当前教师未存在待批改作业"
             raise Exception, u"当前教师未存在待批改作业"
+    @fromRedis(setKey=["bearWord_mp3_link"])
     def test_13_v1_bear_teacher_upload_voice(self):
         """上传批改语音接口<br>https://mobile.yunshuxie.com/v1/bear/teacher/upload_voice.htm<br>files=binary"""
         url = r"https://mobile.yunshuxie.com/v1/bear/teacher/upload_voice.htm"
@@ -335,13 +345,14 @@ class BearWord_Teacher_Test(unittest.TestCase):
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
         if result["data"]["mp3"] != "":
-            bearWord_mp3_link = self.redis.str_set("bearWord_mp3_link",result["data"]["mp3"],ex=60)
-    def test_14_v1_bear_teacher_save_correction_records(self):
+            return [result["data"]["mp3"]]
+    @fromRedis(getKey=["bearWord_timelineId","bearWord_mp3_link","bearWord_submitUpdateDate"])
+    def test_14_v1_bear_teacher_save_correction_records(self,getKey):
         """老师端：批改作业保存<br>https://mobile.yunshuxie.com/v1/bear/teacher/save_correction_records.htm<br>{"timeLineId":"","commentVoice":"","excellence":"","commentContent":""}"""
         time.sleep(10)
-        bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
-        commentVoice = self.redis.str_get("bearWord_mp3_link") if self.redis.str_get("bearWord_mp3_link") else None
-        bearWord_submitUpdateDate = self.redis.str_get("bearWord_submitUpdateDate") if self.redis.str_get("bearWord_submitUpdateDate") else ""
+        bearWord_timelineId = getKey["bearWord_timelineId"]
+        commentVoice = getKey["bearWord_mp3_link"]
+        bearWord_submitUpdateDate = getKey["bearWord_submitUpdateDate"]
         if bearWord_timelineId and commentVoice:
             url = r"https://mobile.yunshuxie.com" + r"/v1/bear/teacher/save_correction_records.htm"
             header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded",
@@ -386,9 +397,10 @@ class BearWord_Teacher_Test(unittest.TestCase):
         else:
             assert result["returnCode"] == expect["returnCode"], self.msg.format(Expect=expect["returnCode"],
                                                                                  Really=result["returnCode"])
-    def test_16_v1_bear_teacher_recommend_job(self):
+    @fromRedis(getKey=["bearWord_timelineId"])
+    def test_16_v1_bear_teacher_recommend_job(self,getKey):
         """老师端：推荐/取消推荐优秀作业-推荐<br>https://mobile.yunshuxie.com/v1/bear/teacher/recommend_job.htm.htm<br>{"timeLineId":"","excellence":"1"}"""
-        bearWord_timelineId = self.redis.str_get("bearWord_timelineId") if self.redis.str_get("bearWord_timelineId") else None
+        bearWord_timelineId = getKey["bearWord_timelineId"]
         if bearWord_timelineId:
             url = r"https://mobile.yunshuxie.com"+r"/v1/bear/teacher/recommend_job.htm"
             params = {"timeLineId":bearWord_timelineId,"excellence":"1"}

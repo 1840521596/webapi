@@ -5,16 +5,16 @@ import unittest
 import re
 import json
 from app.base.pythonProject.base.log import fengefu,lianjiefu,TestLog
-from app.base.pythonProject.base.py_redis import MyRedis
+from app.base.pythonProject.base.py_redis import fromRedis
 logging = TestLog().getlog()
 class KanTuXieHua_Test(unittest.TestCase):
     """<br/>看图写话60讲->销售查询->系统时间->查询课程信息->查询优惠券-><br/>课程购买查询->发送验证码->校验验证码->个人购买全期课程"""
     @classmethod
-    def setUpClass(self):
-        redis = MyRedis()
-        self.env_flag = redis.str_get("wacc_order_env_flag")
-        self.env_num = redis.str_get("wacc_order_env_num")
-        self.phonenum = redis.str_get("make_user_phones")
+    @fromRedis(getKey=["wacc_order_env_flag","wacc_order_env_num","make_user_phones"])
+    def setUpClass(self,getKey):
+        self.env_flag = getKey["wacc_order_env_flag"]
+        self.env_num = getKey["wacc_order_env_num"]
+        self.phonenum = getKey["make_user_phones"]
         self.session = requests.Session()
         request_retry = requests.adapters.HTTPAdapter(max_retries=3)
         self.session.mount("https://", request_retry)
