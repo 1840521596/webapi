@@ -297,6 +297,11 @@ def get_wechat_ggx_cookies(env_flag,env_num,user=None):
     cookies.set("env_num", env_num)  # 设置环境号
     cookies.set("name","mp-bear")
     session.cookies = cookies
+    if env_flag=="beta":
+        r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
+    else:
+        r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
+    r.set("code_6_%s"%(user),"1234561","60")
     url = r"http://wap.yunshuxie.com/v1/mini/login.htm"
     params = {"phone":user,"validate":"1234561","userType":"67","openId":"oPPdW4-Ty_9hIDlEGgRto5NLIGo4","unionId":"o_Pn8s8QLZF4OEgQsxJTNqSkDAbI","isApp":"1"}
     resp = session.get(url, params=params)
@@ -334,7 +339,7 @@ def get_cookies(project,env_flag,env_num,user=None):
 
 if __name__ == "__main__":
     #print get_cookies("wacc-mobile","beta","7","60000021182")
-    print get_wechat_capth_cookie("beta","8","15174157495").get_dict()
+    print get_wechat_ggx_cookies("beta","7","60000008092").get_dict()
 
 
 
