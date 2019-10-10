@@ -106,7 +106,7 @@ def run_api(self,project,developer,cookies):
 ###发送报告消息
     report_url = u"http://uwsgi.sys.bandubanxie.com/Report/{month}/{day}/{project_en}_schedule.html".format(
         month=str(month), day=str(day), project_en=project_cn)
-    wechatQY_msg(developer=developer,project_cn=project_cn,report_url=report_url,cookies=cookies,
+    wechatQY_msg(developer=developer,project_cn=project_cn,report_url=report_url,
                  success_count=str(case_pass),error_count=str(case_fail),failure_count=str(case_mistake))
     return {'current': current, 'total': case_total, 'status': u'执行成功!','result': case_success,"case_failed":case_failed,"case_mistake":case_mistake}
 def run_test(dict_datas,cookies):
@@ -206,12 +206,11 @@ def find_key(resp,fkey,fvalue,resp_key=None):
             return True
     else:
         return False
-def wechatQY_msg(developer,project_cn,success_count,error_count,failure_count,report_url,cookies):
+def wechatQY_msg(developer,project_cn,success_count,error_count,failure_count,report_url):
     try:
-        content = u"""接口平台调度测试结果:\n测试: {developer} \n测试项目: {project_en} \n测试环境: {env_flag}\n通过接口数: {success_count} \n未通过接口数: {error_count} \n程序失败接口数: {failure_count} \n结果查看地址: {report_url}""".format(project_en=project_cn,
+        content = u"""接口平台调度测试结果:\n测试: {developer} \n测试项目: {project_en} \n通过接口数: {success_count} \n未通过接口数: {error_count} \n程序失败接口数: {failure_count} \n结果查看地址: {report_url}""".format(project_en=project_cn,
                                       success_count=success_count,
                                        error_count=error_count,
-                                     env_flag=cookies["env_flag"],
                                        failure_count=failure_count,
                                        developer=developer,
                                         report_url=report_url
