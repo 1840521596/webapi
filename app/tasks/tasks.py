@@ -9,7 +9,7 @@ import requests
 import datetime
 import json
 import os
-
+import re
 
 @celery.task(bind=True)
 def run_api(self,project,developer,cookies):
@@ -106,7 +106,7 @@ def run_api(self,project,developer,cookies):
 ###发送报告消息
     report_url = u"http://uwsgi.sys.bandubanxie.com/Report/{month}/{day}/{project_en}_schedule.html".format(
         month=str(month), day=str(day), project_en=project_cn)
-    wechatQY_msg(developer=developer,project_cn=project_cn,report_url=report_url,
+    wechatQY_msg(developer=developer,project_cn=project_cn,report_url=report_url,cookies=cookies,
                  success_count=str(case_pass),error_count=str(case_fail),failure_count=str(case_mistake))
     return {'current': current, 'total': case_total, 'status': u'执行成功!','result': case_success,"case_failed":case_failed,"case_mistake":case_mistake}
 def run_test(dict_datas,cookies):
@@ -134,7 +134,7 @@ def run_test(dict_datas,cookies):
             resp = getFunction(url=url,headers=headers,params=params,cookies=cookies)
         else:
             resp = postFunction(url=url,headers=headers,params=params,cookies=cookies)
-        resp_dict_s = json.loads(resp.text,encoding="utf8")
+        resp_dict_s = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
         status_key_list = []  # 返回key + 验证结果
         status_list = []  # 返回验证结果boolean
         if assertValue_dict==None:
