@@ -5,7 +5,7 @@ from flask import make_response,request,jsonify,url_for,redirect
 from . import test
 from ..base.pythonProject import run
 from .. import db,redis
-from ..config.models import Project,Test_Env,Test_User_Reg,Case_Http_API,runSuiteProject
+from ..config.models import Project,Test_Env,Test_User_Reg,Case_Http_API,runSuiteProject,is_Make_User
 from sqlalchemy import func
 from app.base.pythonProject.base.getConfig import s
 from app.base.pythonProject.base.couponReceive import coupon_test
@@ -13,6 +13,7 @@ import redis as red
 from threading import Thread
 import json
 from ..tasks.tasks import run_api,run_api_case
+import os
 @test.route("/runSuiteApi",methods=["GET"])
 def runDatasApiTest():
 	"""测试集页面使用接口,用于上传测试用例后执行
@@ -126,6 +127,10 @@ def runDatasApiTest_yunwei():
 			raise Exception("使用环境不能为空！")
 		project_en = db.session.query(runSuiteProject.project_en, runSuiteProject.description).filter_by(project_en=project,use_status=1).first()  #查询项目
 		if project_en:  #判断项目存在
+			suite_project_en = project_en[0]
+			exists_suite = os.path.exists("app/base/pythonProject/suite/%s" % (suite_project_en))  # 判断测试集文件夹是否存在
+			if not exists_suite:
+				raise Exception("测试集文件夹未存在,请创建后再次运行")
 			redis_env_flag_shell = "{project_en}_env_flag".format(project_en=project_en[0])
 			redis_env_num_shell = "{project_en}_env_num".format(project_en=project_en[0])
 			redis.set(redis_env_flag_shell,env_flag)  #设置测试环境
@@ -133,8 +138,10 @@ def runDatasApiTest_yunwei():
 			s.add_set("ENV", env_num=env_num, env_flag=env_flag) #云舒写首页&admin 会使用config.ini配置文件
 			redis_host = s.get_env("beta").split(":") if env_flag == "beta" else s.get_env("prod_stage").split(":")
 			r = red.Redis(host=redis_host[0], port=int(redis_host[1]), password="yunshuxie1029Password")
-			r.set("021ZaJtG17hM310SblvG1NZutG1ZaJtQ",'o38sIv_7FQInsBKJEUExn7wYxoHc&21_bk4dQIEFnYz5w8zJwDqan84UFmV_XVKEO5MJf7fv1pGR8tRH2MAtxpk0Pc1SqDwe5S90CE6TQo1wd346qEA5FQ')
-			if "admin".upper() not in project_en[0].upper() and "crm".upper() not in project_en[0].upper() and "wacc-tortoise".upper() not in project_en[0].upper():  # 判断项目不等于admin&&crm，新增测试用户
+			r.set("021ZaJtG17hM310SblvG1NZutG1ZaJtQ",'o38sIv_7FQInsBKJEUExn7wYxoHc&21_bk4dQIEFnYz5w8zJwDqan84UFmV_XVKEO5MJf7fv1pGR8tRH2MAtxpk0Pc1SqDwe5S90CE6TQo1wd346qEA5FQ')  #wacc-order 设置 openId
+			isMakeCount = db.session.query(is_Make_User.project_en).filter_by(isMake=1).count()  #是否创建用户配置表查询
+			#if "admin".upper() not in project_en[0].upper() and "crm".upper() not in project_en[0].upper() and "wacc-tortoise".upper() not in project_en[0].upper():  # 判断项目不等于admin&&crm，新增测试用户
+			if isMakeCount:
 				try:
 					if env_flag in ["stage", "prod"]:
 						new_env_flag = ",".join(["stage", "prod"])
@@ -177,7 +184,7 @@ def runDatasApiTest_yunwei():
 									developer,developer_project,branch])
 				msg = {"code": 200, "Msg": "执行成功,请查收测试报告","url": r"http://uwsgi.sys.bandubanxie.com/Report"}
 		else:
-			raise Exception("{project}不存在".format(project=project))
+			raise Exception("MySql内未配置,{project}不存在".format(project=project))
 	except Exception as e:
 		msg = {"code":400,"Msg":"执行失败","ErrorMsg":str(e)}
 	return make_response(jsonify(msg))

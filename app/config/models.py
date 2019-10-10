@@ -125,10 +125,6 @@ class Case_Dubbo_API(db.Model):
         self.api_type = api_type
     def __repr__(self):
         return '<Case %r>'%(self.name)
-
-
-
-
 class Web_Model_Set(db.Model):
     __tablename__ = "model_set"  # 表明
     id = db.Column(db.Integer, primary_key=True)  # 序号ID
@@ -141,8 +137,6 @@ class Web_Model_Set(db.Model):
         self.modelStatus = modelStatus
     def __repr__(self):
         return '<Case %r>'%(self.modelName)
-
-
 class Test_Env(db.Model):
     __tablename__ = "test_env"  # 表名
     id = db.Column(db.Integer,primary_key=True)#序号ID
@@ -153,8 +147,6 @@ class Test_Env(db.Model):
         self.env_num = env_num
     def __repr__(self):
         return '<Case %r>'%(self.env_flag)
-
-
 class Test_User_Reg(db.Model):
     __tablename__ = "telephone"
     id = db.Column(db.Integer,primary_key=True) #序号ID
@@ -167,7 +159,6 @@ class Test_User_Reg(db.Model):
         self.type = type
         self.env = env
         self.description = description
-
 class Key_Value(db.Model):
     __tablename__ = "key_value"
     id = db.Column(db.Integer,primary_key=True) #序号ID
@@ -179,3 +170,12 @@ class Key_Value(db.Model):
         self.user_key = user_key
         self.user_value = user_value
         self.status = status
+class is_Make_User(db.Model):
+    __tablename__ = "isMakeUser"
+    id = db.Column(db.Integer, primary_key=True)  # 序号ID
+    project_en = db.Column(db.String(100), unique=True) # 项目_英文
+    isMake = db.Column(db.Boolean, default=0)
+    def __init__(self,id,project_en,isMake=0):
+        self.id = id
+        self.project_en = project_en
+        self.isMake = isMake
