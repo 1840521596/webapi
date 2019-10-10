@@ -105,7 +105,7 @@ def run_api(self,project,developer,cookies):
         f.write(wc8.encode("utf8"))
 ###发送报告消息
     report_url = u"http://uwsgi.sys.bandubanxie.com/Report/{month}/{day}/{project_en}_schedule.html".format(
-        month=str(month), day=str(day), project_en=project_en)
+        month=str(month), day=str(day), project_en=project_cn)
     wechatQY_msg(developer=developer,project_cn=project_cn,report_url=report_url,
                  success_count=str(case_pass),error_count=str(case_fail),failure_count=str(case_mistake))
     return {'current': current, 'total': case_total, 'status': u'执行成功!','result': case_success,"case_failed":case_failed,"case_mistake":case_mistake}
