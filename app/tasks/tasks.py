@@ -106,7 +106,7 @@ def run_api(self,project,developer,cookies):
 ###发送报告消息
     report_url = u"http://uwsgi.sys.bandubanxie.com/Report/{month}/{day}/{project_en}_schedule.html".format(
         month=str(month), day=str(day), project_en=project_en)
-    wechatQY_msg(developer=developer,project_en=project_en,report_url=report_url,
+    wechatQY_msg(developer=developer,project_cn=project_cn,report_url=report_url,
                  success_count=str(case_pass),error_count=str(case_fail),failure_count=str(case_mistake))
     return {'current': current, 'total': case_total, 'status': u'执行成功!','result': case_success,"case_failed":case_failed,"case_mistake":case_mistake}
 def run_test(dict_datas,cookies):
@@ -124,9 +124,9 @@ def run_test(dict_datas,cookies):
         account = dict_datas["account"]  #需要登录状态时,获取登录状态
         if account.upper() == "NONE" or account==None:
             account=None
-        sql = """select project_en from project_api where project='%s';""" % (project)
-        project_en = select_sql(sql)[0][0]  # 获取项目名称
-        cookies = get_cookies(project_en,env_flag,env_num,user=account)  # 更新cookies信息，变更为已登录
+        #sql = """select project_en from project_api where project='%s';""" % (project)
+        #project_en = select_sql(sql)[0][0]  # 获取项目名称
+        cookies = get_cookies(project,env_flag,env_num,user=account)  # 更新cookies信息，变更为已登录
     try:
         assertValue_dict = None if dict_datas["assertValue"] == "None" or dict_datas["assertValue"] == None else json.loads(dict_datas["assertValue"],
                                                                                        encoding="utf8")  # 校验数据
@@ -206,9 +206,9 @@ def find_key(resp,fkey,fvalue,resp_key=None):
             return True
     else:
         return False
-def wechatQY_msg(developer,project_en,success_count,error_count,failure_count,report_url):
+def wechatQY_msg(developer,project_cn,success_count,error_count,failure_count,report_url):
     try:
-        content = u"""接口平台调度测试结果:\n测试: {developer} \n测试项目: {project_en} \n通过接口数: {success_count} \n未通过接口数: {error_count} \n程序失败接口数: {failure_count} \n结果查看地址: {report_url}""".format(project_en=project_en,
+        content = u"""接口平台调度测试结果:\n测试: {developer} \n测试项目: {project_en} \n通过接口数: {success_count} \n未通过接口数: {error_count} \n程序失败接口数: {failure_count} \n结果查看地址: {report_url}""".format(project_en=project_cn,
                                       success_count=success_count,
                                        error_count=error_count,
                                        failure_count=failure_count,

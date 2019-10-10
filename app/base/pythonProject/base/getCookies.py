@@ -321,26 +321,31 @@ def get_cookies(project,env_flag,env_num,user=None):
     :param env_num: 发布环境号
     :return: cookies
     """
-    if project == "ysx-crm":
+    if project == "云舒写CRM系统":
         cookie = get_ysx_crm_cookie(env_flag,env_num,user).get_dict()
-    elif project == "wacc_home":
+    elif project == "云舒写首页":
         cookie = get_wacc_home_cookie(env_flag,env_num,user).get_dict()
-    elif project == "wacc-admin":
+    elif project == "云舒写后台管理系统":
         cookie = get_wacc_admin_cookie(env_flag,env_num,user).get_dict()
-    elif project == "wacc-tortoise":
+    elif project == "简章系统":
         cookie = get_wacc_tortoise_cookie(env_flag,env_num,user).get_dict()
-    elif project == "wacc_bird":
+    elif project == "新商品详情系统" or project == "新订单支付系统":
         cookie = get_wacc_bird_cookie(env_flag,env_num,user).get_dict()
-    elif project == "wacc-mobile":
+    elif project == "罐罐熊APP":
         cookie = get_app_cookie(env_flag,env_num,user).get_dict()
+    elif project == "罐罐熊练字课微信小程序":
+        cookie = get_wechat_ggx_cookies(env_flag,env_num,user)
+    elif project == "云舒写大语文合作与推广":
+        cookie = get_wechat_capth_cookie(env_flag,env_num,user)
+    elif project == "陪你阅读陪你写作":
+        cookie = get_wechat_cookie(env_flag,env_num, user)
     else:
         cookie = {"env_flag":env_flag,"env_num":env_num}
     return cookie
 
 if __name__ == "__main__":
-    #print get_cookies("wacc-mobile","beta","7","60000021182")
-    print get_wechat_ggx_cookies("beta","7","60000008092").get_dict()
-
+    print get_cookies("云舒写首页","beta","7","60000021182")
+    #print get_app_cookie("beta","1","60000007001").get_dict()
 
 
 
