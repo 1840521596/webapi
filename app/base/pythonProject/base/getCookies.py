@@ -339,6 +339,10 @@ def get_cookies(project,env_flag,env_num,user=None):
         cookie = get_wechat_capth_cookie(env_flag,env_num,user)
     elif project == "陪你阅读陪你写作":
         cookie = get_wechat_cookie(env_flag,env_num, user)
+    elif project == "短信服务":
+        cookie = {"env_flag": env_flag, "env_num": env_num}
+    elif project == "用户行为":
+        cookie = {"env_flag": env_flag, "env_num": env_num}
     else:
         cookie = {"env_flag":env_flag,"env_num":env_num}
     return cookie
