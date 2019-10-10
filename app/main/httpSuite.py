@@ -139,7 +139,7 @@ def runDatasApiTest_yunwei():
 			redis_host = s.get_env("beta").split(":") if env_flag == "beta" else s.get_env("prod_stage").split(":")
 			r = red.Redis(host=redis_host[0], port=int(redis_host[1]), password="yunshuxie1029Password")
 			r.set("021ZaJtG17hM310SblvG1NZutG1ZaJtQ",'o38sIv_7FQInsBKJEUExn7wYxoHc&21_bk4dQIEFnYz5w8zJwDqan84UFmV_XVKEO5MJf7fv1pGR8tRH2MAtxpk0Pc1SqDwe5S90CE6TQo1wd346qEA5FQ')  #wacc-order 设置 openId
-			isMakeCount = db.session.query(is_Make_User.project_en).filter_by(isMake=1).count()  #是否创建用户配置表查询
+			isMakeCount = db.session.query(is_Make_User.project_en).filter_by(isMake=1,project_en=project_en[0]).count()  #是否创建用户配置表查询
 			#if "admin".upper() not in project_en[0].upper() and "crm".upper() not in project_en[0].upper() and "wacc-tortoise".upper() not in project_en[0].upper():  # 判断项目不等于admin&&crm，新增测试用户
 			if isMakeCount:
 				try:
