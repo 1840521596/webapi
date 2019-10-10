@@ -99,7 +99,7 @@ def run_api(self,project,developer,cookies):
     path = "./app/base/pythonProject/ReportHtml/{month}/{day}/".format(month=str(month),day=str(day))
     if not os.path.exists(path):
         os.makedirs(path)
-    file_path = u"./app/base/pythonProject/ReportHtml/{month}/{day}/{project_en}_schedule.html".format(month=str(month),day=str(day),project_en=project_en)
+    file_path = u"./app/base/pythonProject/ReportHtml/{month}/{day}/{project_cn}_schedule.html".format(month=str(month),day=str(day),project_cn=project_cn)
 
     with open(file_path,"w") as f:
         f.write(wc8.encode("utf8"))
