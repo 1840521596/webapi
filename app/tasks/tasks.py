@@ -208,11 +208,10 @@ def find_key(resp,fkey,fvalue,resp_key=None):
         return False
 def wechatQY_msg(developer,project_cn,success_count,error_count,failure_count,report_url,cookies):
     try:
-        content = u"""接口平台调度测试结果:\n测试: {developer} \n测试项目: {project_en} \n测试环境: {env_flag} {env_num}\n通过接口数: {success_count} \n未通过接口数: {error_count} \n程序失败接口数: {failure_count} \n结果查看地址: {report_url}""".format(project_en=project_cn,
+        content = u"""接口平台调度测试结果:\n测试: {developer} \n测试项目: {project_en} \n测试环境: {env_flag}\n通过接口数: {success_count} \n未通过接口数: {error_count} \n程序失败接口数: {failure_count} \n结果查看地址: {report_url}""".format(project_en=project_cn,
                                       success_count=success_count,
                                        error_count=error_count,
                                      env_flag=cookies["env_flag"],
-                                     env_num=cookies["env_num"],
                                        failure_count=failure_count,
                                        developer=developer,
                                         report_url=report_url
