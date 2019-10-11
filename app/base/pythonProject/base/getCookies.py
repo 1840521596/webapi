@@ -2,13 +2,12 @@
 # -*-coding:utf-8-*-
 __author__ = "guohongjie"
 import requests
-import base64
-from PIL import Image
 import redis
 from py_redis import MyRedis
 import json
 import hashlib
 import urllib
+import pymysql
 def get_ysx_crm_cookie(env_flag,env_num,user=None):
     """登录crm,并返回cookies
     :param url 请求连接
@@ -313,6 +312,30 @@ def get_wechat_ggx_cookies(env_flag,env_num,user=None):
     else:
         raise Exception, resp.content
     return cookies
+def get_wechat_teaco_cookies(env_flag,env_num,user=None):
+    cookies = requests.cookies.RequestsCookieJar()
+    cookies.set('env_flag', env_flag)  # 设置测试环境
+    cookies.set("env_num", env_num)  # 设置环境号
+    if env_flag=="beta":
+        db = pymysql.connect("172.17.1.239", "ysx_beta_writer", "rzcXYilPKauGMCIz1dQ3AOzzO7Y-", "ysx_teaching_community", port=3317, charset='utf8')
+        r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
+    else:
+        db = pymysql.connect("172.17.1.42", "ysx_prod_writer", "RIdqXTBJyQmK8yBqmytnE69OOM1-", "ysx_teaching_community", port=3307, charset='utf8')
+        r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
+    if user:
+        cursor = db.cursor()
+        cursor.execute("select id from ysx_user where wechat_nick='{wechat_nick}'".format(wechat_nick=user))
+        data = cursor.fetchall()
+        db.close()
+        userId = data[0][0]
+        r.set("user_session_key:%s"%("wctv"), userId,60)
+        cookies.set("SessionKey", "wctv")  # 设置环境号
+    else:
+        cookies = cookies
+    return cookies
+
+
+
 def get_cookies(project,env_flag,env_num,user=None):
 
     """
@@ -339,6 +362,8 @@ def get_cookies(project,env_flag,env_num,user=None):
         cookie = get_wechat_capth_cookie(env_flag,env_num,user)
     elif project == "陪你阅读陪你写作":
         cookie = get_wechat_cookie(env_flag,env_num, user)
+    elif project == "教师端资料库小程序":
+        cookie = get_wechat_teaco_cookies(env_flag,env_num,user)
     elif project == "短信服务":
         cookie = {"env_flag": env_flag, "env_num": env_num}
     elif project == "用户行为":
@@ -348,8 +373,7 @@ def get_cookies(project,env_flag,env_num,user=None):
     return cookie
 
 if __name__ == "__main__":
-    print get_cookies("云舒写首页","beta","7","60000021182")
-    #print get_app_cookie("beta","1","60000007001").get_dict()
-
+    #print get_wechat_teaco_cookies("beta","5","向前！向前！")
+    print get_cookies("教师端资料库小程序","beta","1",None).get_dict()
 
 

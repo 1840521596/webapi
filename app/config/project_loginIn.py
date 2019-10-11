@@ -23,4 +23,6 @@ def loginIn(project_cn,env_flag,env_num,account):
         new_cookies = get_wechat_ggx_cookies(env_flag,env_num,account)
     elif project_cn == "云舒写大语文合作与推广":
         new_cookies = get_wechat_capth_cookie(env_flag,env_num,account)
+    elif project_cn == "教师端资料库小程序":
+        new_cookies = get_wechat_teaco_cookies(env_flag,env_num,account)
     return new_cookies
