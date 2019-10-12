@@ -217,11 +217,11 @@ def get_wechat_cookie(env_flag,env_num,user=None):
     if env_flag=="beta":
         r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
         r.set("SESS:LOGIN:WXTEMPCODE_081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc",
-              "{\"openid\":\"o38sIv8Brn0Q_jGRvae6t6KX28DE\",\"nickname\":\"Bleach\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
+              "{\"openid\":\"o38sIv0DUSADJyxT2Ebd-MN4lFXE\",\"nickname\":\"自动化测试\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
     else:
         r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
         r.set("SESS:LOGIN:WXTEMPCODE_081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc",
-              "{\"openid\":\"o38sIv8Brn0Q_jGRvae6t6KX28DE\",\"nickname\":\"Bleach\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
+              "{\"openid\":\"o38sIv0DUSADJyxT2Ebd-MN4lFXE\",\"nickname\":\"自动化测试\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
 
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
     params = {"userName": user, "pwd": "test123456", "type": "2","wechatCode":"081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc"}
@@ -266,11 +266,11 @@ def get_wechat_capth_cookie(env_flag,env_num,user=None):
     if env_flag=="beta":
         r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
         r.set("SESS:LOGIN:WXTEMPCODE_081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc",
-              "{\"openid\":\"o38sIv8Brn0Q_jGRvae6t6KX28DE\",\"nickname\":\"Bleach\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
+              "{\"openid\":\"o38sIv0DUSADJyxT2Ebd-MN4lFXE\",\"nickname\":\"自动化测试\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
     else:
         r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
         r.set("SESS:LOGIN:WXTEMPCODE_081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc",
-              "{\"openid\":\"o38sIv8Brn0Q_jGRvae6t6KX28DE\",\"nickname\":\"Bleach\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
+              "{\"openid\":\"o38sIv0DUSADJyxT2Ebd-MN4lFXE\",\"nickname\":\"自动化测试\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
     redis_shell = "code_" + params_get_phone_code["verType"] + "_" + params_get_phone_code["phone"]
     r.set(redis_shell,"123456")
     capth = r.get(redis_shell)
