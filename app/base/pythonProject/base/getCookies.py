@@ -214,6 +214,15 @@ def get_wechat_cookie(env_flag,env_num,user=None):
     cookies.set("env_num", env_num)  # 设置环境号
     session.cookies = cookies
     salt = "mengmengda"
+    if env_flag=="beta":
+        r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
+        r.set("SESS:LOGIN:WXTEMPCODE_081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc",
+              "{\"openid\":\"o38sIv8Brn0Q_jGRvae6t6KX28DE\",\"nickname\":\"Bleach\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
+    else:
+        r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
+        r.set("SESS:LOGIN:WXTEMPCODE_081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc",
+              "{\"openid\":\"o38sIv8Brn0Q_jGRvae6t6KX28DE\",\"nickname\":\"Bleach\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
+
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
     params = {"userName": user, "pwd": "test123456", "type": "2","wechatCode":"081NtWKq1tU8kl0Vf5Iq1ddyKq1NtWKY"}
     string = urllib.urlencode(params)
@@ -374,6 +383,6 @@ def get_cookies(project,env_flag,env_num,user=None):
 
 if __name__ == "__main__":
     #print get_wechat_teaco_cookies("beta","5","向前！向前！")
-    print get_cookies("教师端资料库小程序","beta","1",None).get_dict()
+    print get_wechat_cookie("stage","1","60000007002").get_dict()
 
 
