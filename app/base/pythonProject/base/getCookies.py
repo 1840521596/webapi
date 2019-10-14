@@ -376,11 +376,10 @@ def get_adm_single_cookies(env_flag,env_num,user=None):
     params = {"username":user,
               "password":md5_pwd,
               "verifyCode":captch,"tokenId":tokenId,"sso_app_id":"adm"}
-    resp = requests.post(url=domain+login_url)
+    resp = session.post(url=domain+login_url,data=params)
+    print resp.text
     cookies.update(resp.cookies)
     return cookies
-
-
 
 def get_cookies(project,env_flag,env_num,user=None):
     """
