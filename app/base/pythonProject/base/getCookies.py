@@ -59,7 +59,7 @@ def get_ysx_crm_cookie(env_flag,env_num,user=None):
     else:
         return(get_ysx_crm_cookie(env_flag,env_num))  # 递归
 def get_wacc_admin_cookie(env_flag,env_num,user=None):
-    """ 登录crm, 并返回cookies
+    """ 登录admin, 并返回cookies
     :param url 请求连接
     :param header 请求头
     :return cookies
@@ -165,7 +165,7 @@ def get_wacc_bird_cookie(env_flag,env_num,user=None):
         raise Exception, resp.content
     return cookies
 def get_app_cookie(env_flag,env_num,user=None):
-    """登录APP，并返回cookies
+    """登录移动端APP，并返回cookies
     :param env_flag:
     :param env_num:
     :return:
@@ -199,6 +199,7 @@ def get_app_cookie(env_flag,env_num,user=None):
         raise Exception, resp.content
     return cookies
 def get_wechat_cookie(env_flag,env_num,user=None):
+    """微信公众号登录"""
     session = requests.Session()
     request_retry = requests.adapters.HTTPAdapter(max_retries=3)
     session.mount("https://", request_retry)
@@ -240,6 +241,7 @@ def get_wechat_cookie(env_flag,env_num,user=None):
         raise Exception, resp.content
     return cookies
 def get_wechat_capth_cookie(env_flag,env_num,user=None):
+    """微信公众号验证码登录"""
     salt = "mengmengda"
     session = requests.Session()
     request_retry = requests.adapters.HTTPAdapter(max_retries=3)
@@ -291,6 +293,7 @@ def get_wechat_capth_cookie(env_flag,env_num,user=None):
     cookies.set("env_num", env_num)  # 设置环境号
     return cookies
 def get_wechat_ggx_cookies(env_flag,env_num,user=None):
+    """微信罐罐熊小程序登录"""
     session = requests.Session()
     request_retry = requests.adapters.HTTPAdapter(max_retries=3)
     session.mount("https://", request_retry)
@@ -322,6 +325,7 @@ def get_wechat_ggx_cookies(env_flag,env_num,user=None):
         raise Exception, resp.content
     return cookies
 def get_wechat_teaco_cookies(env_flag,env_num,user=None):
+    """微信小程序教师端登录"""
     cookies = requests.cookies.RequestsCookieJar()
     cookies.set('env_flag', env_flag)  # 设置测试环境
     cookies.set("env_num", env_num)  # 设置环境号
@@ -342,11 +346,35 @@ def get_wechat_teaco_cookies(env_flag,env_num,user=None):
     else:
         cookies = cookies
     return cookies
+def get_adm_single_cookies(env_flag,env_num,user=None):
+    """单点登录系统&admin"""
+    cookies = {"env_flag":env_flag,"env_num":env_num}
+    domain = "https://sso.yunshuxie.com"
+    url = "/auth/verifyCode"
+    headers = {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:69.0) Gecko/20100101 Firefox/69.0"}
+    resp = requests.get(url=domain + url, headers=headers, cookies=cookies)
+    dict_resp = json.loads(resp.text, encoding="utf-8")
+    tokenId = dict_resp["data"]["tokenId"]
+    if env_flag == "beta":
+        r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password",db=1)
+    else:
+        r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password",db=1)
+    captch = r.get(tokenId)
+    login_url = "/auth/login"
+    pwd = "123456"
+    hl = hashlib.md5()
+    hl.update(pwd)
+    md5_pwd = hl.hexdigest()
+    params = {"username":"rocky",
+              "password":md5_pwd,
+              "verifyCode":captch,"tokenId":tokenId,"sso_app_id":"adm"}
+    resp = requests.post(url=domain+login_url,headers=headers,data=params,cookies=cookies)
+    new_cookies = dict(resp.cookies.get_dict(),**cookies)
+    return new_cookies
 
 
 
 def get_cookies(project,env_flag,env_num,user=None):
-
     """
     :param project: 发布项目
     :param env_flag: 发布环境
@@ -373,6 +401,8 @@ def get_cookies(project,env_flag,env_num,user=None):
         cookie = get_wechat_cookie(env_flag,env_num, user)
     elif project == "教师端资料库小程序":
         cookie = get_wechat_teaco_cookies(env_flag,env_num,user)
+    elif project == "单点登录系统admin平台":
+        cookie = get_adm_single_cookies(env_flag,env_num,user)
     elif project == "短信服务":
         cookie = {"env_flag": env_flag, "env_num": env_num}
     elif project == "用户行为":
@@ -383,6 +413,6 @@ def get_cookies(project,env_flag,env_num,user=None):
 
 if __name__ == "__main__":
     #print get_wechat_teaco_cookies("beta","5","向前！向前！")
-    print get_wechat_cookie("stage","1","60000007001").get_dict()
+    print get_adm_single_cookies("beta","1","rocky")
 
 
