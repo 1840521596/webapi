@@ -377,7 +377,8 @@ def get_adm_single_cookies(env_flag,env_num,user=None):
               "password":md5_pwd,
               "verifyCode":captch,"tokenId":tokenId,"sso_app_id":"adm"}
     resp = session.post(url=domain+login_url,data=params)
-    print resp.text
+    dict_resp = json.loads(resp.text,encoding="utf-8")
+    cookies.set("sso_sessionid", dict_resp["data"]["sessionId"])
     cookies.update(resp.cookies)
     return cookies
 
@@ -420,6 +421,6 @@ def get_cookies(project,env_flag,env_num,user=None):
 
 if __name__ == "__main__":
     #print get_wechat_teaco_cookies("beta","5","向前！向前！")
-    print get_cookies("单点登录系统admin平台","beta","1","rocky")
+    print get_cookies("单点登录系统admin平台","beta","1","rocky").get_dict()
 
 
