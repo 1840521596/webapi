@@ -348,11 +348,19 @@ def get_wechat_teaco_cookies(env_flag,env_num,user=None):
     return cookies
 def get_adm_single_cookies(env_flag,env_num,user=None):
     """单点登录系统&admin"""
-    cookies = {"env_flag":env_flag,"env_num":env_num}
+    session = requests.Session()
+    request_retry = requests.adapters.HTTPAdapter(max_retries=3)
+    session.mount("https://", request_retry)
+    session.mount("http://", request_retry)
+    cookies = requests.cookies.RequestsCookieJar()
+    cookies.set('env_flag', env_flag)  # 设置测试环境
+    cookies.set("env_num", env_num)  # 设置环境号
     domain = "https://sso.yunshuxie.com"
     url = "/auth/verifyCode"
     headers = {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:69.0) Gecko/20100101 Firefox/69.0"}
-    resp = requests.get(url=domain + url, headers=headers, cookies=cookies)
+    session.headers = headers
+    session.cookies = cookies
+    resp = session.get(url=domain + url)
     dict_resp = json.loads(resp.text, encoding="utf-8")
     tokenId = dict_resp["data"]["tokenId"]
     if env_flag == "beta":
@@ -365,12 +373,12 @@ def get_adm_single_cookies(env_flag,env_num,user=None):
     hl = hashlib.md5()
     hl.update(pwd)
     md5_pwd = hl.hexdigest()
-    params = {"username":"rocky",
+    params = {"username":user,
               "password":md5_pwd,
               "verifyCode":captch,"tokenId":tokenId,"sso_app_id":"adm"}
-    resp = requests.post(url=domain+login_url,headers=headers,data=params,cookies=cookies)
-    new_cookies = dict(resp.cookies.get_dict(),**cookies)
-    return new_cookies
+    resp = requests.post(url=domain+login_url)
+    cookies.update(resp.cookies)
+    return cookies
 
 
 
@@ -413,6 +421,6 @@ def get_cookies(project,env_flag,env_num,user=None):
 
 if __name__ == "__main__":
     #print get_wechat_teaco_cookies("beta","5","向前！向前！")
-    print get_adm_single_cookies("beta","1","rocky")
+    print get_cookies("单点登录系统admin平台","beta","1","rocky")
 
 
