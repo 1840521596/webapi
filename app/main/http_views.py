@@ -35,6 +35,9 @@ def case_http_test():
             account = None
         if islogin.upper() == "TRUE" or islogin==True:  #勾选需要登录后获取登录cookies
             new_cookies = loginIn(project_cn,cookies["env_flag"], cookies["env_num"], account).get_dict()
+            if case_url in ["/auth/loginCheck","/auth/logout"]:
+                params = {}
+                params["sessionId"] = new_cookies["sso_sessionid"]
         else:
             new_cookies = cookies
         if isUpload=="false":  #不需要上传文件
