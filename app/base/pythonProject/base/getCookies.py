@@ -164,7 +164,7 @@ def get_wacc_bird_cookie(env_flag,env_num,user=None):
     else:
         raise Exception, resp.content
     return cookies
-def get_app_cookie(env_flag,env_num,user=None):
+def get_app_cookie(project_cn,env_flag,env_num,user=None):
     """登录移动端APP，并返回cookies
     :param env_flag:
     :param env_num:
@@ -176,7 +176,12 @@ def get_app_cookie(env_flag,env_num,user=None):
         r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
     else:
         r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
-    redis_shell = "code_6_" + user
+    if project_cn == "罐罐熊APP":
+        redis_shell = "code_6_" + user
+    elif project_cn == "云舒写APP":
+        redis_shell = "code_2_" + user
+    else:
+        redis_shell = "code_6_" + user
     r.set(redis_shell,"123456")
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
     salt = "mengmengda"
@@ -399,8 +404,8 @@ def get_cookies(project,env_flag,env_num,user=None):
         cookie = get_wacc_tortoise_cookie(env_flag,env_num,user).get_dict()
     elif project == "新商品详情系统" or project == "新订单支付系统":
         cookie = get_wacc_bird_cookie(env_flag,env_num,user).get_dict()
-    elif project == "罐罐熊APP":
-        cookie = get_app_cookie(env_flag,env_num,user).get_dict()
+    elif project in ["罐罐熊APP","云舒写APP"]:
+        cookie = get_app_cookie(project,env_flag,env_num,user).get_dict()
     elif project == "罐罐熊练字课微信小程序":
         cookie = get_wechat_ggx_cookies(env_flag,env_num,user)
     elif project == "云舒写大语文合作与推广":
@@ -421,6 +426,6 @@ def get_cookies(project,env_flag,env_num,user=None):
 
 if __name__ == "__main__":
     #print get_wechat_teaco_cookies("beta","5","向前！向前！")
-    print get_cookies("单点登录系统admin平台","beta","1","rocky").get_dict()
+    print get_cookies("云舒写APP","prod","","60000007001")
 
 
