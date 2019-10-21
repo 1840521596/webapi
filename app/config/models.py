@@ -4,7 +4,7 @@ class Project(db.Model):
     __tablename__ = "project_api"  # 表名
     id = db.Column(db.Integer,primary_key=True)#序号ID
     project = db.Column(db.String(100), unique=True) # 项目
-    project_en = db.Column(db.String(100), unique=True) # 项目_英文
+    project_en = db.Column(db.String(100)) # 项目_英文
     domain = db.Column(db.String(100))
     description = db.Column(db.Text)#项目描述
     use_status = db.Column(db.Boolean,default=0)
