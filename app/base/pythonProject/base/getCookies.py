@@ -101,7 +101,7 @@ def get_wacc_home_cookie(env_flag,env_num,user=None):
               "Accept": "application/json, text/javascript, */*; q=0.01",
               "Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9",
               "Connection": "keep-alive","Host": "www.yunshuxie.com","Upgrade-Insecure-Requests": "1"}
-    params = {"userName": user ,"pwd": "123456"}
+    params = {"userName": user ,"pwd": "test123456"}
     resp = requests.post(url=url, headers=header, cookies=cookies,data=params)
     dict_resp = json.loads(resp.content, encoding="utf8")
     #print dict_resp

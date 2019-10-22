@@ -28,7 +28,7 @@ def loginIn(project_cn,env_flag,env_num,account,test_use=None):
     elif project_cn == "单点登录系统admin平台":
         new_cookies = get_adm_single_cookies(env_flag,env_num,account).get_dict()
     elif project_cn == "测试使用":
-        new_cookies = get_cookies(test_use,env_flag,env_num,test_use).get_dict()
+        new_cookies = get_cookies(test_use,env_flag,env_num,account)
     else:
         new_cookies = {"env_flag":env_flag,"env_num":env_num}
     return new_cookies

@@ -27,8 +27,9 @@ def case_http_test():
         headers = eval(request.form["headers"])
         cookies = eval(request.form["cookies"])
         islogin = request.form["islogin"]
-        account_list = request.form["account"]
-        if len(account_list.split("&"))==1:    #登录账号进行分割,当不存在"测试使用"测试项目前置时,直接使用账号
+        projectAccount = request.form["account"]
+        account_list = projectAccount.split("&")
+        if len(account_list)==1:    #登录账号进行分割,当不存在"测试使用"测试项目前置时,直接使用账号
             account = account_list[0]
             test_use = None
         else:
