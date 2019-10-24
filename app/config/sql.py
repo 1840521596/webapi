@@ -57,10 +57,20 @@ def update_sql(sql):
 		db.close()
 		return {"result":False,"reson":str(e)}
 
+class betaDB(object):
+	def __init__(self):
+		self.db = pymysql.connect('172.17.1.240', 'ysx_beta_writer', 'rzcXYilPKauGMCIz1dQ3AOzzO7Y-', 'ysx_order', port=3316,charset='utf8')
+		self.cursor = self.db.cursor()
+	def execute_sql(self,sql):
+		self.cursor.execute(sql)
+		data = self.cursor.fetchall()
+		self.db.close()
+		return data
+
 if __name__ == "__main__":
-	s = """select * from case_http_api where project='%s' and scheduling='0'"""%("云舒写首页")
-	print s
-	datas = select_sql(s)
+# 	s = """select * from case_http_api where project='%s' and scheduling='0'"""%("云舒写首页")
+# 	print s
+# 	datas = select_sql(s)
 	# ss= """insert into behave_config values('Given 操作页面HTML元素','输入')"""
 	# tupledate = insert_sql(ss)
 	# sss = """insert into behave_config values('Given 操作页面HTML元素','单击')"""
@@ -75,7 +85,9 @@ if __name__ == "__main__":
 	# tupledate = insert_sql(aa)
 	# aaa= """insert into behave_config values('Then 添加等待时间','秒等待')"""
 	# tupledate = insert_sql(aaa)
-	print datas
-	#print insert_sql(s)
+	# print datas
+	s = betaDB()
+	sql = 'select a.ORDER_STATE,a.CALLBACK_TIME,a.* from ysx_order.ysx_order_info a where a.order_sn ="Y1100157172551292618"'
+	print s.execute_sql(sql)
 
 

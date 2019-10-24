@@ -7,6 +7,8 @@ from .. import db
 from ..config.models import Case_Http_File
 from ..config.project_loginIn import loginIn
 import sys
+import json
+from app.config.sql import betaDB
 if sys.getdefaultencoding() != 'utf-8':
     reload(sys)
     sys.setdefaultencoding('utf-8')
@@ -67,6 +69,16 @@ def case_http_test():
                     resp = getFunctionFile(url,params,headers,new_cookies,upload_file)
             else:
                 raise Exception,"当前接口未存在测试文件,请重新上传后测试！"
+            if project_cn == "CRM绩效规则重构":
+                try:
+                    select_data = betaDB()
+                    resp_dict = json.loads(resp,encoding="utf8")
+                    outTradeNo = resp_dict["data"]["outTradeNo"]
+                    sql = """update ysx_order.ysx_order_info a  set a.order_state="2" , a.callback_time= now()
+where a.order_sn ="{order_sn}";""".format(order_sn=outTradeNo)
+                    select_data.execute_sql(sql)
+                except Exception as e:
+                    resp = str(e)
     except Exception as e:
         resp = str(e)
     response = make_response(jsonify({"code":200,"datas":resp}))  # 返回response
