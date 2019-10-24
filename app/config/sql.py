@@ -64,6 +64,7 @@ class betaDB(object):
 	def execute_sql(self,sql):
 		self.cursor.execute(sql)
 		data = self.cursor.fetchall()
+		self.db.commit()
 		self.db.close()
 		return data
 

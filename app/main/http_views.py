@@ -74,9 +74,9 @@ def case_http_test():
                 select_data = betaDB()
                 resp_dict = json.loads(resp,encoding="utf8")
                 outTradeNo = resp_dict["data"]["outTradeNo"]
-                sql = """update ysx_order.ysx_order_info a  set a.order_state="2" , a.callback_time= now()
-where a.order_sn ="{order_sn}";""".format(order_sn=outTradeNo)
+                sql = """update ysx_order.ysx_order_info a  set a.order_state="2" , a.callback_time= now() where a.order_sn ="{order_sn}";""".format(order_sn=outTradeNo)
                 select_data.execute_sql(sql)
+                resp = outTradeNo
             except Exception as e:
                 resp = str(e)
     except Exception as e:
