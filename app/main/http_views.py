@@ -69,7 +69,7 @@ def case_http_test():
                     resp = getFunctionFile(url,params,headers,new_cookies,upload_file)
             else:
                 raise Exception,"当前接口未存在测试文件,请重新上传后测试！"
-            if project_cn == "CRM绩效规则重构":
+            if project_cn == u"CRM绩效规则重构":
                 try:
                     select_data = betaDB()
                     resp_dict = json.loads(resp,encoding="utf8")
