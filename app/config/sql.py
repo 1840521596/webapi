@@ -63,10 +63,13 @@ class betaDB(object):
 		self.cursor = self.db.cursor()
 	def execute_sql(self,sql):
 		self.cursor.execute(sql)
-		data = self.cursor.fetchall()
 		self.db.commit()
-		self.db.close()
+	def execute_select(self,sql):
+		self.cursor.execute(sql)
+		data = self.cursor.fetchall()
 		return data
+	def execute_close(self):
+		self.db.close()
 
 if __name__ == "__main__":
 # 	s = """select * from case_http_api where project='%s' and scheduling='0'"""%("云舒写首页")
@@ -90,5 +93,6 @@ if __name__ == "__main__":
 	s = betaDB()
 	sql = 'select a.ORDER_STATE,a.CALLBACK_TIME,a.* from ysx_order.ysx_order_info a where a.order_sn ="Y1100157172551292618"'
 	print s.execute_sql(sql)
-
+	print s.execute_sql("select 1 from dual")
+	print s.execute_close()
 
