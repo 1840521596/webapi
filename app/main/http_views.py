@@ -8,7 +8,7 @@ from ..config.models import Case_Http_File
 from ..config.project_loginIn import loginIn
 import sys
 import json
-from app.config.sql import betaDB
+from app.config.sql import betaDB,betaDB_order
 if sys.getdefaultencoding() != 'utf-8':
     reload(sys)
     sys.setdefaultencoding('utf-8')
@@ -70,19 +70,23 @@ def case_http_test():
             else:
                 raise Exception,"当前接口未存在测试文件,请重新上传后测试！"
         if project_cn == u"CRM绩效规则重构":
-            try:
-                phone = params["phone"]
-                phId = params["phId"]
-                pId = params["pId"]
-                order_sn = update_order_status(resp)  #更改订单状态=2,call_back＝当前时间,返回order_sn　字段
-                if pId in ["7698","8326","8327","8215","7996"]:    #罐罐熊正式课&练字课商品ID,并对应授权
-                    msg = bearJoinCategoryProduct(phone,phId,cookies,order_sn)
-                else:
-                    msg = joinCategoryProduct(phone,phId,cookies,order_sn)    #传入order_sn字段,查找　memberId,orderId
+            resp_dict = json.loads(resp, encoding="utf8")
+            if resp_dict["returnCode"] != "0" and resp_dict["returnCode"] != 0:
+                resp = resp_dict["returnMsg"]
+            else:
+                try:
+                    phone = params["phone"]
+                    phId = params["phId"]
+                    pId = params["pId"]
+                    order_sn = update_order_status(resp)  #更改订单状态=2,call_back＝当前时间,返回order_sn　字段
+                    if pId in ["7698","8326","8327","8215","7996"]:    #罐罐熊正式课&练字课商品ID,并对应授权
+                        msg = bearJoinCategoryProduct(phone,phId,cookies,order_sn)
+                    else:
+                        msg = joinCategoryProduct(phone,phId,cookies,order_sn)    #传入order_sn字段,查找　memberId,orderId
 
-                resp = order_sn + ":" + msg
-            except Exception as e:
-                resp = str(e)
+                    resp = order_sn + ":" + msg
+                except Exception as e:
+                    resp = str(e)
     except Exception as e:
         resp = str(e)
     response = make_response(jsonify({"code":200,"datas":resp}))  # 返回response
@@ -135,16 +139,12 @@ def upload_test():
     return response
 
 
-
-
-
-
 def update_order_status(resp):
     select_data = betaDB()
     resp_dict = json.loads(resp, encoding="utf8")
     outTradeNo = resp_dict["data"]["outTradeNo"]
-    sql = """update ysx_order.ysx_order_info a  set a.order_state="2" , a.callback_time= now() where a.order_sn ="{order_sn}";""".format(
-        order_sn=outTradeNo)
+    sql = """update ysx_order.ysx_order_info a  set a.order_state="2" , a.callback_time= now(),a.ORDER_AMOUNT='100',a.ORIGINAL_AMOUNT='100' where a.order_sn ="{order_sn}";""".format(
+    order_sn=outTradeNo)
     select_data.execute_sql(sql)
     select_data.execute_close()
     resp = outTradeNo
@@ -168,8 +168,6 @@ def joinCategoryProduct(phone,phId,cookies,resp):
         return "授权成功"
     else:
         return "授权课程请求失败"
-
-
 def bearJoinCategoryProduct(phone,phId,cookies,resp):
     select_data = betaDB()
     sql = """select a.order_id,a.member_id from ysx_order.ysx_order_info a where a.order_sn ="{order_sn}";""".format(order_sn=resp)
@@ -192,3 +190,83 @@ def bearJoinCategoryProduct(phone,phId,cookies,resp):
     else:
         return "授权课程请求失败"
 
+
+@test.route("/test_protected",methods=["GET"])
+def test_protected():
+    """30保护期校验"""
+    tiyan_order_sn = request.args.get("tiyan_order_sn")
+    zhengshi_order_sn = request.args.get("zhengshi_order_sn")
+    isProtected = request.args.get("isProjected")
+    courser_day = """SELECT ymypch.COURSE_START_DATE AS courseStartDate FROM ysx_order.YSX_ORDER_INFO yoyoi INNER JOIN ysx_mooc.ysx_mooc_class_member ymymcm ON ymymcm.ORDER_ID = yoyoi.ORDER_ID 
+                 INNER JOIN ysx_mooc.ysx_mooc_class ymymc ON ymymc.MOOC_CLASS_ID = ymymcm.MOOC_CLASS_ID 
+                 INNER JOIN ysx_mooc.ysx_product_course_hours ymypch ON ymypch.PRODUCT_COURSE_HOURS_ID = ymymc.PRODUCT_COURSE_HOURS_ID
+                 INNER JOIN ysx_order.ysx_wechat_service_teacher_class_middle yoywstcm ON yoywstcm.MOOC_CLASS_ID = ymymc.mooc_class_id 
+                 INNER JOIN ysx_order.ysx_wechat_service_teacher yoywst ON yoywst.WECHATER_TEACHER_ID = yoywstcm.wechat_service_teacher_id 
+                 WHERE yoyoi.order_sn = "{tiyan_order_sn}" ;""".format(
+        tiyan_order_sn=tiyan_order_sn)
+    select_datas = betaDB_order()
+    COURSE_START_DATE = select_datas.execute_select(courser_day)[0][0]
+    if isProtected =="0":    #需要保护期外数据
+        sql = """select timestampdiff(day,
+    (SELECT ymypch.COURSE_START_DATE AS courseStartDate FROM ysx_order.YSX_ORDER_INFO yoyoi INNER JOIN ysx_mooc.ysx_mooc_class_member ymymcm ON ymymcm.ORDER_ID = yoyoi.ORDER_ID 
+     INNER JOIN ysx_mooc.ysx_mooc_class ymymc ON ymymc.MOOC_CLASS_ID = ymymcm.MOOC_CLASS_ID 
+     INNER JOIN ysx_mooc.ysx_product_course_hours ymypch ON ymypch.PRODUCT_COURSE_HOURS_ID = ymymc.PRODUCT_COURSE_HOURS_ID
+     INNER JOIN ysx_order.ysx_wechat_service_teacher_class_middle yoywstcm ON yoywstcm.MOOC_CLASS_ID = ymymc.mooc_class_id 
+     INNER JOIN ysx_order.ysx_wechat_service_teacher yoywst ON yoywst.WECHATER_TEACHER_ID = yoywstcm.wechat_service_teacher_id 
+     WHERE yoyoi.order_sn = "{tiyan_order_sn}")/*体验课程开始时间*/,
+    (select a.CALLBACK_TIME from ysx_order.ysx_order_info a where a.order_sn='{zhengshi_order_sn}' and a.ORDER_STATE='2')/*正式课程下单时间*/
+    )""".format(tiyan_order_sn=tiyan_order_sn,zhengshi_order_sn=zhengshi_order_sn)
+        data = select_datas.execute_select(sql)[0][0]
+        if data>30:
+            datas = "%d:保护期外,不做处理"%(data)
+        else:
+            add_30_days = """
+            select date_add(
+    (SELECT ymypch.COURSE_START_DATE AS courseStartDate FROM ysx_order.YSX_ORDER_INFO yoyoi INNER JOIN ysx_mooc.ysx_mooc_class_member ymymcm ON ymymcm.ORDER_ID = yoyoi.ORDER_ID 
+     INNER JOIN ysx_mooc.ysx_mooc_class ymymc ON ymymc.MOOC_CLASS_ID = ymymcm.MOOC_CLASS_ID 
+     INNER JOIN ysx_mooc.ysx_product_course_hours ymypch ON ymypch.PRODUCT_COURSE_HOURS_ID = ymymc.PRODUCT_COURSE_HOURS_ID
+     INNER JOIN ysx_order.ysx_wechat_service_teacher_class_middle yoywstcm ON yoywstcm.MOOC_CLASS_ID = ymymc.mooc_class_id 
+     INNER JOIN ysx_order.ysx_wechat_service_teacher yoywst ON yoywst.WECHATER_TEACHER_ID = yoywstcm.wechat_service_teacher_id 
+     WHERE yoyoi.order_sn = "{tiyan_order_sn}" ),interval 31 day) from dual;""".format(tiyan_order_sn=tiyan_order_sn)
+            data = select_datas.execute_select(add_30_days)[0][0]
+            update_sql = """update ysx_order.ysx_order_info a set a.callback_time='{tdate}' where
+      a.order_sn='{zhengshi_order_sn}' and a.ORDER_STATE='2';""".format(tdate=data,zhengshi_order_sn=zhengshi_order_sn)
+            update_data = betaDB()
+            update_data.execute_sql(update_sql)
+            update_data.execute_close()
+            datas="%s:保护期外+30天完成增加"%(data)
+    else:    #需要保护期内数据
+        sql = """select timestampdiff(day,
+            (SELECT ymypch.COURSE_START_DATE AS courseStartDate FROM ysx_order.YSX_ORDER_INFO yoyoi INNER JOIN ysx_mooc.ysx_mooc_class_member ymymcm ON ymymcm.ORDER_ID = yoyoi.ORDER_ID 
+             INNER JOIN ysx_mooc.ysx_mooc_class ymymc ON ymymc.MOOC_CLASS_ID = ymymcm.MOOC_CLASS_ID 
+             INNER JOIN ysx_mooc.ysx_product_course_hours ymypch ON ymypch.PRODUCT_COURSE_HOURS_ID = ymymc.PRODUCT_COURSE_HOURS_ID
+             INNER JOIN ysx_order.ysx_wechat_service_teacher_class_middle yoywstcm ON yoywstcm.MOOC_CLASS_ID = ymymc.mooc_class_id 
+             INNER JOIN ysx_order.ysx_wechat_service_teacher yoywst ON yoywst.WECHATER_TEACHER_ID = yoywstcm.wechat_service_teacher_id 
+             WHERE yoyoi.order_sn = "{tiyan_order_sn}")/*体验课程开始时间*/,
+            (select a.CALLBACK_TIME from ysx_order.ysx_order_info a where a.order_sn='{zhengshi_order_sn}' and a.ORDER_STATE='2')/*正式课程下单时间*/
+            )""".format(tiyan_order_sn=tiyan_order_sn, zhengshi_order_sn=zhengshi_order_sn)
+        data = select_datas.execute_select(sql)
+        if data < 30:
+            datas = "%d:保护期内,不做处理" % (data)
+        else:
+            add_29_days = """
+                    select date_add(
+            (SELECT ymypch.COURSE_START_DATE AS courseStartDate FROM ysx_order.YSX_ORDER_INFO yoyoi INNER JOIN ysx_mooc.ysx_mooc_class_member ymymcm ON ymymcm.ORDER_ID = yoyoi.ORDER_ID 
+             INNER JOIN ysx_mooc.ysx_mooc_class ymymc ON ymymc.MOOC_CLASS_ID = ymymcm.MOOC_CLASS_ID 
+             INNER JOIN ysx_mooc.ysx_product_course_hours ymypch ON ymypch.PRODUCT_COURSE_HOURS_ID = ymymc.PRODUCT_COURSE_HOURS_ID
+             INNER JOIN ysx_order.ysx_wechat_service_teacher_class_middle yoywstcm ON yoywstcm.MOOC_CLASS_ID = ymymc.mooc_class_id 
+             INNER JOIN ysx_order.ysx_wechat_service_teacher yoywst ON yoywst.WECHATER_TEACHER_ID = yoywstcm.wechat_service_teacher_id 
+             WHERE yoyoi.order_sn = "{tiyan_order_sn}" ),interval 29 day) from dual;""".format(
+                tiyan_order_sn=tiyan_order_sn)
+            COURSE_START_DATE =select_datas.execute_select(courser_day)[0][0]
+            data = select_datas.execute_select(add_29_days)[0][0]
+            update_sql = """update ysx_order.ysx_order_info a set a.callback_time='{tdate}' where
+              a.order_sn='{zhengshi_order_sn}' and a.ORDER_STATE='2';""".format(tdate=data,
+                                                                                zhengshi_order_sn=zhengshi_order_sn)
+            update_data = betaDB()
+            update_data.execute_sql(update_sql)
+            update_data.execute_close()
+            datas = "%s:保护期内+29天完成增加"%(data)
+    select_datas.execute_close()
+    response = make_response(jsonify({"code": 200,"COURSE_START_DATE":str(COURSE_START_DATE) ,"CALLBACK_TIME": datas}))  # 返回response
+    return response

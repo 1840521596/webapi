@@ -70,6 +70,19 @@ class betaDB(object):
 		return data
 	def execute_close(self):
 		self.db.close()
+class betaDB_order(object):
+	def __init__(self):
+		self.db = pymysql.connect('172.17.1.238', 'ysx_beta_writer', 'rzcXYilPKauGMCIz1dQ3AOzzO7Y-', 'ysx_order', port=3318,charset='utf8')
+		self.cursor = self.db.cursor()
+	def execute_sql(self,sql):
+		self.cursor.execute(sql)
+		self.db.commit()
+	def execute_select(self,sql):
+		self.cursor.execute(sql)
+		data = self.cursor.fetchall()
+		return data
+	def execute_close(self):
+		self.db.close()
 
 if __name__ == "__main__":
 # 	s = """select * from case_http_api where project='%s' and scheduling='0'"""%("云舒写首页")
@@ -90,7 +103,7 @@ if __name__ == "__main__":
 	# aaa= """insert into behave_config values('Then 添加等待时间','秒等待')"""
 	# tupledate = insert_sql(aaa)
 	# print datas
-	s = betaDB()
+	s = betaDB_order()
 	sql = 'select a.ORDER_STATE,a.CALLBACK_TIME,a.* from ysx_order.ysx_order_info a where a.order_sn ="Y1100157172551292618"'
 	print s.execute_sql(sql)
 	print s.execute_sql("select 1 from dual")
