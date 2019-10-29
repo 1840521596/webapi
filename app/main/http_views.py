@@ -75,16 +75,20 @@ def case_http_test():
                 resp = resp_dict["returnMsg"]
             else:
                 try:
-                    phone = params["phone"]
-                    phId = params["phId"]
-                    pId = params["pId"]
-                    order_sn = update_order_status(resp)  #更改订单状态=2,call_back＝当前时间,返回order_sn　字段
-                    if pId in ["7698","8326","8327","8215","7996"]:    #罐罐熊正式课&练字课商品ID,并对应授权
-                        msg = bearJoinCategoryProduct(phone,phId,cookies,order_sn)
+                    if case_url == "/v6/order/face_course/post/create_order.htm":
+                        order_sn = update_order_status(resp)
+                        resp = order_sn
                     else:
-                        msg = joinCategoryProduct(phone,phId,cookies,order_sn)    #传入order_sn字段,查找　memberId,orderId
+                        phone = params["phone"]
+                        phId = params["phId"]
+                        pId = params["pId"]
+                        order_sn = update_order_status(resp)  #更改订单状态=2,call_back＝当前时间,返回order_sn　字段
+                        if pId in ["7698","8326","8327","8215","7996"]:    #罐罐熊正式课&练字课商品ID,并对应授权
+                            msg = bearJoinCategoryProduct(phone,phId,cookies,order_sn)
+                        else:
+                            msg = joinCategoryProduct(phone,phId,cookies,order_sn)    #传入order_sn字段,查找　memberId,orderId
 
-                    resp = order_sn + ":" + msg
+                        resp = order_sn + ":" + msg
                 except Exception as e:
                     resp = str(e)
     except Exception as e:
