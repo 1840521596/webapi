@@ -222,7 +222,9 @@ def test_protected():
     )""".format(tiyan_order_sn=tiyan_order_sn,zhengshi_order_sn=zhengshi_order_sn)
         data = select_datas.execute_select(sql)[0][0]
         if data>30:
-            datas = "%d:保护期外,不做处理"%(data)
+            min_data_sql = """select callback_time from ysx_order.YSX_ORDER_INFO where order_sn="{zhengshi_order_sn}" and order_state="2";""".format(zhengshi_order_sn=zhengshi_order_sn)
+            min_data = select_datas.execute_select(min_data_sql)[0][0]
+            datas = "%s:保护期外,不做处理"%(min_data)
         else:
             add_30_days = """
             select date_add(
@@ -251,7 +253,10 @@ def test_protected():
             )""".format(tiyan_order_sn=tiyan_order_sn, zhengshi_order_sn=zhengshi_order_sn)
         data = select_datas.execute_select(sql)
         if data < 30:
-            datas = "%d:保护期内,不做处理" % (data)
+            min_data_sql = """select callback_time from ysx_order.YSX_ORDER_INFO where order_sn="{zhengshi_order_sn}" and order_state="2";""".format(
+                zhengshi_order_sn=zhengshi_order_sn)
+            min_data = select_datas.execute_select(min_data_sql)[0][0]
+            datas = "%s:保护期内,不做处理" % (min_data)
         else:
             add_29_days = """
                     select date_add(
@@ -270,7 +275,18 @@ def test_protected():
             update_data = betaDB()
             update_data.execute_sql(update_sql)
             update_data.execute_close()
-            datas = "%s:保护期内+29天完成增加"%(data)
+            datas = "%s:保护期内+课程开课事件增加29天完成"%(data)
     select_datas.execute_close()
     response = make_response(jsonify({"code": 200,"COURSE_START_DATE":str(COURSE_START_DATE) ,"CALLBACK_TIME": datas}))  # 返回response
     return response
+@test.route("/test_fill_order",methods=["GET"])
+def test_file_order():
+    """接口生成补单"""
+    productId = request.args.get("pId")
+    product_url = "https://admin.crm.yunshuxie.com/v1/admin/order/query/product_list?productId={productId}&productName=&sort=productId&order=asc&limit=100&offset=0".format(productId=productId)
+    cookies = get_ysx_crm_cookie(env_flag="beta",env_num="1")
+    resp = requests.get(url=product_url,cookies=cookies)
+    print resp
+    fill_order_url = "https://admin.crm.yunshuxie.com/fill/order"
+    return make_response(jsonify(resp.text))
+
