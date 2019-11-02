@@ -191,7 +191,10 @@ def bearJoinCategoryProduct(phone,phId,cookies,resp):
     phone = phone
     productCoursehourseId = phId
     accreditReason = u"测试使用"
-    categoryId = "102"
+    if phId == "9775":
+        categoryId = "106"
+    else:
+        categoryId = "102"
     grade = "1"
     url = r"https://admin.yunshuxie.com/v1/elementary/joinCategoryProduct.json"
     cookie = get_wacc_admin_cookie(env_flag=cookies["env_flag"],env_num=cookies["env_num"]).get_dict()
