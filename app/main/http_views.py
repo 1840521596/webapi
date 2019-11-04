@@ -179,10 +179,32 @@ set a.order_sn="{order_sn}"
 where a.PHONE="{phone}" and a.MOOC_CLASS_ID="{moocClassId}";""".format(order_sn=order_sn,phone=phone,moocClassId=moocClassId)
         select_data.execute_sql(update_order_sn_sql)
         select_data.execute_close()
-    if resp_dict["returnCode"] == 0 or resp_dict["returnCode"] == "0":
-        return "授权成功"
+    if productCoursehourseId == "9639":
+        mzjd_sql = """select a.PRODUCT_COURSE_HOURS_IDS from ysx_order.ysx_order_item a where a.order_id={order_id};""".format(order_id=order_id)
+        data = select_data.execute_select(mzjd_sql)
+        phids = data[0][0].split(",")
+        text = ""
+        for phid in range(0,len(phids)-1):
+            request_params = {"memberId": member_id, "orderId": order_id, "phone": phone,
+                              "productCoursehourseId": phids[phid], "accreditReason": accreditReason}
+            resp = requests.post(url=url, data=request_params, headers=headers, cookies=cookie)
+            text = resp.text
+            resp_dict = json.loads(resp.text, encoding="utf8")
+            if resp_dict["returnCode"] == 0 or resp_dict["returnCode"] == "0":
+                text += "授权成功,"
+            else:
+                text +="授权课程请求失败,"
+        return text
     else:
-        return "授权课程请求失败"
+        request_params = {"memberId": member_id, "orderId": order_id, "phone": phone,
+                          "productCoursehourseId": productCoursehourseId, "accreditReason": accreditReason}
+        resp = requests.post(url=url,data=request_params,headers=headers,cookies=cookie)
+        resp_dict = json.loads(resp.text,encoding="utf8")
+        if resp_dict["returnCode"] == 0 or resp_dict["returnCode"] == "0":
+            return "授权成功"
+        else:
+            return "授权课程请求失败"
+
 def bearJoinCategoryProduct(phone,phId,cookies,resp):
     select_data = betaDB()
     sql = """select a.order_id,a.member_id from ysx_order.ysx_order_info a where a.order_sn ="{order_sn}";""".format(order_sn=resp)
