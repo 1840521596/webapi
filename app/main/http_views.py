@@ -35,15 +35,19 @@ def case_http_test():
         if len(account_list)==1:    #登录账号进行分割,当不存在"测试使用"测试项目前置时,直接使用账号
             account = account_list[0]
             test_use = None
+            passwd = None
+        elif len(account_list)==2:
+            test_use, account = account_list[0],account_list[1]
+            passwd = None
         else:
-            test_use,account = account_list[0],account_list[1]    #测试项目&测试账号
+            test_use,account,passwd = account_list[0],account_list[1], account_list[2]  #测试项目&测试账号&账号密码
         url = case_host + case_url
         isUpload = request.form["isUpload"]
         targetId = request.form["pid"]
         if account.upper() == "NONE" or account==None:
             account = None
         if islogin.upper() == "TRUE" or islogin==True:  #勾选需要登录后获取登录cookies
-            new_cookies = loginIn(project_cn,cookies["env_flag"], cookies["env_num"], account,test_use)
+            new_cookies = loginIn(project_cn,cookies["env_flag"], cookies["env_num"], account,passwd,test_use)
             if case_url in ["/auth/loginCheck"]:
                 params = {}
                 params["sessionId"] = new_cookies["sso_sessionid"]
