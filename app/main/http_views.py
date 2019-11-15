@@ -9,6 +9,7 @@ from ..config.project_loginIn import loginIn
 import sys
 import json
 from app.config.sql import betaDB,betaDB_order
+import cgi
 if sys.getdefaultencoding() != 'utf-8':
     reload(sys)
     sys.setdefaultencoding('utf-8')
@@ -93,7 +94,7 @@ def case_http_test():
                     resp = str(e)
     except Exception as e:
         resp = str(e)
-    response = make_response(jsonify({"code":200,"datas":resp}))  # 返回response
+    response = make_response(jsonify({"code":200,"datas":cgi.escape(resp)}))  # 返回response
     return response
 
 

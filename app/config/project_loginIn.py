@@ -30,5 +30,8 @@ def loginIn(project_cn,env_flag,env_num,account,test_use=None):
     elif project_cn == "测试使用":
         new_cookies = get_cookies(test_use,env_flag,env_num,account)
     else:
-        new_cookies = {"env_flag":env_flag,"env_num":env_num}
+        if test_use:
+            new_cookies = loginIn(project_cn=test_use,env_flag=env_flag,env_num=env_num,account=account)
+        else:
+            new_cookies = {"env_flag":env_flag,"env_num":env_num}
     return new_cookies
