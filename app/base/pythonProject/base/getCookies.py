@@ -8,7 +8,7 @@ import json
 import hashlib
 import urllib
 import pymysql
-def get_ysx_crm_cookie(env_flag,env_num,user=None):
+def get_ysx_crm_cookie(env_flag,env_num,user=None,passwd=None):
     """登录crm,并返回cookies
     :param url 请求连接
     :param header 请求头
@@ -40,8 +40,10 @@ def get_ysx_crm_cookie(env_flag,env_num,user=None):
     #                          "Content-Type":"application/json"}
     #    captcha_resp = requests.post(url=url,headers=captcha_header,json=data)  # 获取验证码
     #    captcha = json.loads(captcha_resp.content,encoding="utf8")["string"].lower()  # 最小化
+    username = user if user else "18519118952"  #默认账号
+    password = passwd if passwd else "123456"  #默认密码
     url = r"https://admin.crm.yunshuxie.com/sys/login"
-    params = {"username": "18519118952","password": "123456","captcha": "ysx2019"}  # 登录接口
+    params = {"username": username,"password": password,"captcha": "ysx2019"}  # 登录接口
     header = {"Accept": "application/json, text/javascript, */*; q=0.0",
               "Cache-Control": "no-cache",
               "Connection": "keep-alive",
@@ -58,7 +60,7 @@ def get_ysx_crm_cookie(env_flag,env_num,user=None):
         return cookies
     else:
         return(get_ysx_crm_cookie(env_flag,env_num))  # 递归
-def get_wacc_admin_cookie(env_flag,env_num,user=None):
+def get_wacc_admin_cookie(env_flag,env_num,user=None,passwd=None):
     """ 登录admin, 并返回cookies
     :param url 请求连接
     :param header 请求头
@@ -76,7 +78,9 @@ def get_wacc_admin_cookie(env_flag,env_num,user=None):
               "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
               "Origin": "https://admin.yunshuxie.com",
               "Pragma": "no-cache","Referer": "https://admin.yunshuxie.com/","User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","X-Requested-With": "XMLHttpRequest"}
-    params = {"userName": "automation@yunshuxie.com" ,"pwd": "ysx2019","emailVerifyCode":"ysx2019"}
+    username = user if user else "automation@yunshuxie.com"  #默认账号
+    pwd = passwd if passwd else "ysx2019"  #默认密码
+    params = {"userName": username ,"pwd": pwd,"emailVerifyCode":"ysx2019"}
     resp = requests.post(url=url, headers=header, cookies=cookies,data=params)
     dict_resp =json.loads(resp.content, encoding="utf8")
     #print dict_resp
@@ -85,7 +89,7 @@ def get_wacc_admin_cookie(env_flag,env_num,user=None):
     else:
         raise Exception, resp.content
     return cookies
-def get_wacc_home_cookie(env_flag,env_num,user=None):
+def get_wacc_home_cookie(env_flag,env_num,user=None,passwd=None):
     """ 登录PC云舒写官网, 并返回cookies
     :param url 请求连接
     :param header 请求头
@@ -101,7 +105,9 @@ def get_wacc_home_cookie(env_flag,env_num,user=None):
               "Accept": "application/json, text/javascript, */*; q=0.01",
               "Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9",
               "Connection": "keep-alive","Host": "www.yunshuxie.com","Upgrade-Insecure-Requests": "1"}
-    params = {"userName": user ,"pwd": "test123456"}
+    username = user if user else "60000007001"  #默认账号
+    pwd = passwd if passwd else "test123456"  #默认密码
+    params = {"userName": username ,"pwd": pwd }
     resp = requests.post(url=url, headers=header, cookies=cookies,data=params)
     dict_resp = json.loads(resp.content, encoding="utf8")
     #print dict_resp
@@ -110,7 +116,7 @@ def get_wacc_home_cookie(env_flag,env_num,user=None):
     else:
         raise Exception, resp.content
     return cookies
-def get_wacc_tortoise_cookie(env_flag,env_num,user=None):
+def get_wacc_tortoise_cookie(env_flag,env_num,user=None,passwd=None):
     """登录销售简章后台配置系统，并返回cookies
     :param env_flag:
     :param env_num:
@@ -123,7 +129,9 @@ def get_wacc_tortoise_cookie(env_flag,env_num,user=None):
     cookies.set('env_flag', env_flag)  # 设置测试环境
     cookies.set("env_num", env_num)  # 设置环境号
     header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","Content-Type":"application/x-www-form-urlencoded","Accept":"application/json, text/plain, */*","Connection":"keep-alive"}
-    params = {"userName": username, "pwd": "0p80hg56ya"}
+    username = user if user else "guohongjie"  # 默认账号
+    pwd = passwd if passwd else "0p80hg56ya"  # 默认密码
+    params = {"userName": username, "pwd": pwd}
     resp = requests.post(url=url, headers=header, cookies=cookies, data=params)
     dict_resp = json.loads(resp.content, encoding="utf8")
     #print dict_resp
@@ -132,7 +140,7 @@ def get_wacc_tortoise_cookie(env_flag,env_num,user=None):
     else:
         raise Exception, resp.content
     return cookies
-def get_wacc_bird_cookie(env_flag,env_num,user=None):
+def get_wacc_bird_cookie(env_flag,env_num,user=None,passwd=None):
     """登录微信前台开始上课，并返回cookies
     :param env_flag:
     :param env_num:
@@ -150,7 +158,9 @@ def get_wacc_bird_cookie(env_flag,env_num,user=None):
                   "Cache-Control": "no-cache",
                   "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 Safari/601.1 wechatdevtools/1.02.1904090 MicroMessenger/6.7.3 Language/zh_CN webview/15578306374265793 webdebugger port/22562"}
 
-    params = {"userName": user, "pwd": "123456", "type": "3"}
+    username = user if user else "60000007001"  # 默认账号
+    pwd = passwd if passwd else "test123456"  # 默认密码
+    params = {"userName": username, "pwd": pwd, "type": "3"}
     string = urllib.urlencode(params)
     s = string + salt
     md = hashlib.md5()
@@ -164,7 +174,7 @@ def get_wacc_bird_cookie(env_flag,env_num,user=None):
     else:
         raise Exception, resp.content
     return cookies
-def get_app_cookie(project_cn,env_flag,env_num,user=None):
+def get_app_cookie(project_cn,env_flag,env_num,user=None,passwd=None):
     """登录移动端APP，并返回cookies
     :param env_flag:
     :param env_num:
@@ -189,7 +199,9 @@ def get_app_cookie(project_cn,env_flag,env_num,user=None):
     cookies.set('env_flag', env_flag)  # 设置测试环境
     cookies.set("env_num", env_num)  # 设置环境号
     header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded","User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
-    params = {"userName": user,"smsCode": "123456", "type": "10"}
+    username = user if user else "60000007001"  # 默认账号
+    pwd = passwd if passwd else "123456"  # 默认密码
+    params = {"userName": username,"smsCode": pwd, "type": "10"}
     string = urllib.urlencode(params)
     s = string + salt
     md = hashlib.md5()
@@ -203,7 +215,7 @@ def get_app_cookie(project_cn,env_flag,env_num,user=None):
     else:
         raise Exception, resp.content
     return cookies
-def get_wechat_cookie(env_flag,env_num,user=None):
+def get_wechat_cookie(env_flag,env_num,user=None,passwd=None):
     """微信公众号登录"""
     session = requests.Session()
     request_retry = requests.adapters.HTTPAdapter(max_retries=3)
@@ -230,7 +242,9 @@ def get_wechat_cookie(env_flag,env_num,user=None):
               "{\"openid\":\"o38sIv0DUSADJyxT2Ebd-MN4lFXE\",\"nickname\":\"自动化测试\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
 
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
-    params = {"userName": user, "pwd": "test123456", "type": "2","wechatCode":"081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc"}
+    username = user if user else "60000007001"  # 默认账号
+    pwd = passwd if passwd else "test123456"  # 默认密码
+    params = {"userName": username, "pwd": pwd, "type": "2","wechatCode":"081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc"}
     string = urllib.urlencode(params)
     s = string + salt
     md = hashlib.md5()
@@ -245,7 +259,7 @@ def get_wechat_cookie(env_flag,env_num,user=None):
     else:
         raise Exception, resp.content
     return cookies
-def get_wechat_capth_cookie(env_flag,env_num,user=None):
+def get_wechat_capth_cookie(env_flag,env_num,user=None,passwd=None):
     """微信公众号验证码登录"""
     salt = "mengmengda"
     session = requests.Session()
@@ -284,7 +298,9 @@ def get_wechat_capth_cookie(env_flag,env_num,user=None):
     expect = {"code": "0"}
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
     # PC登录
-    params = {"userName": user, "smsCode": capth, "type": "9","wechatCode":"081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc"}
+    username = user if user else "60000007001"  # 默认账号
+    capth = capth if capth else "123456"  # 默认密码
+    params = {"userName": username, "smsCode": capth, "type": "9","wechatCode":"081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc"}
     string = urllib.urlencode(params)
     s = string + salt
     md = hashlib.md5()
@@ -297,7 +313,7 @@ def get_wechat_capth_cookie(env_flag,env_num,user=None):
     cookies.set('env_flag', env_flag)  # 设置测试环境
     cookies.set("env_num", env_num)  # 设置环境号
     return cookies
-def get_wechat_ggx_cookies(env_flag,env_num,user=None):
+def get_wechat_ggx_cookies(env_flag,env_num,user=None,passwd=None):
     """微信罐罐熊小程序登录"""
     session = requests.Session()
     request_retry = requests.adapters.HTTPAdapter(max_retries=3)
@@ -319,7 +335,9 @@ def get_wechat_ggx_cookies(env_flag,env_num,user=None):
         r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
     r.set("code_6_%s"%(user),"1234561","60")
     url = r"http://wap.yunshuxie.com/v1/mini/login.htm"
-    params = {"phone":user,"validate":"1234561","userType":"67","openId":"oPPdW4-Ty_9hIDlEGgRto5NLIGo4","unionId":"o_Pn8s8QLZF4OEgQsxJTNqSkDAbI","isApp":"1"}
+    username = user if user else "60000007001"  # 默认账号
+    passwd = passwd if passwd else "1234561"  # 默认密码
+    params = {"phone":username,"validate":passwd,"userType":"67","openId":"oPPdW4-Ty_9hIDlEGgRto5NLIGo4","unionId":"o_Pn8s8QLZF4OEgQsxJTNqSkDAbI","isApp":"1"}
     resp = session.get(url, params=params)
     print resp.content
     dict_resp = json.loads(resp.content, encoding="utf8")
@@ -329,7 +347,7 @@ def get_wechat_ggx_cookies(env_flag,env_num,user=None):
     else:
         raise Exception, resp.content
     return cookies
-def get_wechat_teaco_cookies(env_flag,env_num,user=None):
+def get_wechat_teaco_cookies(env_flag,env_num,user=None,passwd=None):
     """微信小程序教师端登录"""
     cookies = requests.cookies.RequestsCookieJar()
     cookies.set('env_flag', env_flag)  # 设置测试环境
@@ -351,7 +369,7 @@ def get_wechat_teaco_cookies(env_flag,env_num,user=None):
     else:
         cookies = cookies
     return cookies
-def get_adm_single_cookies(env_flag,env_num,user=None):
+def get_adm_single_cookies(env_flag,env_num,user=None,passwd=None):
     """单点登录系统&admin"""
     session = requests.Session()
     request_retry = requests.adapters.HTTPAdapter(max_retries=3)
@@ -374,11 +392,12 @@ def get_adm_single_cookies(env_flag,env_num,user=None):
         r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password",db=1)
     captch = r.get(tokenId)
     login_url = "/auth/login"
-    pwd = "123456"
+    pwd = passwd if passwd else "123456"
     hl = hashlib.md5()
     hl.update(pwd)
     md5_pwd = hl.hexdigest()
-    params = {"username":user,
+    username = user if user else "60000007001"  # 默认账号
+    params = {"username":username,
               "password":md5_pwd,
               "verifyCode":captch,"tokenId":tokenId,"sso_app_id":"adm"}
     resp = session.post(url=domain+login_url,data=params)
@@ -386,8 +405,28 @@ def get_adm_single_cookies(env_flag,env_num,user=None):
     cookies.set("sso_sessionid", dict_resp["data"]["sessionId"])
     cookies.update(resp.cookies)
     return cookies
+def get_material_platform_cookies(env_flag,env_num,user=None,passwd=None):
+    """物料平台登录"""
+    url = r"https://pay.yunshuxie.com/v5/sales_poster/sale_loginV2.htm"
+    cookies = requests.cookies.RequestsCookieJar()  # 生成cookies 容器
+    cookies.set('env_flag', env_flag)  # 设置测试环境
+    cookies.set("env_num", env_num)  # 设置环境号
+    header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
+    username = user if user else "60000007001"
+    pwd = passwd if passwd else "test123.."
+    params = {"phone": username,"pwd": pwd}
+    resp = requests.get(url=url, headers=header, cookies=cookies, params=params)
+    dict_resp = json.loads(resp.content, encoding="utf8")
+    # print dict_resp
+    print dict_resp["data"]["shareKey"]
+    if dict_resp["returnCode"] == "0" or dict_resp["returnCode"] == 0:
+        cookies.update(resp.cookies)
+    else:
+        raise Exception, resp.content
+    return cookies
 
-def get_cookies(project,env_flag,env_num,user=None):
+
+def get_cookies(project,env_flag,env_num,user=None,passwd=None):
     """
     :param project: 发布项目
     :param env_flag: 发布环境
@@ -395,37 +434,45 @@ def get_cookies(project,env_flag,env_num,user=None):
     :return: cookies
     """
     if project == "云舒写CRM系统":
-        cookie = get_ysx_crm_cookie(env_flag,env_num,user).get_dict()
+        cookie = get_ysx_crm_cookie(env_flag,env_num,user,passwd).get_dict()
     elif project == "云舒写首页":
-        cookie = get_wacc_home_cookie(env_flag,env_num,user).get_dict()
+        cookie = get_wacc_home_cookie(env_flag,env_num,user,passwd).get_dict()
     elif project == "云舒写后台管理系统":
-        cookie = get_wacc_admin_cookie(env_flag,env_num,user).get_dict()
+        cookie = get_wacc_admin_cookie(env_flag,env_num,user,passwd).get_dict()
     elif project == "简章系统":
-        cookie = get_wacc_tortoise_cookie(env_flag,env_num,user).get_dict()
+        cookie = get_wacc_tortoise_cookie(env_flag,env_num,user,passwd).get_dict()
     elif project == "新商品详情系统" or project == "新订单支付系统":
-        cookie = get_wacc_bird_cookie(env_flag,env_num,user).get_dict()
+        cookie = get_wacc_bird_cookie(env_flag,env_num,user,passwd).get_dict()
     elif project in ["罐罐熊APP","云舒写APP"]:
-        cookie = get_app_cookie(project,env_flag,env_num,user).get_dict()
+        cookie = get_app_cookie(project,env_flag,env_num,user,passwd).get_dict()
     elif project == "罐罐熊练字课微信小程序":
-        cookie = get_wechat_ggx_cookies(env_flag,env_num,user)
+        cookie = get_wechat_ggx_cookies(env_flag,env_num,user,passwd)
     elif project == "云舒写大语文合作与推广":
-        cookie = get_wechat_capth_cookie(env_flag,env_num,user)
+        cookie = get_wechat_capth_cookie(env_flag,env_num,user,passwd)
     elif project == "陪你阅读陪你写作":
-        cookie = get_wechat_cookie(env_flag,env_num, user)
+        cookie = get_wechat_cookie(env_flag,env_num, user,passwd)
     elif project == "教师端资料库小程序":
-        cookie = get_wechat_teaco_cookies(env_flag,env_num,user)
+        cookie = get_wechat_teaco_cookies(env_flag,env_num,user,passwd)
     elif project == "单点登录系统admin平台":
-        cookie = get_adm_single_cookies(env_flag,env_num,user)
+        cookie = get_adm_single_cookies(env_flag,env_num,user,passwd)
+    elif project == "物料领取平台":
+        cookie = get_material_platform_cookies(env_flag,env_num,user,passwd)
     elif project == "短信服务":
         cookie = {"env_flag": env_flag, "env_num": env_num}
     elif project == "用户行为":
         cookie = {"env_flag": env_flag, "env_num": env_num}
     else:
         cookie = {"env_flag":env_flag,"env_num":env_num}
+
     return cookie
 
 if __name__ == "__main__":
     #print get_wechat_teaco_cookies("beta","5","向前！向前！")
-    print get_cookies("云舒写APP","prod","","60000007001")
-
+    phone = 60000012616
+    #while True:
+#
+    get_material_platform_cookies("beta","8","%s"%(phone))
+      #  phone += 1
+     #   if phone>60000012530:
+       #     break
 
