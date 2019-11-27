@@ -11,9 +11,9 @@ def load_user(userid):
     return User.query.get(int(userid))
 def query_user(userid):
     return True
-# @user.route("/login",methods=["GET", 'POST'])
-# def webLogin():
-#     return render_template('user/login.html',form=form)
+@user.route("/",methods=["GET", 'POST'])
+def webLogin():
+    return redirect(url_for('views.webIndex'))
 @user.route("/login",methods=["GET", 'POST'])
 def userLogin():
     form = LoginForm()
