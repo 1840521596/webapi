@@ -31,12 +31,15 @@
 				<span>用户登录</span>
 			</div>
 			<div class="login_fields">
-				<div class="login_fields__user">
+<!--				<form action="{{ url_for('user.userLogin') }}" method="POST">-->
+				<form action="" method="POST">
+									<div class="login_fields__user">
 					<div class="icon">
 						<img alt="" src="{{url_for('static',filename='img/user_icon_copy.png')}}">
 					</div>
-					<input name="login" placeholder="用户名" maxlength="16" type="text" autocomplete="off">
-					<div class="validation">
+<!--					<input id="username" name="login" placeholder="用户名" maxlength="16" type="text" autocomplete="off">-->
+					{{ form.accountNumber(size=20) }}
+										<div class="validation">
 						<img alt="" src="{{url_for('static',filename='img/lock_icon_copy.png')}}">
 					</div>
 				</div>
@@ -44,19 +47,25 @@
 					<div class="icon">
 						<img alt="" src="{{url_for('static',filename='img/lock_icon_copy.png')}}">
 					</div>
-					<input name="pwd" placeholder="密码" maxlength="16" type="text" autocomplete="off">
+<!--					<input id="pwd" name="pwd" placeholder="密码" maxlength="16" type="text" autocomplete="off">-->
+					{{ form.password(size=20) }}
+
 					<div class="validation">
 						<img alt="" src="{{url_for('static',filename='img/lock_icon_copy.png')}}">
 					</div>
 				</div>
 				<div class="login_fields__register">
-					<input type="button" value="注册">
+					<input id="register" type="button" value="注册"/>
 				</div>
 				<div class="login_fields__submit">
-					<input type="button" value="登录">
+					<input id="submit" type="submit" value="登录"/>
 				</div>
+				</form>
 			</div>
 			<div class="success">
+				{% for msg in get_flashed_messages() %}
+    					<p>{{ msg }}</p>
+				{% endfor %}
 			</div>
 			<div class="disclaimer">
 				<p>欢迎登陆余辉管理系统</p>
@@ -67,7 +76,6 @@
 
 		<script type="text/javascript" src="{{url_for('static',filename='js/Detector.js')}}"></script>
 		<script type="text/javascript" src="{{url_for('static',filename='js/RequestAnimationFrame.js')}}"></script>
-
 		<script id="vs" type="x-shader/x-vertex">
 
 			varying vec2 vUv;
@@ -78,9 +86,7 @@
 				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 
 			}
-
 		</script>
-
 		<script id="fs" type="x-shader/x-fragment">
 
 			uniform sampler2D map;
@@ -242,6 +248,13 @@
 				renderer.render( scene, camera );
 
 			}
+
+function login(){
+    document.form1.action="{{ url_for('user.userLogin') }}";
+    document.form1.submit();
+}
+
+
 
 		</script>
 		<div style="text-align:center;">

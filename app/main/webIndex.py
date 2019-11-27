@@ -3,8 +3,10 @@
 from . import views
 from flask import render_template,request,make_response,jsonify
 from .. import db,redis
+from flask_login import login_required
 from ..config.api_models import Project, Case_Http_API,Web_Model_Set,Test_User_Reg,Key_Value
 @views.route("/index",methods=["GET"])
+@login_required
 def webIndex():
     """WEB首页"""
     modelNameLink = db.session.query(Web_Model_Set.modelName,Web_Model_Set.modelLink).filter_by(modelStatus=1).order_by("id asc").all()
@@ -17,13 +19,16 @@ def webIndex():
                          #  model_cout=model_cout, my_tasl=My_task, all_run_case_count=all_run_case_count
 
 @views.route("/testIndex",methods=["GET"])
+@login_required
 def testIndex():
     return render_template('home/test_phones.html')
 @views.route('/run_api_index', methods=['GET', 'POST'])
+@login_required
 def run_api_index():
     api_project = Project.query.with_entities(Project.project).distinct().all()
     return render_template('/home/run_api_index.html',projects=api_project)
 @views.route("/query_phones",methods=["GET"])
+@login_required
 def test_query():
     """Test_Phones"""
     query_phone = request.args.get("PHONE")

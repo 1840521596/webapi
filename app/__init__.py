@@ -11,6 +11,7 @@ bootstrap = Bootstrap()
 db = SQLAlchemy()
 redis = FlaskRedis()
 login_manager = LoginManager()
+login_manager.login_view = "user.userLogin"
 
 def make_celery(app):
     celery = Celery(app.import_name,broker=app.config['CELERY_BROKER_URL'])

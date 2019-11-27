@@ -2,7 +2,7 @@
 #-*-coding:utf-8 -*-
 from .. import db
 from flask_login import UserMixin
-class DeptName(UserMixin,db.Model):
+class DeptName(db.Model):
     __bind_key__ = 'qa_user'
     __tablename__ = "Dept"  # 部门表
     deptId = db.Column(db.Integer,primary_key=True)#序号ID
@@ -14,3 +14,25 @@ class DeptName(UserMixin,db.Model):
         self.status = status
     def __repr__(self):
         return '<Case %r>'%(self.deptName)
+class User(db.Model,UserMixin):
+    __bind_key__ = 'qa_user'
+    __tablename__ = "User"  # 部门表
+    userId = db.Column(db.Integer,primary_key=True)#序号ID
+    userName = db.Column(db.String(100)) # 项目
+    passwd = db.Column(db.String(100))
+    status = db.Column(db.Boolean,default=0)
+    deptId = db.Column(db.String(100),db.ForeignKey('Dept.deptId'))
+    def __init__(self,userId,userName,status=0):
+        self.userId = userId
+        self.userName = userName
+        self.status = status
+    def is_authenticated(self):
+        return True
+    def is_active(self):
+        return True
+    def is_anonymous(self):
+        return False
+    def get_id(self):
+        return unicode(self.userId)
+    def __repr__(self):
+        return '<Case %r>'%(self.userName)

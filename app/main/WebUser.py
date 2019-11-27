@@ -1,31 +1,37 @@
 #!/usr/bin/python
 #-*-coding:utf-8 -*-
 from . import user
-from flask import render_template,request,make_response,jsonify,flash,redirect,url_for
-from flask_login import UserMixin,login_user
-from ..config.user_models import DeptName
-from .. import db
-from .webIndex import webIndex
+from flask import render_template,request,flash,redirect,url_for,session,g
+from flask_login import login_user,logout_user,login_required
+from ..config.login_form import LoginForm
+from ..config.user_models import User
 from app import login_manager
-def query_user(user_id):
+@login_manager.user_loader
+def load_user(userid):
+    return User.query.get(int(userid))
+def query_user(userid):
     return True
+# @user.route("/login",methods=["GET", 'POST'])
+# def webLogin():
+#     return render_template('user/login.html',form=form)
 @user.route("/login",methods=["GET", 'POST'])
-def webLogin():
-    return render_template('user/login.html')
-@user.route("/userLogin",methods=["GET", 'POST'])
 def userLogin():
-    login_manager.login_view = 'login'
-    login_manager.login_message_category = 'info'
-    login_manager.login_message = 'Access denied.'
-    if request.method == 'GET':
-        user_id = 2#request.form.get('userid')
-        user = query_user(user_id)
-        if user is not None:
-            curr_user = DeptName(1,1)
-            curr_user.id = user_id
-            # 通过Flask-Login的login_user方法登录用户
-            login_user(curr_user)
+    form = LoginForm()
+    if request.method == 'POST':
+        print form.accountNumber.data
+        print form.password.data
+        user = User.query.filter(User.userName == form.accountNumber.data,
+                                 User.passwd == form.password.data).first()
+        if user:
+            login_user(user,remember=True)
+            session["userName"] = "guohongjie"
+            session["userId"] = "1"
             return redirect(url_for('views.webIndex'))
-        flash('Wrong username or password!')
-    # GET 请求
-    return render_template('home/index.html')
+        else:
+            flash(message=u'嗨~{username}!用户名或密码错误!'.format(username=form.accountNumber.data), category='error')
+    return render_template('user/login.html',form=form)
+@user.route('/logout/')
+@login_required
+def logout():
+    logout_user()  # 登出用户
+    return '已经退出登录'
