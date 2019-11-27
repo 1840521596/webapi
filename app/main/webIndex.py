@@ -3,7 +3,7 @@
 from . import views
 from flask import render_template,request,make_response,jsonify
 from .. import db,redis
-from ..config.models import Project, Case_Http_API,Web_Model_Set,Test_User_Reg,Key_Value
+from ..config.api_models import Project, Case_Http_API,Web_Model_Set,Test_User_Reg,Key_Value
 @views.route("/index",methods=["GET"])
 def webIndex():
     """WEB首页"""

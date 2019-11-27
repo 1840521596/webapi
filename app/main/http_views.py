@@ -4,7 +4,7 @@ from flask import request,make_response,jsonify
 import requests
 from app.base.pythonProject.base.getCookies import *
 from .. import db
-from ..config.models import Case_Http_File
+from ..config.api_models import Case_Http_File
 from ..config.project_loginIn import loginIn
 import sys
 import json

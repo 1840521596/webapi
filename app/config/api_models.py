@@ -1,6 +1,7 @@
 #-*-coding:utf-8 -*-
 from .. import db
 class Project(db.Model):
+    
     __tablename__ = "project_api"  # 表名
     id = db.Column(db.Integer,primary_key=True)#序号ID
     project = db.Column(db.String(100), unique=True) # 项目
@@ -17,6 +18,7 @@ class Project(db.Model):
     def __repr__(self):
         return '<Case %r>'%(self.name)
 class runSuiteProject(db.Model):
+    
     __tablename__ = "runSuiteProject"  # 表名
     id = db.Column(db.Integer,primary_key=True)#序号ID
     project = db.Column(db.String(100), unique=True) # 项目
@@ -34,6 +36,7 @@ class runSuiteProject(db.Model):
         return '<Case %r>'%(self.name)
 
 class Case_Http_API(db.Model):
+    
     __tablename__ = "case_http_api" #表名
     id = db.Column(db.Integer,primary_key=True)#序号ID
     project = db.Column(db.String(100),db.ForeignKey('project_api.project'))#项目
@@ -84,6 +87,7 @@ class Case_Http_API(db.Model):
         return '<Case %r>'%self.project
 
 class Case_Http_File(db.Model):
+    
     __tablename__ = "case_http_file"
     id = db.Column(db.Integer, primary_key=True)
     case_api_id = db.Column(db.String(100))
@@ -96,6 +100,7 @@ class Case_Http_File(db.Model):
         self.file_name = file_name
         self.content_type = content_type
 class Case_Dubbo_API(db.Model):
+    
     __tablename__ = "case_dubbo_api"#表明
     id = db.Column(db.Integer, primary_key=True)  # 序号ID
     project = db.Column(db.String(100), db.ForeignKey('project_api.project'))
@@ -126,6 +131,7 @@ class Case_Dubbo_API(db.Model):
     def __repr__(self):
         return '<Case %r>'%(self.name)
 class Web_Model_Set(db.Model):
+    
     __tablename__ = "model_set"  # 表明
     id = db.Column(db.Integer, primary_key=True)  # 序号ID
     modelName = db.Column(db.String(100))
@@ -138,6 +144,7 @@ class Web_Model_Set(db.Model):
     def __repr__(self):
         return '<Case %r>'%(self.modelName)
 class Test_Env(db.Model):
+    
     __tablename__ = "test_env"  # 表名
     id = db.Column(db.Integer,primary_key=True)#序号ID
     env_flag = db.Column(db.String(100)) # 测试环境
@@ -148,6 +155,7 @@ class Test_Env(db.Model):
     def __repr__(self):
         return '<Case %r>'%(self.env_flag)
 class Test_User_Reg(db.Model):
+    
     __tablename__ = "telephone"
     id = db.Column(db.Integer,primary_key=True) #序号ID
     phone = db.Column(db.String(11)) #手机号
@@ -160,6 +168,7 @@ class Test_User_Reg(db.Model):
         self.env = env
         self.description = description
 class Key_Value(db.Model):
+    
     __tablename__ = "key_value"
     id = db.Column(db.Integer,primary_key=True) #序号ID
     user_key = db.Column(db.String(100)) #手机号
@@ -171,6 +180,7 @@ class Key_Value(db.Model):
         self.user_value = user_value
         self.status = status
 class is_Make_User(db.Model):
+    
     __tablename__ = "isMakeUser"
     id = db.Column(db.Integer, primary_key=True)  # 序号ID
     project_en = db.Column(db.String(100), unique=True) # 项目_英文

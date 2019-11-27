@@ -3,7 +3,7 @@
 from . import mock
 from flask import render_template,request,make_response,jsonify
 from .. import db
-from ..config.models import Project, Case_Http_API,Web_Model_Set
+from ..config.api_models import Project, Case_Http_API,Web_Model_Set
 @mock.route("/mock/<path:url>",methods=["GET","POST"])
 def mockserver(url):
     """Mcok服务"""

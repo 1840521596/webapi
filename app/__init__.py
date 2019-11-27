@@ -5,10 +5,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from config.config import config
 from flask_redis import FlaskRedis
+from flask_login import LoginManager
 from celery import Celery
 bootstrap = Bootstrap()
 db = SQLAlchemy()
 redis = FlaskRedis()
+login_manager = LoginManager()
+
 def make_celery(app):
     celery = Celery(app.import_name,broker=app.config['CELERY_BROKER_URL'])
     celery.conf.update(app.config)
@@ -29,9 +32,11 @@ def create_app(config_name):
     bootstrap.init_app(app)
     db.init_app(app)
     redis.init_app(app)
-    from .main import report,test,views,mock
+    login_manager.init_app(app)
+    from .main import report,test,views,mock,user
     app.register_blueprint(report, url__prefix='/report')
     app.register_blueprint(test)
     app.register_blueprint(views)
     app.register_blueprint(mock)
+    app.register_blueprint(user)
     return app

@@ -5,7 +5,7 @@ from flask import make_response,request,jsonify,url_for,redirect
 from . import test
 from ..base.pythonProject import run
 from .. import db,redis
-from ..config.models import Project,Test_Env,Test_User_Reg,Case_Http_API,runSuiteProject,is_Make_User
+from ..config.api_models import Project,Test_Env,Test_User_Reg,Case_Http_API,runSuiteProject,is_Make_User
 from sqlalchemy import func
 from app.base.pythonProject.base.getConfig import s
 from app.base.pythonProject.base.couponReceive import coupon_test

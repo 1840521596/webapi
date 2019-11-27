@@ -2,7 +2,7 @@
 from . import views
 from flask import render_template,request,make_response,jsonify
 from .. import db
-from ..config.models import Project, Case_Http_API
+from ..config.api_models import Project, Case_Http_API
 @views.route('/projectIndex',methods=['GET','POST'])
 def project_select():
     """API测试首页"""

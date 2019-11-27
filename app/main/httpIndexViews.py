@@ -2,7 +2,7 @@
 from . import views
 from flask import render_template,request,make_response,jsonify
 from .. import db
-from ..config.models import Project, Case_Http_API ,Case_Http_File
+from ..config.api_models import Project, Case_Http_API ,Case_Http_File
 @views.route('/addHttpProject',methods=['POST','GET'])
 def add_project():
     """增加测试项目"""

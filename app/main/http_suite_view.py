@@ -4,7 +4,7 @@ __author__ = "guohongjie"
 from flask import render_template,request,flash,make_response,jsonify,send_from_directory,send_file
 from . import views
 from .. import db
-from ..config.models import Project
+from ..config.api_models import Project
 import os
 from ..config.config import TEST_FOLDER
 
