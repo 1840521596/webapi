@@ -10,9 +10,13 @@ body{margin: 0; background-color: #67ace4; font-family: "\5FAE\8F6F\96C5\9ED1"; 
 ::-moz-selection{background: none;}
 #wrap{margin: 100px auto 0; width: 399px;}
 #text{text-align: center; padding-top: 20px;}
+#500text{text-align: center; padding-top: 20px;}
 #text strong{display: inline-block; font-size: 14px; font-weight: normal;}
+#500text strong{display: inline-block; font-size: 14px; font-weight: normal;}
 #text strong *{float: left;}
+#500text strong *{float: left;}
 #text span{width: 128px; height: 29px; background: url(../img/info.png) no-repeat;}
+#500text span{width: 128px; height: 29px; background: url(../img/500info.png) no-repeat;}
 #text a{line-height: 14px; color: #fff; text-decoration: none; padding: 6px 14px; margin: 1px 0 0 10px; border: 1px solid #fff; border-radius: 14px;
 	user-select: none;
 	-webkit-user-select: none;
@@ -22,11 +26,23 @@ body{margin: 0; background-color: #67ace4; font-family: "\5FAE\8F6F\96C5\9ED1"; 
 	-moz-transition: 0.2s ease-out;
 	-webkit-transition: 0.2s ease-out;
 }
+#500 text a{line-height: 14px; color: #fff; text-decoration: none; padding: 6px 14px; margin: 1px 0 0 10px; border: 1px solid #fff; border-radius: 14px;
+	user-select: none;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	transition: 0.2s ease-out;
+	-o-transition: 0.2s ease-out;
+	-moz-transition: 0.2s ease-out;
+	-webkit-transition: 0.2s ease-out;
+}
 #text a:hover, #text a:active{background: #fff; color: #000;}
+#500text a:hover, #500text a:active{background: #fff; color: #000;}
 @media screen and (max-width: 414px) {
-	#wrap, #wrap img, #text span{width: 200px;}
+	#wrap, #wrap img, #text span,#500text span{width: 200px;}
 	#text span{background-position: center; margin-bottom: 16px;}
+	#500text span{background-position: center; margin-bottom: 16px;}
 	#text a:nth-of-type(1){margin-left: 0;}
+	#500text a:nth-of-type(1){margin-left: 0;}
 }
 
 .animate{
