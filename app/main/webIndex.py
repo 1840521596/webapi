@@ -9,13 +9,14 @@ from ..config.api_models import Project, Case_Http_API,Web_Model_Set,Test_User_R
 @login_required
 def webIndex():
     """WEB首页"""
-    modelNameLink = db.session.query(Web_Model_Set.modelName,Web_Model_Set.modelLink).filter_by(modelStatus=1).order_by("id asc").all()
+    modelNameLink = db.session.query(Web_Model_Set.modelName,Web_Model_Set.modelLink).filter_by(modelStatus=1).order_by("id").all()
     modelList = [[m[0],m[1]] for m in modelNameLink]
     userName = session["userName"]
+    deptName = session["deptName"]
     projectCount = db.session.query(Project.id).count()
     interfaceCount = db.session.query(Case_Http_API.id).count()
     return render_template('home/index.html', modelNameLink=modelList,project_cout=projectCount,jiekou=interfaceCount,
-                           userName=userName)
+                           userName=userName,deptName=deptName)
                            #report=len(reslut_list), project_cout=project_cout,
                          #  model_cout=model_cout, my_tasl=My_task, all_run_case_count=all_run_case_count
 
