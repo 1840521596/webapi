@@ -25,7 +25,7 @@ def homeIndex():
     return render_template('home/homeIndex.html')
 
 @views.route("/pageIndex",methods=["GET"])
-# @login_required
+@login_required
 def pageIndex():
     return render_template('home/pageIndex.html')
 
