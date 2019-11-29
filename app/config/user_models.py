@@ -19,13 +19,13 @@ class User(db.Model,UserMixin):
     __tablename__ = "User"  # 部门表
     userId = db.Column(db.Integer,primary_key=True)#序号ID
     userName = db.Column(db.String(100)) # 项目
-    passwd = db.Column(db.String(100))
     status = db.Column(db.Boolean,default=0)
     deptId = db.Column(db.String(100),db.ForeignKey('Dept.deptId'))
-    def __init__(self,userId,userName,status=0):
+    def __init__(self,userId,userName,deptId,status=0):
         self.userId = userId
         self.userName = userName
         self.status = status
+        self.deptId = deptId
     def is_authenticated(self):
         return True
     def is_active(self):
