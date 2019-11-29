@@ -760,6 +760,9 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     margin-left: -18px;
     margin-right: -18px;
     overflow: hidden;
+    position: absolute;
+    top: 20%;
+    left: 10%;
 }
 
 .row-mb {

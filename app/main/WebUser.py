@@ -34,4 +34,4 @@ def userLogin():
 @login_required
 def logout():
     logout_user()  # 登出用户
-    return '已经退出登录'
+    return redirect(url_for('views.webIndex'))
