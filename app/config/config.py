@@ -37,6 +37,9 @@ class Project(object):
 	SECRET_KEY = 'guohongjie'
 	basedir = os.path.abspath(os.path.dirname(__file__))
 	SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://qa_all:stz8HxsG7weemkd@172.17.0.203:3306/qa_automation?charset=utf8"
+	SQLALCHEMY_BINDS = {
+		"qa_user": "mysql+mysqlconnector://qa_all:stz8HxsG7weemkd@172.17.0.203:3306/qa_user?charset=utf8"
+	}
 	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
 	CSRF_ENABLED = True

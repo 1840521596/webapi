@@ -4,7 +4,7 @@ from . import user
 from flask import render_template,request,flash,redirect,url_for,session,g
 from flask_login import login_user,logout_user,login_required
 from ..config.login_form import LoginForm
-from ..config.user_models import User
+from ..config.user_models import User,DeptName
 from app import login_manager
 @login_manager.user_loader
 def load_user(userid):
@@ -18,14 +18,16 @@ def webLogin():
 def userLogin():
     form = LoginForm()
     if request.method == 'POST':
-        print form.accountNumber.data
-        print form.password.data
-        user = User.query.filter(User.userName == form.accountNumber.data,
+        user = User.query.join(DeptName,(DeptName.deptId==User.deptId)).filter(
+            User.userName == form.accountNumber.data,
                                  User.passwd == form.password.data).first()
+        dept = DeptName.query.filter(DeptName.deptId==user.deptId).first()
         if user:
             login_user(user,remember=False)
-            session["userName"] = "guohongjie"
-            session["userId"] = "1"
+            session["userName"] = user.userName
+            session["userId"] = user.userId
+            session["deptId"] = user.deptId
+            session["deptName"] = dept.deptName
             return redirect(url_for('views.webIndex'))
         else:
             flash(message=u'嗨~{username}!用户名或密码错误!'.format(username=form.accountNumber.data), category='error')
