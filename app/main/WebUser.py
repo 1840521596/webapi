@@ -21,8 +21,8 @@ def userLogin():
         user = User.query.join(DeptName,(DeptName.deptId==User.deptId)).filter(
             User.userName == form.accountNumber.data,
                                  User.passwd == form.password.data).first()
-        dept = DeptName.query.filter(DeptName.deptId==user.deptId).first()
         if user:
+            dept = DeptName.query.filter(DeptName.deptId == user.deptId).first()
             login_user(user,remember=False)
             session["userName"] = user.userName
             session["userId"] = user.userId

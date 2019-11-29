@@ -6,9 +6,9 @@ from wtforms.validators import DataRequired
 
 class LoginForm(Form):
     accountNumber = StringField('accountNumber',
-                                validators=[DataRequired('accountNumber is null')],
-                                render_kw={'rows': 20,"autocomplete":"off",
+                                validators=[DataRequired(u"用户名不能为空")],
+                                render_kw={'rows': 20,"autocomplete":"off","required":"required",
                                            'placeholder': u'用户名'})
-    password = PasswordField('password', validators=[DataRequired('password is null')],
-                             render_kw={'rows': 20, "autocomplete": "off",
+    password = PasswordField('password', validators=[DataRequired(u"密码不能为空")],
+                             render_kw={'rows': 20, "autocomplete": "off","required":"required",
                                         'placeholder': u'密码'})
