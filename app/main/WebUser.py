@@ -44,6 +44,8 @@ def userLogin():
                 db.session.commit()
                 user = User.query.filter(
                 User.userName == dict_resp.get("data").get("UserInfo").get("Name")).first()  # 查询用户是否存在
+            dept = DeptName.query.filter(DeptName.deptId == user.deptId).first()
+            session["deptName"] = dept.deptName
             login_user(user, remember=False)
             return redirect(url_for('views.webIndex'))
         else:
@@ -53,6 +55,9 @@ def userLogin():
 @login_required
 def logout():
     logout_user()  # 登出用户
+    session.pop('userName')
+    session.pop('deptName')
+    session.pop('userId')
     return redirect(url_for('views.webIndex'))
 @user.app_errorhandler(404)
 def pageNotFound(e):
