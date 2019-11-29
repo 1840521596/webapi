@@ -23,7 +23,7 @@ def userLogin():
         user = User.query.filter(User.userName == form.accountNumber.data,
                                  User.passwd == form.password.data).first()
         if user:
-            login_user(user,remember=True)
+            login_user(user,remember=False)
             session["userName"] = "guohongjie"
             session["userId"] = "1"
             return redirect(url_for('views.webIndex'))
