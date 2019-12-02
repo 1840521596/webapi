@@ -46,6 +46,7 @@ def userLogin():
                 User.userName == dict_resp.get("data").get("UserInfo").get("Name")).first()  # 查询用户是否存在
             dept = DeptName.query.filter(DeptName.deptId == user.deptId).first()
             session["deptName"] = dept.deptName
+            g.userId = dict_resp.get("data").get("UserInfo").get("Id")
             login_user(user, remember=False)
             return redirect(url_for('views.webIndex'))
         else:

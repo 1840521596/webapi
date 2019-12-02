@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #-*-coding:utf-8 -*-
 from . import views
-from flask import render_template,request,make_response,jsonify,session
+from flask import render_template,request,make_response,jsonify,session,g
 from .. import db,redis
 from flask_login import login_required
 from ..config.api_models import Project, Case_Http_API,Web_Model_Set,Test_User_Reg,Key_Value
@@ -24,14 +24,14 @@ def webIndex():
 @login_required
 def homeIndex():
     return render_template('home/homeIndex.html')
-
+@views.route("/index",methods=["GET"])
+@login_required
+def index():
+    return render_template('home/homeIndex.html')
 @views.route("/pageIndex",methods=["GET"])
 @login_required
 def pageIndex():
     return render_template('home/pageIndex.html')
-
-
-
 @views.route("/testIndex",methods=["GET"])
 @login_required
 def testIndex():
