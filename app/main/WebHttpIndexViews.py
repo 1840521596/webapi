@@ -253,7 +253,7 @@ def httpCopy():
                               headers=copy_datas.headers,
                               cookies=cookies,
                               isLogin=copy_datas.isLogin,
-                              test_env=copy_datas.test_env,
+                              test_env=copy_test_env,
                               test_group=test_group,
                               tester=tester,
                               account_project=copy_datas.account_project,
