@@ -373,7 +373,8 @@ $("#check2").change(function(){
   $("#account_project").attr('disabled',true);
   $("#account_username").attr('disabled',true);
   $("#account_passwd").attr('disabled',true);
-   $("#account_project").val("None");
+//   $("#account_project").val("None");
+  $("#account_project").find("option[value='']").prop("selected",true);
   $("#account_username").val("None");
   $("#account_passwd").val("None");
  };});
@@ -564,7 +565,7 @@ function http_test () {
         var api_headers=$("#get_headers").val();
         var api_cookies=$("#get_cookies").val();
         var islogin=$("#check2").is(':checked');
-        var account_project=$("#account_project").val();
+        var account_project=$("#account_project").find("option:selected").val();
         var account_username=$("#account_username").val();
         var account_passwd=$("#account_passwd").val();
         $.ajax({
@@ -596,7 +597,7 @@ function http_test () {
         var api_headers = $("#post_headers").val();
         var api_cookies = $("#post_cookies").val();
         var islogin=$("#check2").is(':checked');
-        var account_project=$("#account_project").val();
+        var account_project=$("#account_project").find("option:selected").val();;
         var account_username=$("#account_username").val();
         var account_passwd=$("#account_passwd").val();
         $.ajax({
@@ -713,7 +714,7 @@ function http_upload_test() {
 function save_http_data () {
         var _case = [];
         var islogin=$("#check2").is(":checked");
-        var account_project=$("#account_project").val();
+        var account_project=$("#account_project").find("option:selected").val();;
         var check_assert=$("#check_assert").is(":checked");
         var assert_value=$("#assert_value").val();
         if (islogin==true && (account_project==''||account_project=='None')){
@@ -758,7 +759,7 @@ function save_http_data () {
                     headers: $("#get_headers").val(),
                     cookies: $("#get_cookies").val(),
                     islogin: $("#check2").is(':checked'),
-                    account_project: $("#account_project").val(),
+                    account_project: $("#account_project").find("option:selected").val(),
                     account_username: $("#account_username").val(),
                     account_passwd: $("#account_passwd").val(),
                     check_assert: check_assert,
@@ -789,7 +790,7 @@ function save_http_data () {
                     headers: $("#post_headers").val(),
                     cookies: $("#post_cookies").val(),
                     islogin: $("#check2").is(':checked'),
-                    account_project: $("#account_project").val(),
+                    account_project: $("#account_project").find("option:selected").val(),
                     account_username: $("#account_username").val(),
                     account_passwd: $("#account_passwd").val(),
                     check_assert: check_assert,
@@ -823,7 +824,7 @@ function save_http_data () {
                     headers: $("#get_headers").val(),
                     cookies: $("#get_cookies").val(),
                     islogin: $("#check2").is(':checked'),
-                    account_project: $("#account_project").val(),
+                    account_project: $("#account_project").find("option:selected").val(),
                     account_username: $("#account_username").val(),
                     account_passwd: $("#account_passwd").val(),
                     check_assert: check_assert,
@@ -855,7 +856,7 @@ function save_http_data () {
                     headers: $("#post_headers").val(),
                     cookies: $("#post_cookies").val(),
                     islogin: $("#check2").is(':checked'),
-                    account_project: $("#account_project").val(),
+                    account_project: $("#account_project").find("option:selected").val(),
                     account_username: $("#account_username").val(),
                     account_passwd: $("#account_passwd").val(),
                     check_assert: check_assert,
@@ -975,13 +976,13 @@ function searchApi(curPageIndex) {
                 tableHTML = tableHTML +
                 '<tr><td class="check_box"><input type="checkbox" class="check_box" ></td>' +
                 '<td id="pid" style="display:none">' + _temo[i][0] + '</td>' +
-                '<td >' + _temo[i][1] + '</td>' +
-                '<td>' + _temo[i][2] + '</td>' +
-                '<td>' + _temo[i][3] + '</td>' +
-                '<td>' + _temo[i][4] + '</td>' +
+                '<td style="text-align: center;vertical-align:middle" >' + _temo[i][1] + '</td>' +
+                '<td style="text-align: center;vertical-align:middle">' + _temo[i][2] + '</td>' +
+                '<td style="text-align: center;vertical-align:middle">' + _temo[i][3] + '</td>' +
+                '<td style="text-align: center;vertical-align:middle">' + _temo[i][4] + '</td>' +
                 '<td style="text-align:center;vertical-align:middle">' +
                     '<a data-pid="0"class="delet" style="background-color:green">通过</a></td>' +
-                '<td style="text-align: center;">' +
+                '<td style="text-align: center;vertical-align:middle">' +
                     '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large update">修改</a>'+
                     '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large delete">删除</a>'+
                     '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large api_copy">复制</a>' +
@@ -993,11 +994,11 @@ function searchApi(curPageIndex) {
                     tableHTML = tableHTML +
                     '<tr><td class="check_box"><input type="checkbox" class="check_box" ></td>' +
                     '<td id="pid" style="display:none">' + _temo[i][0] + '</td>' +
-                    '<td >' + _temo[i][1] + '</td><td>' + _temo[i][2] + '</td>' +
-                    '<td>' + _temo[i][3] + '</td><td>' + _temo[i][4] + '</td>' +
-                    '<td style="text-align:center;vertical-align:middle">' +
+                    '<td style="text-align: center;vertical-align:middle" >' + _temo[i][1] + '</td><td>' + _temo[i][2] + '</td>' +
+                    '<td style="text-align: center;vertical-align:middle">' + _temo[i][3] + '</td><td>' + _temo[i][4] + '</td>' +
+                    '<td style="text-align: center;vertical-align:middle">' +
                         '<a data-pid="1"class="delet"  style="background-color:red">失败</a></td>' +
-                    '<td style="text-align: center;">' +
+                    '<td style="text-align: center;vertical-align:middle">' +
                         '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large update">修改</a>' +
                         '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large delete">删除</a>' +
                         '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large api_copy">复制</a>' +
@@ -1049,18 +1050,18 @@ function changeTheme(data,api_pid) {
         _td.eq(6).find("option[value="+data[5]+"]").prop("selected",true);     //method
         _td.eq(7).find("input").val(data[6]);    //预期结果
         document.getElementById("check2").checked=data[10];    //是否登录
-        $("#account_project").val(data[11]);    //登录环境
+        $("#account_project").find("option[value="+data[11]+"]").prop("selected",true);    //登录环境
         $("#account_username").val(data[12]);    //登录账号
         $("#account_passwd").val(data[13]);    //登录密码
         document.getElementById("check_assert").checked=data[14];
         $("#assert_value").val(data[15]);    //登录环境
         if (data[10]){
-        $("#account_project").attr('disabled',false);
+        $("#account_project").css('disabled',false);
         $("#account_username").attr('disabled',false);
         $("#account_passwd").attr('disabled',false);
         }
         else{
-        $("#account_project").attr('disabled',true);
+        $("#account_project").css('disabled',true);
         $("#account_username").attr('disabled',true);
         $("#account_passwd").attr('disabled',true);
         }

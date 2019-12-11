@@ -88,7 +88,14 @@ class Case_Http_API(db.Model):
     def __repr__(self):
         """返回打印数据"""
         return '<Case %r>'%self.project
-
+class Login_Base_Project(db.Model):
+    __tablename__ = "login_base_project"  # 表名
+    id = db.Column(db.Integer,primary_key=True)#序号ID
+    project = db.Column(db.String(100))
+    status = db.Column(db.Boolean, default=0)
+    def __init__(self,project,status):
+        self.project = project
+        self.status = status
 class Case_Http_Schedule(db.Model):
     __tablename__ = "case_http_schedule"  # 表名
     id = db.Column(db.Integer, primary_key=True)  # 序号ID

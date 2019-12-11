@@ -401,9 +401,9 @@ def get_cookies(project,env_flag,env_num,account_username=None,account_passwd=No
     """
     if project == "云舒写CRM系统":
         cookie = get_ysx_crm_cookie(env_flag,env_num,account_username,account_passwd).get_dict()
-    elif project == "云舒写首页":
+    elif project == "云舒写官网首页":
         cookie = get_wacc_home_cookie(env_flag,env_num,account_username,account_passwd).get_dict()
-    elif project == "云舒写后台管理系统":
+    elif project == "云舒写ADMIN后台管理系统":
         cookie = get_wacc_admin_cookie(env_flag,env_num,account_username,account_passwd).get_dict()
     elif project == "简章系统":
         cookie = get_wacc_tortoise_cookie(env_flag,env_num,account_username,account_passwd).get_dict()

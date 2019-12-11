@@ -2,7 +2,7 @@
 from app.main import views
 from flask import render_template,request,make_response,jsonify,session
 from app import db
-from app.config.api_models import Project, Case_Http_API ,Case_Http_File,Case_Http_Schedule
+from app.config.api_models import Project, Case_Http_API ,Case_Http_File,Case_Http_Schedule,Login_Base_Project
 from app.config.user_models import User
 import json
 @views.route('/addHttpProject',methods=['POST','GET'])
@@ -27,10 +27,14 @@ def add_project():
 def http_select():
     """API测试首页"""
     api_project = Case_Http_API.query.with_entities(Project.project).distinct().all()
+    loginProjects_tuple  = Login_Base_Project.query.filter_by(status=1).all()
     #提取测试项目,传入页面中
     tester_user = User.query.filter_by(status=1).all()
     users = [singleUser.userName for singleUser in tester_user]
-    return render_template("/api_test/case_http_edit.html", api_project=api_project,tester=users)
+    loginProjects = [m.project for m in loginProjects_tuple]
+    return render_template("/api_test/case_http_edit.html",
+                           api_project=api_project,tester=users,
+                           loginProjects=loginProjects)
 @views.route('/httpInsert',methods=['POST'])
 def http_insert():
     """增加测试用例步骤接口"""

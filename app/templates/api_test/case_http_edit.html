@@ -189,7 +189,7 @@
           <td hidden="hidden"><input style="width: 100%; height: 100%" type="text" value="" id="targetId" placeholder="用例 ID"/></td>
           <td>
            <select id="project_choice" style="width: 100%; height: 100%" name="测试项目">
-               <option value="" selected = "selected"> 选择测试项目 </option>
+               <option value="None" selected = "selected"> 选择测试项目 </option>
            {% for project in api_project %}
                <option value="{{ project[0] }}">{{ project[0] }}</option>
             {% endfor %}
@@ -201,7 +201,7 @@
           <td><input style="width: 100%; height: 100%" type="text" value="None" id="case_url" placeholder="请求URL" onfocus="this.placeholder=''" onblur="this.placeholder='请求URL'"/></td>
           <td>
                <select id="method" style="width: 100%; height: 100%" name="请求方式">
-                <option value="" selected = "selected"> 请选择操作方式 </option>
+                <option value="None" selected = "selected"> 请选择操作方式 </option>
                 <option value="GET">GET</option>
                 <option value="POST">POST</option>
                 <option value="HEAD">HEAD</option>
@@ -229,8 +229,14 @@
     </tr>
     <tr height="36px">
         <td colspan="1" width="100%" style="text-align:center;" class="wctv"><input type="checkbox" id="check2" /></td>
-        <td colspan="1" width="100%" style="text-align:center;" class="wctv">
-            <input id="account_project" style="width: 100%; height: 100%;text-align:center;" disabled="true" type="text" value="None" placeholder="登陆程序"/>
+        <td colspan="1" width="100%" style="text-align:center;" class="wctv" >
+            <select id="account_project" style="width: 100%; height: 100%" name="登录项目" disabled="true">
+               <option value="None" selected = "selected"> 选择登录项目 </option>
+                {% for login_project in loginProjects %}
+               <option value="{{ login_project }}">{{ login_project }}</option>
+                {% endfor %}
+           </select>
+<!--            <input id="account_project" style="width: 100%; height: 100%;text-align:center;" disabled="true" type="text" value="None" placeholder="登陆程序"/>-->
         </td>
         <td colspan="1" width="100%" style="text-align:center;" class="wctv">
             <input id="account_username" style="width: 100%; height: 100%;text-align:center;" disabled="true" type="text" value="None" placeholder="登陆账号"/>

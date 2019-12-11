@@ -4,7 +4,8 @@ from app.main import views
 from flask import render_template,request,make_response,jsonify,session,g
 from app import db,redis
 from flask_login import login_required
-from app.config.api_models import Project, Case_Http_API,Web_Model_Set,Test_User_Reg,Key_Value
+from app.config.api_models import Project,\
+    Case_Http_API,Web_Model_Set,Test_User_Reg,Key_Value
 @views.route("/webIndex",methods=["GET"])
 @login_required
 def webIndex():
