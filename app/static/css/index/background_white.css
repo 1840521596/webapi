@@ -1,0 +1,95 @@
+.main-layout-header {
+  height: 60px;
+  border-bottom: 1px solid white;
+  background: whitesmoke;
+}
+.main-layout-header a {
+  text-decoration: none;
+}
+.main-layout-header .menu-btn {
+  float: left;
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+}
+.main-layout-header .menu-btn .iconfont {
+  font-size: 20px;
+  color: #444c63;
+}
+.main-layout-header .layui-nav {
+  float: right;
+  padding: 0;
+  background: transparent;
+}
+.main-layout-header .layui-nav li {
+  border-left: 1px solid white;
+}
+.main-layout-header .layui-nav .layui-nav-item > a:hover {
+  color: #999;
+}
+.main-layout-header .layui-nav > .layui-this a {
+  color: white;
+}
+.main-layout-header .layui-nav .layui-nav-bar {
+  display: none;
+}
+.main-layout-header .layui-nav .layui-this:after {
+  height: 0;
+}
+.main-layout-header .layui-nav .layui-nav-child dd.layui-this a {
+  color: #333;
+}
+.main-layout-header .layui-nav .layui-nav-child dd.layui-this {
+  color: #333;
+  background: white;
+}
+.main-layout-side {
+  width: 200px;
+  height: 100%;
+  background: whitesmoke;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+  z-index: 1;
+  -webkit-transition: left 0.3s;
+  -moz-transition: left 0.3s;
+  -ms-transition: left 0.3s;
+  transition: left 0.3s;
+}
+.main-layout-side .layui-nav {
+  background: white;
+}
+.layui-nav-tree .layui-nav-item a:hover
+{background-color: whitesmoke;
+}
+
+.main-layout-side .layui-nav-itemed > a {
+  background: whitesmoke !important;
+}
+ .layui-nav .layui-nav-item a:hover,
+ .layui-nav .layui-this a{color:black}
+ .layui-nav-itemed>a,.layui-nav-tree .layui-nav-title a,.layui-nav-tree .layui-nav-title a:hover{
+ background-color:#2B2E37!important;color:black!important
+ }
+ .main-layout-tab .layui-tab-title {
+  border-bottom: 1px solid white;
+  z-index: 98;
+  background: whitesmoke;
+}
+.main-layout-tab.layui-tab-brief > .layui-tab-title .layui-this {
+  color: #00b5f9;
+  background: white;
+}
+.main-layout-tab.layui-tab-brief > .layui-tab-more li.layui-this:after,
+.main-layout-tab.layui-tab-brief > .layui-tab-title .layui-this:after {
+  border: none;
+  border-radius: 0;
+  border-bottom: 3px solid #00b5f9;
+}
+.main-layout-side .layui-nav-tree .layui-nav-child .layui-this > a {
+  background-color: whitesmoke;
+  color: #00b5f9;
+}

@@ -1,9 +1,9 @@
 #!/usr/bin/python
 #-*-coding:utf-8 -*-
-from . import mock
+from app.main import mock
 from flask import render_template,request,make_response,jsonify
-from .. import db
-from ..config.api_models import Project, Case_Http_API,Web_Model_Set
+from app import db
+from app.config.api_models import Case_Http_API
 @mock.route("/mock/<path:url>",methods=["GET","POST"])
 def mockserver(url):
     """Mcok服务"""

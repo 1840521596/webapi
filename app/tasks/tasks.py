@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #-*-coding:utf-8 -*-
-from celery_app import celery
+from celery_app import celery,MyTask
 from app.config.sql import select_sql
 from app.config.html_template import test_case_detailed,html_all
 from app.base.pythonProject.base.getCookies import get_cookies
@@ -10,38 +10,68 @@ import datetime
 import json
 import os
 import re
+#持续集成调度测试
 
-@celery.task(bind=True)
-def run_api(self,project,developer,cookies):
+@celery.task(bind=True,base=MyTask)
+def run_schedule_api(self,origin=None,originParams=None,cookies=None,developer=None):
+    if origin=="doSelfSchedule":    #手工调度发起
+        keys = ["project", "case_api", "case_host", "case_url", "method", "params", "headers","description",
+                "islogin", "account_project","account_username","account_passwd","isSchedule","checkAssert"]
+        datas_list = []
+        for key,api_datas in originParams.items():
+            api_dict_datas = json.loads(api_datas)
+            project,case_api,api_pid = api_dict_datas["project"],api_dict_datas["case_api"],api_dict_datas["api_pid"]
+            sql = """
+            select 
+                project,case_api,case_host,case_url,method,params,headers,description,
+                islogin,account_project,account_username,account_passwd,isSchedule,checkAssert
+            from
+                case_http_api 
+            where
+                project='%s' and case_api='%s' and id='%s'
+            """%(project,case_api,api_pid)
+            datas = select_sql(sql)
+            for data in datas:
+                key_value = dict(zip(keys, data))
+                datas_list.append(key_value)
+    else:    #持续集成调度发起
+        project = originParams
+        sql = """
+        select 
+            cha.project,cha.case_api,cha.case_host,cha.case_url,cha.method,
+            chs.params,chs.assertValue,
+            cha.headers,cha.islogin,
+            cha.account_project,cha.account_username,cha.account_passwd
+        from 
+            case_http_api cha, case_http_schedule chs 
+        where
+            cha.id = chs.api_id and cha.project='%s' 
+            and chs.status=1 """%(project)
+        datas = select_sql(sql)
+        datas_list = []
+        keys = ["project", "case_api", "case_host", "case_url", "method", "params","assertValue",
+                "headers","islogin", "account_project", "account_username", "account_passwd"]
+        for data in datas:
+            key_value = dict(zip(keys,data))
+            datas_list.append(key_value)
+
     html_test_msg = ""
-    sql = """select project,case_api,case_host,case_url,method,params,headers,islogin,assertValue,account from case_http_api where project='%s' and scheduling='1'"""%(project)
-    datas = select_sql(sql)
-    datas_list = []
-    keys = ["project","case_api","case_host","case_url","method","params","headers","islogin","assertValue","account"]
-    for data in datas:
-        key_value = dict(zip(keys,data))
-        datas_list.append(key_value)
-
-    case_total = len(datas_list) #全部用例
+    case_total = len(datas_list)   #全部用例
     current = 0  #计数器
     case_success = 0  #成功用例数
     case_mistake = 0  #代码错误用例数
     case_failed = 0  #失败用例数
     startTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') # 获取开始时间
-    ####获取project的Cookies
-    ####pass
-    ####
     for i in range(case_total):
         current += 1  # 计数器+1
         case_api = datas_list[i]["case_api"]  # 接口名称
         case_url = datas_list[i]["case_host"] + datas_list[i]["case_url"]
         case_params = datas_list[i]["params"]
-        assertValue = datas_list[i]["assertValue"]
-        status_key_list,resp_status,resp_text = run_test(datas_list[i],cookies)  # 传入 单条 接口用例数据
-        print status_key_list
-        print resp_status
-        print resp_text
-        if resp_status =="True":
+        if origin == "doSelfSchedule":
+            resp_status,resp_text = run_test(origin,datas_list[i],cookies)  # 手工调度传入 单条 接口用例数据
+        else:
+            resp_status, resp_text = run_test(origin,datas_list[i], cookies)  # 集成调度传入 单条 接口用例数据
+        if resp_status =="Success":
             pass_status = 1
             case_success += 1
         elif resp_status == "Mistake":
@@ -53,10 +83,10 @@ def run_api(self,project,developer,cookies):
         api_name = case_api  #"接口名称"
         api_url =  case_url  #"接口链接"
         request_params = case_params  #"请求参数"
-        assertValue = assertValue  #"校验参数"
         responce_params = resp_text  #"返回参数"
         method = datas_list[i]["method"]
         project_cn = datas_list[i]["project"]
+        description = datas_list[i]["description"]
         if pass_status == 1:
             status_color = "btn-success"
             case_status = u"通过"
@@ -66,21 +96,21 @@ def run_api(self,project,developer,cookies):
         else:
             status_color = "btn-danger"
             case_status = u"返回错误"
-        new_detailed = test_case_detailed.format(api_name=api_name, method=method, api_url=api_url,
-                                                 request_params=request_params, assertValue=assertValue,
+        new_detailed = test_case_detailed.format(api_name=api_name, method=method, api_url=api_url,description=description,
+                                                 request_params=request_params,
                                                  status_color=status_color, case_status=case_status,
                                                  responce_params=responce_params,pid=str(i))
         html_test_msg += new_detailed
-        self.update_state(state='PROGRESS',
-                          meta={'current': i, 'total': case_total,
-                               'status': case_api,"pass_status":pass_status,"data_list":resp_text})
+        # self.update_state(state='PROGRESS',
+        #                   meta={'current': i, 'total': case_total,
+        #                        'status': case_api,"pass_status":pass_status,"data_list":resp_text})
     endTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') # 获取结束时间
     start_time = startTime
     end_time = endTime
     case_total = case_total
     case_pass = str(case_success)
-    env_flag = eval(cookies)["env_flag"]
-    env_num = eval(cookies)["env_num"]
+    env_flag = cookies["env_flag"]
+    env_num = cookies["env_num"]
     case_fail = str(case_failed)
     case_mistake = case_mistake
     wc = html_all.replace("{project_cn}", project_cn)
@@ -109,103 +139,94 @@ def run_api(self,project,developer,cookies):
     wechatQY_msg(developer=developer,project_cn=project_cn,report_url=report_url,
                  success_count=str(case_pass),error_count=str(case_fail),failure_count=str(case_mistake))
     return {'current': current, 'total': case_total, 'status': u'执行成功!','result': case_success,"case_failed":case_failed,"case_mistake":case_mistake}
-def run_test(dict_datas,cookies):
-    project = dict_datas["project"]  # 业务项目
-    url = dict_datas["case_host"] + dict_datas["case_url"] # 请求连接
-    method = dict_datas["method"]  # 请求方式
-    params = eval(dict_datas["params"])  # 请求参数
-    headers = eval(dict_datas["headers"])  # 请求头
-    islogin = dict_datas["islogin"]  # 是否需要前置登录
-    case_api = dict_datas["case_api"]  # 接口名称
-    cookies = eval(cookies)
+
+#持续集成业务流程调度测试
+@celery.task()
+def run_api_case(project_en,env_num,env_flag,description,project_cn,new_phone=None,developer=None,developer_project=None,branch=None):
+    try:#project_en,env_num,env_flag,description,project_cn,new_phone=None,developer=None,developer_project=None,branch=None
+        run_yunwei_case(project_en=project_en,
+                        env_num=env_num,
+                        env_flag=env_flag,description=description,
+                        project_cn=project_cn,new_phone=new_phone,developer=developer,developer_project=developer_project,branch=branch)
+        return u"执行成功!"
+    except Exception as e:
+        return str(e)
+
+def run_test(origin,dict_datas,cookies):
+    if origin == "doSelfSchedule":
+        url = dict_datas["case_host"] + dict_datas["case_url"]  # 请求连接
+        method = dict_datas["method"]  # 请求方式
+        headers = eval(dict_datas["headers"])  # 请求头
+        islogin = dict_datas["islogin"]  # 是否需要前置登录
+        case_api = dict_datas["case_api"]  # 接口名称
+        isSchedule = dict_datas["isSchedule"]
+        checkAssert = dict_datas["checkAssert"]
+        cookies = cookies
+    else:    #集成调度
+        project = dict_datas["project"]  # 业务项目
+        url = dict_datas["case_host"] + dict_datas["case_url"]  # 请求连接
+        method = dict_datas["method"]  # 请求方式
+        assertValue = dict_datas["assertValue"]
+        headers = eval(dict_datas["headers"])  # 请求头
+        islogin = dict_datas["islogin"]  # 是否需要前置登录
+        case_api = dict_datas["case_api"]  # 接口名称
+        cookies = cookies
     if islogin:  # 判断需要登陆状态时，进行登录
         env_flag = cookies["env_flag"]
         env_num = cookies["env_num"]
-        account = dict_datas["account"]  #需要登录状态时,获取登录状态
-        if account.upper() == "NONE" or account==None:
-            account=None
-        #sql = """select project_en from project_api where project='%s';""" % (project)
-        #project_en = select_sql(sql)[0][0]  # 获取项目名称
-        cookies = get_cookies(project,env_flag,env_num,user=account)  # 更新cookies信息，变更为已登录
+        account_project = dict_datas["account_project"]  #需要登录状态时,获取登录状态
+        account_username = dict_datas["account_username"]
+        account_password = dict_datas["account_passwd"]
+        if not account_username and not account_project or not account_password:
+            account_project, account_username, account_password = None, None, None
+        elif account_project.upper() == "NONE" and account_username.upper() == "NONE" or account_password.upper() == "NONE":
+            account_project,account_username,account_password = None,None,None
+        cookies = get_cookies(account_project,env_flag,env_num,
+                              account_username=account_username,
+                              account_passwd=account_password)  # 更新cookies信息，变更为已登录
     try:
-        assertValue_dict = None if dict_datas["assertValue"] == "None" or dict_datas["assertValue"] == None else json.loads(dict_datas["assertValue"],
-                                                                                       encoding="utf8")  # 校验数据
+        if origin == "doSelfSchedule":  # 判断当前调度等于手工调度
+            params = eval(dict_datas["params"])  # 请求参数
+        else:    #集成调度
+            params = eval(dict_datas["params"])  # 请求参数(需要进行参数传递设置,暂时不修改)
         if method.upper == "GET":
             resp = getFunction(url=url,headers=headers,params=params,cookies=cookies)
         else:
             resp = postFunction(url=url,headers=headers,params=params,cookies=cookies)
-        resp_dict_s = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
-        status_key_list = []  # 返回key + 验证结果
-        status_list = []  # 返回验证结果boolean
-        if assertValue_dict==None:
-            pass_status = "True"
-            return status_key_list,pass_status,resp.text
-        else:
-            for key in assertValue_dict.keys():
-                keyf = None if "None" in key else key
-                keyf_value = None if "None" in assertValue_dict[key] else assertValue_dict[key]
-                sb = find_key(resp_dict_s, keyf, keyf_value)
-                status_key_list.append((key, sb))
-                status_list.append(sb)
-            if False or None in status_list:
-                pass_status = "False"
-                return status_key_list,pass_status,resp.text
+        if origin == "doSelfSchedule":    #判断当前调度等于手工调度
+            if resp.status_code == 200:
+                if isSchedule:    #参加校验
+                    assert_list = checkAssert.split(",")
+                    for assert_value in assert_list:
+                        assertResult = re.findall(assert_value,resp.text)
+                        if assertResult:
+                            pass_status = "Success"
+                        else:
+                            pass_status = "Failure"
+                else:    #不参加校验
+                    pass_status = "Success"
             else:
-                pass_status = "True"
-                return status_key_list,pass_status,resp.text
+                pass_status = "Failure"
+        else:    #集成调度(需要进行参数值校验,暂时不添加)
+            if resp.status_code == 200:
+                try:
+                    resp_dict = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
+                    pass_status = "Success"
+                except Exception as e:
+                    pass_status = "Failure"
+            else:
+                pass_status = "Failure"
+        return pass_status,resp.text
     except Exception as e:
-        status_key_list = []
         pass_status = "Mistake"
         error_msg = case_api + ':' + str(e)
-        return status_key_list,pass_status,error_msg
+        return pass_status,error_msg
 def postFunction(url, params, headers, cookies):
     resp = requests.post(url, data=params, headers=headers, cookies=cookies)
     return resp
 def getFunction(url, params, headers, cookies):
     resp = requests.get(url, params=params, headers=headers, cookies=cookies)
     return resp
-def find_key(resp,fkey,fvalue,resp_key=None):
-    if isinstance(resp,dict):
-        for key in resp.keys():
-            if key==fkey and resp[key]==fvalue:
-                return True
-            else:
-                resp_key = key
-                s = find_key(resp[key],fkey,fvalue,resp_key)
-                if s:
-                    return True
-    elif isinstance(resp,list) and fvalue!=None and fkey!=None:
-        resp_list = resp
-        for single in resp_list:
-            b = find_key(single,fkey,fvalue,resp_key=None)
-            if b:
-                return True
-    elif isinstance(resp,list) and fvalue==None:
-        if fkey==resp_key:
-            return True
-    elif isinstance(resp,list) and fkey==None:
-        if fvalue==resp:
-            return True
-    elif isinstance(resp,str) and fvalue!=None and fkey!=None:
-        if resp_key==fkey and resp==fvalue:
-            return True
-    elif isinstance(resp,str) and fvalue==None:
-        if resp_key==fkey:
-            return True
-    elif isinstance(resp,str) and fkey==None:
-        if resp==fvalue:
-            return True
-    elif isinstance(resp,int) and fvalue!=None and fkey!=None:
-        if resp_key==fkey and resp==fvalue:
-            return True
-    elif isinstance(resp,int) and fvalue==None:
-        if resp_key==fkey:
-            return True
-    elif isinstance(resp,int) and fkey==None:
-        if resp==fvalue:
-            return True
-    else:
-        return False
 def wechatQY_msg(developer,project_cn,success_count,error_count,failure_count,report_url):
     try:
         content = u"""接口平台调度测试结果:\n测试: {developer} \n测试项目: {project_en} \n通过接口数: {success_count} \n未通过接口数: {error_count} \n程序失败接口数: {failure_count} \n结果查看地址: {report_url}""".format(project_en=project_cn,
@@ -225,18 +246,8 @@ def wechatQY_msg(developer,project_cn,success_count,error_count,failure_count,re
     except Exception as e:
         raise Exception,str(e)
 
-@celery.task()
-def run_api_case(project_en,env_num,env_flag,description,project_cn,new_phone=None,developer=None,developer_project=None,branch=None):
-    try:#project_en,env_num,env_flag,description,project_cn,new_phone=None,developer=None,developer_project=None,branch=None
-        run_yunwei_case(project_en=project_en,
-                        env_num=env_num,
-                        env_flag=env_flag,description=description,
-                        project_cn=project_cn,new_phone=new_phone,developer=developer,developer_project=developer_project,branch=branch)
-        return u"执行成功!"
-    except Exception as e:
-        return str(e)
 if __name__ == "__main__":
-    run_api("wctv","云舒写and罐罐熊","GUOHONGJIE")
+    run_schedule_api("",origin="doSelfSchedule",originParams=None,cookies=None,developer=None)
 
 
 

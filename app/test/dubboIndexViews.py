@@ -1,8 +1,8 @@
 #-*-coding:utf-8 -*-
-from . import views
+from app.main import views
 from flask import render_template,request,make_response,jsonify
-from .. import db
-from ..config.api_models import Project, Case_Dubbo_API
+from app import db
+from app.config.api_models import Project, Case_Dubbo_API
 @views.route('/addDubboProject',methods=['POST','GET'])
 def addDubboProject():
     """增加测试项目"""

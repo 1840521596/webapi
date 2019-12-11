@@ -1,14 +1,14 @@
 #!/usr/bin/python
 #-*-coding:utf-8 -*-
-from . import user
+from app.main import user
 from flask import render_template,request,flash,redirect,url_for,session,g
 from flask_login import login_user,logout_user,login_required
-from ..config.login_form import LoginForm
-from ..config.user_models import User,DeptName
+from app.config.login_form import LoginForm
+from app.config.user_models import User,DeptName
 from app import login_manager
 import requests
 import json
-from .. import db
+from app import db
 @login_manager.user_loader
 def load_user(userid):
     return User.query.get(int(userid))

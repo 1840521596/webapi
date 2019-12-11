@@ -1,10 +1,7 @@
 #!/usr/bin/python
 #-*-coding:utf-8 -*-
 import requests
-import unittest
-import json
 import hashlib
-import redis
 import urllib
 def sendMsg(msg,phones):
     url = r"https://api.yunshuxie.com/yunshuxie-message-service/sms/send_batch_message"

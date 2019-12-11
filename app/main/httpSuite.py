@@ -2,17 +2,16 @@
 #-*-coding:utf-8 -*-
 __author__ = "guohongjie"
 from flask import make_response,request,jsonify,url_for,redirect
-from . import test
-from ..base.pythonProject import run
-from .. import db,redis
-from ..config.api_models import Project,Test_Env,Test_User_Reg,Case_Http_API,runSuiteProject,is_Make_User
+from app.main import test
+from app.base.pythonProject import run
+from app import db,redis
+from app.config.api_models import Project,Test_Env,Test_User_Reg,Case_Http_API,runSuiteProject,is_Make_User
 from sqlalchemy import func
 from app.base.pythonProject.base.getConfig import s
 from app.base.pythonProject.base.couponReceive import coupon_test
 import redis as red
-from threading import Thread
 import json
-from ..tasks.tasks import run_api,run_api_case
+from app.tasks.tasks import run_schedule_api,run_api_case
 import os
 @test.route("/runSuiteApi",methods=["GET"])
 def runDatasApiTest():
@@ -37,7 +36,7 @@ def runDatasApiTest():
 	except Exception as e:
 		msg = {"code":400,"Msg":"执行失败","ErrorMsg":str(e)}
 	return make_response(jsonify(msg))
-# @test.route("/runSuiteApi_yunwei",methods=["GET"])
+# @api_test.route("/runSuiteApi_yunwei",methods=["GET"])
 # def runDatasApiTest_yunwei():
 # 	"""运维发布版本后使用接口
 # 	:param project:  测试项目
@@ -305,9 +304,10 @@ def run_schedule():
 			raise Exception, u"该项目下未存在测试用例"
 		if not api_case_count:
 			raise Exception, u"该项目下未存在调度用例"
-		task = run_api.apply_async(args=[project,developer,cookies],countdown=int(timer))
+		origin = "run_schedule"    #来源标志为集成调度
+		task = run_api.apply_async(args=[origin,project,cookies,developer],countdown=int(timer))
 		msg = {"code":"200","msg":"操作成功"}
-		return jsonify(msg), 202, {'Location': url_for('test.taskstatus', task_id=task.id)}
+		return jsonify(msg), 202, {'Location': url_for('api_test.taskstatus', task_id=task.id)}
 	except Exception as e:
 		msg = {"code":"400","msg":"操作失败","reason":str(e)}
 	return make_response(jsonify(msg))

@@ -141,9 +141,9 @@ function html_escape(s) {
 <tbody><tr id="header_row" class="text-center success" style="font-weight: bold;font-size: 14px;">
     <td style="width:10%">接口名称</td>
     <td style="width:25%">URL</td>
+    <td style="width:20%">接口描述</td-->
     <td style="width:5%">请求方式</td>
     <td style="width:20%">请求参数</td>
-    <td style="width:20%">校验详细值</td>
     <td style="width:20%">详细</td>
 </tr>
 <tr class="passClass warning">
@@ -156,6 +156,7 @@ test_case_detailed = u"""
 <tr class="passClass warning">
 <td>{api_name}</td>
         <td class="text-center">{api_url}</td>
+        <td class="text-center">{description}</td>
         <td class="text-center">{method}</td>
         <td class="text-center"><button id="btn_req_params" type="button" class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target="#btn_req_params_{pid}">详细</button>
             <div id="btn_req_params_{pid}" class="collapse" style="height: 0px;"> 
@@ -163,7 +164,6 @@ test_case_detailed = u"""
         {request_params}
             </pre>
         </div></td>
-        <td class="text-center">{assertValue}</td>
         <td class="text-center"><button id="btn_resp_json" type="button" class="btn {status_color} btn-xs collapsed" data-toggle="collapse" data-target="#btn_resp_json_{pid}">{case_status}</button>
         <div id="btn_resp_json_{pid}" class="collapse" style="height: 0px;"> 
         <pre>    

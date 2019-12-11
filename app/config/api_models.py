@@ -1,5 +1,5 @@
 #-*-coding:utf-8 -*-
-from .. import db
+from app import db
 class Project(db.Model):
     
     __tablename__ = "project_api"  # 表名
@@ -34,9 +34,7 @@ class runSuiteProject(db.Model):
         self.use_status = use_status
     def __repr__(self):
         return '<Case %r>'%(self.name)
-
 class Case_Http_API(db.Model):
-    
     __tablename__ = "case_http_api" #表名
     id = db.Column(db.Integer,primary_key=True)#序号ID
     project = db.Column(db.String(100),db.ForeignKey('project_api.project'))#项目
@@ -50,16 +48,22 @@ class Case_Http_API(db.Model):
     cookies = db.Column(db.Text)#请求参数cookies
     response = db.Column(db.Text)#预期结果
     status = db.Column(db.Boolean,default=0)
-    api_type = db.Column(db.String(5),default='http')
-    scheduling = db.Column(db.Boolean,default=0)
-    assertValue = db.Column(db.Text)
     isLogin = db.Column(db.Boolean,default=0)
-    account = db.Column(db.String(100))
-    test_suite = db.Column(db.String(100))
-    isUpload = db.Column(db.Boolean,default=0)
-    def __init__(self,project,case_api,params,case_host,headers,cookies,assertValue,
-                 description,case_url,method,response,api_type='http',status=0,scheduling=0,
-                 isLogin=0,account=account,isUpload=0):
+    account_project = db.Column(db.String(100))
+    account_username = db.Column(db.String(100))
+    account_passwd = db.Column(db.String(100))
+    isSchedule = db.Column(db.Boolean,default=0)
+    checkAssert = db.Column(db.String(100))
+    test_env = db.Column(db.String(100))
+    test_group = db.Column(db.String(100))
+    tester = db.Column(db.String(100))
+    def __init__(self,project,case_api,params,case_host,
+                 headers,cookies,description,case_url,
+                 method,response,status=0,isLogin=0,
+                 account_project=account_project,isSchedule=isSchedule,
+                 account_username=account_username,checkAssert=checkAssert,
+                 account_passwd=account_passwd,
+                 test_env=test_env,test_group=test_group,tester=tester):
         self.project = project
         self.case_api = case_api
         self.description = description
@@ -68,24 +72,37 @@ class Case_Http_API(db.Model):
         self.response = response
         self.status = status
         self.params = params
-        self.api_type = api_type
         self.case_host = case_host
         self.headers = headers
         self.cookies = cookies
-        self.assertValue = assertValue
-        self.scheduling = scheduling
         self.isLogin = isLogin
-        self.account = account
-        self.isUpload = isUpload
+        self.test_env = test_env
+        self.test_group = test_group
+        self.account_project = account_project
+        self.account_username = account_username
+        self.account_passwd = account_passwd
+        self.tester = tester
+        self.checkAssert = checkAssert
+        self.isSchedule = isSchedule
 
     def __repr__(self):
         """返回打印数据"""
         return '<Case %r>'%self.project
 
-    def __repr__(self):
-        """返回打印数据"""
-        return '<Case %r>'%self.project
-
+class Case_Http_Schedule(db.Model):
+    __tablename__ = "case_http_schedule"  # 表名
+    id = db.Column(db.Integer, primary_key=True)  # 序号ID
+    api_id = db.Column(db.String(100), db.ForeignKey('case_http_api.id'))  # 项目
+    case_api = db.Column(db.String(100))    #接口名称
+    params = db.Column(db.Text)    # 请求参数KEY
+    status = db.Column(db.Boolean, default=0)
+    assertValue = db.Column(db.Text)
+    def __init__(self, api_id, case_api, params, assertValue, status=0):
+        self.api_id = api_id
+        self.case_api = case_api
+        self.params = params
+        self.assertValue = assertValue
+        self.status = status
 class Case_Http_File(db.Model):
     
     __tablename__ = "case_http_file"

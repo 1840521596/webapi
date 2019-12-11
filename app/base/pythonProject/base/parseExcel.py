@@ -33,7 +33,7 @@ def test_cases_in_excel(test_case_file):
         dict_sheet_case[sheet]=dict_case_sheet_params
     return dict_sheet_case
 if __name__ == "__main__":
-    filepath = "../test/data.xls"
+    filepath = "../api_test/data.xls"
     wc =  "%02d"%(int(test_cases_in_excel(filepath)["indexTest"][1]["order"]))
     s = "{{sss}}".replace("{{sss}}",wc)
     print s

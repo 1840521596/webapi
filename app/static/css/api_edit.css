@@ -26,8 +26,11 @@
     table {  
         border-collapse:collapse;  
         border-spacing:0;  
-        empty-cells:show  
-    }  
+        empty-cells:show;
+        table-layout:fixed;
+        word-break:break-all;
+        word-break:break-all;
+    }
     ol, ul, menu {  
         list-style:none  
     }  
@@ -103,11 +106,12 @@
     }  
     .clearfix, .central, .widget ul, .paging, .pagenav, .base-tit {  
     height:1%;
+    padding: 10px 10px;
     }  
     body, button, input, select, textarea, code {  
-        font-size:12px;  
+        font-size:16px;
         font-family:microsoft yahei;  
-        color: #444;  
+        color: #444;
     }  
     /*window*/  
       
@@ -143,7 +147,7 @@
         vertical-align: middle;  
         font-size: 12px;  
         font-weight: bold;  
-        height: 27px;  
+        height: 32px;
         line-height: 27px;  
         min-width: 52px;  
         padding: 0 12px;  
@@ -167,7 +171,8 @@
         background:-webkit-linear-gradient(top, #f8f8f8, #f1f1f1);  
         background:-moz-linear-gradient(top, #f8f8f8, #f1f1f1);  
         background:linear-gradient(top, #f8f8f8, #f1f1f1);  
-        box-shadow:#ddd 0 1px 1px 0;  
+        box-shadow:#ddd 0 1px 1px 0;
+        background-color: #4f99c6 !important
     }  
     .btn:active, .btn.btn-active {  
         box-shadow:#ddd 0 1px 2px 0 inset;  
@@ -243,13 +248,15 @@
         filter:alpha(opacity=40);  
         display:none  
     }  
-    .theme-popover {  
+    .theme-popover,
+    .theme-popover-schedule,
+    .theme-popover-runScheduleTest {
         z-index:9999;  
         position:fixed;  
         top:15%;  
         left:5%;  
         width:90%;
-        height:490px;
+        height:560px;
         margin:0 auto;  
         border-radius:5px;  
         border:solid 2px #666;  
@@ -328,7 +335,8 @@
         bottom:0;
     }
 
-    .theme-poptit {  
+    .theme-poptit,
+    .theme-poptit-schedule {
         border-bottom:1px solid #ddd;  
         padding:12px;  
         position: relative;  
@@ -467,4 +475,60 @@
         filter:alpha(opacity=40);
         display:none
     }
-    .wctv { border:1px #ff000 solid}
+    .wctv {
+    border:1px #ff000 solid;
+    color: gray;
+    }
+
+ul.pagination {
+    /*display: inline-block;*/
+    display: none;
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+    font-family: microsoft yahei;
+    color:#444;
+}
+
+ul.pagination li {
+    display: inline;
+     margin: 10px 0;
+   }
+
+ul.pagination li a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+    font-size: 18px;
+}
+
+ul.pagination li a.active {
+    background-color: #eee;
+    color: black;
+    border: 1px solid #ddd;
+}
+
+ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+
+.page-content {
+    padding: 2px 2px 0px;
+}
+.schedule {
+    display: none;
+    text-align: center;
+}
+.ci_schedule
+{
+    text-align: center;
+}
+.check_box {
+    display: none;
+    text-align: center;
+}
+.col-xs-12 {
+    padding-right: 1px;
+    padding-left: 1px;
+}

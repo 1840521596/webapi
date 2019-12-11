@@ -49,7 +49,7 @@ class MakeTestSuite(object):
         self.testHTML = ""
         for num, case_params in num_case_params.items():
                # order = "%02d"%(int(case_params["order"]))
-            if case_params["zone"] == "test":
+            if case_params["zone"] == "api_test":
                 if case_params["method"] == "GET":
                     exceptDatas = isStr(case_params["caseExpectDatas"])
                     if case_params["allorkeyNone"] == "ALL":

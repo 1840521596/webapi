@@ -1,5 +1,5 @@
 #-*-coding:utf-8 -*-
-from . import test
+from app.main import test
 from flask import request,make_response,jsonify
 import json
 import telnetlib

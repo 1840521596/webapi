@@ -1,10 +1,10 @@
 #!/usr/bin/python
 #-*-coding:utf-8 -*-
-from . import views
+from app.main import views
 from flask import render_template,request,make_response,jsonify,session,g
-from .. import db,redis
+from app import db,redis
 from flask_login import login_required
-from ..config.api_models import Project, Case_Http_API,Web_Model_Set,Test_User_Reg,Key_Value
+from app.config.api_models import Project, Case_Http_API,Web_Model_Set,Test_User_Reg,Key_Value
 @views.route("/webIndex",methods=["GET"])
 @login_required
 def webIndex():
@@ -19,7 +19,6 @@ def webIndex():
                            userName=userName,deptName=deptName)
                            #report=len(reslut_list), project_cout=project_cout,
                          #  model_cout=model_cout, my_tasl=My_task, all_run_case_count=all_run_case_count
-
 @views.route("/homeIndex",methods=["GET"])
 @login_required
 def homeIndex():
@@ -32,15 +31,16 @@ def index():
 @login_required
 def pageIndex():
     return render_template('home/pageIndex.html')
+
 @views.route("/testIndex",methods=["GET"])
 @login_required
 def testIndex():
-    return render_template('home/test_phones.html')
+    return render_template('/api_test/test_phones.html')
 @views.route('/run_api_index', methods=['GET', 'POST'])
 @login_required
 def run_api_index():
     api_project = Project.query.with_entities(Project.project).distinct().all()
-    return render_template('/home/run_api_index.html',projects=api_project)
+    return render_template('/api_test/run_api_index.html',projects=api_project)
 @views.route("/query_phones",methods=["GET"])
 @login_required
 def test_query():

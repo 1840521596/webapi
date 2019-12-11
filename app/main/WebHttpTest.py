@@ -1,15 +1,14 @@
 #-*-coding:utf-8 -*-
-from . import test
-from flask import request,make_response,jsonify
-import requests
+from app.main import test
+from flask import request,make_response,jsonify,session,url_for
 from app.base.pythonProject.base.getCookies import *
-from .. import db
-from ..config.api_models import Case_Http_File
-from ..config.project_loginIn import loginIn
+from app.config.project_loginIn import loginIn
 import sys
 import json
 from app.config.sql import betaDB,betaDB_order
 import cgi
+from collections import OrderedDict
+from app.tasks.tasks import run_schedule_api
 if sys.getdefaultencoding() != 'utf-8':
     reload(sys)
     sys.setdefaultencoding('utf-8')
@@ -21,7 +20,6 @@ def case_http_test():
     :param method:  请求方式
     :return:  Response
     """
-    project_cn = request.form["project_cn"]
     case_host = request.form["case_host"]
     case_url = request.form["case_url"]
     method = request.form["method"]
@@ -30,24 +28,19 @@ def case_http_test():
         headers = eval(request.form["headers"])
         cookies = eval(request.form["cookies"])
         islogin = request.form["islogin"]
-        projectAccount = request.form["account"]
-        account_list = projectAccount.split("&")
-        if len(account_list)==1:    #登录账号进行分割,当不存在"测试使用"测试项目前置时,直接使用账号
-            account = account_list[0]
-            test_use = None
-            passwd = None
-        elif len(account_list)==2:
-            test_use, account = account_list[0],account_list[1]
-            passwd = None
-        else:
-            test_use,account,passwd = account_list[0],account_list[1], account_list[2]  #测试项目&测试账号&账号密码
+        account_project = request.form["account_project"]
+        account_username = request.form["account_username"]
+        account_passwd = request.form["account_passwd"]
         url = case_host + case_url
-        isUpload = request.form["isUpload"]
-        targetId = request.form["pid"]
-        if account.upper() == "NONE" or account==None:
-            account = None
+        if account_project.upper() == "NONE" or account_project=="":
+            account_project = None
+        if account_username.upper() == "NONE" or account_username=="":
+            account_username = None
+        if account_passwd.upper() == "NONE" or account_passwd=="":
+            account_passwd = None
         if islogin.upper() == "TRUE" or islogin==True:  #勾选需要登录后获取登录cookies
-            new_cookies = loginIn(project_cn,cookies["env_flag"], cookies["env_num"], account,passwd,test_use)
+            new_cookies = loginIn(cookies["env_flag"], cookies["env_num"], account_project=account_project ,
+                                  account_username=account_username,account_passwd=account_passwd)
             if case_url in ["/auth/loginCheck"]:
                 params = {}
                 params["sessionId"] = new_cookies["sso_sessionid"]
@@ -55,52 +48,105 @@ def case_http_test():
                 params["sessionId"] = new_cookies["sso_sessionid"]
         else:
             new_cookies = cookies
-        if isUpload=="false":  #不需要上传文件
-            if method=="POST":
-                resp = postFunction(url,params,headers,new_cookies)
-            elif method=="GET":
-                resp = getFunction(url,params,headers,new_cookies)
-        else:  #已上传文件,进入界面点击测试
-            file_name = db.session.query(Case_Http_File.file_name,
-                                         Case_Http_File.content_type,
-                                         Case_Http_File.file_desc,
-                                         Case_Http_File.case_api_id).filter_by(case_api_id=targetId).first()
-            if file_name:
-                file_1 = open("./app/upload_file/%s_%s"%(file_name[3],file_name[0]))
-                upload_file = {file_name[2]: (file_name[0], file_1, file_name[1])}
-                if method=="POST":
-                    resp = postFunctionFile(url,params,headers,new_cookies,upload_file)
-                elif method=="GET":
-                    resp = getFunctionFile(url,params,headers,new_cookies,upload_file)
-            else:
-                raise Exception,"当前接口未存在测试文件,请重新上传后测试！"
-        if project_cn == u"CRM绩效规则重构":
-            resp_dict = json.loads(resp, encoding="utf8")
-            if resp_dict["returnCode"] != "0" and resp_dict["returnCode"] != 0:
-                resp = resp_dict["returnMsg"]
-            else:
-                try:
-                    if case_url == "/v6/order/face_course/post/create_order.htm":
-                        order_sn = update_order_status(resp)
-                        resp = order_sn
-                    else:
-                        phone = params["phone"]
-                        phId = params["phId"]
-                        pId = params["pId"]
-                        order_sn = update_order_status(resp)  #更改订单状态=2,call_back＝当前时间,返回order_sn　字段
-                        if pId in ["7698","8326","8327","8215","7996"]:    #罐罐熊正式课&练字课商品ID,并对应授权
-                            msg = bearJoinCategoryProduct(phone,phId,cookies,order_sn)
-                        else:
-                            msg = joinCategoryProduct(phone,phId,cookies,order_sn)    #传入order_sn字段,查找　memberId,orderId
-
-                        resp = order_sn + ":" + msg
-                except Exception as e:
-                    resp = str(e)
+        if method == "POST":
+            resp = postFunction(url, params, headers, new_cookies)
+        elif method == "GET":
+            resp = getFunction(url, params, headers, new_cookies)
+        # if isUpload=="false":  #不需要上传文件
+        #     if method=="POST":
+        #         resp = postFunction(url,params,headers,new_cookies)
+        #     elif method=="GET":
+        #         resp = getFunction(url,params,headers,new_cookies)
+        # else:  #已上传文件,进入界面点击测试
+        #     file_name = db.session.query(Case_Http_File.file_name,
+        #                                  Case_Http_File.content_type,
+        #                                  Case_Http_File.file_desc,
+        #                                  Case_Http_File.case_api_id).filter_by(case_api_id=targetId).first()
+        #     if file_name:
+        #         file_1 = open("./app/upload_file/%s_%s"%(file_name[3],file_name[0]))
+        #         upload_file = {file_name[2]: (file_name[0], file_1, file_name[1])}
+        #         if method=="POST":
+        #             resp = postFunctionFile(url,params,headers,new_cookies,upload_file)
+        #         elif method=="GET":
+        #             resp = getFunctionFile(url,params,headers,new_cookies,upload_file)
+        #     else:
+        #         raise Exception,"当前接口未存在测试文件,请重新上传后测试！"
+        # if project_cn == u"CRM绩效规则重构":
+        #     resp_dict = json.loads(resp, encoding="utf8")
+        #     if resp_dict["returnCode"] != "0" and resp_dict["returnCode"] != 0:
+        #         resp = resp_dict["returnMsg"]
+        #     else:
+        #         try:
+        #             if case_url == "/v6/order/face_course/post/create_order.htm":
+        #                 order_sn = update_order_status(resp)
+        #                 resp = order_sn
+        #             else:
+        #                 phone = params["phone"]
+        #                 phId = params["phId"]
+        #                 pId = params["pId"]
+        #                 order_sn = update_order_status(resp)  #更改订单状态=2,call_back＝当前时间,返回order_sn　字段
+        #                 if pId in ["7698","8326","8327","8215","7996"]:    #罐罐熊正式课&练字课商品ID,并对应授权
+        #                     msg = bearJoinCategoryProduct(phone,phId,cookies,order_sn)
+        #                 else:
+        #                     msg = joinCategoryProduct(phone,phId,cookies,order_sn)    #传入order_sn字段,查找　memberId,orderId
+        #
+        #                 resp = order_sn + ":" + msg
+        #         except Exception as e:
+        #             resp = str(e)
     except Exception as e:
         resp = str(e)
     response = make_response(jsonify({"code":200,"datas":cgi.escape(resp)}))  # 返回response
     return response
-
+@test.route('/doSelfSchedule',methods = ['GET'])
+def doSelfSchedule():
+    try:
+        api_json = request.args.get("api_json")
+        schedule_env = request.args.get("schedule_env")
+        schedule_num = request.args.get("schedule_num")
+        timer = request.args.get("timer")
+        api_dict = json.loads(api_json,encoding='utf8')
+        orderApiDict = OrderedDict(api_dict.items())    #手工调度接口排序
+        cookies = {"env_flag":schedule_env,"env_num":schedule_num}    #cookies
+        userName = session['userName']
+        origin = "doSelfSchedule"    #来源,异步任务识别操作来源
+        task = run_schedule_api.apply_async(args=[origin,orderApiDict,cookies,userName],countdown=int(timer))
+        msg = {"code": "200", "msg": "操作成功","id":task.id}
+        return jsonify(msg), 202, {'Location': url_for('api_test.taskstatus', task_id=task.id)}
+    except Exception as e:
+        msg = {"code": "400", "msg": "操作失败","method":"doSelfSchedule","reason": str(e)}
+    return make_response(jsonify(msg))
+    # run_schedule_api("",origin,orderApiDict,cookies,userName)
+    # return make_response(jsonify(orderApiDict))
+@test.route('/status/<task_id>')
+def taskstatus(task_id):
+	task = run_schedule_api.AsyncResult(task_id)
+	if task.state == 'PENDING':
+		response = {
+			'state': task.state,
+			'current': 0,
+			'total': 1,
+			'status': u'启动中...'
+		}
+	elif task.state != 'FAILURE':
+		response = {
+			'state': task.state,
+			'current': task.info.get('current', 0),
+			'total': task.info.get('total', 1),
+			'status': task.info.get('status', ''),
+			'pass_status':task.info.get('pass_status',''),
+			'datas':task.info.get('data_list','')
+		}
+		if 'result' in task.info:
+			response['result'] = task.info['result']
+	else:
+		response = {
+			'state': task.state,
+			'current': 1,
+			'total': 1,
+			'status': str(task.info),  # this is the exception raised
+			'errorMsg':str(task.traceback)
+		}
+	return jsonify(response)
 
 
 def postFunction(url,params,headers,cookies):
@@ -115,6 +161,23 @@ def postFunctionFile(url,params,headers,cookies,file):
 def getFunctionFile(url,params,headers,cookies,file):
     resp = requests.get(url, params=params, headers=headers, cookies=cookies,files=file)
     return resp.content
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @test.route("/test_upload",methods=["POST"])
 def upload_test():
@@ -146,8 +209,6 @@ def upload_test():
         resp = str(e)
     response = make_response(jsonify({"code": 200, "datas": resp}))  # 返回response
     return response
-
-
 def update_order_status(resp):
     select_data = betaDB()
     resp_dict = json.loads(resp, encoding="utf8")
@@ -209,7 +270,6 @@ where a.PHONE="{phone}" and a.MOOC_CLASS_ID="{moocClassId}";""".format(order_sn=
             return "授权成功"
         else:
             return "授权课程请求失败"
-
 def bearJoinCategoryProduct(phone,phId,cookies,resp):
     select_data = betaDB()
     sql = """select a.order_id,a.member_id from ysx_order.ysx_order_info a where a.order_sn ="{order_sn}";""".format(order_sn=resp)
@@ -234,8 +294,6 @@ def bearJoinCategoryProduct(phone,phId,cookies,resp):
         return "授权成功"
     else:
         return "授权课程请求失败"
-
-
 @test.route("/test_protected",methods=["GET"])
 def test_protected():
     """30保护期校验"""

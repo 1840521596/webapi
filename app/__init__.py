@@ -34,7 +34,7 @@ def create_app(config_name):
     db.init_app(app)
     redis.init_app(app)
     login_manager.init_app(app)
-    from .main import report,test,views,mock,user
+    from app.main import report,test,views,mock,user
     app.register_blueprint(report, url__prefix='/report')
     app.register_blueprint(test)
     app.register_blueprint(views)

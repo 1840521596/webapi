@@ -2,11 +2,11 @@
 #-*-coding:utf-8 -*-
 __author__ = "guohongjie"
 from flask import render_template,request,flash,make_response,jsonify,send_from_directory,send_file
-from . import views
-from .. import db
-from ..config.api_models import Project
+from app.main import views
+from app import db
+from app.config.api_models import Project
 import os
-from ..config.config import TEST_FOLDER
+from app.config.config import TEST_FOLDER
 
 @views.route("/httpSuite",methods=["GET"])
 def http_suite():

@@ -2,9 +2,9 @@
 #-*-coding:utf-8 -*-
 __author__ = "guohongjie"
 from flask import render_template,request,flash
-from . import report
-from ..base import report_html
-from ..config.config import TEST_FOLDER
+from app.main import report
+from app.base import report_html
+from app.config.config import TEST_FOLDER
 @report.route('/Report')
 def search_year():
 	"""

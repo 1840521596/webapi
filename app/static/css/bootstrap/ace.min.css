@@ -5124,7 +5124,7 @@ button.btn:active {
 }
 
 .btn-info,.btn-info:focus {
-	background-color: #6fb3e0!important;
+	background-color: whitesmoke !important;
 	border-color: #6fb3e0;
 	text-align:center
 }
@@ -9625,9 +9625,9 @@ td .lbl:only-child,th .lbl:only-child {
 }
 
 .table-header {
-	background-color: #307ecc;
-	color: #FFF;
-	font-size: 14px;
+	background-color: whitesmoke;
+	color: grey;
+	font-size: 16px;
 	line-height: 38px;
 	padding-left: 12px;
 	margin-bottom: 1px

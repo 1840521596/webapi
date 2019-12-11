@@ -14,13 +14,13 @@ HTMLTestRunner is a counterpart to unittest's TextTestRunner. E.g.
     fp = file('my_report.html', 'wb')
     runner = HTMLTestRunner.HTMLTestRunner(
                 stream=fp,
-                title='My unit test',
+                title='My unit api_test',
                 description='This demonstrates the report output by HTMLTestRunner.'
                 )
     # Use an external stylesheet.
     # See the Template_mixin class for more customizable options
     runner.STYLESHEET_TMPL = '<link rel="stylesheet" href="my_stylesheet.css" type="text/css">'
-    # run the test
+    # run the api_test
     runner.run(my_test_suite)
 ------------------------------------------------------------------------
 Copyright (c) 2004-2007, Wai Yip Tung
@@ -67,7 +67,7 @@ Version 0.8.2
 * Show output inline instead of popup window (Viorel Lupu).
 Version in 0.8.1
 * Validated XHTML (Wolfgang Borgert).
-* Added description of test classes and test cases.
+* Added description of api_test classes and api_test cases.
 Version in 0.8.0
 * Define Template_mixin class for customization.
 * Workaround a IE 6 bug that it does not treat <script> block as CDATA.
@@ -541,7 +541,7 @@ class HTMLTestRunner(Template_mixin):
 
 
     def run(self, test):
-        "Run the given test case or test suite."
+        "Run the given api_test case or api_test suite."
         result = _TestResult(self.verbosity)
         test(result)
         self.stopTime = datetime.datetime.now()
@@ -738,16 +738,16 @@ class HTMLTestRunner(Template_mixin):
 # Facilities for running tests from the command line
 ##############################################################################
 
-# Note: Reuse unittest.TestProgram to launch test. In the future we may
+# Note: Reuse unittest.TestProgram to launch api_test. In the future we may
 # build our own launcher to support more specific command line
-# parameters like test title, CSS, etc.
+# parameters like api_test title, CSS, etc.
 class TestProgram(unittest.TestProgram):
     """
     A variation of the unittest.TestProgram. Please refer to the base
     class for command line parameters.
     """
     def runTests(self):
-        # Pick HTMLTestRunner as the default test runner.
+        # Pick HTMLTestRunner as the default api_test runner.
         # base class's testRunner parameter is not useful because it means
         # we have to instantiate HTMLTestRunner before we know self.verbosity.
         if self.testRunner is None:

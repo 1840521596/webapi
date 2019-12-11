@@ -17,7 +17,7 @@ def get_allcase(project):
    # print TEST_FOLDER +"/suite/{project}".format(project=project)
     case_path = os.path.join(TEST_FOLDER +"/suite/",project)
     dis = unittest.TestLoader()
-    discover = dis.discover(case_path, pattern="test*.py")
+    discover = dis.discover(case_path, pattern="api_test*.py")
     suite = unittest.TestSuite()
     suite.addTest(discover)
     return suite

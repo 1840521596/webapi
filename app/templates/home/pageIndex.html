@@ -10,7 +10,7 @@
     <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
     <script src="{{url_for('static',filename='js/echarts.common.min.js')}}"></script>
     <script src="{{url_for('static',filename='js/app.js')}}"></script>
-    <script src="{{url_for('static',filename='js/script/jquery.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/script/jquery-1.10.2.min.js')}}"></script>
     <style type="text/css">.heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}</style>
 
 </head>
@@ -187,7 +187,7 @@
     if($("#env").length>0){
         $("#CreateCoupon").empty();}
     else{
-    $("#CreateCoupon").append(text);
+        $("#CreateCoupon").append(text);
     }
     }
     function displayRunSuiteApiInput(){
