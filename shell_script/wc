@@ -1,0 +1,181 @@
+    import java.util.Date;
+    import java.util.HashMap;
+    import java.util.Map;
+
+    import javax.servlet.http.HttpServletRequest;
+    import javax.servlet.http.HttpServletResponse;
+
+    import net.sf.json.JSONObject;
+
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Controller;
+    import org.springframework.web.bind.annotation.RequestMapping;
+    import org.springframework.web.bind.annotation.RequestParam;
+    import org.springframework.web.bind.annotation.ResponseBody;
+
+    import redis.clients.jedis.Jedis;
+    import com.ysx.wacc.common.util.JedisUtil;
+
+    import com.alibaba.druid.util.StringUtils;
+    import com.ysx.wacc.account.service.base.v1.AccoutCoreService;
+    import com.ysx.wacc.account.service.base.v1.WapAccoutCoreService;
+    import com.ysx.wacc.common.util.AES128Util;
+    import com.ysx.wacc.common.util.AESOperator;
+    import com.ysx.wacc.common.util.CommonLogger;
+    import com.ysx.wacc.common.util.CommonUtils;
+    import com.ysx.wacc.common.util.SessionKey;
+    import com.ysx.wacc.common.util.WXUtils2;
+    import com.ysx.wacc.common.util.ResponseResultUtil.ResponseResultBean;
+    import com.ysx.wacc.common.util.ResponseResultUtil.ReturnCode;
+
+
+
+    @Controller
+    @RequestMapping("v1/miniprogram")
+    public class MiniProgramController {
+        
+        @Autowired
+        private JedisUtil jedisUtil;
+        
+        @Autowired
+        private WapAccoutCoreService accoutCoreService; 
+        
+        @Autowired
+        private AccoutCoreService accoutService;
+        
+        @RequestMapping(value = "callback")
+        public void callback(HttpServletRequest request,HttpServletResponse response, String signature,String timestamp,
+                String nonce,String echostr) {
+                CommonLogger.info("signature");
+                CommonLogger.info("timestamp");
+                CommonLogger.info("nonce");
+                CommonLogger.info("echostr");
+                String result="";
+                //判断是否是微信验证请求
+                if (echostr != null && echostr.length() > 1) {  
+                    CommonLogger.info("微信接入服务回调");
+                    result = echostr;   
+                }
+                //回执请求
+                try {
+                    if(result!=null){
+                        response.getWriter().write(result);
+                    }
+               
+                } catch (Exception e) {
+                    CommonLogger
+                            .error(this.getClass(), "["
+                                    + this.getClass().getName()
+                                    + " toLog] 微信回调错误", e);
+                }  
+            
+        }
+        
+        @ResponseBody
+        @RequestMapping("login")
+        public ResponseResultBean userLogin(@RequestParam(required = true,value = "code")String code){
+            try{
+                String key = "";
+                
+                if(code!=null){
+                    SessionKey sessionKey = WXUtils2.getSessionKey(code);
+                    // jedisUtil replace djs 20181126
+                    key = "3RD_SESSION"+new Date().getTime()+CommonUtils.gen(10);
+                    CommonLogger.info("sessionKey="+sessionKey.getSessionKey());
+                    CommonLogger.info("openId="+sessionKey.getOpenid());
+                    jedisUtil.setex(key,604800, sessionKey.getSessionKey()+"&_&"+sessionKey.getOpenid());
+                }             
+                
+                return new ResponseResultBean(ReturnCode.ACTION_SUCCESS.code(),key);
+            }catch(Exception e){
+                e.printStackTrace();
+                return new ResponseResultBean(ReturnCode.ACTION_UNKNOWN.code());
+            }
+        }
+        
+        
+        @RequestMapping("decrypt_user_info")
+        @ResponseBody
+        public ResponseResultBean decodeUserInfo(@RequestParam(required = true,value = "encryptedData")String encryptedData,
+                @RequestParam(required = true,value = "iv")String iv,
+                @RequestParam(required = true,value = "sessionId")String sessionId
+            ){
+            Map<String,Object> resultMap = new HashMap<String,Object>();
+            //检测sessionId是否失效
+            // jedisUtil replace djs 20181126
+            try{
+            CommonLogger.info("sessionId="+sessionId);
+            String userSession = jedisUtil.get(sessionId);
+            if(userSession==null){
+                return new ResponseResultBean(ReturnCode.MINI_SESSIONKEY_IS_EXPIRE.code());
+            }
+            CommonLogger.info("userSession="+userSession);
+            
+            String sessionKey = userSession.split("&_&")[0];
+            String openId = userSession.split("&_&")[1];
+            CommonLogger.info("sessionKey="+sessionKey);
+            
+            //解密用户信息
+            String userInfoJsonStr = "";
+            try{
+                userInfoJsonStr = AES128Util.wxDecrypt(encryptedData, sessionKey, iv);
+                jedisUtil.set("3RD_USERINFO:"+openId, userInfoJsonStr);
+            }catch(Exception e){
+                e.printStackTrace();
+                CommonLogger.info("微信授权过期,请重新登录....");
+                return new ResponseResultBean(ReturnCode.MINI_SESSIONKEY_IS_EXPIRE.code());
+            }
+            Map<String,Object> userMap = null;
+            if(userInfoJsonStr!=null){
+                JSONObject userInfo = JSONObject.fromObject(userInfoJsonStr);
+                System.out.println("userInfo="+userInfo.toString());
+                userMap = accoutCoreService.miniProgramUserInfoUpdate(userInfo);
+            }
+            
+            CommonLogger.info("memberInfoId="+Long.parseLong(String.valueOf(userMap.get("memberId"))));
+            Long memberId = Long.parseLong(String.valueOf(userMap.get("memberId")));
+            
+            //查询用户是否完善信息
+            Map<String,Object> result = accoutCoreService.queryTeacherISPerInfo(memberId);
+            resultMap.putAll(result);
+            
+            /*//判断是否有手机号
+            Map<String,Object> memberInfoBean = accoutService.getBean(memberId);
+            
+            if(memberInfoBean!=null){
+                
+                if(memberInfoBean.get("phone")!=null){
+                    String phone = String.valueOf(memberInfoBean.get("phone"));
+                    if(!StringUtils.isEmpty(phone)){
+                        resultMap.put("isBuildPhone", 1);
+                    }else{
+                        resultMap.put("isBuildPhone", 0);
+                    }
+                }else{
+                    resultMap.put("isBuildPhone", 0);
+                }
+                
+            }*/
+            
+            resultMap.put("nickName", String.valueOf(userMap.get("nickName")));
+            CommonLogger.info("ZUIHOUmemberId="+memberId);
+            resultMap.put("memberId", AESOperator.enc(memberId+""));
+            resultMap.put("headPic", String.valueOf(userMap.get("headPic")));
+            
+            return new ResponseResultBean(ReturnCode.ACTION_SUCCESS.code(), resultMap);
+            }catch(Exception e){
+                e.printStackTrace();
+                return new ResponseResultBean(ReturnCode.ACTION_UNKNOWN.code());
+            }finally{
+                
+    // jedisUtil close djs 20181126
+            }
+            
+        }
+        public static void main(String[] args) {
+            String s ="3RD_SESSION"+new Date().getTime()+CommonUtils.gen(10);
+            System.out.println(s);
+        }
+
+    }
+
