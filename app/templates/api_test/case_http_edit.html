@@ -99,7 +99,7 @@
                <option value="{{ project[0] }}">{{ dev_projects[0] }}</option>
                {% endfor %}
            </select>
-        </div>
+            </div>
             <div class="clearfix form-group text-right">
            <button class="btn btn-default" id="btn2"  style="float: left" >查 询</button>
            <button class="btn btn-default" type="button" onclick="clearForm();" style="float: left">清 空</button>
@@ -308,6 +308,51 @@
         </div>
       <div class="theme-popbod dform" id="progressing"></div>
   </div>
+  <div class="theme-popover-apiCopy">
+      <div>
+        <a href="javascript:;" title="关闭" class="close">&times;</a>
+        <h3>复制用例</h3>
+        </div>
+      <div class="theme-popbod dform">
+    <table id="copy_datatable" class="CSSearchTbl" width="100%" cellspacing="0" cellpadding="0" border="5">
+     <tbody>
+      <tr height="36px">
+       <th class="wctv" hidden="hidden">接口id</th>
+       <th style="text-align:center" class="wctv" width="40%">接口用例</th>
+       <th style="text-align:center" class="wctv" width="30%">选择项目</th>
+       <th style="text-align:center" class="wctv" width="30%">选择环境</th>
+      </tr>
+     </tbody>
+     <tbody id="copy_tbdata">
+      <tr height="36px">
+          <td hidden="hidden">
+              <input style="width: 100%; height: 100%" type="text" value="" id="copy_chedule_targetId"
+                     placeholder="用例 ID">
+          </td>
+          <td> <input id="copy_api_name" style="width: 100%; height: 100%;text-align:center;" disabled="true" type="text"/></td>
+          <td>
+              <select id="copy_project_choice" style="width: 100%; height: 100%" name="测试项目">
+               <option value="" selected = "selected"> 选择测试项目 </option>
+           {% for project in api_project %}
+               <option value="{{ project[0] }}">{{ project[0] }}</option>
+            {% endfor %}
+              </select></td>
+          <td>
+              <select id="copy_test_env" name="state" style="width:100px;">
+               <option value="None">全部状态</option>
+               <option value="beta">beta</option>
+               <option value="stage">stage</option>
+               <option value="prod">prod</option>
+            </select>
+          </td>
+      </tr>
+     </tbody>
+        <tbody><tr colspan="2" style="position: relative;"><td class="right" colspan="2" style="position: absolute; right: 0%; border: none;">
+        <button id="copy_btn" class="btn btn-primary pull-left col-sm-12 tbl-search"
+                data-dismiss="modal"> 保存数据 </button></td></tr></tbody>
+    </table>
+        </div>
+      </div>
   <div style="text-align: center;">
           <ul class="pagination">
               <li class="pagination">总共<p id="totalApi" class="pagination"></p> 条记录</li>

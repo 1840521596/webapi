@@ -250,7 +250,8 @@
     }  
     .theme-popover,
     .theme-popover-schedule,
-    .theme-popover-runScheduleTest {
+    .theme-popover-runScheduleTest,
+    .theme-popover-apiCopy {
         z-index:9999;  
         position:fixed;  
         top:15%;  

@@ -156,7 +156,12 @@ jQuery(document).ready(function ($) {
         });
     });
     $('.theme-poptit-schedule .close').click(function () {
-        $('.theme-popover-schedule').fadeOut(100);});
+
+    $('.theme-popover-schedule').fadeOut(100);
+    });
+    $(".theme-popover-apiCopy .close").click(function() {
+        $(".theme-popover-apiCopy").fadeOut(100);
+    });
     $("body").delegate(".update", "click", function () {
     $("#btn4").bind("click",http_test);
                 $td = $(this).parents("tr").find("td");
@@ -169,7 +174,6 @@ jQuery(document).ready(function ($) {
                 httpUnionSearch(project,case_api,api_pid);
                 });
         });//打开新增数据弹层
-
     $("body").delegate(".ci_schedule","click", function () {
         $('.theme-popover-schedule').fadeIn(100);
         $td = $(this).parents("tr").find("td");
@@ -194,19 +198,26 @@ jQuery(document).ready(function ($) {
             $("#schedule_assertValue").val(result['data']['assertValue']);
             };
         })
-    }
-    );
-
+    });
     $("#btn1").bind("click",save_http_data);
     $('.theme-schedule').click(function () {
         $(".schedule").toggle(100);
         $(".check_box").toggle(100);
+    });
+    $("body").delegate(".api_copy","click",function () {
+    $(".theme-popover-apiCopy").fadeIn(100);
+    $td = $(this).parents("tr").find("td");
+    var api_pid = $td.eq(1).text();
+    $("#copy_chedule_targetId").val(api_pid);
+    var case_name = $td.eq(3).text();
+    $("#copy_api_name").val(case_name);
     });
     $(function () {
 
         displayScheduleButton();
     });
 });
+
 $("#btn5").click(function () {
     var case_host=$("#case_host").val();
     var case_url=$("#case_url").val();
@@ -252,6 +263,29 @@ $("#btn5").click(function () {
                 $("#RS").html(result);
                 }
        );}
+});
+$("#copy_btn").click(function () {
+    var api_pid = $("#copy_chedule_targetId").val();
+    var case_api = $("#copy_api_name").val();
+    var copy_project_choice = $("#copy_project_choice").find("option:selected").val();
+    var copy_test_env = $("#copy_test_env").find("option:selected").val();
+    if (copy_project_choice=="None" ||copy_test_env=="None") {
+        alert("项目或环境不能为默认值!");
+    }
+    else{
+        $.ajax({
+            url: "/httpCopy",
+            type: "get",
+            data: {
+            pid: api_pid,
+            case_api: case_api,
+            copy_project_choice: copy_project_choice,
+            copy_test_env: copy_test_env
+                    }
+        }).done(function (result){
+                alert(result.datas);
+        });
+        }
 });
 $("body").delegate(".delet","click", function(){
     $td = $(this).parents("tr").find("td");
@@ -950,6 +984,7 @@ function searchApi(curPageIndex) {
                 '<td style="text-align: center;">' +
                     '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large update">修改</a>'+
                     '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large delete">删除</a>'+
+                    '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large api_copy">复制</a>' +
                     '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large ci_schedule">持续调度</a></td>'+
                 '<td style="display:none">' + _temo[i][7] + '</td>' +
                 '<td style="display:none">' + _temo[i][6] + '</td>' +
@@ -965,8 +1000,9 @@ function searchApi(curPageIndex) {
                     '<td style="text-align: center;">' +
                         '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large update">修改</a>' +
                         '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large delete">删除</a>' +
+                        '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large api_copy">复制</a>' +
                         '<a data-pid="' + _temo[i][0] + '" class="btn btn-primary btn-large ci_schedule">持续调度</a></td>'+
-                    '<td style="display:none">' + _temo[i][7] + '</td>' +
+                                          '<td style="display:none">' + _temo[i][7] + '</td>' +
                     '<td style="display:none">' + _temo[i][6] + '</td>' +
                     '</tr>'
                 }}//case_name+description+case_url+method+parameter+assert

@@ -225,6 +225,47 @@ def httpDelete():
             print str(e)
             resp = {"code": 400, "datas": str(e)}
     return make_response(jsonify(resp))
+@views.route('/httpCopy',methods=["GET"])
+def httpCopy():
+    pid = request.args.get("pid")
+    case_api = request.args.get("case_api")
+    copy_project_choice = request.args.get("copy_project_choice")
+    copy_test_env = request.args.get("copy_test_env")
+    tester = session["userName"]
+    test_group = session["deptName"]
+    copy_datas = Case_Http_API.query.filter(Case_Http_API.id==pid,Case_Http_API.case_api==case_api).first()
+    new_cookies = u'{"env_flag":"%s","env_num":"1"}'%(copy_test_env)
+    cookies = new_cookies
+    try:
+        datas = Case_Http_API(project=copy_project_choice,
+                              case_api=copy_datas.case_api,
+                              description=copy_datas.description,
+                              case_url=copy_datas.case_url,
+                              method=copy_datas.method,
+                              response=copy_datas.response,
+                              status=copy_datas.status,
+                              params=copy_datas.params,
+                              case_host=copy_datas.case_host,
+                              headers=copy_datas.headers,
+                              cookies=cookies,
+                              isLogin=copy_datas.isLogin,
+                              test_env=copy_datas.test_env,
+                              test_group=test_group,
+                              tester=tester,
+                              account_project=copy_datas.account_project,
+                              account_username=copy_datas.account_username,
+                              account_passwd=copy_datas.account_passwd,
+                              checkAssert=copy_datas.checkAssert,
+                              isSchedule=copy_datas.isSchedule )
+        db.session.add(datas)
+        db.session.commit()
+        resp = {'datas': '复制成功', 'code': '200'}
+    except Exception as e:
+        db.session.rollback()
+        print str(e)
+        resp = {"code": 400, "datas": str(e)}
+    return make_response(jsonify(resp))
+
 @views.route("/searchHttpSchedule",methods=['GET'])
 def searchHttpSchedule():
     """查询集成调度参数"""
