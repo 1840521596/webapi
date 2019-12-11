@@ -15,9 +15,9 @@ TEST_FOLDER = './app/base/pythonProject'
 class TestingConfig(object):#研发环境配置
 	SECRET_KEY = 'guohongjie'
 	basedir=os.path.abspath(os.path.dirname(__file__))
-	SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://test:test@localhost:3306/qa_automation?charset=utf8"
+	SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://test:test@192.168.12.186:3306/qa_automation?charset=utf8"
 	SQLALCHEMY_BINDS = {
-		"qa_user": "mysql+mysqlconnector://test:test@localhost:3306/qa_user?charset=utf8"
+		"qa_user": "mysql+mysqlconnector://test:test@192.168.12.186:3306/qa_user?charset=utf8"
 	}
 	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 	CSRF_ENABLED = True

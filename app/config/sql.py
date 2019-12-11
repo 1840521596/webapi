@@ -3,7 +3,7 @@
 import pymysql
 
 def select_sql(sql):
-	db = pymysql.connect("localhost","test","test","qa_automation",charset='utf8')
+	db = pymysql.connect("192.168.12.186","test","test","qa_automation",charset='utf8')
 	# db = pymysql.connect("172.17.0.203", "qa_all", "stz8HxsG7weemkd", "qa_automation",port=3306, charset='utf8')
 	# 使用cursor()方法获取操作游标 
 	cursor = db.cursor()
@@ -21,7 +21,7 @@ def select_sql(sql):
 	db.close()
 	return data
 def insert_sql(sql):
-	db = pymysql.connect('localhost','test','test','ApiTestDB',charset='utf8')
+	db = pymysql.connect('192.168.12.186','test','test','ApiTestDB',charset='utf8')
 	cursor = db.cursor()
 	cursor.execute("set character_set_connection=utf8")
 	cursor.execute("set character_set_client=utf8")
@@ -39,7 +39,7 @@ def insert_sql(sql):
 		db.close()
 		return {"result":False,"reson":str(e)}
 def update_sql(sql):
-	db = pymysql.connect('localhost', 'test', 'test', 'ApiTestDB', charset='utf8')
+	db = pymysql.connect('192.168.12.186', 'test', 'test', 'ApiTestDB', charset='utf8')
 	cursor = db.cursor()
 	cursor.execute("set character_set_connection=utf8")
 	cursor.execute("set character_set_client=utf8")
