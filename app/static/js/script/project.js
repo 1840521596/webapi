@@ -4,7 +4,8 @@ $("#btn2").click(function () {
         url: "/projectSearch",
         type: "get",
         data: {
-            project: $("#project").find("option:selected").val()
+            project: $("#project").find("option:selected").val(),
+            test_group: $("#test_group").find("option:selected").val()
         }
     }).done(function (result) {
         if (result.status == "200")
@@ -19,7 +20,14 @@ $("#btn2").click(function () {
             // alert(_temo);
             for (var i = 0; i < _temo.length; i++) {
                 var j = i + 1;
-                tableHTML = tableHTML + '<tr><td style="display:none">' + j + '</td><td >' + _temo[i][0] + '</td><td>' + _temo[i][1] + '</td><td>' + _temo[i][2] + '</td><td>' + _temo[i][3] + '</td></tr>';
+                tableHTML = tableHTML +
+                '<tr><td style="display:none">' + j +
+                '</td><td style="text-align:center">' + _temo[i][0] +
+                '</td><td style="text-align:center">' + _temo[i][1] +
+                '</td><td style="text-align:center">' + _temo[i][2] +
+                '</td><td style="text-align:center">' + _temo[i][3] +
+                '</td><td style="text-align:center">' + _temo[i][4] + '</td>'+
+                '</tr>';
             }//case_name+description+case_url+method+parameter+assert
             $("#casetb").html(tableHTML);
             // alert(tableHTML);
@@ -121,7 +129,8 @@ $(document).ready(function () {
                         url: "/projectSearch",
                         type: "get",
                         data: {
-                            project: $("#project").find("option:selected").val()
+                            project: $("#project").find("option:selected").val(),
+                            test_group: $("#test_group").find("option:selected").val()
                         }
                     }).done(function (result) {
                         var _temo = [];
@@ -133,7 +142,14 @@ $(document).ready(function () {
                         // alert(_temo);
                         for (var i = 0; i < _temo.length; i++) {
                             var j = i + 1;
-                            tableHTML = tableHTML + '<tr><td style="display:none">' + j + '</td><td >' + _temo[i][0] + '</td><td>' + _temo[i][1] + '</td><td>' + _temo[i][2] + '</td><td>' + _temo[i][3] + '</td></tr>';
+                            tableHTML = tableHTML +
+                            '<tr><td style="display:none">' + j +
+                            '</td><td style="text-align:center" >' + _temo[i][0] +
+                            '</td><td style="text-align:center">' + _temo[i][1] +
+                            '</td><td style="text-align:center">' + _temo[i][2] +
+                            '</td><td style="text-align:center">' + _temo[i][3] +
+                            '</td><td style="text-align:center">' + _temo[i][4] +
+                            '</td></tr>';
                         }//case_name+description+case_url+method+parameter+assert
                         $("#casetb").html(tableHTML);
                         $('.theme-popover-mask').fadeOut(100);

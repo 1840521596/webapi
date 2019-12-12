@@ -57,7 +57,11 @@ def http_insert():
     assert_value = request.form['assert_value'].strip()
     tester = session["userName"]
     test_group = session["deptName"]
-    test_env = json.loads(cookies,encoding="utf8")["env_flag"]
+    try:
+        test_env = json.loads(cookies, encoding="utf8")["env_flag"]
+    except Exception as e:
+        resp = {'datas': '请检查cookies项(非json格式)\nPS:\n{"env_flag":"","env_num":""}', 'code': '400'}
+        return make_response(jsonify(resp))
     if islogin == "true":
         islogin = 1
     else:
@@ -160,7 +164,11 @@ def httpUpdate():
     assert_value = request.form['assert_value']
     tester = session["userName"]
     test_group = session["deptName"]
-    test_env = json.loads(cookies, encoding="utf8")["env_flag"]
+    try:
+        test_env = json.loads(cookies, encoding="utf8")["env_flag"]
+    except Exception as e:
+        resp = {'datas': '请检查cookies项(非json格式)\nPS:\n{"env_flag":"","env_num":""}', 'code': '400'}
+        return make_response(jsonify(resp))
     if islogin =="true":
         islogin = 1
     else:

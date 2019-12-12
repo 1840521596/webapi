@@ -316,7 +316,7 @@ $(function(){
 
 })
 //品牌旗舰店搜索条件框清空
-function clearForm(){
-	$("#case_name").val("");
-	$("#case_url_name").val("");
+function clearForm() {
+
+    location.reload();
 }

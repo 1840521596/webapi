@@ -765,9 +765,11 @@ function save_http_data () {
                     check_assert: check_assert,
                     assert_value: assert_value,
                 }}).done(function (result){
-                    if (result.status == "200"){
+                    if (result.code == "200"){
                         alert(result.datas);
-                        location.reload()}
+                        var curPageIndex = 1;
+                        searchApi(curPageIndex);
+                        }
                     else{
                         alert(result.datas);
                        }
@@ -797,9 +799,11 @@ function save_http_data () {
                     assert_value: assert_value,
                 }
             }).done(function(result){
-                    if (result.status == "200"){
+                    if (result.code == "200"){
                         alert(result.datas);
-                        location.reload()}
+                        var curPageIndex = 1;
+                        searchApi(curPageIndex);
+                        }
                     else{
                         alert(result.datas);
                        }
@@ -831,9 +835,11 @@ function save_http_data () {
                     assert_value: assert_value,
                                }
             }).done(function(result){
-                    if (result.status == "200"){
+                    if (result.code == "200"){
                         alert(result.datas);
-                        location.reload()}
+                        var curPageIndex = 1;
+                        searchApi(curPageIndex);
+                        }
                     else{
                         alert(result.datas);
                        }
@@ -863,9 +869,11 @@ function save_http_data () {
                     assert_value: assert_value,
                 }
             }).done(function(result){
-                    if (result.status == "200"){
+                    if (result.code == "200"){
                         alert(result.datas);
-                        location.reload()}
+                        var curPageIndex = 1;
+                        searchApi(curPageIndex);
+                        }
                     else{
                         alert(result.datas);
                        }

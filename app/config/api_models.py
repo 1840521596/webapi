@@ -1,7 +1,6 @@
 #-*-coding:utf-8 -*-
 from app import db
 class Project(db.Model):
-    
     __tablename__ = "project_api"  # 表名
     id = db.Column(db.Integer,primary_key=True)#序号ID
     project = db.Column(db.String(100), unique=True) # 项目
@@ -9,12 +8,14 @@ class Project(db.Model):
     domain = db.Column(db.String(100))
     description = db.Column(db.Text)#项目描述
     use_status = db.Column(db.Boolean,default=0)
-    def __init__(self,project,description,domain,project_en,use_status=0):
+    test_group = db.Column(db.String(100))
+    def __init__(self,project,description,domain,project_en,test_group,use_status=0):
         self.project = project
         self.description = description
         self.domain = domain
         self.project_en = project_en
         self.use_status = use_status
+        self.test_group = test_group
     def __repr__(self):
         return '<Case %r>'%(self.name)
 class runSuiteProject(db.Model):
