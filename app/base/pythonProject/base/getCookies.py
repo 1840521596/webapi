@@ -8,6 +8,21 @@ import json
 import hashlib
 import urllib
 import pymysql
+from app.config.config import SystemConfig
+class GetParams(object):
+    beta_redis_host = SystemConfig.beta_redis_host
+    beta_redis_port = SystemConfig.beta_redis_port
+    stage_prod_redis_host = SystemConfig.stage_prod_redis_host
+    stage_prod_redis_port = SystemConfig.stage_prod_redis_port
+    passwd = SystemConfig.passwd
+    beta_mysql_host = SystemConfig.beta_mysql_host
+    beta_mysql_port = SystemConfig.beta_mysql_port
+    beta_mysql_user = SystemConfig.beta_mysql_user
+    beta_mysql_pwd = SystemConfig.beta_mysql_pwd
+    stage_prod_mysql_host = SystemConfig.stage_prod_mysql_host
+    stage_prod_mysql_port = SystemConfig.stage_prod_mysql_port
+    stage_prod_mysql_user = SystemConfig.stage_prod_mysql_user
+    stage_prod_mysql_pwd = SystemConfig.stage_prod_mysql_pwd
 def get_ysx_crm_cookie(env_flag,env_num,account_username=None,account_passwd=None):
     """登录crm,并返回cookies
     :param url 请求连接
@@ -159,9 +174,13 @@ def get_app_cookie(project_cn,env_flag,env_num,account_username=None,account_pas
     w = MyRedis()
     user = account_username if account_username else w.str_get("wacc_mobile_user_phone")
     if env_flag =="beta":
-        r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
+        r = redis.Redis(host = GetParams.beta_redis_host,
+                        port = GetParams.beta_redis_port,
+                        password = GetParams.passwd)
     else:
-        r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
+        r = redis.Redis(host = GetParams.stage_prod_redis_host,
+                        port = GetParams.stage_prod_redis_port,
+                        password = GetParams.passwd)
     if project_cn == "罐罐熊APP":
         redis_shell = "code_6_" + user
     elif project_cn == "云舒写APP":
@@ -209,14 +228,17 @@ def get_wechat_cookie(env_flag,env_num,account_username=None,account_passwd=None
     session.cookies = cookies
     salt = "mengmengda"
     if env_flag=="beta":
-        r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
+        r = redis.Redis(host = GetParams.beta_redis_host,
+                        port = GetParams.beta_redis_port,
+                        password = GetParams.passwd)
         r.set("SESS:LOGIN:WXTEMPCODE_081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc",
               "{\"openid\":\"o38sIv0DUSADJyxT2Ebd-MN4lFXE\",\"nickname\":\"自动化测试\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
     else:
-        r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
+        r = redis.Redis(host = GetParams.stage_prod_redis_host,
+                        port = GetParams.stage_prod_redis_port,
+                        password = GetParams.passwd)
         r.set("SESS:LOGIN:WXTEMPCODE_081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc",
               "{\"openid\":\"o38sIv0DUSADJyxT2Ebd-MN4lFXE\",\"nickname\":\"自动化测试\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
-
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
     username = account_username if account_username else "60000007001"  # 默认账号
     pwd = account_passwd if account_passwd else "test123456"  # 默认密码
@@ -251,17 +273,20 @@ def get_wechat_capth_cookie(env_flag,env_num,account_username=None,account_passw
     session.cookies = requests.utils.cookiejar_from_dict(cookies)
     params_get_phone_code = {"phone": account_username, "verType": "2"}  # 1登录 ;2修改手机号
     if env_flag=="beta":
-        r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
+        r = redis.Redis(host = GetParams.beta_redis_host,
+                        port = GetParams.beta_redis_port,
+                        password = GetParams.passwd)
         r.set("SESS:LOGIN:WXTEMPCODE_081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc",
               "{\"openid\":\"o38sIv0DUSADJyxT2Ebd-MN4lFXE\",\"nickname\":\"自动化测试\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
     else:
-        r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
+        r = redis.Redis(host = GetParams.stage_prod_redis_host,
+                        port = GetParams.stage_prod_redis_port,
+                        password = GetParams.passwd)
         r.set("SESS:LOGIN:WXTEMPCODE_081S9XOa0bkKqx1PRyOa0pPMOa0S9XOc",
               "{\"openid\":\"o38sIv0DUSADJyxT2Ebd-MN4lFXE\",\"nickname\":\"自动化测试\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"Haidian\",\"province\":\"Beijing\",\"country\":\"CN\",\"headimgurl\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLfOZiaOCKuckMxTnicDO79Aibn5SVWQRiaSOQuyMJKiaxUCgZrh4JlWOOibHo03Yu8PkkmYs1zgwJedGvQ/132\",\"privilege\":[],\"unionid\":\"o_Pn8sxP5oST2gCYgl-kcGSeILBo\"}")
     redis_shell = "code_" + params_get_phone_code["verType"] + "_" + params_get_phone_code["phone"]
     r.set(redis_shell,"123456")
     capth = r.get(redis_shell)
-    expect = {"code": "0"}
     url = r"https://api.yunshuxie.com/yunshuxie-passport-service/user/login"
     # PC登录
     username = account_username if account_username else "60000007001"  # 默认账号
@@ -279,7 +304,7 @@ def get_wechat_capth_cookie(env_flag,env_num,account_username=None,account_passw
     cookies.set('env_flag', env_flag)  # 设置测试环境
     cookies.set("env_num", env_num)  # 设置环境号
     return cookies
-def get_wechat_ggx_cookies(env_flag,env_num,account_username=None,account_passwd=None):
+def get_wechat_ggx_cookies(env_flag, env_num, account_username=None, account_passwd=None):
     """微信罐罐熊小程序登录"""
     session = requests.Session()
     request_retry = requests.adapters.HTTPAdapter(max_retries=3)
@@ -296,9 +321,13 @@ def get_wechat_ggx_cookies(env_flag,env_num,account_username=None,account_passwd
     cookies.set("name","mp-bear")
     session.cookies = cookies
     if env_flag=="beta":
-        r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
+        r = redis.Redis(host = GetParams.beta_redis_host,
+                        port = GetParams.beta_redis_port,
+                        password = GetParams.passwd)
     else:
-        r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
+        r = redis.Redis(host = GetParams.stage_prod_redis_host,
+                        port = GetParams.stage_prod_redis_port,
+                        password = GetParams.passwd)
     r.set("code_6_%s"%(account_username),"1234561","60")
     url = r"http://wap.yunshuxie.com/v1/mini/login.htm"
     username = account_username if account_username else "60000007001"  # 默认账号
@@ -319,11 +348,25 @@ def get_wechat_teaco_cookies(env_flag,env_num,account_username=None,account_pass
     cookies.set('env_flag', env_flag)  # 设置测试环境
     cookies.set("env_num", env_num)  # 设置环境号
     if env_flag=="beta":
-        db = pymysql.connect("172.17.1.239", "ysx_beta_writer", "rzcXYilPKauGMCIz1dQ3AOzzO7Y-", "ysx_teaching_community", port=3317, charset='utf8')
-        r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password")
+        db = pymysql.connect(host = GetParams.beta_mysql_host,
+                             user = GetParams.beta_mysql_user,
+                             password = GetParams.beta_mysql_pwd,
+                             database = "ysx_teaching_community",
+                             port = GetParams.beta_mysql_port,
+                             harset = 'utf8')
+        r = redis.Redis(host = GetParams.beta_redis_host,
+                        port = GetParams.beta_redis_port,
+                        password = GetParams.passwd)
     else:
-        db = pymysql.connect("172.17.1.42", "ysx_prod_writer", "RIdqXTBJyQmK8yBqmytnE69OOM1-", "ysx_teaching_community", port=3307, charset='utf8')
-        r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password")
+        db = pymysql.connect(host = GetParams.stage_prod_mysql_host,
+                             user = GetParams.stage_prod_mysql_user,
+                             password = GetParams.stage_prod_mysql_pwd,
+                             database = "ysx_teaching_community",
+                             port = GetParams.stage_prod_mysql_host,
+                             charset = 'utf8')
+        r = redis.Redis(host = GetParams.stage_prod_redis_host,
+                        port = GetParams.stage_prod_redis_port,
+                        password = GetParams.passwd)
     if account_username:
         cursor = db.cursor()
         cursor.execute("select id from ysx_user where wechat_nick='{wechat_nick}'".format(wechat_nick=account_username))
@@ -353,9 +396,13 @@ def get_adm_single_cookies(env_flag,env_num,account_username=None,account_passwd
     dict_resp = json.loads(resp.text, encoding="utf-8")
     tokenId = dict_resp["data"]["tokenId"]
     if env_flag == "beta":
-        r = redis.Redis(host="172.17.1.81", port=6389, password="yunshuxie1029Password",db=1)
+        r = redis.Redis(host = GetParams.beta_redis_host,
+                        port = GetParams.beta_redis_port,
+                        password = GetParams.passwd,db=1)
     else:
-        r = redis.Redis(host="172.17.1.44", port=6379, password="yunshuxie1029Password",db=1)
+        r = redis.Redis(host = GetParams.stage_prod_redis_host,
+                        port = GetParams.stage_prod_redis_port,
+                        password=GetParams.passwd,db=1)
     captch = r.get(tokenId)
     login_url = "/auth/login"
     pwd = account_passwd if account_passwd else "123456"
@@ -429,7 +476,6 @@ def get_cookies(project,env_flag,env_num,account_username=None,account_passwd=No
         cookie = {"env_flag": env_flag, "env_num": env_num}
     else:
         cookie = {"env_flag":env_flag,"env_num":env_num}
-
     return cookie
 
 if __name__ == "__main__":

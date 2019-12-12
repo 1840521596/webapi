@@ -2,34 +2,11 @@
 #-*-coding:utf-8 -*-
 ###_author_:guohongjie
 ###封装接口测试登录前置
-from app.base.pythonProject.base.getCookies import *
+from app.base.pythonProject.base.getCookies import get_cookies
 def loginIn(env_flag,env_num, account_project,
             account_username,account_passwd):
     """传入登录项目(中文)/测试环境&环境号码/登录账号密码,返回登录cookies"""
-    if account_project == "云舒写首页":
-        new_cookies = get_wacc_home_cookie(env_flag,env_num, account_username,account_passwd).get_dict()
-    elif account_project == "云舒写后台管理系统":
-        new_cookies = get_wacc_admin_cookie(env_flag,env_num, account_username,account_passwd).get_dict()
-    elif account_project == "云舒写CRM系统":
-        new_cookies = get_ysx_crm_cookie(env_flag,env_num,  account_username,account_passwd).get_dict()
-    elif account_project == "简章系统":
-        new_cookies = get_wacc_tortoise_cookie(env_flag,env_num,  account_username,account_passwd).get_dict()
-    elif account_project == "新商品详情系统" or account_project == "新订单支付系统":
-        new_cookies = get_wacc_bird_cookie(env_flag,env_num,  account_username,account_passwd).get_dict()
-    elif account_project in ["罐罐熊APP","云舒写APP"]:
-        new_cookies = get_app_cookie(account_project,env_flag,env_num,  account_username,account_passwd).get_dict()
-    elif account_project == "陪你阅读陪你写作":
-        new_cookies = get_wechat_cookie(env_flag,env_num,  account_username,account_passwd).get_dict()
-    elif account_project == "罐罐熊练字课微信小程序":
-        new_cookies = get_wechat_ggx_cookies(env_flag,env_num, account_username,account_passwd).get_dict()
-    elif account_project == "云舒写大语文合作与推广":
-        new_cookies = get_wechat_capth_cookie(env_flag,env_num, account_username,account_passwd).get_dict()
-    elif account_project == "教师端资料库小程序":
-        new_cookies = get_wechat_teaco_cookies(env_flag,env_num, account_username, account_username,account_passwd).get_dict()
-    elif account_project == "单点登录系统admin平台":
-        new_cookies = get_adm_single_cookies(env_flag,env_num, account_username,account_passwd).get_dict()
-    else:
-        new_cookies = {"env_flag":env_flag,"env_num":env_num}
+    new_cookies = get_cookies(account_project,env_flag,env_num,account_username,account_passwd)
     return new_cookies
 
 def replace_cn(str_params):

@@ -56,6 +56,20 @@ def lod():
 class Config(object):
 	JOBS = [ ]
 	SCHEDULER_API_ENABLED = True
+class SystemConfig(object):
+	beta_redis_host = "172.17.1.81"
+	beta_redis_port = 6389
+	stage_prod_redis_host = "172.17.1.44"
+	stage_prod_redis_port = 6379
+	passwd = "yunshuxie1029Password"
+	beta_mysql_host = "172.17.1.239"
+	beta_mysql_port = 3317
+	beta_mysql_user = "ysx_beta_writer"
+	beta_mysql_pwd = "rzcXYilPKauGMCIz1dQ3AOzzO7Y-"
+	stage_prod_mysql_host = "172.17.1.42"
+	stage_prod_mysql_user = "ysx_prod_writer"
+	stage_prod_mysql_port = 3307
+	stage_prod_mysql_pwd = "RIdqXTBJyQmK8yBqmytnE69OOM1-"
 config = {
     'testing': TestingConfig,
     'production': Project,
