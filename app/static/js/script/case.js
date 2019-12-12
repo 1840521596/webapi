@@ -560,14 +560,14 @@ function http_test () {
     var case_host=$("#case_host").val();
     var case_url=$("#case_url").val();
     var method=$("#method").find("option:selected").val();
+    var islogin=$("#check2").is(':checked');
+    var account_project=$("#account_project").find("option:selected").val();
+    var account_username=$("#account_username").val();
+    var account_passwd=$("#account_passwd").val();
     if (method=="GET"){
         var api_data=$("#get_params").val();
         var api_headers=$("#get_headers").val();
         var api_cookies=$("#get_cookies").val();
-        var islogin=$("#check2").is(':checked');
-        var account_project=$("#account_project").find("option:selected").val();
-        var account_username=$("#account_username").val();
-        var account_passwd=$("#account_passwd").val();
         $.ajax({
             url: "/case_http_test",
             type: "post",
@@ -585,25 +585,40 @@ function http_test () {
             }
         }).done(function (result) {
             if (result.code == "200")
-            {var wc = result.test_datas;
-                alert("登录信息:"+result.login_msg);
-                alert(wc);
-               // $("#RS").html("");
-                $("#RS").html(wc);
+            {
+                if (islogin){
+                    alert("登录信息:"+result.login_msg+"\n"+result.test_datas);
+                    var text = "登录信息:\n      登录项目:"+account_project+'\n'+"      登录账号:"+account_username+
+                            "\n"+"      登录状态:"+result.login_msg+
+                            '\n'+"接口测试信息:"+"\n"+ "      请求返回:"+"\n"+result.test_datas;
+                    $("#RS").html(text);
+                }
+                else{
+                    alert(result.test_datas);
+                    var text = "接口测试信息:"+"\n"+ "      请求返回:"+"\n"+result.test_datas;
+                    $("#RS").html(text);
+                }
+
               }
             else{
-                alert(result.code);
-                alert(result.login_msg)
+                if (islogin){
+                    alert("登录信息:"+result.login_msg+"\n"+result.test_datas);
+                    var text = "登录信息:\n      登录项目:"+account_project+'\n'+"      登录账号:"+account_username+
+                            "\n"+"      登录状态:"+result.login_msg+
+                            '\n'+"接口测试信息:"+"\n"+ "      请求返回:"+"\n"+result.test_datas;
+                    $("#RS").html(text);
+                }
+                else{
+                    alert(result.test_datas);
+                    var text = "接口测试信息:"+"\n"+ "      请求返回:"+"\n"+result.test_datas;
+                    $("#RS").html(text);
+                }
                 }
         });}
     else if (method=="POST") {
         var api_data = $("#post_params").val();
         var api_headers = $("#post_headers").val();
         var api_cookies = $("#post_cookies").val();
-        var islogin=$("#check2").is(':checked');
-        var account_project=$("#account_project").find("option:selected").val();;
-        var account_username=$("#account_username").val();
-        var account_passwd=$("#account_passwd").val();
         $.ajax({
             url: "/case_http_test",
             type: "post",
@@ -621,12 +636,34 @@ function http_test () {
             }
         }).done(function (result) {
             if (result.code == "200")
-            {var wc = result.datas;
-                alert(wc);
-               // $("#RS").html("");
-                $("#RS").html(wc);
-            }
-            else{alert(result.code,result.datas);}
+            {
+                if (islogin){
+                    alert("登录信息:"+result.login_msg+"\n"+result.test_datas);
+                    var text = "登录信息:\n      登录项目:"+account_project+'\n'+"      登录账号:"+account_username+
+                            "\n"+"      登录状态:"+result.login_msg+
+                            '\n'+"接口测试信息:"+"\n"+ "      请求返回:"+"\n"+result.test_datas;
+                    $("#RS").html(text);
+                }
+                else{
+                    alert(result.test_datas);
+                    var text = "接口测试信息:"+"\n"+ "      请求返回:"+"\n"+result.test_datas;
+                    $("#RS").html(text);
+                }
+              }
+            else{
+                if (islogin){
+                    alert("登录信息:"+result.login_msg+"\n"+result.test_datas);
+                    var text = "登录信息:\n      登录项目:"+account_project+'\n'+"      登录账号:"+account_username+
+                            "\n"+"      登录状态:"+result.login_msg+
+                            '\n'+"接口测试信息:"+"\n"+ "      请求返回:"+"\n"+result.test_datas;
+                    $("#RS").html(text);
+                }
+                else{
+                    alert(result.test_datas);
+                    var text = "接口测试信息:"+"\n"+ "      请求返回:"+"\n"+result.test_datas;
+                    $("#RS").html(text);
+                }
+                }
         });}
 };
 function http_upload_test() {
@@ -1062,18 +1099,23 @@ function changeTheme(data,api_pid) {
         _td.eq(6).find("option[value="+data[5]+"]").prop("selected",true);     //method
         _td.eq(7).find("input").val(data[6]);    //预期结果
         document.getElementById("check2").checked=data[10];    //是否登录
-        $("#account_project").find("option[value="+data[11]+"]").prop("selected",true);    //登录环境
+        if (data[11]){
+            $("#account_project").find("option[value="+data[11]+"]").prop("selected",true);
+        }
+        else{
+            $("#account_project").find("option[value=None]").prop("selected",true);
+          }//登录环境
         $("#account_username").val(data[12]);    //登录账号
         $("#account_passwd").val(data[13]);    //登录密码
         document.getElementById("check_assert").checked=data[14];
         $("#assert_value").val(data[15]);    //登录环境
         if (data[10]){
-        $("#account_project").css('disabled',false);
+        $("#account_project").attr('disabled',false);
         $("#account_username").attr('disabled',false);
         $("#account_passwd").attr('disabled',false);
         }
         else{
-        $("#account_project").css('disabled',true);
+        $("#account_project").attr('disabled',true);
         $("#account_username").attr('disabled',true);
         $("#account_passwd").attr('disabled',true);
         }

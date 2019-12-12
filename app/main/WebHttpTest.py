@@ -46,7 +46,7 @@ def case_http_test():
             login_resp_msg = login_resp["msg"]
             new_cookies = login_resp["cookies"]
             if login_resp_code != 200:
-                response = make_response(jsonify({"code": 400, "test_datas": "Login Failed","login_msg": login_resp_msg}))
+                response = make_response(jsonify({"code": 400, "test_datas": "Test Failed","login_msg": login_resp_msg}))
                 return response
             else:
                 if method == "POST":
