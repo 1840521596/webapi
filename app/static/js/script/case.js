@@ -585,12 +585,16 @@ function http_test () {
             }
         }).done(function (result) {
             if (result.code == "200")
-            {var wc = result.datas;
+            {var wc = result.test_datas;
+                alert("登录信息:"+result.login_msg);
                 alert(wc);
                // $("#RS").html("");
                 $("#RS").html(wc);
               }
-            else{alert(result.code,result.datas);}
+            else{
+                alert(result.code);
+                alert(result.login_msg)
+                }
         });}
     else if (method=="POST") {
         var api_data = $("#post_params").val();

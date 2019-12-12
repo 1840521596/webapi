@@ -32,6 +32,7 @@ def case_http_test():
         account_username = request.form["account_username"].strip()
         account_passwd = request.form["account_passwd"].strip()
         url = case_host + case_url
+        login_resp_msg = None
         if account_project.upper() == "NONE" or account_project=="":
             account_project = None
         if account_username.upper() == "NONE" or account_username=="":
@@ -39,63 +40,28 @@ def case_http_test():
         if account_passwd.upper() == "NONE" or account_passwd=="":
             account_passwd = None
         if islogin.upper() == "TRUE" or islogin==True:  #勾选需要登录后获取登录cookies
-            new_cookies = loginIn(cookies["env_flag"], cookies["env_num"], account_project=account_project ,
+            login_resp = loginIn(cookies["env_flag"], cookies["env_num"], account_project=account_project ,
                                   account_username=account_username,account_passwd=account_passwd)
-            if case_url in ["/auth/loginCheck"]:
-                params = {}
-                params["sessionId"] = new_cookies["sso_sessionid"]
-            if case_url in ["/auth/logout"]:
-                params["sessionId"] = new_cookies["sso_sessionid"]
+            login_resp_code = login_resp["code"]
+            login_resp_msg = login_resp["msg"]
+            new_cookies = login_resp["cookies"]
+            if login_resp_code != 200:
+                response = make_response(jsonify({"code": 400, "test_datas": "Login Failed","login_msg": login_resp_msg}))
+                return response
+            else:
+                if method == "POST":
+                    resp = postFunction(url, params, headers, new_cookies)
+                elif method == "GET":
+                    resp = getFunction(url, params, headers, new_cookies)
         else:
             new_cookies = cookies
-        if method == "POST":
-            resp = postFunction(url, params, headers, new_cookies)
-        elif method == "GET":
-            resp = getFunction(url, params, headers, new_cookies)
-        # if isUpload=="false":  #不需要上传文件
-        #     if method=="POST":
-        #         resp = postFunction(url,params,headers,new_cookies)
-        #     elif method=="GET":
-        #         resp = getFunction(url,params,headers,new_cookies)
-        # else:  #已上传文件,进入界面点击测试
-        #     file_name = db.session.query(Case_Http_File.file_name,
-        #                                  Case_Http_File.content_type,
-        #                                  Case_Http_File.file_desc,
-        #                                  Case_Http_File.case_api_id).filter_by(case_api_id=targetId).first()
-        #     if file_name:
-        #         file_1 = open("./app/upload_file/%s_%s"%(file_name[3],file_name[0]))
-        #         upload_file = {file_name[2]: (file_name[0], file_1, file_name[1])}
-        #         if method=="POST":
-        #             resp = postFunctionFile(url,params,headers,new_cookies,upload_file)
-        #         elif method=="GET":
-        #             resp = getFunctionFile(url,params,headers,new_cookies,upload_file)
-        #     else:
-        #         raise Exception,"当前接口未存在测试文件,请重新上传后测试！"
-        # if project_cn == u"CRM绩效规则重构":
-        #     resp_dict = json.loads(resp, encoding="utf8")
-        #     if resp_dict["returnCode"] != "0" and resp_dict["returnCode"] != 0:
-        #         resp = resp_dict["returnMsg"]
-        #     else:
-        #         try:
-        #             if case_url == "/v6/order/face_course/post/create_order.htm":
-        #                 order_sn = update_order_status(resp)
-        #                 resp = order_sn
-        #             else:
-        #                 phone = params["phone"]
-        #                 phId = params["phId"]
-        #                 pId = params["pId"]
-        #                 order_sn = update_order_status(resp)  #更改订单状态=2,call_back＝当前时间,返回order_sn　字段
-        #                 if pId in ["7698","8326","8327","8215","7996"]:    #罐罐熊正式课&练字课商品ID,并对应授权
-        #                     msg = bearJoinCategoryProduct(phone,phId,cookies,order_sn)
-        #                 else:
-        #                     msg = joinCategoryProduct(phone,phId,cookies,order_sn)    #传入order_sn字段,查找　memberId,orderId
-        #
-        #                 resp = order_sn + ":" + msg
-        #         except Exception as e:
-        #             resp = str(e)
+            if method == "POST":
+                resp = postFunction(url, params, headers, new_cookies)
+            elif method == "GET":
+                resp = getFunction(url, params, headers, new_cookies)
     except Exception as e:
         resp = str(e)
-    response = make_response(jsonify({"code":200,"datas":cgi.escape(resp)}))  # 返回response
+    response = make_response(jsonify({"code":200,"test_datas":cgi.escape(resp),"login_msg":login_resp_msg}))  # 返回response
     return response
 @test.route('/doSelfSchedule',methods = ['GET'])
 def doSelfSchedule():
