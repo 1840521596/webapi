@@ -31,3 +31,14 @@ def loginIn(env_flag,env_num, account_project,
     else:
         new_cookies = {"env_flag":env_flag,"env_num":env_num}
     return new_cookies
+
+def replace_cn(str_params):
+    """修改全角字符"""
+    new_str_params = str_params.replace("＂",'"')
+    new_str_params1 = new_str_params.replace("＂",'"')
+    new_str_params2 = new_str_params1.replace("＇","'")
+    new_str_params3 = new_str_params2.replace("，",",")
+    new_str_params4 = new_str_params3.replace("｛","{")
+    new_str_params5 = new_str_params4.replace("｝","}")
+    new_str_params6 = new_str_params5.replace("：",":")
+    return new_str_params6

@@ -4,6 +4,7 @@ from flask import render_template,request,make_response,jsonify,session
 from app import db
 from app.config.api_models import Project, Case_Http_API ,Case_Http_File,Case_Http_Schedule,Login_Base_Project
 from app.config.user_models import User
+from app.config.project_loginIn import replace_cn
 import json
 @views.route('/addHttpProject',methods=['POST','GET'])
 def add_project():
@@ -12,8 +13,8 @@ def add_project():
         projects = db.session.query(Project.project).all()
         msg = {"datas":projects,"code":200}
     elif request.method == 'POST':
-        projects = request.form['project']
-        descript = request.form['descript']
+        projects = request.form['project'].strip()
+        descript = request.form['descript'].strip()
         try:
             datas = Project(project=projects,description=descript)
             db.session.add(datas)
@@ -38,22 +39,22 @@ def http_select():
 @views.route('/httpInsert',methods=['POST'])
 def http_insert():
     """增加测试用例步骤接口"""
-    project = request.form['project']
-    case_api = request.form['case_api']
-    case_desc = request.form['description']
-    case_host = request.form['case_host']
-    case_url = request.form['case_url']
+    project = request.form['project'].strip()
+    case_api = request.form['case_api'].strip()
+    case_desc = request.form['description'].strip()
+    case_host = request.form['case_host'].strip()
+    case_url = request.form['case_url'].strip()
     method = request.form['method']
-    response = replace_cn(request.form['response'])
-    params = replace_cn(request.form["params"])
-    headers = replace_cn(request.form["headers"])
-    cookies = replace_cn(request.form["cookies"])
+    response = replace_cn(request.form['response'].strip())
+    params = replace_cn(request.form["params"].strip())
+    headers = replace_cn(request.form["headers"].strip())
+    cookies = replace_cn(request.form["cookies"].strip())
     islogin = request.form["islogin"]
-    account_project = request.form["account_project"]
-    account_username = request.form["account_username"]
-    account_passwd = request.form["account_passwd"]
+    account_project = request.form["account_project"].strip()
+    account_username = request.form["account_username"].strip()
+    account_passwd = request.form["account_passwd"].strip()
     check_assert = request.form["check_assert"]
-    assert_value = request.form['assert_value']
+    assert_value = request.form['assert_value'].strip()
     tester = session["userName"]
     test_group = session["deptName"]
     test_env = json.loads(cookies,encoding="utf8")["env_flag"]
@@ -140,21 +141,21 @@ def httpSearch():
 @views.route('/httpUpdate',methods=['GET','POST'])
 def httpUpdate():
     """用例更新操作接口"""
-    pid = request.form['pid']
-    project = request.form['project']
-    case_api = request.form['case_api']
-    description = request.form['description']
-    case_host = request.form['case_host']
-    case_url = request.form['case_url']
+    pid = request.form['pid'].strip()
+    project = request.form['project'].strip()
+    case_api = request.form['case_api'].strip()
+    description = request.form['description'].strip()
+    case_host = request.form['case_host'].strip()
+    case_url = request.form['case_url'].strip()
     method = request.form['method']
-    params = replace_cn(request.form['params'])
-    response = replace_cn(request.form['response'])
-    headers = replace_cn(request.form['headers'])
-    cookies = replace_cn(request.form['cookies'])
+    params = replace_cn(request.form['params'].strip())
+    response = replace_cn(request.form['response'].strip())
+    headers = replace_cn(request.form['headers'].strip())
+    cookies = replace_cn(request.form['cookies'].strip())
     islogin = request.form["islogin"]
-    account_project = request.form["account_project"]
-    account_username = request.form["account_username"]
-    account_passwd = request.form["account_passwd"]
+    account_project = request.form["account_project"].strip()
+    account_username = request.form["account_username"].strip()
+    account_passwd = request.form["account_passwd"].strip()
     check_assert = request.form["check_assert"]
     assert_value = request.form['assert_value']
     tester = session["userName"]
@@ -211,8 +212,8 @@ def httpStatus():
 def httpDelete():
     """删除测试接口"""
     pid = request.args.get("pid")
-    project = request.args.get('project')
-    case_api = request.args.get('case_api')
+    project = request.args.get('project').strip()
+    case_api = request.args.get('case_api').strip()
     tester = session["userName"]
     cha_datas = Case_Http_API.query.filter_by(id=pid).first()
     if cha_datas.tester != tester:
@@ -232,9 +233,9 @@ def httpDelete():
 @views.route('/httpCopy',methods=["GET"])
 def httpCopy():
     pid = request.args.get("pid")
-    case_api = request.args.get("case_api")
-    copy_project_choice = request.args.get("copy_project_choice")
-    copy_test_env = request.args.get("copy_test_env")
+    case_api = request.args.get("case_api").strip()
+    copy_project_choice = request.args.get("copy_project_choice").strip()
+    copy_test_env = request.args.get("copy_test_env").strip()
     tester = session["userName"]
     test_group = session["deptName"]
     copy_datas = Case_Http_API.query.filter(Case_Http_API.id==pid,Case_Http_API.case_api==case_api).first()
@@ -408,12 +409,3 @@ def save_upload_data():
         resp = {'datas': str(e), 'code': '401'}
     return make_response(jsonify(resp))
 
-def replace_cn(str_params):
-    new_str_params = str_params.replace("＂",'"')
-    new_str_params1 = new_str_params.replace("＂",'"')
-    new_str_params2 = new_str_params1.replace("＇","'")
-    new_str_params3 = new_str_params2.replace("，",",")
-    new_str_params4 = new_str_params3.replace("｛","{")
-    new_str_params5 = new_str_params4.replace("｝","}")
-    new_str_params6 = new_str_params5.replace("：",":")
-    return new_str_params6

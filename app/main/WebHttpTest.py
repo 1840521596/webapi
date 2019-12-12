@@ -2,7 +2,7 @@
 from app.main import test
 from flask import request,make_response,jsonify,session,url_for
 from app.base.pythonProject.base.getCookies import *
-from app.config.project_loginIn import loginIn
+from app.config.project_loginIn import loginIn,replace_cn
 import sys
 import json
 from app.config.sql import betaDB,betaDB_order
@@ -20,17 +20,17 @@ def case_http_test():
     :param method:  请求方式
     :return:  Response
     """
-    case_host = request.form["case_host"]
-    case_url = request.form["case_url"]
-    method = request.form["method"]
+    case_host = request.form["case_host"].strip()
+    case_url = request.form["case_url"].strip()
+    method = request.form["method"].strip()
     try:
-        params = eval(request.form["params"])
-        headers = eval(request.form["headers"])
-        cookies = eval(request.form["cookies"])
+        params = eval(replace_cn(request.form["params"].strip()))
+        headers = eval(replace_cn(request.form["headers"].strip()))
+        cookies = eval(replace_cn(request.form["cookies"].strip()))
         islogin = request.form["islogin"]
         account_project = request.form["account_project"]
-        account_username = request.form["account_username"]
-        account_passwd = request.form["account_passwd"]
+        account_username = request.form["account_username"].strip()
+        account_passwd = request.form["account_passwd"].strip()
         url = case_host + case_url
         if account_project.upper() == "NONE" or account_project=="":
             account_project = None
