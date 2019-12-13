@@ -14,13 +14,15 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
     """
     resp_log = {}
     session = requests.Session()
-    cookies = get_ysx_crm_cookie(env_flag,env_num)
+    resp_cookies = get_ysx_crm_cookie(env_flag,env_num)
+    if resp_cookies["code"]!=200:
+        raise Exception,"登录失败,请检查登录配置"
     header = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36",
         "Accept": "application/json, text/javascript, */*; q=0.01", "Accept-Encoding": "gzip, deflate, br",
         "Accept-Language": "zh-CN,zh;q=0.9", "Connection": "keep-alive", "Upgrade-Insecure-Requests": "1"}
     session.headers = header
-    session.cookies = cookies
+    session.cookies = resp_cookies["cookies"]
     request_retry = requests.adapters.HTTPAdapter(max_retries=3)
     session.mount("https://", request_retry)
     session.mount("http://", request_retry)
@@ -30,10 +32,10 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
     name = "测试_自动化测试_%d"%(time.time())
     params = {"couponActivityName": name,
               "couponInstructions": "测试_自动化测试创建_%s"%(name),
-              "couponTotalAmount": "%.2f"%(float(couponPrice)*10),
+              "couponTotalAmount": "%.2f"%(float(couponPrice)*4),
               "couponSingleAmount": "{}".format(couponPrice),
-              "couponDailyLimit": "10",
-              "limitPersonReceive": "10",
+              "couponDailyLimit": "4",
+              "limitPersonReceive": "4",
               "activityStartDate": start_date,
               "activityEndDate": end_date,
               "couponType":"1","limitAmount":"","effectiveType": "2",
@@ -66,13 +68,13 @@ def coupon_test(env_flag,env_num,couponPrice,phone):
     params = {"shareKey": "","actNum": couponActivityNumber,"phone": phone,"code": ""}
     dict_coupins = {}
     coupins = []
-    header = {"Accept": "application/json, text/javascript, */*; q=0.01","Content-Type": "application/x-www-form-urlencoded; charset=UTF-8","Origin": "http://pay.yunshuxie.com","Referer": "http://pay.yunshuxie.com/coupon/coupon_test.html?shareKey=null&actNum=20190306KLHJA&clientType=1","User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
-    if env_flag=="beta":
-        get_env_num = "5"
-    else:
-        get_env_num = env_num
-    for i in range(1,6):
-        resp = requests.post(url=url,data=params,headers=header,cookies={"env_flag":env_flag,"env_num":get_env_num})
+    header = {"Accept": "application/json, text/javascript, */*; q=0.01",
+              "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+              "Origin": "http://pay.yunshuxie.com",
+              "Referer": "http://pay.yunshuxie.com/coupon/coupon_test.html?shareKey=null&actNum=20190306KLHJA&clientType=1",
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
+    for i in range(1,4):
+        resp = requests.post(url=url,data=params,headers=header,cookies={"env_flag":env_flag,"env_num":env_num})
         resp_log[u"领取代金券-第%d次"%(i)] = resp.text
         #print "领取代金券:",resp.text
         result = json.loads(re.findall("{.*}", resp.text)[0], encoding="utf8")

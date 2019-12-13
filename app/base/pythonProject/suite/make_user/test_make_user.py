@@ -7,7 +7,7 @@ import redis
 from requests_toolbelt import MultipartEncoder
 from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
 from app.base.pythonProject.base.getConfig import ReadConfig
-from app.base.pythonProject.base.getCookies import get_ysx_crm_cookie
+from app.base.pythonProject.base.getCookies import get_ysx_crm_cookie,get_wacc_admin_cookie
 logging = TestLog().getlog()
 class Ysx_Make_User(unittest.TestCase):
     """短信服务"""
@@ -45,54 +45,58 @@ class Ysx_Make_User(unittest.TestCase):
     def test_01_make_user(self):
         """make_user_admin平台创建测试用户
         """
-        url = "https://admin.yunshuxie.com/common_index/loginIn.json"#r"https://www.yunshuxie.com"+"/v5/web/account/login.htm"
-        data = {"userName": self.admin_usernmae, "pwd": self.admin_pwd,"emailVerifyCode":"ysx2019"}
-        self.resp = self.session.post(url, data=data)  # 登录admin测试环境,记录cookies
-        url = r"https://admin.yunshuxie.com/v1/admin/account/add/user.json"
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","X-Requested-With": "XMLHttpRequest","Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9","Cache-Control": "no-cache","Connection": "keep-alive","Content-Type": "multipart/form-data; boundary=----WebKitFormBoundaryF7Lcp4O5PcTcLugw"}
-        userName = ["测试_"+userName for userName in self.phoneNumList.split(",")]
-        userPhone = self.phoneNumList.split(",")
-        employeeTypes = self.employeeTypes.split(",")
-        for index in range(len(userName)):
-            datas = {"memberIcon": "", "pwd": "test123456",
-                     "email": "automation@yunshuxie.com", "weiboName": "",
-                     "nickName": userName[index], "qq": "",
-                     "interest": "", "phone":userPhone[index] , "weichatNum": "",
-                     "remark": "自动化测试",
-                     "memberType": employeeTypes[index],
-                     "ChoiceOfTeacher": "默认分组",
-                     "ChoiceOfTeacher": "默认分组",
-                     "readRole": "0", "ChoiceOfTeacher": "云舒写教育科技",
-                     "button": ""}
-            data = MultipartEncoder(datas)
-            headers["Content-Type"] = data.content_type
-            self.session.headers = headers
-            logging.info(url + lianjiefu + json.dumps(datas,ensure_ascii=False) + fengefu)
-            str_params = json.dumps(datas,ensure_ascii=False,encoding="utf8")
-            print str_params
-            self.resp = self.session.post(url, data=data)
-            print self.resp.content
-            logging.info(url + lianjiefu + self.resp.text + fengefu)
-            result = json.loads(self.resp.content)
-            assert result["returnCode"] == "0",self.msg.format(Expect="0",Really=result["returnCode"])
+        resp_cookies = get_wacc_admin_cookie(self.env_flag,self.env_num)
+        if resp_cookies['code'] != 200:
+            raise Exception,"登录失败,请检查admin登录配置!"
+        else:
+            url = r"https://admin.yunshuxie.com/v1/admin/account/add/user.json"
+            headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","X-Requested-With": "XMLHttpRequest","Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate, br","Accept-Language": "zh-CN,zh;q=0.9","Cache-Control": "no-cache","Connection": "keep-alive","Content-Type": "multipart/form-data; boundary=----WebKitFormBoundaryF7Lcp4O5PcTcLugw"}
+            userName = ["测试_"+userName for userName in self.phoneNumList.split(",")]
+            userPhone = self.phoneNumList.split(",")
+            employeeTypes = self.employeeTypes.split(",")
+            for index in range(len(userName)):
+                datas = {"memberIcon": "", "pwd": "test123456",
+                         "email": "automation@yunshuxie.com", "weiboName": "",
+                         "nickName": userName[index], "qq": "",
+                         "interest": "", "phone":userPhone[index] , "weichatNum": "",
+                         "remark": "自动化测试",
+                         "memberType": employeeTypes[index],
+                         "ChoiceOfTeacher": "默认分组",
+                         "ChoiceOfTeacher": "默认分组",
+                         "readRole": "0", "ChoiceOfTeacher": "云舒写教育科技",
+                         "button": ""}
+                data = MultipartEncoder(datas)
+                headers["Content-Type"] = data.content_type
+                self.session.headers = headers
+                logging.info(url + lianjiefu + json.dumps(datas,ensure_ascii=False) + fengefu)
+                str_params = json.dumps(datas,ensure_ascii=False,encoding="utf8")
+                print str_params
+                self.resp = self.session.post(url, data=data)
+                print self.resp.content
+                logging.info(url + lianjiefu + self.resp.text + fengefu)
+                result = json.loads(self.resp.content)
+                assert result["returnCode"] == "0",self.msg.format(Expect="0",Really=result["returnCode"])
     def test_02_add_TestUser(self):
         """make_user_CRM平台备注测试用户
         """
         url = r"https://admin.crm.yunshuxie.com/test/account/management/insert/test/account"
-        cookies = get_ysx_crm_cookie(self.env_flag,self.env_num)
+        resp_cookies = get_ysx_crm_cookie(self.env_flag,self.env_num)
         headers = {"Accept": "application/json, text/javascript, */*; q=0.01","Accept-Encoding": "gzip, deflate","Accept-Language": "zh-CN,zh;q=0.9","Cache-Control": "no-cache","Connection": "keep-alive","Content-Type": "application/x-www-form-urlencoded; charset=UTF-8","Pragma": "no-cache","Referer": "http://admin.crm.yunshuxie.com/test/account/management/goto/insert/test/account","User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36","X-Requested-With": "XMLHttpRequest"}
         self.session.headers = headers
-        self.session.cookies = cookies
-        for phone in self.phoneNumList.split(","):
-            data = {"phones": phone ,"userNames": "测试_{phone}".format(phone=phone),"employeeTypes": 0}
-            str_params = json.dumps(data, ensure_ascii=False, encoding="utf8")
-            print str_params
-            logging.info(url + lianjiefu + json.dumps(data,ensure_ascii=False) + fengefu)
-            self.resp = self.session.post(url, data=data)
-            print self.resp.content
-            logging.info(url + lianjiefu + self.resp.text + fengefu)
-            result = json.loads(self.resp.content)
-            assert result["returnCode"] == 0,self.msg.format(Expect="0",Really=result["returnCode"])
+        if resp_cookies['code'] != 200:
+            raise Exception,"登录失败,请检查登录配置"
+        else:
+            self.session.cookies = resp_cookies["cookies"]
+            for phone in self.phoneNumList.split(","):
+                data = {"phones": phone ,"userNames": "测试_{phone}".format(phone=phone),"employeeTypes": 0}
+                str_params = json.dumps(data, ensure_ascii=False, encoding="utf8")
+                print str_params
+                logging.info(url + lianjiefu + json.dumps(data,ensure_ascii=False) + fengefu)
+                self.resp = self.session.post(url, data=data)
+                print self.resp.content
+                logging.info(url + lianjiefu + self.resp.text + fengefu)
+                result = json.loads(self.resp.content)
+                assert result["returnCode"] == 0,self.msg.format(Expect="0",Really=result["returnCode"])
     @classmethod
     def tearDownClass(self):
         """测试结束后执行,断言Req==Resp

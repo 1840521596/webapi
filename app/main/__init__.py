@@ -7,5 +7,6 @@ test = Blueprint("api_test",__name__)
 views = Blueprint("views",__name__)
 mock = Blueprint("mock",__name__)
 user = Blueprint("user",__name__)
-from app.main import WebHttpIndexViews,WebHttpTest,WebIndex,WebUser,MockHttpServer,ProjectIndexViews
+from app.main import WebHttpIndexViews,WebHttpTest,\
+    WebIndex,WebUser,MockHttpServer,ProjectIndexViews,httpSuite
 

@@ -5,13 +5,14 @@ from flask import make_response,request,jsonify,url_for,redirect
 from app.main import test
 from app.base.pythonProject import run
 from app import db,redis
-from app.config.api_models import Project,Test_Env,Test_User_Reg,Case_Http_API,runSuiteProject,is_Make_User
+from app.config.api_models import Project,Test_Env,Test_User_Reg,runSuiteProject,is_Make_User
 from sqlalchemy import func
 from app.base.pythonProject.base.getConfig import s
 from app.base.pythonProject.base.couponReceive import coupon_test
 import redis as red
 import json
 from app.tasks.tasks import run_schedule_api,run_api_case
+from app.base.pythonProject.base.makeUser import makeUser_test
 import os
 @test.route("/runSuiteApi",methods=["GET"])
 def runDatasApiTest():
@@ -188,54 +189,66 @@ def runDatasApiTest_yunwei():
 		msg = {"code":400,"Msg":"执行失败","ErrorMsg":str(e)}
 	return make_response(jsonify(msg))
 @test.route("/make_user",methods=["GET"])
+# def make_user():
+# 	"""测试页面使用接口,用于创建测试账号执行
+#     	:param env_num:  测试环境编号
+#     	:param env_flag:  测试环境
+#     	:param phones: 测试手机号
+#     	:param user_role: 测试角色
+#     	:return:  msg: 执行状态
+#     	"""
+# 	env_num = request.args.get("env_num")
+# 	env_flag = request.args.get("env_flag")
+# 	phones = request.args.get("phones").split(",")
+# 	user_role = request.args.get("user_role").split(",")
+# 	try:
+# 		if phones[0]=="":
+# 			raise Exception("用户手机号不能为空！")
+# 		else:
+# 			for phone in phones:
+# 				if len(phone) != 11:
+# 					raise Exception("用户手机号需等于11位！")
+# 		if env_flag=="":
+# 			raise Exception("使用环境不能为空！")
+# 		if len(user_role) != len(phones):
+# 			raise Exception("用户手机号和用户角色数量不等！")
+#
+# 		result = run.run_yunwei_case("make_user", env_num, env_flag, "Admin 创建用户：{phones}".format(phones=",".join(phones)), "创建测试用户",
+# 									 new_phone=",".join(phones))
+# 		if result["Error"] == 0 and result["Failure"] == 0:  #成功创建用户后，数据库记录
+# 			msg = {"code": 200, "Msg": "执行成功", "url": result["report_url"],
+# 			   "Error": result["Error"], "Failure": result["Failure"], "Success": result["Success"]}
+# 			for num in range(len(phones)):
+# 				try:
+# 					if env_flag in ["stage","prod"]:
+# 						env_flag = ",".join(["stage","prod"])
+# 					datas = Test_User_Reg(phone=phones[num],type=user_role[num],env=env_flag)
+# 					db.session.add(datas)
+# 					db.session.commit()
+# 				except Exception as e:
+# 					db.session.rollback()
+# 					msg = {"code": 204, "datas": str(e)}
+# 		else:
+# 			msg = {"code": 400, "Msg": "执行失败", "url": result["report_url"],
+# 				   "Error": result["Error"], "Failure": result["Failure"], "Success": result["Success"]}
+# 	except Exception as e:
+# 		msg = {"code": 400, "Msg": "执行失败", "ErrorMsg": str(e)}
+# 	return make_response(jsonify(msg))
 def make_user():
-	"""测试页面使用接口,用于创建测试账号执行
-    	:param env_num:  测试环境编号
-    	:param env_flag:  测试环境
-    	:param phones: 测试手机号
-    	:param user_role: 测试角色
-    	:return:  msg: 执行状态
-    	"""
 	env_num = request.args.get("env_num")
 	env_flag = request.args.get("env_flag")
-	phones = request.args.get("phones").split(",")
-	user_role = request.args.get("user_role").split(",")
+	phones = request.args.get("phones")
+	user_role = request.args.get("user_role")
 	try:
-		if phones[0]=="":
-			raise Exception("用户手机号不能为空！")
-		else:
-			for phone in phones:
-				if len(phone) != 11:
-					raise Exception("用户手机号需等于11位！")
 		if env_flag=="":
 			raise Exception("使用环境不能为空！")
-		if len(user_role) != len(phones):
-			raise Exception("用户手机号和用户角色数量不等！")
-		redis.set("make_user_env_flag",env_flag)
-		redis.set("make_user_env_num", env_num)
-		redis.set("make_user_phones",",".join(phones))
-		redis.set("make_user_employeetypes",",".join(user_role))
-		result = run.run_yunwei_case("make_user", env_num, env_flag, "Admin 创建用户：{phones}".format(phones=",".join(phones)), "创建测试用户",
-									 new_phone=",".join(phones))
-		if result["Error"] == 0 and result["Failure"] == 0:  #成功创建用户后，数据库记录
-			msg = {"code": 200, "Msg": "执行成功", "url": result["report_url"],
-			   "Error": result["Error"], "Failure": result["Failure"], "Success": result["Success"]}
-			for num in range(len(phones)):
-				try:
-					if env_flag in ["stage","prod"]:
-						env_flag = ",".join(["stage","prod"])
-					datas = Test_User_Reg(phone=phones[num],type=user_role[num],env=env_flag)
-					db.session.add(datas)
-					db.session.commit()
-				except Exception as e:
-					db.session.rollback()
-					msg = {"code": 204, "datas": str(e)}
 		else:
-			msg = {"code": 400, "Msg": "执行失败", "url": result["report_url"],
-				   "Error": result["Error"], "Failure": result["Failure"], "Success": result["Success"]}
+			resp_msg = makeUser_test(env_flag,env_num,phones,user_role)
+			msg = {"code":200,"msg":"执行成功","datas":resp_msg}
 	except Exception as e:
-		msg = {"code": 400, "Msg": "执行失败", "ErrorMsg": str(e)}
+		msg = {"code": 400, "msg":"执行失败","datas":str(e)}
 	return make_response(jsonify(msg))
+
 @test.route("/get_coupon",methods=["GET"])
 def get_coupon():
 	"""
@@ -283,68 +296,68 @@ def searchEnvNum():
 
 
 
-
-@test.route("/runSchedule",methods=["POST"])
-def run_schedule():
-	"""
-	运行web端录入接口调度
-	:param: project 测试项目
-	:return:
-	"""
-	project = request.form["project"]#"云舒写后台管理系统" #request.args.get("project").strip()
-	developer = request.form["developer"]
-	timer =  request.form["timer"] #request.args.get("num") if request.args.get("num") else None
-	cookies = request.form["cookies"]
-	api_count = db.session.query(Case_Http_API.id).filter_by(project=project).count()
-	api_case_count = db.session.query(Case_Http_API.id).filter_by(project=project,scheduling=1).count()
-	if timer=="None" or timer==None:
-		timer = 0
-	try:
-		if not api_count:
-			raise Exception, u"该项目下未存在测试用例"
-		if not api_case_count:
-			raise Exception, u"该项目下未存在调度用例"
-		origin = "run_schedule"    #来源标志为集成调度
-		task = run_api.apply_async(args=[origin,project,cookies,developer],countdown=int(timer))
-		msg = {"code":"200","msg":"操作成功"}
-		return jsonify(msg), 202, {'Location': url_for('api_test.taskstatus', task_id=task.id)}
-	except Exception as e:
-		msg = {"code":"400","msg":"操作失败","reason":str(e)}
-	return make_response(jsonify(msg))
-
-
-
-@test.route('/status/<task_id>')
-def taskstatus(task_id):
-	task = run_api.AsyncResult(task_id)
-	if task.state == 'PENDING':
-		response = {
-			'state': task.state,
-			'current': 0,
-			'total': 1,
-			'status': u'启动中...'
-		}
-	elif task.state != 'FAILURE':
-		response = {
-			'state': task.state,
-			'current': task.info.get('current', 0),
-			'total': task.info.get('total', 1),
-			'status': task.info.get('status', ''),
-			'pass_status':task.info.get('pass_status',''),
-			'datas':task.info.get('data_list','')
-		}
-		if 'result' in task.info:
-			response['result'] = task.info['result']
-	else:
-		response = {
-			'state': task.state,
-			'current': 1,
-			'total': 1,
-			'status': str(task.info),  # this is the exception raised
-			'errorMsg':str(task.traceback)
-		}
-	return jsonify(response)
-
+#
+# @test.route("/runSchedule",methods=["POST"])
+# def run_schedule():
+# 	"""
+# 	运行web端录入接口调度
+# 	:param: project 测试项目
+# 	:return:
+# 	"""
+# 	project = request.form["project"]#"云舒写后台管理系统" #request.args.get("project").strip()
+# 	developer = request.form["developer"]
+# 	timer =  request.form["timer"] #request.args.get("num") if request.args.get("num") else None
+# 	cookies = request.form["cookies"]
+# 	api_count = db.session.query(Case_Http_API.id).filter_by(project=project).count()
+# 	api_case_count = db.session.query(Case_Http_API.id).filter_by(project=project,scheduling=1).count()
+# 	if timer=="None" or timer==None:
+# 		timer = 0
+# 	try:
+# 		if not api_count:
+# 			raise Exception, u"该项目下未存在测试用例"
+# 		if not api_case_count:
+# 			raise Exception, u"该项目下未存在调度用例"
+# 		origin = "run_schedule"    #来源标志为集成调度
+# 		task = run_api.apply_async(args=[origin,project,cookies,developer],countdown=int(timer))
+# 		msg = {"code":"200","msg":"操作成功"}
+# 		return jsonify(msg), 202, {'Location': url_for('api_test.taskstatus', task_id=task.id)}
+# 	except Exception as e:
+# 		msg = {"code":"400","msg":"操作失败","reason":str(e)}
+# 	return make_response(jsonify(msg))
+#
+#
+#
+# @test.route('/status/<task_id>')
+# def taskstatus(task_id):
+# 	task = run_api.AsyncResult(task_id)
+# 	if task.state == 'PENDING':
+# 		response = {
+# 			'state': task.state,
+# 			'current': 0,
+# 			'total': 1,
+# 			'status': u'启动中...'
+# 		}
+# 	elif task.state != 'FAILURE':
+# 		response = {
+# 			'state': task.state,
+# 			'current': task.info.get('current', 0),
+# 			'total': task.info.get('total', 1),
+# 			'status': task.info.get('status', ''),
+# 			'pass_status':task.info.get('pass_status',''),
+# 			'datas':task.info.get('data_list','')
+# 		}
+# 		if 'result' in task.info:
+# 			response['result'] = task.info['result']
+# 	else:
+# 		response = {
+# 			'state': task.state,
+# 			'current': 1,
+# 			'total': 1,
+# 			'status': str(task.info),  # this is the exception raised
+# 			'errorMsg':str(task.traceback)
+# 		}
+# 	return jsonify(response)
+#
 
 
 
