@@ -29,7 +29,7 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
         """用户登录-我的作品展示列表<br>http://mobile.yunshuxie.com/v1/bear/student/myWorkList.htm<br/>{"type":"4"全部作品,"page":"1"}"""
         url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/myWorkList.htm"
         params = {"type": "4", "page": "1"}
-        cookies = get_app_cookie(self.env_flag, self.env_num, user=self.phone)
+        cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, user=self.phone)
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -48,7 +48,7 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
         """用户登录-我的作品展示列表<br>http://mobile.yunshuxie.com/v1/bear/student/myWorkList.htm<br/>{"type":"3"优秀作品,"page":"1"}"""
         url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/myWorkList.htm"
         params = {"type": "3", "page": "1"}
-        cookies = get_app_cookie(self.env_flag, self.env_num, user=self.phone)
+        cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, user=self.phone)
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -67,7 +67,7 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
         """用户登录-我的作品展示列表<br>http://mobile.yunshuxie.com/v1/bear/student/myWorkList.htm<br/>{"type":"2"未点评,"page":"1"}"""
         url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/myWorkList.htm"
         params = {"type": "2", "page": "1"}
-        cookies = get_app_cookie(self.env_flag, self.env_num, user=self.phone)
+        cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, user=self.phone)
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -86,7 +86,7 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
         """用户登录-我的作品展示列表<br>http://mobile.yunshuxie.com/v1/bear/student/myWorkList.htm<br/>{"type":"1"已点评,"page":"1"}"""
         url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/myWorkList.htm"
         params = {"type": "1", "page": "1"}
-        cookies = get_app_cookie(self.env_flag, self.env_num, user=self.phone)
+        cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, user=self.phone)
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
@@ -104,7 +104,7 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
     def test_05_bear_student_summary(self):
         """用户登录-查询总结语列表<br>http://mobile.yunshuxie.com/v1/bear/student/summary.htm<br/>"""
         url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/myWorkList.htm"
-        cookies = get_app_cookie(self.env_flag, self.env_num, user=self.phone)
+        cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, user=self.phone)
         params = {"type": "4"}
         self.resp = requests.post(url=url, headers=self.header, cookies=cookies, data=params)
         print self.resp.text
@@ -121,7 +121,7 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
         """用户登录-评价老师接口<br>http://mobile.yunshuxie.com/v1/bear/student/commentTeacher.htm<br/>"""
         url = r"http://mobile.yunshuxie.com" + r"/v1/bear/student/myWorkList.htm"
         params = {"type": "1", "page": "1"}  # 查看教师已点评的课程作品
-        cookies = get_app_cookie(self.env_flag, self.env_num, user=self.phone)
+        cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, user=self.phone)
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         self.resp = requests.post(url=url, headers=self.header, cookies=cookies, data=params)
         result = json.loads(self.resp.text, encoding="utf8")
@@ -152,7 +152,7 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
             print str_params
             #logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
-            cookies = get_app_cookie(self.env_flag, self.env_num, user=self.phone)
+            cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, user=self.phone)
             self.resp = requests.post(url=url, headers=self.header, cookies=cookies, data=params)
             print self.resp.text
             result = json.loads(self.resp.text, encoding="utf8")
@@ -177,7 +177,7 @@ class BearWord_Student_and_Teacher_Test(unittest.TestCase):
             # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
             print str_params
-            cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+            cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, self.phone)
             self.session.cookies = cookies
             self.resp = self.session.post(url=url,data=params)
             print self.resp.text

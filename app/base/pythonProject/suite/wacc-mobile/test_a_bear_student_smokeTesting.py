@@ -5,7 +5,7 @@ import unittest
 import json
 from app.base.pythonProject.base.log import TestLog,fengefu,lianjiefu
 from app.base.pythonProject.base.py_redis import fromRedis
-from app.base.pythonProject.base.getCookies import get_app_cookie,get_wacc_admin_cookie
+from app.base.pythonProject.base.getCookies import get_wacc_admin_cookie
 import time
 #logging = TestLog().getlog()
 class BearWord_Student_Test(unittest.TestCase):

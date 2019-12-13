@@ -83,7 +83,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
     def test_03_v1_bear_main_personData(self):
         """App个人中心数据-是否开启通知和是否是老师<br>https://mobile.yunshuxie.com/v1/bear/main/personData.htm<br>"""
         url = r"https://mobile.yunshuxie.com" + r"/v1/bear/main/personData.htm"
-        cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+        cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, self.phone)
         self.session.cookies = cookies
         self.resp = self.session.post(url=url)
         print self.resp.text
@@ -103,7 +103,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
-        cookies = get_app_cookie(self.env_flag,self.env_num,self.phone)
+        cookies = get_app_cookie("罐罐熊APP",self.env_flag,self.env_num,self.phone)
         self.session.cookies = cookies
         self.resp = self.session.post(url=url, data=params)
         print self.resp.text
@@ -123,7 +123,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
-        cookies = get_app_cookie(self.env_flag,self.env_num,self.phone)
+        cookies = get_app_cookie("罐罐熊APP",self.env_flag,self.env_num,self.phone)
         self.session.cookies = cookies
         self.resp = self.session.post(url=url, data=params)
         print self.resp.text
@@ -228,7 +228,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
-        cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+        cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, self.phone)
         self.session.cookies = cookies
         self.resp = self.session.post(url=url, data=params)
         print self.resp.text
@@ -256,7 +256,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
             # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
             print str_params
-            cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+            cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, self.phone)
             self.session.cookies = cookies
             self.resp = self.session.post(url=url, data=params)
             print self.resp.text
@@ -280,7 +280,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
     def test_11_v1_bear_teacher_get_reject_reason_list(self):
         """驳回理由列表<br>https://mobile.yunshuxie.com/v1/bear/teacher/get_reject_reason_list.htm<br>"""
         url = r"https://mobile.yunshuxie.com" + r"/v1/bear/teacher/get_reject_reason_list.htm"
-        cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+        cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, self.phone)
         self.session.cookies = cookies
         self.resp = self.session.post(url=url)
         print self.resp.text
@@ -300,7 +300,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         bearWord_submitUpdateDate = getKey["bearWord_submitUpdateDate"]
         if bearWord_timelineId:
             url = r"https://mobile.yunshuxie.com" + r"/v1/bear/teacher/check_timeLineSatus.htm"
-            cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+            cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, self.phone)
             params = {"timeLineId":bearWord_timelineId,"submitUpdateDate":bearWord_submitUpdateDate}
             # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
@@ -324,7 +324,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
     def test_13_v1_bear_teacher_upload_voice(self):
         """上传批改语音接口<br>https://mobile.yunshuxie.com/v1/bear/teacher/upload_voice.htm<br>files=binary"""
         url = r"https://mobile.yunshuxie.com/v1/bear/teacher/upload_voice.htm"
-        cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+        cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, self.phone)
         header = {"Connection": "keep-alive",  # "Content-Type": "multipart/form-data",
                   "User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
         files = {
@@ -357,7 +357,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
             url = r"https://mobile.yunshuxie.com" + r"/v1/bear/teacher/save_correction_records.htm"
             header = {"Connection": "keep-alive", "Content-Type": "application/x-www-form-urlencoded",
                       "User-Agent": "BearWord/1.0.0 (iPhone; iOS 12.3.1; Scale/3.00)"}
-            cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+            cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, self.phone)
             params = {"timeLineId":bearWord_timelineId,"excellence":"0","commentVoice":commentVoice,"commentContent":"[]","submitUpdateDate":bearWord_submitUpdateDate}
             # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
@@ -384,7 +384,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
         # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
         str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
         print str_params
-        cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+        cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, self.phone)
         self.session.cookies = cookies
         self.resp = self.session.post(url=url,data=params)
         print self.resp.text
@@ -407,7 +407,7 @@ class BearWord_Teacher_Test(unittest.TestCase):
             # logging.info(url + lianjiefu + json.dumps(params, ensure_ascii=False) + fengefu)
             str_params = json.dumps(params, ensure_ascii=False, encoding="utf8")
             print str_params
-            cookies = get_app_cookie(self.env_flag, self.env_num, self.phone)
+            cookies = get_app_cookie("罐罐熊APP",self.env_flag, self.env_num, self.phone)
             self.session.cookies = cookies
             self.resp = self.session.post(url=url,data=params)
             print self.resp.text
