@@ -54,49 +54,43 @@ def case_http_test():
                     resp = postFunction(url, params, headers, new_cookies)
                 elif method == "GET":
                     resp = getFunction(url, params, headers, new_cookies)
+                if project_cn == u"CRM绩效规则重构":
+                    resp_dict = json.loads(resp, encoding="utf8")
+                    if resp_dict["returnCode"] != "0" and resp_dict["returnCode"] != 0:
+                        resp = resp_dict["returnMsg"]
+                    else:
+                        if case_url == "/v6/order/face_course/post/create_order.htm":
+                            order_sn = update_order_status(resp)
+                            resp = order_sn
+                        else:
+                            phone = params["phone"]
+                            phId = params["phId"]
+                            pId = params["pId"]
+                            order_sn = update_order_status(resp)  # 更改订单状态=2,call_back＝当前时间,返回order_sn　字段
+                            if pId in ["7698", "8326", "8327", "8215", "7996"]:  # 罐罐熊正式课&练字课商品ID,并对应授权
+                                msg = bearJoinCategoryProduct(phone, phId, order_sn, new_cookies)
+                            else:
+                                msg = joinCategoryProduct(phone, phId,
+                                                          order_sn, new_cookies)  # 传入order_sn字段,查找　memberId,orderId
+
+                            resp = order_sn + ":" + msg
         else:
             new_cookies = cookies
             if method == "POST":
                 resp = postFunction(url, params, headers, new_cookies)
             elif method == "GET":
                 resp = getFunction(url, params, headers, new_cookies)
-
-        if project_cn == u"CRM绩效规则重构":
-            resp_dict = json.loads(resp, encoding="utf8")
-            if resp_dict["returnCode"] != "0" and resp_dict["returnCode"] != 0:
-                resp = resp_dict["returnMsg"]
-            else:
-                try:
-                    if case_url == "/v6/order/face_course/post/create_order.htm":
-                        order_sn = update_order_status(resp)
-                        resp = order_sn
-                    else:
-                        phone = params["phone"]
-                        phId = params["phId"]
-                        pId = params["pId"]
-                        order_sn = update_order_status(resp)  # 更改订单状态=2,call_back＝当前时间,返回order_sn　字段
-                        if pId in ["7698", "8326", "8327", "8215", "7996"]:  # 罐罐熊正式课&练字课商品ID,并对应授权
-                            msg = bearJoinCategoryProduct(phone, phId, cookies, order_sn)
-                        else:
-                            msg = joinCategoryProduct(phone, phId, cookies,
-                                                      order_sn)  # 传入order_sn字段,查找　memberId,orderId
-
-                        resp = order_sn + ":" + msg
-                except Exception as e:
-                    resp = str(e)
-
-
     except Exception as e:
         resp = str(e)
     response = make_response(jsonify({"code":200,"test_datas":cgi.escape(resp),"login_msg":login_resp_msg}))  # 返回response
     return response
-@test.route('/doSelfSchedule',methods = ['GET'])
+@test.route('/doSelfSchedule',methods = ['POST'])
 def doSelfSchedule():
     try:
-        api_json = request.args.get("api_json")
-        schedule_env = request.args.get("schedule_env")
-        schedule_num = request.args.get("schedule_num")
-        timer = request.args.get("timer")
+        api_json = request.form["api_json"]
+        schedule_env = request.form["schedule_env"]
+        schedule_num = request.form["schedule_num"]
+        timer = request.form["timer"]
         api_dict = json.loads(api_json,encoding='utf8')
         orderApiDict = OrderedDict(api_dict.items())    #手工调度接口排序
         cookies = {"env_flag":schedule_env,"env_num":schedule_num}    #cookies
@@ -212,7 +206,7 @@ def update_order_status(resp):
     select_data.execute_close()
     resp = outTradeNo
     return resp
-def joinCategoryProduct(phone,phId,cookies,resp):
+def joinCategoryProduct(phone,phId,resp,new_cookies):
     select_data = betaDB()
     order_sn = resp
     sql = """select a.order_id,a.member_id from ysx_order.ysx_order_info a where a.order_sn ="{order_sn}";""".format(order_sn=order_sn)
@@ -222,15 +216,14 @@ def joinCategoryProduct(phone,phId,cookies,resp):
     productCoursehourseId = phId
     accreditReason = u"测试使用"
     url = r"https://admin.yunshuxie.com/v1/admin/write_source/writeCourse/joinCategoryProduct.json"
-    cookie = get_wacc_admin_cookie(env_flag=cookies["env_flag"],env_num=cookies["env_num"]).get_dict()
     request_params = {"memberId":member_id,"orderId":order_id,"phone":phone,
                       "productCoursehourseId":productCoursehourseId,"accreditReason":accreditReason}
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
-    resp = requests.post(url=url,data=request_params,headers=headers,cookies=cookie)
+    resp = requests.post(url=url,data=request_params,headers=headers,cookies=new_cookies)
     resp_dict = json.loads(resp.text,encoding="utf8")
     if phId=="9772" or phId==9772:
         chanel_url = """https://admin.yunshuxie.com/v2/live_course/role/member_role_list.json?memberId=&phone={phone}&sort=memberId&order=asc&limit=10&offset=0&_=1572507705540""".format(phone=phone)
-        chanel_resp = requests.get(url=chanel_url,headers=headers,cookies=cookie)
+        chanel_resp = requests.get(url=chanel_url,headers=headers,cookies=new_cookies)
         chanel_resp_dict = json.loads(chanel_resp.text, encoding="utf8")
         moocClassId = chanel_resp_dict["rows"][0]["moocClassId"]
         update_order_sn_sql = """update ysx_order.ysx_wechat_service_user a 
@@ -246,7 +239,7 @@ where a.PHONE="{phone}" and a.MOOC_CLASS_ID="{moocClassId}";""".format(order_sn=
         for phid in range(0,len(phids)-1):
             request_params = {"memberId": member_id, "orderId": order_id, "phone": phone,
                               "productCoursehourseId": phids[phid], "accreditReason": accreditReason}
-            resp = requests.post(url=url, data=request_params, headers=headers, cookies=cookie)
+            resp = requests.post(url=url, data=request_params, headers=headers, cookies=new_cookies)
             text = resp.text
             resp_dict = json.loads(resp.text, encoding="utf8")
             if resp_dict["returnCode"] == 0 or resp_dict["returnCode"] == "0":
@@ -257,13 +250,13 @@ where a.PHONE="{phone}" and a.MOOC_CLASS_ID="{moocClassId}";""".format(order_sn=
     else:
         request_params = {"memberId": member_id, "orderId": order_id, "phone": phone,
                           "productCoursehourseId": productCoursehourseId, "accreditReason": accreditReason}
-        resp = requests.post(url=url,data=request_params,headers=headers,cookies=cookie)
+        resp = requests.post(url=url,data=request_params,headers=headers,cookies=new_cookies)
         resp_dict = json.loads(resp.text,encoding="utf8")
         if resp_dict["returnCode"] == 0 or resp_dict["returnCode"] == "0":
             return "授权成功"
         else:
             return "授权课程请求失败"
-def bearJoinCategoryProduct(phone,phId,cookies,resp):
+def bearJoinCategoryProduct(phone,phId,resp,new_cookies):
     select_data = betaDB()
     sql = """select a.order_id,a.member_id from ysx_order.ysx_order_info a where a.order_sn ="{order_sn}";""".format(order_sn=resp)
     data = select_data.execute_select(sql)
@@ -277,11 +270,10 @@ def bearJoinCategoryProduct(phone,phId,cookies,resp):
         categoryId = "102"
     grade = "1"
     url = r"https://admin.yunshuxie.com/v1/elementary/joinCategoryProduct.json"
-    cookie = get_wacc_admin_cookie(env_flag=cookies["env_flag"],env_num=cookies["env_num"]).get_dict()
     request_params = {"memberId":member_id,"orderId":order_id,"phone":phone,"categoryId":categoryId,"grade":grade,
                       "productCoursehourseId":productCoursehourseId,"accreditReason":accreditReason}
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"}
-    resp = requests.post(url=url,data=request_params,headers=headers,cookies=cookie)
+    resp = requests.post(url=url,data=request_params,headers=headers,cookies=new_cookies)
     resp_dict = json.loads(resp.text,encoding="utf8")
     if resp_dict["returnCode"] == 0 or resp_dict["returnCode"] == "0":
         return "授权成功"
@@ -378,7 +370,8 @@ def test_file_order():
     productId = request.args.get("pId")
     phId = request.args.get("phId")
     product_url = "https://admin.crm.yunshuxie.com/v1/admin/order/query/product_list?productId={productId}&productName=&sort=productId&order=asc&limit=100&offset=0".format(productId=productId)
-    cookies = get_ysx_crm_cookie(env_flag="beta",env_num="1")
+    cookies = get_ysx_crm_cookie(env_flag="beta",env_num="1",
+                                 account_username="guohongjie@yunshuxie.com",account_passwd="ysx2019")["cookies"]
     resp = requests.get(url=product_url,cookies=cookies)
     productSelect = json.loads(resp.text,encoding="utf-8")
     if productSelect["rows"]:

@@ -1303,7 +1303,7 @@ function start_long_task() {
             });
             console.log(api_json);
             $.ajax({
-                type: 'get',
+                type: 'post',
                 url: '/doSelfSchedule',
                 dataType: 'json',
                 data: {
