@@ -23,6 +23,7 @@ def case_http_test():
     case_host = request.form["case_host"].strip()
     case_url = request.form["case_url"].strip()
     method = request.form["method"].strip()
+    project_cn = request.form["project_cn"].strip()
     try:
         params = eval(replace_cn(request.form["params"].strip()))
         headers = eval(replace_cn(request.form["headers"].strip()))
@@ -59,6 +60,32 @@ def case_http_test():
                 resp = postFunction(url, params, headers, new_cookies)
             elif method == "GET":
                 resp = getFunction(url, params, headers, new_cookies)
+
+        if project_cn == u"CRM绩效规则重构":
+            resp_dict = json.loads(resp, encoding="utf8")
+            if resp_dict["returnCode"] != "0" and resp_dict["returnCode"] != 0:
+                resp = resp_dict["returnMsg"]
+            else:
+                try:
+                    if case_url == "/v6/order/face_course/post/create_order.htm":
+                        order_sn = update_order_status(resp)
+                        resp = order_sn
+                    else:
+                        phone = params["phone"]
+                        phId = params["phId"]
+                        pId = params["pId"]
+                        order_sn = update_order_status(resp)  # 更改订单状态=2,call_back＝当前时间,返回order_sn　字段
+                        if pId in ["7698", "8326", "8327", "8215", "7996"]:  # 罐罐熊正式课&练字课商品ID,并对应授权
+                            msg = bearJoinCategoryProduct(phone, phId, cookies, order_sn)
+                        else:
+                            msg = joinCategoryProduct(phone, phId, cookies,
+                                                      order_sn)  # 传入order_sn字段,查找　memberId,orderId
+
+                        resp = order_sn + ":" + msg
+                except Exception as e:
+                    resp = str(e)
+
+
     except Exception as e:
         resp = str(e)
     response = make_response(jsonify({"code":200,"test_datas":cgi.escape(resp),"login_msg":login_resp_msg}))  # 返回response

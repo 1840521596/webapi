@@ -564,6 +564,7 @@ function http_test () {
     var account_project=$("#account_project").find("option:selected").val();
     var account_username=$("#account_username").val();
     var account_passwd=$("#account_passwd").val();
+    var project_cn=$("#project_choice").val();
     if (method=="GET"){
         var api_data=$("#get_params").val();
         var api_headers=$("#get_headers").val();
@@ -581,7 +582,8 @@ function http_test () {
                 islogin: islogin,
                 account_project:account_project,
                 account_username:account_username,
-                account_passwd: account_passwd
+                account_passwd: account_passwd,
+                project_cn:project_cn
             }
         }).done(function (result) {
             if (result.code == "200")
@@ -632,7 +634,8 @@ function http_test () {
                 islogin: islogin,
                 account_project:account_project,
                 account_username:account_username,
-                account_passwd: account_passwd
+                account_passwd: account_passwd,
+                project_cn:project_cn
             }
         }).done(function (result) {
             if (result.code == "200")
