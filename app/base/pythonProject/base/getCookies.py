@@ -436,7 +436,7 @@ def get_adm_single_cookies(env_flag,env_num,account_username=None,account_passwd
     try:
         if resp.status_code == 200:
             dict_resp = json.loads(resp.content, encoding="utf8")
-            if dict_resp["returnCode"] == "0" or dict_resp["returnCode"] == 0:
+            if dict_resp["code"] == "0" or dict_resp["code"] == 0:
                 cookies.update(resp.cookies)
                 cookies.set("sso_sessionid", dict_resp["data"]["sessionId"])
                 msg = "登录成功,进行后续操作..."
