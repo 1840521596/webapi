@@ -1219,36 +1219,6 @@ function caseRun(urldata){
         loopfn()
     };
 
-//function checkSchedule() {
-//        var api_json = {};
-//        var schedule_env = $("#schedule_env").find("option:selected").val();
-//        var schedule_num = $("#schedule_num").find("option:selected").val();
-//       $('input[class="check_box"]:checked').each(function(k) {
-//           var api_detail = {};
-//           var api_pid = $(this).parents('tr').find('td').eq(1).text();     //获取页面API 对应的id
-//           var project = $(this).parents('tr').find('td').eq(2).text();     //接口对应的项目
-//           var case_api = $(this).parents('tr').find('td').eq(3).text();    //接口对应的名称
-//           api_detail.project = project;
-//           api_detail.case_api = case_api;
-//           api_detail.api_pid = api_pid;
-//           api_json[api_pid] = JSON.stringify(api_detail);
-//        });
-//        console.log(api_json)
-//              $.ajax({
-//                        url: "/doSelfSchedule",
-//                        type: "get",
-//                        dataType: 'json',
-//                        data:{
-//                        api_json:JSON.stringify(api_json),
-//                        schedule_env: schedule_env,
-//                        schedule_num: schedule_num,
-//                        timer: 1
-//                        }
-//                    }).done(function (result){
-//                    alert(result);
-//                        }
-//                    );
-//};
 function displayScheduleButton() {
     var booltext = $('#casetb').html();
     if (booltext==""){
