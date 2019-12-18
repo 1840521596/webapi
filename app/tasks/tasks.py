@@ -154,82 +154,88 @@ def run_api_case(project_en,env_num,env_flag,description,project_cn,new_phone=No
         return str(e)
 
 def run_test(origin,dict_datas,cookies):
-    if origin == "doSelfSchedule":
-        url = dict_datas["case_host"] + dict_datas["case_url"]  # 请求连接
-        method = dict_datas["method"]  # 请求方式
-        headers = eval(replace_cn(dict_datas["headers"].strip()))  # 请求头
-        islogin = dict_datas["islogin"]  # 是否需要前置登录
-        case_api = dict_datas["case_api"]  # 接口名称
-        isSchedule = dict_datas["isSchedule"]
-        checkAssert = dict_datas["checkAssert"]
-        cookies = cookies
-        params = eval(replace_cn(dict_datas["params"].strip()))  # 请求参数
-    else:    #集成调度
-        project = dict_datas["project"]  # 业务项目
-        url = dict_datas["case_host"] + dict_datas["case_url"]  # 请求连接
-        method = dict_datas["method"]  # 请求方式
-        assertValue = dict_datas["assertValue"]
-        headers = eval(replace_cn(dict_datas["headers"]).strip())  # 请求头
-        islogin = dict_datas["islogin"]  # 是否需要前置登录
-        case_api = dict_datas["case_api"]  # 接口名称
-        cookies = cookies
-        params = eval(replace_cn(dict_datas["params"].strip()))  # 请求参数(需要进行参数传递设置,暂时不修改)
     try:
-        if islogin:  # 判断需要登陆状态时，进行登录
-            env_flag = cookies["env_flag"]
-            env_num = cookies["env_num"]
-            account_project = dict_datas["account_project"]  #需要登录状态时,获取登录状态
-            account_username = dict_datas["account_username"]
-            account_password = dict_datas["account_passwd"]
-            if not account_username and not account_project or not account_password:
-                account_project, account_username, account_password = None, None, None
-            elif account_project.upper() == "NONE" and account_username.upper() == "NONE" or account_password.upper() == "NONE":
-                account_project,account_username,account_password = None,None,None
-            cookies = get_cookies(account_project,env_flag,env_num,
-                                  account_username=account_username,
-                                  account_passwd=account_password)  # 更新cookies信息，变更为已登录
-            if cookies["code"] != 200:
-                raise Exception,"登录失败!请检查用户名密码!"
-            else:
-                new_cookies = cookies["cookies"].get_dict()
-                if method.upper() == "GET":
-                    resp = getFunction(url=url, headers=headers, params=params, cookies=new_cookies)
-                else:
-                    resp = postFunction(url=url, headers=headers, params=params, cookies=new_cookies)
-        else:
+        if origin == "doSelfSchedule":
+            url = dict_datas["case_host"] + dict_datas["case_url"]  # 请求连接
+            method = dict_datas["method"]  # 请求方式
+            headers = eval(replace_cn(dict_datas["headers"].strip()))  # 请求头
+            islogin = dict_datas["islogin"]  # 是否需要前置登录
+            case_api = dict_datas["case_api"]  # 接口名称
+            isSchedule = dict_datas["isSchedule"]
+            checkAssert = dict_datas["checkAssert"]
             cookies = cookies
-            if method.upper() == "GET":
-                resp = getFunction(url=url,headers=headers,params=params,cookies=cookies)
-            else:
-                resp = postFunction(url=url,headers=headers,params=params,cookies=cookies)
-        if origin == "doSelfSchedule":    #判断当前调度等于手工调度
-            if resp.status_code == 200:
-                if isSchedule:    #参加校验
-                    assert_list = checkAssert.split(",")
-                    for assert_value in assert_list:
-                        assertResult = re.findall(assert_value,resp.text)
-                        if assertResult:
-                            pass_status = "Success"
-                        else:
-                            pass_status = "Failure"
-                else:    #不参加校验
-                    pass_status = "Success"
-            else:
-                pass_status = "Failure"
-        else:    #集成调度(需要进行参数值校验,暂时不添加)
-            if resp.status_code == 200:
-                try:
-                    resp_dict = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
-                    pass_status = "Success"
-                except Exception as e:
-                    pass_status = "Failure"
-            else:
-                pass_status = "Failure"
-        return pass_status,resp.text
+            params = eval(replace_cn(dict_datas["params"].strip()))  # 请求参数
+        else:    #集成调度
+            project = dict_datas["project"]  # 业务项目
+            url = dict_datas["case_host"] + dict_datas["case_url"]  # 请求连接
+            method = dict_datas["method"]  # 请求方式
+            assertValue = dict_datas["assertValue"]
+            headers = eval(replace_cn(dict_datas["headers"]).strip())  # 请求头
+            islogin = dict_datas["islogin"]  # 是否需要前置登录
+            case_api = dict_datas["case_api"]  # 接口名称
+            cookies = cookies
+            params = eval(replace_cn(dict_datas["params"].strip()))  # 请求参数(需要进行参数传递设置,暂时不修改)
     except Exception as e:
-        pass_status = "Mistake"
-        error_msg = case_api + ':' + str(e)
-        return pass_status,error_msg
+        pass_status = "Failure"
+        error_msg = "参数错误,请检查参数"
+        return pass_status, error_msg
+    else:
+        try:
+            if islogin:  # 判断需要登陆状态时，进行登录
+                env_flag = cookies["env_flag"]
+                env_num = cookies["env_num"]
+                account_project = dict_datas["account_project"]  #需要登录状态时,获取登录状态
+                account_username = dict_datas["account_username"]
+                account_password = dict_datas["account_passwd"]
+                if not account_username and not account_project or not account_password:
+                    account_project, account_username, account_password = None, None, None
+                elif account_project.upper() == "NONE" and account_username.upper() == "NONE" or account_password.upper() == "NONE":
+                    account_project,account_username,account_password = None,None,None
+                cookies = get_cookies(account_project,env_flag,env_num,
+                                      account_username=account_username,
+                                      account_passwd=account_password)  # 更新cookies信息，变更为已登录
+                if cookies["code"] != 200:
+                    raise Exception,"登录失败!请检查用户名密码!"
+                else:
+                    new_cookies = cookies["cookies"].get_dict()
+                    if method.upper() == "GET":
+                        resp = getFunction(url=url, headers=headers, params=params, cookies=new_cookies)
+                    else:
+                        resp = postFunction(url=url, headers=headers, params=params, cookies=new_cookies)
+            else:
+                cookies = cookies
+                if method.upper() == "GET":
+                    resp = getFunction(url=url,headers=headers,params=params,cookies=cookies)
+                else:
+                    resp = postFunction(url=url,headers=headers,params=params,cookies=cookies)
+            if origin == "doSelfSchedule":    #判断当前调度等于手工调度
+                if resp.status_code == 200:
+                    if isSchedule:    #参加校验
+                        assert_list = checkAssert.split(",")
+                        for assert_value in assert_list:
+                            assertResult = re.findall(assert_value,resp.text)
+                            if assertResult:
+                                pass_status = "Success"
+                            else:
+                                pass_status = "Failure"
+                    else:    #不参加校验
+                        pass_status = "Success"
+                else:
+                    pass_status = "Failure"
+            else:    #集成调度(需要进行参数值校验,暂时不添加)
+                if resp.status_code == 200:
+                    try:
+                        resp_dict = json.loads(re.findall("{.*}", resp.content)[0], encoding="utf8")
+                        pass_status = "Success"
+                    except Exception as e:
+                        pass_status = "Failure"
+                else:
+                    pass_status = "Failure"
+            return pass_status,resp.text
+        except Exception as e:
+            pass_status = "Mistake"
+            error_msg = case_api + ':' + str(e)
+            return pass_status,error_msg
 def postFunction(url, params, headers, cookies):
     resp = requests.post(url, data=params, headers=headers, cookies=cookies)
     return resp
