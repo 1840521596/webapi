@@ -197,7 +197,7 @@ def run_test(origin,dict_datas,cookies):
                     resp = postFunction(url=url, headers=headers, params=params, cookies=new_cookies)
         else:
             cookies = cookies
-            if method.upper == "GET":
+            if method.upper() == "GET":
                 resp = getFunction(url=url,headers=headers,params=params,cookies=cookies)
             else:
                 resp = postFunction(url=url,headers=headers,params=params,cookies=cookies)
