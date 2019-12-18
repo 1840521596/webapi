@@ -189,12 +189,18 @@ def run_test(origin,dict_datas,cookies):
                                   account_passwd=account_password)  # 更新cookies信息，变更为已登录
             if cookies["code"] != 200:
                 raise Exception,"登录失败!请检查用户名密码!"
+            else:
+                new_cookies = cookies["cookies"]
+                if method.upper == "GET":
+                    resp = getFunction(url=url, headers=headers, params=params, cookies=new_cookies)
+                else:
+                    resp = postFunction(url=url, headers=headers, params=params, cookies=new_cookies)
         else:
             cookies = cookies
-        if method.upper == "GET":
-            resp = getFunction(url=url,headers=headers,params=params,cookies=cookies)
-        else:
-            resp = postFunction(url=url,headers=headers,params=params,cookies=cookies)
+            if method.upper == "GET":
+                resp = getFunction(url=url,headers=headers,params=params,cookies=cookies)
+            else:
+                resp = postFunction(url=url,headers=headers,params=params,cookies=cookies)
         if origin == "doSelfSchedule":    #判断当前调度等于手工调度
             if resp.status_code == 200:
                 if isSchedule:    #参加校验
