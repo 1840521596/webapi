@@ -14,7 +14,7 @@ def makeUser_test(env_flag,env_num,phone,role):
         raise Exception("用户手机号和用户角色数量不等！")
     else:
         resp_msg = add_admin_crm_tester(env_flag,env_num,userPhones,employeeTypes)
-        return resp_msg
+        return resp_msg,userPhones,employeeTypes
 
 def add_admin_crm_tester(env_flag,env_num,userPhones,employeeTypes):
     resp_cookies = get_wacc_admin_cookie(env_flag,env_num)

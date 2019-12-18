@@ -14,6 +14,7 @@ import json
 from app.tasks.tasks import run_schedule_api,run_api_case
 from app.base.pythonProject.base.makeUser import makeUser_test
 import os
+import requests
 @test.route("/runSuiteApi",methods=["GET"])
 def runDatasApiTest():
 	"""测试集页面使用接口,用于上传测试用例后执行
@@ -189,61 +190,23 @@ def runDatasApiTest_yunwei():
 		msg = {"code":400,"Msg":"执行失败","ErrorMsg":str(e)}
 	return make_response(jsonify(msg))
 @test.route("/make_user",methods=["GET"])
-# def make_user():
-# 	"""测试页面使用接口,用于创建测试账号执行
-#     	:param env_num:  测试环境编号
-#     	:param env_flag:  测试环境
-#     	:param phones: 测试手机号
-#     	:param user_role: 测试角色
-#     	:return:  msg: 执行状态
-#     	"""
-# 	env_num = request.args.get("env_num")
-# 	env_flag = request.args.get("env_flag")
-# 	phones = request.args.get("phones").split(",")
-# 	user_role = request.args.get("user_role").split(",")
-# 	try:
-# 		if phones[0]=="":
-# 			raise Exception("用户手机号不能为空！")
-# 		else:
-# 			for phone in phones:
-# 				if len(phone) != 11:
-# 					raise Exception("用户手机号需等于11位！")
-# 		if env_flag=="":
-# 			raise Exception("使用环境不能为空！")
-# 		if len(user_role) != len(phones):
-# 			raise Exception("用户手机号和用户角色数量不等！")
-#
-# 		result = run.run_yunwei_case("make_user", env_num, env_flag, "Admin 创建用户：{phones}".format(phones=",".join(phones)), "创建测试用户",
-# 									 new_phone=",".join(phones))
-# 		if result["Error"] == 0 and result["Failure"] == 0:  #成功创建用户后，数据库记录
-# 			msg = {"code": 200, "Msg": "执行成功", "url": result["report_url"],
-# 			   "Error": result["Error"], "Failure": result["Failure"], "Success": result["Success"]}
-# 			for num in range(len(phones)):
-# 				try:
-# 					if env_flag in ["stage","prod"]:
-# 						env_flag = ",".join(["stage","prod"])
-# 					datas = Test_User_Reg(phone=phones[num],type=user_role[num],env=env_flag)
-# 					db.session.add(datas)
-# 					db.session.commit()
-# 				except Exception as e:
-# 					db.session.rollback()
-# 					msg = {"code": 204, "datas": str(e)}
-# 		else:
-# 			msg = {"code": 400, "Msg": "执行失败", "url": result["report_url"],
-# 				   "Error": result["Error"], "Failure": result["Failure"], "Success": result["Success"]}
-# 	except Exception as e:
-# 		msg = {"code": 400, "Msg": "执行失败", "ErrorMsg": str(e)}
-# 	return make_response(jsonify(msg))
 def make_user():
-	env_num = request.args.get("env_num")
-	env_flag = request.args.get("env_flag")
-	phones = request.args.get("phones")
-	user_role = request.args.get("user_role")
+	env_num = request.args.get("env_num").strip()
+	env_flag = request.args.get("env_flag").strip()
+	phones = request.args.get("phones").strip()
+	user_role = request.args.get("user_role").strip()
 	try:
 		if env_flag=="":
 			raise Exception("使用环境不能为空！")
 		else:
-			resp_msg = makeUser_test(env_flag,env_num,phones,user_role)
+			resp_msg,userPhones,employeeTypes = makeUser_test(env_flag,env_num,phones,user_role)
+			for i in range(len(userPhones)):
+				datas = db.session.query(Test_User_Reg.id).filter_by(phone=userPhones[i],
+																	 type=employeeTypes[i], env=env_flag).count()
+				if not datas:
+					datas = Test_User_Reg(phone=userPhones[i], env=env_flag, type=employeeTypes[i], description="接口创建")
+					db.session.add(datas)
+					db.session.commit()
 			msg = {"code":200,"msg":"执行成功","datas":resp_msg}
 	except Exception as e:
 		msg = {"code": 400, "msg":"执行失败","datas":str(e)}
