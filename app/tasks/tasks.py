@@ -176,7 +176,7 @@ def run_test(origin,dict_datas,cookies):
             cookies = cookies
             params = eval(replace_cn(dict_datas["params"].strip()))  # 请求参数(需要进行参数传递设置,暂时不修改)
     except Exception as e:
-        pass_status = "Failure"
+        pass_status = "Mistake"
         error_msg = "参数错误,请检查参数"
         return pass_status, error_msg
     else:
