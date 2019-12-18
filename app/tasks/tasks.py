@@ -162,6 +162,7 @@ def run_test(origin,dict_datas,cookies):
         isSchedule = dict_datas["isSchedule"]
         checkAssert = dict_datas["checkAssert"]
         cookies = cookies
+        params = eval(dict_datas["params"])  # 请求参数
     else:    #集成调度
         project = dict_datas["project"]  # 业务项目
         url = dict_datas["case_host"] + dict_datas["case_url"]  # 请求连接
@@ -171,24 +172,25 @@ def run_test(origin,dict_datas,cookies):
         islogin = dict_datas["islogin"]  # 是否需要前置登录
         case_api = dict_datas["case_api"]  # 接口名称
         cookies = cookies
-    if islogin:  # 判断需要登陆状态时，进行登录
-        env_flag = cookies["env_flag"]
-        env_num = cookies["env_num"]
-        account_project = dict_datas["account_project"]  #需要登录状态时,获取登录状态
-        account_username = dict_datas["account_username"]
-        account_password = dict_datas["account_passwd"]
-        if not account_username and not account_project or not account_password:
-            account_project, account_username, account_password = None, None, None
-        elif account_project.upper() == "NONE" and account_username.upper() == "NONE" or account_password.upper() == "NONE":
-            account_project,account_username,account_password = None,None,None
-        cookies = get_cookies(account_project,env_flag,env_num,
-                              account_username=account_username,
-                              account_passwd=account_password)  # 更新cookies信息，变更为已登录
+        params = eval(dict_datas["params"])  # 请求参数(需要进行参数传递设置,暂时不修改)
     try:
-        if origin == "doSelfSchedule":  # 判断当前调度等于手工调度
-            params = eval(dict_datas["params"])  # 请求参数
-        else:    #集成调度
-            params = eval(dict_datas["params"])  # 请求参数(需要进行参数传递设置,暂时不修改)
+        if islogin:  # 判断需要登陆状态时，进行登录
+            env_flag = cookies["env_flag"]
+            env_num = cookies["env_num"]
+            account_project = dict_datas["account_project"]  #需要登录状态时,获取登录状态
+            account_username = dict_datas["account_username"]
+            account_password = dict_datas["account_passwd"]
+            if not account_username and not account_project or not account_password:
+                account_project, account_username, account_password = None, None, None
+            elif account_project.upper() == "NONE" and account_username.upper() == "NONE" or account_password.upper() == "NONE":
+                account_project,account_username,account_password = None,None,None
+            cookies = get_cookies(account_project,env_flag,env_num,
+                                  account_username=account_username,
+                                  account_passwd=account_password)  # 更新cookies信息，变更为已登录
+            if cookies["code"] != 200:
+                raise Exception,"登录失败!请检查用户名密码!"
+        else:
+            cookies = cookies
         if method.upper == "GET":
             resp = getFunction(url=url,headers=headers,params=params,cookies=cookies)
         else:
