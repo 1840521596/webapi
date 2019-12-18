@@ -191,7 +191,7 @@ def run_test(origin,dict_datas,cookies):
                 raise Exception,"登录失败!请检查用户名密码!"
             else:
                 new_cookies = cookies["cookies"].get_dict()
-                if method.upper == "GET":
+                if method.upper() == "GET":
                     resp = getFunction(url=url, headers=headers, params=params, cookies=new_cookies)
                 else:
                     resp = postFunction(url=url, headers=headers, params=params, cookies=new_cookies)
