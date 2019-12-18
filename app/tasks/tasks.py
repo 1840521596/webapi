@@ -163,7 +163,7 @@ def run_test(origin,dict_datas,cookies):
         isSchedule = dict_datas["isSchedule"]
         checkAssert = dict_datas["checkAssert"]
         cookies = cookies
-        params = eval(replace_cn(dict_datas["params"].strip))  # 请求参数
+        params = eval(replace_cn(dict_datas["params"].strip()))  # 请求参数
     else:    #集成调度
         project = dict_datas["project"]  # 业务项目
         url = dict_datas["case_host"] + dict_datas["case_url"]  # 请求连接
