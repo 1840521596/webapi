@@ -5,6 +5,7 @@ from app.config.sql import select_sql
 from app.config.html_template import test_case_detailed,html_all
 from app.base.pythonProject.base.getCookies import get_cookies
 from app.base.pythonProject.run import run_yunwei_case
+from app.config.project_loginIn import replace_cn
 import requests
 import datetime
 import json
@@ -156,23 +157,23 @@ def run_test(origin,dict_datas,cookies):
     if origin == "doSelfSchedule":
         url = dict_datas["case_host"] + dict_datas["case_url"]  # 请求连接
         method = dict_datas["method"]  # 请求方式
-        headers = eval(dict_datas["headers"])  # 请求头
+        headers = eval(replace_cn(dict_datas["headers"].strip()))  # 请求头
         islogin = dict_datas["islogin"]  # 是否需要前置登录
         case_api = dict_datas["case_api"]  # 接口名称
         isSchedule = dict_datas["isSchedule"]
         checkAssert = dict_datas["checkAssert"]
         cookies = cookies
-        params = eval(dict_datas["params"])  # 请求参数
+        params = eval(replace_cn(dict_datas["params"].strip))  # 请求参数
     else:    #集成调度
         project = dict_datas["project"]  # 业务项目
         url = dict_datas["case_host"] + dict_datas["case_url"]  # 请求连接
         method = dict_datas["method"]  # 请求方式
         assertValue = dict_datas["assertValue"]
-        headers = eval(dict_datas["headers"])  # 请求头
+        headers = eval(replace_cn(dict_datas["headers"]).strip())  # 请求头
         islogin = dict_datas["islogin"]  # 是否需要前置登录
         case_api = dict_datas["case_api"]  # 接口名称
         cookies = cookies
-        params = eval(dict_datas["params"])  # 请求参数(需要进行参数传递设置,暂时不修改)
+        params = eval(replace_cn(dict_datas["params"].strip()))  # 请求参数(需要进行参数传递设置,暂时不修改)
     try:
         if islogin:  # 判断需要登陆状态时，进行登录
             env_flag = cookies["env_flag"]

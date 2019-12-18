@@ -24,16 +24,28 @@ def case_http_test():
     case_url = request.form["case_url"].strip()
     method = request.form["method"].strip()
     project_cn = request.form["project_cn"].strip()
+    login_resp_msg = None
     try:
-        params = eval(replace_cn(request.form["params"].strip()))
-        headers = eval(replace_cn(request.form["headers"].strip()))
-        cookies = eval(replace_cn(request.form["cookies"].strip()))
+        params = request.form["params"]
+        if params == "":
+            raise Exception,"Params输入项不能为空,默认为None!"
+        else:
+            params = eval(replace_cn(request.form["params"].strip()))
+        headers = request.form["headers"]
+        if headers == "":
+            raise Exception,"Headers输入项不能为空,默认为None!"
+        else:
+            headers = eval(replace_cn(request.form["headers"].strip()))
+        cookies = request.form["cookies"]
+        if cookies == "":
+            raise Exception, "Cookies输入项不能为空,默认为None!"
+        else:
+            cookies = eval(replace_cn(request.form["cookies"].strip()))
         islogin = request.form["islogin"]
         account_project = request.form["account_project"]
         account_username = request.form["account_username"].strip()
         account_passwd = request.form["account_passwd"].strip()
         url = case_host + case_url
-        login_resp_msg = None
         if account_project.upper() == "NONE" or account_project=="":
             account_project = None
         if account_username.upper() == "NONE" or account_username=="":
