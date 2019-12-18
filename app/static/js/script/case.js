@@ -1272,7 +1272,6 @@ function start_long_task() {
                api_json[api_pid] = JSON.stringify(api_detail);
             });
             console.log(api_json);
-            alert(JSON.stringify(api_json));
             $.ajax({
                 type: 'post',
                 url: '/doSelfSchedule',
@@ -1284,12 +1283,12 @@ function start_long_task() {
                     timer: 1
                 },
                 success: function(data, status, request) {
-                console.log(data);
-                if (data["reason"]){
-                alert(data["msg"]+"\n"+data["reason"]);
-                }else{
-                alert(data["msg"]);
-                }
+                    console.log(data);
+                    if (data["reason"]){
+                    alert(data["msg"]+"\n"+data["reason"]);
+                    }else{
+                    alert(data["msg"]);
+                    }
                     status_url = request.getResponseHeader('Location');
                     var project = 'test';
                    // var table_html='<table id="' +progressing_count+'" class="table table-striped table-bordered table-hover"><tbody><tr><th width="10%" class="btn-info">接口名称</th><th width="20%" class="btn-info">URL</th><th width="5%" class="btn-info">请求方式</th><th width="30%" class="btn-info">返回结果</th><th width="30%" class="btn-info">预期结果</th><th width="5%" class="btn-info">测试结果</th></tr></tbody><tbody id="'+casetb+'"></tbody></table>'

@@ -190,7 +190,7 @@ def run_test(origin,dict_datas,cookies):
             if cookies["code"] != 200:
                 raise Exception,"登录失败!请检查用户名密码!"
             else:
-                new_cookies = cookies["cookies"]
+                new_cookies = cookies["cookies"].get_dict()
                 if method.upper == "GET":
                     resp = getFunction(url=url, headers=headers, params=params, cookies=new_cookies)
                 else:
