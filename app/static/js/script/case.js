@@ -1272,6 +1272,7 @@ function start_long_task() {
                api_json[api_pid] = JSON.stringify(api_detail);
             });
             console.log(api_json);
+            alert(JSON.stringify(api_json));
             $.ajax({
                 type: 'post',
                 url: '/doSelfSchedule',
