@@ -138,7 +138,7 @@ def run_schedule_api(self,origin=None,originParams=None,cookies=None,developer=N
     report_url = u"http://uwsgi.sys.bandubanxie.com/Report/{month}/{day}/{project_en}_schedule.html".format(
         month=str(month), day=str(day), project_en=project_cn)
     wechatQY_msg(developer=developer,project_cn=project_cn,report_url=report_url,
-                 success_count=str(case_pass),error_count=str(case_fail),failure_count=str(case_mistake))
+                 success_count=str(case_pass),fail_count=str(case_fail),mistake_count=str(case_mistake))
     return {'current': current, 'total': case_total, 'status': u'执行成功!','result': case_success,"case_failed":case_failed,"case_mistake":case_mistake}
 
 #持续集成业务流程调度测试
@@ -230,7 +230,7 @@ def run_test(origin,dict_datas,cookies):
                     except Exception as e:
                         pass_status = "Failure"
                 else:
-                    pass_status = "Failure"
+                    pass_status = "Mistake"
             return pass_status,resp.text
         except Exception as e:
             pass_status = "Mistake"
@@ -242,12 +242,12 @@ def postFunction(url, params, headers, cookies):
 def getFunction(url, params, headers, cookies):
     resp = requests.get(url, params=params, headers=headers, cookies=cookies)
     return resp
-def wechatQY_msg(developer,project_cn,success_count,error_count,failure_count,report_url):
+def wechatQY_msg(developer,project_cn,success_count,fail_count,mistake_count,report_url):
     try:
-        content = u"""接口平台调度测试结果:\n测试: {developer} \n测试项目: {project_en} \n通过接口数: {success_count} \n未通过接口数: {error_count} \n程序失败接口数: {failure_count} \n结果查看地址: {report_url}""".format(project_en=project_cn,
+        content = u"""接口平台调度测试结果:\n测试: {developer} \n测试项目: {project_en} \n通过接口数: {success_count} \n未通过接口数: {fail_count} \n程序失败接口数: {mistake_count} \n结果查看地址: {report_url}""".format(project_en=project_cn,
                                       success_count=success_count,
-                                       error_count=error_count,
-                                       failure_count=failure_count,
+                                       fail_count=fail_count,
+                                       mistake_count=mistake_count,
                                        developer=developer,
                                         report_url=report_url
                            )
